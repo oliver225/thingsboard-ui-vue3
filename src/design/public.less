@@ -1,0 +1,49 @@
+#app {
+  width: 100%;
+  height: 100%;
+}
+
+// =================================
+// ==============scrollbar==========
+// =================================
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: rgba(0, 0, 0, 5%);
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: rgba(144, 147, 153, 20%);
+  border-radius: 8px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background-color: @border-color-dark;
+}
+
+::-webkit-scrollbar-corner {
+  background: transparent;
+}
+
+// =================================
+// ==============nprogress==========
+// =================================
+#nprogress {
+  pointer-events: none;
+
+  .bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 99999;
+    width: 100%;
+    height: 2px;
+    background-color: @primary-color;
+    opacity: 0.75;
+  }
+}

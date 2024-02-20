@@ -1,0 +1,141 @@
+<template>
+  <BasicDrawer v-bind="$attrs" :showFooter="false" @register="registerDrawer" width="60%">
+    <template #title>
+      <div class="flex flex-row items-center">
+        <Icon :icon="getTitle.icon" class="pr-3 m-1 drawer-title-icon" />
+        <div class="flex flex-col">
+          <span class="text-lg font-bold">{{ getTitle.value || '· · · ·' }}</span>
+          <span class="text-sm">资源详情</span>
+        </div>
+      </div>
+    </template>
+    <div class="-translate-x-6" v-show="tabActiveKey == 'DETAIL'">
+      <Space size="middle" class="mb-3">
+        <a-button type="primary" @click="handleDownload">
+          <Icon :icon="'ant-design:download-outlined'" />导出资源
+        </a-button>
+        <a-button type="primary success" @click="handleEdit">
+          <Icon :icon="'clarity:note-edit-line'" />编辑资源
+        </a-button>
+        <a-button type="primary" danger @click="handleDelete">
+          <Icon :icon="'ant-design:delete-outlined'" />租删资源
+        </a-button>
+      </Space>
+      <br />
+      <Space size="middle" class="mb-3">
+        <a-button @click="handleCopyResourceId">
+          <Icon :icon="'ant-design:copy-filled'" />
+          复制资源ID
+        </a-button>
+      </Space>
+      <Description @register="register" size="default">
+
+      </Description>
+    </div>
+
+  </BasicDrawer>
+</template>
+<script lang="ts" setup name="ResourceLibraryDetail">
+import { ref, unref, computed } from 'vue';
+import { useI18n } from '/@/hooks/web/useI18n';
+import { useMessage } from '/@/hooks/web/useMessage';
+import { router } from '/@/router';
+import { copyToClipboard } from '/@/utils';
+import { Icon } from '/@/components/Icon';
+import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
+import { Resource, getResourceById } from '/@/api/things/resourceLibrary';
+import { Space } from 'ant-design-vue';
+import { DescItem, Description, useDescription } from '/@/components/Description';
+
+
+
+const emit = defineEmits(['edit', 'delete', 'download', 'register',]);
+
+const { t } = useI18n('things');
+const { showMessage } = useMessage();
+const { meta } = unref(router.currentRoute);
+const record = ref<Resource>({} as Resource);
+
+const getTitle = computed(() => ({
+  icon: meta.icon || 'ant-design:book-outlined',
+  value: record.value.title,
+}));
+
+const tabActiveKey = ref('DETAIL');
+
+
+const descSchema: DescItem[] = [
+  {
+    label: t('标题'),
+    field: 'title',
+    span: 4,
+  },
+  {
+    label: t('资源Key'),
+    field: 'resourceKey',
+    span: 4,
+  },
+  {
+    label: t('资源类型'),
+    field: 'resourceType',
+    span: 4,
+  },
+  {
+    label: t('文件名称'),
+    field: 'fileName',
+    span: 4,
+  },
+];
+const [register, { setDescProps }] = useDescription({
+  schema: descSchema,
+})
+
+
+
+const [registerDrawer, { setDrawerProps, closeDrawer }] = useDrawerInner(async (data) => {
+  try {
+    setDrawerProps({ loading: true });
+    await clear();
+    record.value = await getResourceById(data.id.id);
+    setDescProps({ data: record.value });
+  } catch (error: any) {
+    if (error.message) {
+      showMessage(error.message, 'error')
+    }
+    console.log('error', error);
+  } finally {
+    setDrawerProps({ loading: false });
+  }
+});
+
+async function clear() {
+  record.value = {} as Resource;
+  setDescProps({ data: {} });
+}
+
+
+function handleCopyResourceId() {
+  copyToClipboard(record.value.id.id, '复制资源ID成功！')
+}
+
+function handleDelete() {
+  emit('delete', record.value);
+  closeDrawer();
+}
+
+function handleEdit() {
+  emit('edit', record.value);
+  closeDrawer();
+}
+
+function handleDownload() {
+  emit('download', record.value);
+  closeDrawer();
+}
+function handleOpen() {
+
+}
+
+
+
+</script>
