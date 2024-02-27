@@ -16,7 +16,7 @@
         </a-input>
       </template>
       <template #firstColumn="{ record }">
-        <a @click="handleDetail({ id: record.id })" :title="record.name">
+        <a @click="handleFLow({ id: record.id })" :title="record.name">
           {{ record.name }}
         </a>
       </template>
@@ -188,7 +188,7 @@ function handleSuccess() {
   reload();
 }
 
-function handleDetail(record: Recordable) {
+function handleFLow(record: Recordable) {
   router.push({ path: `/rule-chain/${record.id.id}` });
 }
 

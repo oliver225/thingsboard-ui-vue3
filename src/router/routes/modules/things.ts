@@ -251,8 +251,9 @@ const things: AppRouteModule = {
         {
           path: '/rule-chain/:ruleChainId',
           name: 'RuleChainDetail',
-          component: () => import('/@/views/things/ruleChain/detail.vue'),
+          component: () => import('/@/views/things/ruleChain/flow/index.vue'),
           meta: {
+            single: true,
             icon: 'ant-design:subnode-outlined',
             tabIcon: 'ant-design:subnode-outlined',
             title: t('things.ruleChainDetail'),

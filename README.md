@@ -16,6 +16,7 @@ ThingsBoard凭借其优秀的性能和高效的性能得到了广大开发者的
 - [JeeSite Vue3](https://gitee.com/thinkgem/jeesite-vue/)
 - [Vue-Vben-Admin](https://jeesite.com/front/vben-admin/)
 - [Ant-Design-Vue](https://antdv.com/components/overview-cn/)
+- [AntV x6](https://x6.antv.antgroup.com/)
   
 ## 启动
 - 打开 .env.development 文件，修改后台接口：
@@ -35,7 +36,10 @@ ThingsBoard凭借其优秀的性能和高效的性能得到了广大开发者的
    # 打包
    yarn build
 ## 规则引擎
-  后续计划   
+- [AntV x6](https://x6.antv.antgroup.com/)
+  
+
+![规则引擎](images/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240227085337.png)
 
 ## 预览图片
 

@@ -16,6 +16,13 @@ export interface RuleChain extends BasicModel<EntityType.RULE_CHAIN> {
 }
 
 export interface RuleNode extends BasicModel<EntityType.RULE_NODE> {
+  ruleChainId?: EntityId<EntityType.RULE_CHAIN>
+  name: string,
+  debugMode: boolean,
+  singletonMode: boolean,
+  type: string,
+  configuration?: Recordable,
+  additionalInfo?: Recordable,
 }
 
 export interface RuleChainMetaData {
