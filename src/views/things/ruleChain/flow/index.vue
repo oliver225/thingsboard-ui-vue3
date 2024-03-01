@@ -7,20 +7,26 @@
       {{ record.root ? '（根链）' : '' }}
     </div>
     <TeleportContainer></TeleportContainer>
+    <ConnectTypeForm @register="registerConnectModal" @success="handleConnectSuccess" />
+    <NodeForm @register="registerNodeModal" @success="handleNodeSuccess" />
   </div>
 </template>
 
 <script  lang="ts" setup name="RuleChainFLow">
-import { ref, watch, onMounted } from 'vue';
-import { Graph } from '@antv/x6';
+import { ref, watch, onMounted, render, createVNode } from 'vue';
+import { Dom } from '@antv/x6-common';
+import { Graph, Markup, Cell, CellView, Edge, Node } from '@antv/x6';
 import { Stencil } from '@antv/x6-plugin-stencil'
 import { register, getTeleport } from '@antv/x6-vue-shape'
+import { useModal } from '/@/components/Modal';
 import { RuleChain, RuleChainMetaData, getRuleChainById, getRuleChainMetaData } from '/@/api/things/ruleChain';
 import { router } from '/@/router';
 import { isEmpty } from 'lodash';
 import RuleChainNode from './node.vue';
+import ConnectLabel from './connectLabel.vue';
+import ConnectTypeForm from './connectTypeForm.vue';
+import NodeForm from './nodeComp/nodeForm.vue';
 import { sleep } from '/@/utils';
-import { primaryColor } from '../../../../../build/config/themeConfig';
 import { ComponentDescriptor, getComponentDescriptorList } from '/@/api/things/componentDescriptor';
 import { COMPONENTS_DESCRIPTOR_TYPE_OPTIONS, ComponentDescriptorType } from '/@/enums/componentEnum';
 
@@ -30,25 +36,13 @@ register({
   height: 50,
   ports: {
     groups: {
-      right: {
+      out: {
         position: 'right',
-        attrs: {
-          circle: {
-            magnet: true,
-            stroke: '#8f8f8f',
-            r: 5,
-          },
-        },
+        attrs: { circle: { magnet: true, stroke: '#8f8f8f', r: 5 } },
       },
-      left: {
+      in: {
         position: 'left',
-        attrs: {
-          circle: {
-            magnet: true,
-            stroke: '#8f8f8f',
-            r: 5,
-          },
-        },
+        attrs: { circle: { magnet: true, stroke: '#8f8f8f', r: 5 } },
       },
     },
   },
@@ -60,56 +54,20 @@ Graph.registerEdge('rule-edge', {
     line: {
       connection: true,
       stroke: '#808080',
-      strokeWidth: 5,
-      targetMarker: {
-        name: 'classic',
-        size: 12,
-      }
+      strokeWidth: 3,
+      targetMarker: { name: 'classic', size: 12 }
     },
   },
   connector: {
     name: 'smooth',
-    args: {
-      raw: true,
-      direction: 'V',
-    },
+    args: { raw: true, direction: 'V' },
   },
   defaultLabel: {
-    markup: [
-      {
-        tagName: 'rect',
-        selector: 'body',
-      },
-      {
-        tagName: 'text',
-        selector: 'label',
-      },
-    ],
+    markup: Markup.getForeignObjectMarkup(),
     attrs: {
-      text: {
-        fill: primaryColor,
-        fontSize: 14,
-        textAnchor: 'middle',
-        textVerticalAnchor: 'middle',
-        stroke: primaryColor,
-      },
-      rect: {
-        ref: 'label',
-        stroke: primaryColor,
-        strokeWidth: 2,
-        fill: '#fff',
-        rx: 6,
-        ry: 6,
-        refWidth: 1,
-        refHeight: 1,
-        refX: 1,
-        refY: 1,
-      },
+      fo: { width: 700, height: 40, x: -350, y: -20 },
     },
-    position: {
-      distance: 0.5,
-    },
-
+    position: { distance: 0.5 },
   },
 
 })
@@ -152,41 +110,54 @@ async function renderGraph() {
   await fetchComponent();
   const graph = new Graph({
     container: document.getElementById('container')!,
-    background: {
-      color: '#F2F7FA',
-    },
+    background: { color: '#F2F7FA' },
     autoResize: true,
     grid: {
       visible: true,
       type: 'doubleMesh',
       args: [
-        {
-          color: '#eee', // 主网格线颜色
-          thickness: 1, // 主网格线宽度
-        },
-        {
-          color: '#ddd', // 次网格线颜色
-          thickness: 1, // 次网格线宽度
-          factor: 4, // 主次网格线间隔
-        },
+        { color: '#eee', thickness: 1 },
+        { color: '#ddd', thickness: 1, factor: 4 },
       ],
     },
+    onEdgeLabelRendered: (args) => {
+      const { label, selectors } = args
+      const content = selectors.foContent as HTMLDivElement;
+      if (content) {
+        render(createVNode(ConnectLabel, { text: label.attrs?.label.text }), content)
+      }
+      return undefined;
+    },
+    interacting: {
+      nodeMovable: (view) => {
+        if (view.cell.id == inputNodeId) return false;
+        return true;
+      }
+    },
+    connecting: {
+      snap: true,
+      highlight: true,
+      allowPort: true,
+      allowBlank: false,
+      allowLoop: false,
+      allowNode: false,
+      allowEdge: false,
+      allowMulti: false,
+      createEdge: createEdge,
+      validateEdge: validateEdge,
+      validateMagnet: validateMagnet,
+    }
   })
   graphRef.value = graph;
   graph.addNode({
     id: inputNodeId,
     shape: 'rule-chain-node',
-    x: 40,
+    x: 30,
     y: 150,
     width: 200,
     height: 50,
     label: 'Input',
-    ports: {
-      items: [{
-        id: 'out_port',
-        group: 'right',
-      }],
-    },
+    ports: { items: [{ id: 'out_port', group: 'out', }], },
     data: {
       descriptor: {
         name: '输入',
@@ -206,11 +177,7 @@ async function renderGraph() {
     },
     placeholder: '查找规则链节点',
     notFoundText: '没有找到',
-    layoutOptions: {
-      columns: 1,
-      columnWidth: 210,
-      rowHeight: 60
-    },
+    layoutOptions: { columns: 1, columnWidth: 210, rowHeight: 60 },
     groups: COMPONENTS_DESCRIPTOR_TYPE_OPTIONS.map(item => ({
       name: item.value,
       title: item.label,
@@ -227,16 +194,10 @@ async function renderGraph() {
       .map(comp => {
         let portItems: any[] = [];
         if (comp.configurationDescriptor?.nodeDefinition.inEnabled == true) {
-          portItems.push({
-            id: 'in_port',
-            group: 'left',
-          })
+          portItems.push({ id: 'in_port', group: 'in', })
         }
         if (comp.configurationDescriptor?.nodeDefinition.outEnabled == true) {
-          portItems.push({
-            id: 'out_port',
-            group: 'right',
-          })
+          portItems.push({ id: 'out_port', group: 'out', })
         }
         return {
           shape: 'rule-chain-node',
@@ -250,7 +211,8 @@ async function renderGraph() {
     stencil.load(nodeList, item.value)
   })
 
-  graph.on('node:added', onCreateNode);
+  graph.on('node:added', onNodeAdded);
+  graph.on('edge:connected', onEdgeConnected)
 
 }
 
@@ -267,10 +229,10 @@ async function renderMetaData() {
       if (!isEmpty(desc)) {
         let portItems: any[] = [];
         if (desc.configurationDescriptor?.nodeDefinition.inEnabled == true) {
-          portItems.push({ id: 'in_port', group: 'left' })
+          portItems.push({ id: 'in_port', group: 'in' })
         }
         if (desc.configurationDescriptor?.nodeDefinition.outEnabled == true) {
-          portItems.push({ id: 'out_port', group: 'right' })
+          portItems.push({ id: 'out_port', group: 'out' })
         }
         graphRef.value?.addNode(
           {
@@ -295,24 +257,88 @@ async function renderMetaData() {
       })
     }
     if (metaData.value.connections && metaData.value.connections.length > 0) {
+      const currentConnect: Array<{ fromIndex: number, toIndex: number, type: [string] }> = [];
       metaData.value.connections.forEach(connect => {
-        graphRef.value?.addEdge({
-          shape: 'rule-edge',
-          source: { cell: metaData.value?.nodes[connect.fromIndex].id.id || 'undefined', port: 'out_port' },
-          target: { cell: metaData.value?.nodes[connect.toIndex].id.id || 'undefined', port: 'in_port' },
-          label: connect.type,
-        })
+        const target = currentConnect.find(item => item.fromIndex == connect.fromIndex && item.toIndex == connect.toIndex);
+        if (target == undefined) {
+          currentConnect.push({ fromIndex: connect.fromIndex, toIndex: connect.toIndex, type: [connect.type] })
+        } else {
+          target.type.push(connect.type);
+        }
       })
+      graphRef.value.addEdges(currentConnect.map(item => ({
+        shape: 'rule-edge',
+        source: { cell: metaData.value?.nodes[item.fromIndex].id.id || 'undefined', port: 'out_port' },
+        target: { cell: metaData.value?.nodes[item.toIndex].id.id || 'undefined', port: 'in_port' },
+        label: item.type.join(' / '),
+      })));
     }
-
   }
 }
 
-function onCreateNode({ node, index, options }) {
-  graphRef.value?.getNodes()
-  console.log(node)
-  console.log(index, node.data.data.name);
+// 校验连接柱是否能 接收连接线
+function validateEdge(this: Graph, args: { edge: Edge; type: Edge.TerminalType; previous: Edge.TerminalData; }) {
+  if (args.type == 'target' && args.edge.target.port == 'in_port') {
+    return true;
+  }
+  return false;
 }
+// 校验连接柱是否能 拉出来连接线
+function validateMagnet(this: Graph, args: { cell: Cell; view: CellView; magnet: Element; e: Dom.MouseDownEvent | Dom.MouseEnterEvent; }) {
+  if (args.magnet.getAttribute('port-group') == 'out') {
+    return true;
+  }
+  return false;
+}
+
+// 初始换连接线
+function createEdge(this: Graph, args: { sourceCell: Cell; sourceView: CellView; sourceMagnet: Element }) {
+  return this.createEdge({
+    shape: 'rule-edge',
+    data: {
+      customRelations: args.sourceCell.data.descriptor.configurationDescriptor.nodeDefinition?.customRelations,
+      relationTypes: args.sourceCell.data.descriptor.configurationDescriptor.nodeDefinition?.relationTypes,
+    }
+  })
+}
+
+// 节点添加成功
+function onNodeAdded({ node, index, options }) {
+  if (node.data.data) {
+    return;
+  }
+  openNodeModal(true, { ...node.data })
+}
+
+// 节点连接 弹框 
+function onEdgeConnected({ isNew, edge }) {
+  if (isNew) {
+    //新增
+    openConnectModal(true, { ...edge.data, edgeId: edge.id })
+  }
+}
+
+const [registerConnectModal, { openModal: openConnectModal }] = useModal();
+
+// 连接类型编辑成功， 更新连接
+function handleConnectSuccess({ edgeId, currentTypes }) {
+  if (currentTypes && currentTypes.length > 0) {
+    const edge = graphRef.value?.getCellById(edgeId) as Edge;
+    edge.appendLabel(currentTypes.join(' / '))
+  } else {
+    graphRef.value?.removeEdge(edgeId);
+  }
+}
+
+const [registerNodeModal, { openModal: openNodeModal }] = useModal();
+
+// Node 节点数据编辑成功
+function handleNodeSuccess({ nodeId, data }) {
+  const node = graphRef.value?.getCellById(nodeId) as Node;
+
+
+}
+
 
 onMounted(async () => {
   await renderGraph();
