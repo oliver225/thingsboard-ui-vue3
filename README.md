@@ -39,7 +39,7 @@ ThingsBoard凭借其优秀的性能和高效的性能得到了广大开发者的
 - [AntV x6](https://x6.antv.antgroup.com/)
   
 
-![规则引擎](images/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240227085337.png)
+![规则引擎](images/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240301174437.png)
 
 ## 预览图片
 
