@@ -1,6 +1,6 @@
 <template>
   <div class="rule-chain-node" :style="{ backgroundColor: backgroundColor }">
-    <Popover placement="right" :title="data?.name ? data.name : descriptor?.name"
+    <Popover placement="right" :mouseEnterDelay="0.5" :title="data?.name ? data.name : descriptor?.name"
       overlayClassName="rule-chain-node-popover-card">
       <template #content>
         <div class="popover-card-content">
@@ -116,9 +116,14 @@ function transportIcon(icon: string) {
   width: 100%;
   height: 100%;
   padding: 4px 8px;
-  background-color: pink;
+  background-color: '#00b96b';
   border: 1px solid @border-color-base;
   border-radius: 8px;
+
+  :hover {
+    background-color: rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+  }
 
   .content {
     height: 100%;
@@ -129,6 +134,7 @@ function transportIcon(icon: string) {
       margin-left: 8px;
       font-size: 14px;
       overflow: hidden;
+      pointer-events: none;
 
       .type {}
 

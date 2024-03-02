@@ -13,9 +13,9 @@
 </template>
 
 <script  lang="ts" setup name="RuleChainFLow">
-import { ref, watch, onMounted, render, createVNode } from 'vue';
+import { ref, watch, onMounted } from 'vue';
 import { Dom } from '@antv/x6-common';
-import { Graph, Markup, Cell, CellView, Edge, Node } from '@antv/x6';
+import { Graph, Cell, CellView, Edge, Node } from '@antv/x6';
 import { Stencil } from '@antv/x6-plugin-stencil'
 import { register, getTeleport } from '@antv/x6-vue-shape'
 import { useModal } from '/@/components/Modal';
@@ -23,12 +23,13 @@ import { RuleChain, RuleChainMetaData, getRuleChainById, getRuleChainMetaData } 
 import { router } from '/@/router';
 import { isEmpty } from 'lodash';
 import RuleChainNode from './node.vue';
-import ConnectLabel from './connectLabel.vue';
+import { primaryColor } from '../../../../../build/config/themeConfig';
 import ConnectTypeForm from './connectTypeForm.vue';
 import NodeForm from './nodeComp/nodeForm.vue';
 import { sleep } from '/@/utils';
 import { ComponentDescriptor, getComponentDescriptorList } from '/@/api/things/componentDescriptor';
 import { COMPONENTS_DESCRIPTOR_TYPE_OPTIONS, ComponentDescriptorType } from '/@/enums/componentEnum';
+import { vector } from 'echarts';
 
 register({
   shape: 'rule-chain-node',
@@ -63,12 +64,33 @@ Graph.registerEdge('rule-edge', {
     args: { raw: true, direction: 'V' },
   },
   defaultLabel: {
-    markup: Markup.getForeignObjectMarkup(),
+    markup: [
+      { tagName: 'rect', selector: 'body' },
+      { tagName: 'text', selector: 'label' },
+    ],
     attrs: {
-      fo: { width: 700, height: 40, x: -350, y: -20 },
+      text: {
+        fill: primaryColor,
+        fontSize: 14,
+        textAnchor: 'middle',
+        textVerticalAnchor: 'middle',
+        stroke: primaryColor,
+      },
+      rect: {
+        ref: 'label',
+        stroke: primaryColor,
+        strokeWidth: 2,
+        fill: '#fff',
+        rx: 8,
+        ry: 8,
+        refWidth: 12,
+        refHeight: 4,
+        refX: -6,
+        refY: -1,
+      },
     },
     position: { distance: 0.5 },
-  },
+  }
 
 })
 
@@ -79,6 +101,8 @@ const metaData = ref<RuleChainMetaData>();
 const components = ref<Array<ComponentDescriptor>>([]);
 
 const graphRef = ref<Graph>();
+
+const selectedCell = ref<Cell>();
 
 async function fetchData() {
   const ruleChainId = router.currentRoute.value.params.ruleChainId as string
@@ -119,14 +143,6 @@ async function renderGraph() {
         { color: '#eee', thickness: 1 },
         { color: '#ddd', thickness: 1, factor: 4 },
       ],
-    },
-    onEdgeLabelRendered: (args) => {
-      const { label, selectors } = args
-      const content = selectors.foContent as HTMLDivElement;
-      if (content) {
-        render(createVNode(ConnectLabel, { text: label.attrs?.label.text }), content)
-      }
-      return undefined;
     },
     interacting: {
       nodeMovable: (view) => {
@@ -212,7 +228,10 @@ async function renderGraph() {
   })
 
   graph.on('node:added', onNodeAdded);
-  graph.on('edge:connected', onEdgeConnected)
+  graph.on('edge:connected', onEdgeConnected);
+  graph.on('node:click', onNodeClick);
+  graph.on('edge:click', onEdgeClick);
+  graph.on('blank:click', onBlankClick);
 
 }
 
@@ -336,6 +355,64 @@ const [registerNodeModal, { openModal: openNodeModal }] = useModal();
 function handleNodeSuccess({ nodeId, data }) {
   const node = graphRef.value?.getCellById(nodeId) as Node;
 
+
+}
+
+
+function onNodeClick({ e, x, y, cell, view }) {
+  onBlankClick({ e, x, y });
+  selectedCell.value = cell;
+  cell.addTools([{
+    name: 'button-remove',
+    args: {
+      markup: [
+        {
+          tagName: 'circle',
+          selector: 'button',
+          attrs: {
+            r: 12,
+            cursor: 'pointer',
+          },
+        }],
+      x: '100%',
+      y: 0,
+      offset: { x: 0, y: -10 },
+    },
+  }]);
+}
+
+function onEdgeClick({ e, x, y, cell, view }) {
+  onBlankClick({ e, x, y });
+  selectedCell.value = cell;
+  console.log(cell, view)
+  const labelRect = { width: 0, height: 0 };
+  const rectElement = view.labelContainer?.getElementsByTagName('rect');
+  if (rectElement && rectElement.length > 0) {
+    labelRect.height = rectElement[0].getAttribute('height');
+    labelRect.width = rectElement[0].getAttribute('width');
+  }
+  console.log(labelRect)
+  cell.addTools([{
+    name: 'button-remove',
+    args: {
+      markup: [
+        {
+          tagName: 'circle',
+          selector: 'button',
+          attrs: {
+            r: 10,
+            cursor: 'pointer',
+          },
+        }],
+      distance: (labelRect.width == 0 && labelRect.height == 0) ? 0.2 : 0.5,
+      offset: { x: (labelRect.width / 2), y: -(labelRect.height) },
+    },
+  }]);
+}
+
+function onBlankClick({ e, x, y }) {
+  selectedCell.value?.removeTools();
+  selectedCell.value = undefined;
 
 }
 
