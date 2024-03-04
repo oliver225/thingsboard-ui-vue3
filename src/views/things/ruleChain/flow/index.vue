@@ -6,7 +6,7 @@
       {{ record.name }}
       {{ record.root ? '（根链）' : '' }}
     </div>
-    <TeleportContainer></TeleportContainer>
+    <TeleportContainer />
     <ConnectTypeForm @register="registerConnectModal" @success="handleConnectSuccess" />
     <NodeForm @register="registerNodeModal" @success="handleNodeSuccess" />
   </div>
@@ -16,20 +16,24 @@
 import { ref, watch, onMounted } from 'vue';
 import { Dom } from '@antv/x6-common';
 import { Graph, Cell, CellView, Edge, Node } from '@antv/x6';
-import { Stencil } from '@antv/x6-plugin-stencil'
 import { register, getTeleport } from '@antv/x6-vue-shape'
+import { Stencil } from '@antv/x6-plugin-stencil'
+import { Snapline } from '@antv/x6-plugin-snapline'
+import { Clipboard } from '@antv/x6-plugin-clipboard'
+import { Selection } from '@antv/x6-plugin-selection'
+import { Keyboard } from '@antv/x6-plugin-keyboard'
+import { History } from '@antv/x6-plugin-history'
 import { useModal } from '/@/components/Modal';
-import { RuleChain, RuleChainMetaData, getRuleChainById, getRuleChainMetaData } from '/@/api/things/ruleChain';
 import { router } from '/@/router';
 import { isEmpty } from 'lodash';
-import RuleChainNode from './node.vue';
-import { primaryColor } from '../../../../../build/config/themeConfig';
-import ConnectTypeForm from './connectTypeForm.vue';
-import NodeForm from './nodeComp/nodeForm.vue';
 import { sleep } from '/@/utils';
+import RuleChainNode from './node.vue';
+import NodeForm from './nodeComp/nodeForm.vue';
+import ConnectTypeForm from './connectTypeForm.vue';
+import { primaryColor } from '../../../../../build/config/themeConfig';
 import { ComponentDescriptor, getComponentDescriptorList } from '/@/api/things/componentDescriptor';
+import { RuleChain, RuleChainMetaData, getRuleChainById, getRuleChainMetaData } from '/@/api/things/ruleChain';
 import { COMPONENTS_DESCRIPTOR_TYPE_OPTIONS, ComponentDescriptorType } from '/@/enums/componentEnum';
-import { vector } from 'echarts';
 
 register({
   shape: 'rule-chain-node',
@@ -37,32 +41,16 @@ register({
   height: 50,
   ports: {
     groups: {
-      out: {
-        position: 'right',
-        attrs: { circle: { magnet: true, stroke: '#8f8f8f', r: 5 } },
-      },
-      in: {
-        position: 'left',
-        attrs: { circle: { magnet: true, stroke: '#8f8f8f', r: 5 } },
-      },
-    },
+      out: { position: 'right', attrs: { circle: { magnet: true, stroke: '#8f8f8f', r: 5 } } },
+      in: { position: 'left', attrs: { circle: { magnet: true, stroke: '#8f8f8f', r: 5 } } },
+    }
   },
   component: RuleChainNode,
 })
 Graph.registerEdge('rule-edge', {
   inherit: 'edge',
-  attrs: {
-    line: {
-      connection: true,
-      stroke: '#808080',
-      strokeWidth: 3,
-      targetMarker: { name: 'classic', size: 12 }
-    },
-  },
-  connector: {
-    name: 'smooth',
-    args: { raw: true, direction: 'V' },
-  },
+  attrs: { line: { connection: true, stroke: '#808080', strokeWidth: 3 } },
+  connector: { name: 'smooth', args: { raw: true, direction: 'V' } },
   defaultLabel: {
     markup: [
       { tagName: 'rect', selector: 'body' },
@@ -102,8 +90,6 @@ const components = ref<Array<ComponentDescriptor>>([]);
 
 const graphRef = ref<Graph>();
 
-const selectedCell = ref<Cell>();
-
 async function fetchData() {
   const ruleChainId = router.currentRoute.value.params.ruleChainId as string
   if (isEmpty(ruleChainId)) {
@@ -130,6 +116,7 @@ async function fetchComponent() {
     'CORE');
 }
 
+// 初始化编辑器
 async function renderGraph() {
   await fetchComponent();
   const graph = new Graph({
@@ -141,15 +128,10 @@ async function renderGraph() {
       type: 'doubleMesh',
       args: [
         { color: '#eee', thickness: 1 },
-        { color: '#ddd', thickness: 1, factor: 4 },
-      ],
+        { color: '#ddd', thickness: 1, factor: 4 }
+      ]
     },
-    interacting: {
-      nodeMovable: (view) => {
-        if (view.cell.id == inputNodeId) return false;
-        return true;
-      }
-    },
+    interacting: { nodeMovable: (view) => view.cell.id != inputNodeId },
     connecting: {
       snap: true,
       highlight: true,
@@ -165,6 +147,7 @@ async function renderGraph() {
     }
   })
   graphRef.value = graph;
+
   graph.addNode({
     id: inputNodeId,
     shape: 'rule-chain-node',
@@ -186,6 +169,7 @@ async function renderGraph() {
       },
     }
   })
+
   const stencil = new Stencil({
     target: graph,
     search(cell, keyword) {
@@ -201,7 +185,7 @@ async function renderGraph() {
       graphHeight: (components.value.filter(comp => comp.type == item.value).length) * 60 + 20
     }))
   })
-  document.getElementById('stencil')!.appendChild(stencil.container)
+  document.getElementById('stencil')!.appendChild(stencil.container);
 
   COMPONENTS_DESCRIPTOR_TYPE_OPTIONS.forEach(item => {
     const nodeList = components.value
@@ -219,22 +203,55 @@ async function renderGraph() {
           shape: 'rule-chain-node',
           label: comp.name,
           data: { descriptor: comp },
-          ports: {
-            items: portItems,
-          },
+          ports: { items: portItems },
         }
       })
     stencil.load(nodeList, item.value)
   })
 
+  graph.use(new History({ enabled: true }));
+  // graph.use(new Scroller({ enabled: true }));
+  graph.use(new Clipboard({ enabled: true }));
+  graph.use(new Keyboard({ enabled: true, global: true }));
+  graph.use(new Snapline({ enabled: true, clean: false, className: 'snap-line' }));
+  graph.use(new Selection({ enabled: true, rubberband: true, className: 'selection-box', showNodeSelectionBox: true, filter: (cell) => cell.id != inputNodeId }))
+
+  // 绑定ctrl+c 复制
+  graph.bindKey('ctrl+c', () => {
+    const cells = graph.getSelectedCells();
+    if (cells.length) {
+      graph.copy(cells)
+    }
+    return false
+  });
+  // 绑定ctrl+v 粘贴
+  graph.bindKey('ctrl+v', () => {
+    if (!graph.isClipboardEmpty()) {
+      const cells = graph.paste({ offset: 32 })
+      graph.cleanSelection()
+      graph.select(cells)
+    }
+    return false
+  });
+  // 绑定ctrl+z 撤销
+  graph.bindKey('ctrl+z', () => {
+    if (graph.canUndo()) {
+      graph.undo()
+    }
+    return false
+  });
+
   graph.on('node:added', onNodeAdded);
   graph.on('edge:connected', onEdgeConnected);
-  graph.on('node:click', onNodeClick);
-  graph.on('edge:click', onEdgeClick);
-  graph.on('blank:click', onBlankClick);
+  graph.on('node:selected', onNodeSelected);
+  graph.on('edge:selected', onEdgeSelected);
+  graph.on('cell:unselected', onCellUnSelected);
+  graph.on('edge:mouseenter', onEdgeMouseEnter);
+  graph.on('edge:mouseleave', onEdgeMouseLeave);
 
 }
 
+// 规则节点回显数据 绘制
 async function renderMetaData() {
   await fetchMetaData();
   while (isEmpty(graphRef.value)) {
@@ -310,7 +327,7 @@ function validateMagnet(this: Graph, args: { cell: Cell; view: CellView; magnet:
   return false;
 }
 
-// 初始换连接线
+// 初始换连接线 /边
 function createEdge(this: Graph, args: { sourceCell: Cell; sourceView: CellView; sourceMagnet: Element }) {
   return this.createEdge({
     shape: 'rule-edge',
@@ -321,15 +338,7 @@ function createEdge(this: Graph, args: { sourceCell: Cell; sourceView: CellView;
   })
 }
 
-// 节点添加成功
-function onNodeAdded({ node, index, options }) {
-  if (node.data.data) {
-    return;
-  }
-  openNodeModal(true, { ...node.data })
-}
-
-// 节点连接 弹框 
+// 边连接成功后 弹框 
 function onEdgeConnected({ isNew, edge }) {
   if (isNew) {
     //新增
@@ -339,7 +348,7 @@ function onEdgeConnected({ isNew, edge }) {
 
 const [registerConnectModal, { openModal: openConnectModal }] = useModal();
 
-// 连接类型编辑成功， 更新连接
+// 连接线/边类型编辑成功， 更新边上的label
 function handleConnectSuccess({ edgeId, currentTypes }) {
   if (currentTypes && currentTypes.length > 0) {
     const edge = graphRef.value?.getCellById(edgeId) as Edge;
@@ -349,74 +358,125 @@ function handleConnectSuccess({ edgeId, currentTypes }) {
   }
 }
 
+// 节点添加成功
+function onNodeAdded({ node, index, options }) {
+  if (node.data.data) {
+    return;
+  }
+  openNodeModal(true, { ...node.data })
+}
+
 const [registerNodeModal, { openModal: openNodeModal }] = useModal();
 
-// Node 节点数据编辑成功
+// Node 节点数据编辑成功  更新节点数据
 function handleNodeSuccess({ nodeId, data }) {
   const node = graphRef.value?.getCellById(nodeId) as Node;
+  //TODO： 每个节点的弹框编辑数据 不一样，更新节点数据
 
 
 }
 
-
-function onNodeClick({ e, x, y, cell, view }) {
-  onBlankClick({ e, x, y });
-  selectedCell.value = cell;
-  cell.addTools([{
-    name: 'button-remove',
-    args: {
-      markup: [
-        {
-          tagName: 'circle',
-          selector: 'button',
-          attrs: {
-            r: 12,
-            cursor: 'pointer',
-          },
-        }],
-      x: '100%',
-      y: 0,
-      offset: { x: 0, y: -10 },
-    },
-  }]);
-}
-
-function onEdgeClick({ e, x, y, cell, view }) {
-  onBlankClick({ e, x, y });
-  selectedCell.value = cell;
-  console.log(cell, view)
-  const labelRect = { width: 0, height: 0 };
-  const rectElement = view.labelContainer?.getElementsByTagName('rect');
-  if (rectElement && rectElement.length > 0) {
-    labelRect.height = rectElement[0].getAttribute('height');
-    labelRect.width = rectElement[0].getAttribute('width');
+// 鼠标移入连接线/边 后  边变宽，label 变大
+function onEdgeMouseEnter({ edge }) {
+  edge.setAttrs({ line: { strokeWidth: 6 } });
+  const labels = edge.getLabels();
+  if (labels.length > 0) {
+    edge.setLabels({
+      attrs: {
+        label: { text: labels[0]?.attrs?.label.text },
+        text: { fontSize: 18 },
+        rect: { rx: 12, ry: 12 },
+      }
+    })
   }
-  console.log(labelRect)
-  cell.addTools([{
-    name: 'button-remove',
-    args: {
-      markup: [
-        {
+}
+// 鼠标移入连接线/边 后  恢复原始大小
+function onEdgeMouseLeave({ edge }) {
+  edge.setAttrs({ line: { strokeWidth: 3 } });
+  const labels = edge.getLabels();
+  if (labels.length > 0) {
+    edge.setLabels({
+      attrs: {
+        label: { text: labels[0]?.attrs?.label.text },
+        text: { fontSize: 14 },
+        rect: { rx: 8, ry: 8 },
+      }
+    })
+  }
+}
+
+// 节点选中后 添加删除编辑按钮
+function onNodeSelected({ node }) {
+  if (graphRef.value?.getSelectedCellCount() == 1) {
+    node.addTools([{
+      name: 'button-remove',
+      args: {
+        markup: [{
           tagName: 'circle',
           selector: 'button',
-          attrs: {
-            r: 10,
-            cursor: 'pointer',
-          },
+          attrs: { r: 12, cursor: 'pointer' },
         }],
-      distance: (labelRect.width == 0 && labelRect.height == 0) ? 0.2 : 0.5,
-      offset: { x: (labelRect.width / 2), y: -(labelRect.height) },
-    },
-  }]);
+        x: '100%',
+        y: 0,
+        offset: { x: 0, y: -10 },
+      },
+    }]);
+  }
+}
+// 边选中后 添加删除编辑按钮  同时边变成红色
+function onEdgeSelected({ edge }) {
+  if (graphRef.value?.getSelectedCellCount() == 1) {
+    const labelRect = { width: 0, height: 0 };
+    const rectElement = (graphRef.value.findView(edge) as any)?.labelContainer?.getElementsByTagName('rect');
+    if (rectElement && rectElement.length > 0) {
+      labelRect.height = rectElement[0].getAttribute('height');
+      labelRect.width = rectElement[0].getAttribute('width');
+    }
+    edge.addTools([{
+      name: 'button-remove',
+      args: {
+        markup: [{
+          tagName: 'circle',
+          selector: 'button',
+          attrs: { r: 10, cursor: 'pointer' },
+        }],
+        distance: (labelRect.width == 0 && labelRect.height == 0) ? 0.2 : 0.5,
+        offset: { x: (labelRect.width / 2), y: -(labelRect.height) },
+      },
+    }]);
+    edge.setAttrs({ line: { stroke: 'red' } });
+    const labels = edge.getLabels();
+    if (labels.length > 0) {
+      edge.setLabels({
+        attrs: {
+          label: { text: labels[0]?.attrs?.label.text },
+          text: { stroke: 'red' },
+          rect: { stroke: 'red' },
+        }
+      })
+    }
+  }
 }
 
-function onBlankClick({ e, x, y }) {
-  selectedCell.value?.removeTools();
-  selectedCell.value = undefined;
-
+// 取消选中
+function onCellUnSelected({ cell }) {
+  cell.removeTools();
+  if (cell instanceof Edge) {
+    cell.setAttrs({ line: { stroke: '#808080' } });
+    const labels = cell.getLabels();
+    if (labels.length > 0) {
+      cell.setLabels({
+        attrs: {
+          label: { text: labels[0]?.attrs?.label.text },
+          text: { stroke: primaryColor },
+          rect: { stroke: primaryColor },
+        }
+      })
+    }
+  }
 }
 
-
+// 初始化编辑器
 onMounted(async () => {
   await renderGraph();
 })
@@ -427,6 +487,7 @@ watch(
   async () => {
     await fetchData();
     await renderMetaData();
+    graphRef.value?.cleanHistory();
   },
   { immediate: true, },
 );
@@ -470,6 +531,35 @@ watch(
     font-size: 1rem;
     line-height: 1.2rem;
     font-weight: 600;
+  }
+
+  .snap-line {
+    .x6-widget-snapline-vertical {
+      stroke: rgba(0, 0, 0, 0.4);
+      stroke-dasharray: 5
+    }
+
+    .x6-widget-snapline-horizontal {
+      stroke: rgba(0, 0, 0, 0.4);
+      stroke-dasharray: 5
+    }
+
+  }
+
+  .selection-box {
+    .x6-widget-selection-inner {
+      border: 2px dashed rgba(0, 0, 0, 0.9);
+      box-shadow: none;
+      background-color: rgba(59, 130, 246, 0.1);
+    }
+
+    .x6-widget-selection-box-node {
+      border: 4px solid red;
+      border-radius: 8px;
+      width: 194px !important;
+      height: 45px !important;
+      background-color: rgba(0, 0, 0, 0.3);
+    }
   }
 }
 </style>
