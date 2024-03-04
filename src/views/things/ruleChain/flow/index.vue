@@ -9,15 +9,52 @@
     <TeleportContainer />
     <ConnectTypeForm @register="registerConnectModal" @success="handleConnectSuccess" />
     <NodeForm @register="registerNodeModal" @success="handleNodeSuccess" />
+    <Space size="middle" class="fixed bottom-8 right-8 z-50">
+      <Tooltip title="删除选中的节点和连接">
+        <Button shape="circle" size="large" type="primary" danger style="width: 50px; height: 50px;"
+          v-show="showDeleteButton" @click="handleDeleteSelection">
+          <template #icon>
+            <Icon icon="ant-design:delete-outlined" />
+          </template>
+        </Button>
+      </Tooltip>
+      <Tooltip title="重置所有节点的调试模式">
+        <Button shape="circle" size="large" style="width: 50px; height: 50px;" :disabled="disableDebugButton">
+          <template #icon>
+            <Icon icon="ant-design:bug-outlined" />
+          </template>
+        </Button>
+      </Tooltip>
+      <Tooltip title="取消更改">
+        <Button shape="circle" size="large" style="width: 50px; height: 50px;" :disabled="disableSaveButton"
+          @click="handleReduction">
+          <template #icon>
+            <Icon icon="ant-design:close-outlined" />
+          </template>
+        </Button>
+      </Tooltip>
+      <Tooltip title="保存更改">
+        <Button shape="circle" size="large" type="primary" style="width: 50px; height: 50px;"
+          :disabled="disableSaveButton" @click="handleSave">
+          <template #icon>
+            <Icon icon="ant-design:check-outlined" />
+          </template>
+        </Button>
+      </Tooltip>
+    </Space>
+
   </div>
 </template>
 
 <script  lang="ts" setup name="RuleChainFLow">
 import { ref, watch, onMounted } from 'vue';
 import { Dom } from '@antv/x6-common';
+import { Icon } from '/@/components/Icon';
+import { Button, Space, Tooltip } from 'ant-design-vue';
 import { Graph, Cell, CellView, Edge, Node } from '@antv/x6';
 import { register, getTeleport } from '@antv/x6-vue-shape'
 import { Stencil } from '@antv/x6-plugin-stencil'
+// import { Scroller } from '@antv/x6-plugin-scroller'
 import { Snapline } from '@antv/x6-plugin-snapline'
 import { Clipboard } from '@antv/x6-plugin-clipboard'
 import { Selection } from '@antv/x6-plugin-selection'
@@ -89,6 +126,12 @@ const metaData = ref<RuleChainMetaData>();
 const components = ref<Array<ComponentDescriptor>>([]);
 
 const graphRef = ref<Graph>();
+
+const originGraphJson = ref<any[]>([]);
+
+const showDeleteButton = ref(false);
+const disableSaveButton = ref(true);
+const disableDebugButton = ref(true);
 
 async function fetchData() {
   const ruleChainId = router.currentRoute.value.params.ruleChainId as string
@@ -209,7 +252,7 @@ async function renderGraph() {
     stencil.load(nodeList, item.value)
   })
 
-  graph.use(new History({ enabled: true }));
+  graph.use(new History({ enabled: true, beforeAddCommand: beforeAddCommand }));
   // graph.use(new Scroller({ enabled: true }));
   graph.use(new Clipboard({ enabled: true }));
   graph.use(new Keyboard({ enabled: true, global: true }));
@@ -248,11 +291,13 @@ async function renderGraph() {
   graph.on('cell:unselected', onCellUnSelected);
   graph.on('edge:mouseenter', onEdgeMouseEnter);
   graph.on('edge:mouseleave', onEdgeMouseLeave);
+  graph.on('history:change', onHistoryChange);
 
 }
 
 // 规则节点回显数据 绘制
 async function renderMetaData() {
+  originGraphJson.value = [];
   await fetchMetaData();
   while (isEmpty(graphRef.value)) {
     await sleep(500);
@@ -310,6 +355,8 @@ async function renderMetaData() {
       })));
     }
   }
+  graphRef.value?.cleanHistory();
+  originGraphJson.value = graphRef.value?.toJSON() || [];
 }
 
 // 校验连接柱是否能 接收连接线
@@ -407,6 +454,7 @@ function onEdgeMouseLeave({ edge }) {
 
 // 节点选中后 添加删除编辑按钮
 function onNodeSelected({ node }) {
+  showDeleteButton.value = true;
   if (graphRef.value?.getSelectedCellCount() == 1) {
     node.addTools([{
       name: 'button-remove',
@@ -425,6 +473,7 @@ function onNodeSelected({ node }) {
 }
 // 边选中后 添加删除编辑按钮  同时边变成红色
 function onEdgeSelected({ edge }) {
+  showDeleteButton.value = true;
   if (graphRef.value?.getSelectedCellCount() == 1) {
     const labelRect = { width: 0, height: 0 };
     const rectElement = (graphRef.value.findView(edge) as any)?.labelContainer?.getElementsByTagName('rect');
@@ -461,6 +510,7 @@ function onEdgeSelected({ edge }) {
 // 取消选中
 function onCellUnSelected({ cell }) {
   cell.removeTools();
+  showDeleteButton.value = false;
   if (cell instanceof Edge) {
     cell.setAttrs({ line: { stroke: '#808080' } });
     const labels = cell.getLabels();
@@ -476,6 +526,47 @@ function onCellUnSelected({ cell }) {
   }
 }
 
+
+function beforeAddCommand(event, args) {
+  if (event == 'cell:change:*' && args.key == 'attrs') {
+    return false;
+  } else if (event == 'cell:change:*' && args.key == 'tools') {
+    return false;
+  } else if (event == 'cell:change:*'
+    && args.key == 'labels'
+    && args.current?.length
+    && args.previous?.length
+    && args.current[0].attrs.label.text == args.previous[0].attrs.label.text) {
+    return false;
+  }
+}
+
+function onHistoryChange({ cmds }) {
+  // console.log(cmds);
+  disableSaveButton.value = (graphRef.value?.getUndoStackSize() || 0) < 1;
+}
+
+function handleDeleteSelection() {
+  const selectionCells = graphRef.value?.getSelectedCells();
+  if (selectionCells?.length) {
+    graphRef.value?.removeCells(selectionCells);
+  }
+  graphRef.value?.cleanSelection();
+}
+
+async function handleReduction() {
+  if (originGraphJson.value) {
+    graphRef.value?.fromJSON(originGraphJson.value);
+  } else {
+    await renderMetaData();
+  }
+}
+
+async function handleSave() {
+// todo 保存更改
+}
+
+
 // 初始化编辑器
 onMounted(async () => {
   await renderGraph();
@@ -487,7 +578,6 @@ watch(
   async () => {
     await fetchData();
     await renderMetaData();
-    graphRef.value?.cleanHistory();
   },
   { immediate: true, },
 );
