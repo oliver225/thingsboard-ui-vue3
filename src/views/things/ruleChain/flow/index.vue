@@ -42,7 +42,7 @@
         </Button>
       </Tooltip>
     </Space>
-
+    <Loading :loading="loading" />
   </div>
 </template>
 
@@ -61,15 +61,19 @@ import { Selection } from '@antv/x6-plugin-selection'
 import { Keyboard } from '@antv/x6-plugin-keyboard'
 import { History } from '@antv/x6-plugin-history'
 import { useModal } from '/@/components/Modal';
+import { onBeforeRouteLeave } from 'vue-router';
 import { router } from '/@/router';
 import { isEmpty } from 'lodash';
 import { sleep } from '/@/utils';
 import RuleChainNode from './node.vue';
+import { useI18n } from '/@/hooks/web/useI18n';
 import NodeForm from './nodeComp/nodeForm.vue';
+import { Loading } from '/@/components/Loading';
 import ConnectTypeForm from './connectTypeForm.vue';
+import { useMessage } from '/@/hooks/web/useMessage';
 import { primaryColor } from '../../../../../build/config/themeConfig';
 import { ComponentDescriptor, getComponentDescriptorList } from '/@/api/things/componentDescriptor';
-import { RuleChain, RuleChainMetaData, getRuleChainById, getRuleChainMetaData } from '/@/api/things/ruleChain';
+import { RuleChain, RuleChainMetaData, getRuleChainById, getRuleChainMetaData, saveRuleChainMetaData } from '/@/api/things/ruleChain';
 import { COMPONENTS_DESCRIPTOR_TYPE_OPTIONS, ComponentDescriptorType } from '/@/enums/componentEnum';
 
 register({
@@ -117,7 +121,9 @@ Graph.registerEdge('rule-edge', {
     position: { distance: 0.5 },
   }
 
-})
+}, true)
+const { t } = useI18n('things');
+const { showMessage, createConfirm } = useMessage();
 
 const TeleportContainer = getTeleport()
 const inputNodeId = 'input-node-9808-11ee-8b83-9b8f64bdd866';
@@ -127,23 +133,24 @@ const components = ref<Array<ComponentDescriptor>>([]);
 
 const graphRef = ref<Graph>();
 
-const originGraphJson = ref<any[]>([]);
-
 const showDeleteButton = ref(false);
 const disableSaveButton = ref(true);
 const disableDebugButton = ref(true);
+const loading = ref(false);
 
 async function fetchData() {
   const ruleChainId = router.currentRoute.value.params.ruleChainId as string
   if (isEmpty(ruleChainId)) {
-    return Promise.reject(new Error('规则链为空！'));
+    console.log(new Error('规则链为空！'));
+    return;
   }
   record.value = await getRuleChainById(ruleChainId)
 }
 
 async function fetchMetaData() {
   if (isEmpty(record.value.id.id)) {
-    return Promise.reject(new Error('规则链为空！'));
+    console.log(new Error('规则链为空！'));
+    return;
   }
   metaData.value = await getRuleChainMetaData(record.value.id.id);
 }
@@ -161,6 +168,7 @@ async function fetchComponent() {
 
 // 初始化编辑器
 async function renderGraph() {
+  loading.value = true;
   await fetchComponent();
   const graph = new Graph({
     container: document.getElementById('container')!,
@@ -190,28 +198,6 @@ async function renderGraph() {
     }
   })
   graphRef.value = graph;
-
-  graph.addNode({
-    id: inputNodeId,
-    shape: 'rule-chain-node',
-    x: 30,
-    y: 150,
-    width: 200,
-    height: 50,
-    label: 'Input',
-    ports: { items: [{ id: 'out_port', group: 'out', }], },
-    data: {
-      descriptor: {
-        name: '输入',
-        configurationDescriptor: {
-          nodeDefinition: {
-            description: '规则链的逻辑输入，将传入消息转发到下一个相关规则节点。',
-            icon: 'ant-design:login-outlined'
-          }
-        }
-      },
-    }
-  })
 
   const stencil = new Stencil({
     target: graph,
@@ -292,16 +278,36 @@ async function renderGraph() {
   graph.on('edge:mouseenter', onEdgeMouseEnter);
   graph.on('edge:mouseleave', onEdgeMouseLeave);
   graph.on('history:change', onHistoryChange);
+  loading.value = false;
 
 }
 
 // 规则节点回显数据 绘制
 async function renderMetaData() {
-  originGraphJson.value = [];
+  loading.value = true;
   await fetchMetaData();
   while (isEmpty(graphRef.value)) {
     await sleep(500);
   }
+  //清空画布
+  graphRef.value.clearCells();
+  // 画根节点
+  graphRef.value?.addNode({
+    id: inputNodeId, shape: 'rule-chain-node',
+    x: 30, y: 150, width: 200, height: 50, label: 'Input',
+    ports: { items: [{ id: 'out_port', group: 'out', }], },
+    data: {
+      descriptor: {
+        name: '输入',
+        configurationDescriptor: {
+          nodeDefinition: {
+            description: '规则链的逻辑输入，将传入消息转发到下一个相关规则节点。',
+            icon: 'ant-design:login-outlined'
+          }
+        }
+      },
+    }
+  })
 
   if (metaData.value?.nodes && metaData.value?.nodes?.length > 0) {
     // 渲染节点
@@ -330,7 +336,7 @@ async function renderMetaData() {
       }
     })
     //  渲染链接的边
-    if (metaData.value?.firstNodeIndex) {
+    if (metaData.value?.firstNodeIndex != undefined && metaData.value?.firstNodeIndex >= 0) {
       graphRef.value.addEdge({
         shape: 'rule-edge',
         source: { cell: inputNodeId, port: 'out_port' },
@@ -355,8 +361,9 @@ async function renderMetaData() {
       })));
     }
   }
+  graphRef.value?.cleanSelection();
   graphRef.value?.cleanHistory();
-  originGraphJson.value = graphRef.value?.toJSON() || [];
+  loading.value = false;
 }
 
 // 校验连接柱是否能 接收连接线
@@ -387,7 +394,7 @@ function createEdge(this: Graph, args: { sourceCell: Cell; sourceView: CellView;
 
 // 边连接成功后 弹框 
 function onEdgeConnected({ isNew, edge }) {
-  if (isNew) {
+  if (isNew && edge.data.relationType && edge.data.relationType.length) {
     //新增
     openConnectModal(true, { ...edge.data, edgeId: edge.id })
   }
@@ -407,7 +414,7 @@ function handleConnectSuccess({ edgeId, currentTypes }) {
 
 // 节点添加成功
 function onNodeAdded({ node, index, options }) {
-  if (node.data.data) {
+  if (node.id == inputNodeId || node.data.data) {
     return;
   }
   openNodeModal(true, { ...node.data })
@@ -542,7 +549,6 @@ function beforeAddCommand(event, args) {
 }
 
 function onHistoryChange({ cmds }) {
-  // console.log(cmds);
   disableSaveButton.value = (graphRef.value?.getUndoStackSize() || 0) < 1;
 }
 
@@ -555,16 +561,79 @@ function handleDeleteSelection() {
 }
 
 async function handleReduction() {
-  if (originGraphJson.value) {
-    graphRef.value?.fromJSON(originGraphJson.value);
-  } else {
-    await renderMetaData();
-  }
+  await renderMetaData();
+  
+  graphRef.value?.cleanHistory();
+  graphRef.value?.cleanSelection();
 }
 
 async function handleSave() {
-// todo 保存更改
+  loading.value = true;
+  const jsonData = graphRef.value?.toJSON();
+  if (jsonData) {
+    const cells = jsonData.cells;
+
+    const nodes = cells
+      .filter(cell => cell.shape == 'rule-chain-node' && cell.data.data)
+      .map(cell => {
+        const additionalInfo = { ...cell.data.data.additionalInfo, layoutX: cell.position.x, layoutY: cell.position.y };
+        return { ...cell.data.data, additionalInfo: additionalInfo, nodeId: cell.id }
+      });
+
+    const connections: Array<any> = [];
+    let firstNodeIndex = -1;
+
+    cells.forEach(cell => {
+      if (cell.shape == 'rule-edge' && cell.target && cell.source) {
+        if (cell.source.cell == inputNodeId) {
+          firstNodeIndex = nodes.findIndex(node => node.nodeId == cell.target.cell);
+        }
+        if (cell.labels && cell.labels && cell.labels[0].attrs?.label?.text) {
+          const labels = cell.labels[0].attrs?.label?.text.split(" / ");
+          labels.forEach(label => {
+            const fromIndex = nodes.findIndex(node => node.nodeId == cell.source.cell);
+            const toIndex = nodes.findIndex(node => node.nodeId == cell.target.cell)
+            connections.push({ fromIndex: fromIndex, toIndex: toIndex, type: label })
+          })
+        }
+      }
+    });
+    try {
+      const metaData = {
+        ruleChainId: record.value.id,
+        firstNodeIndex: firstNodeIndex >= 0 ? firstNodeIndex : null,
+        nodes: nodes.length > 0 ? nodes : null,
+        connections: connections.length > 0 ? connections : null,
+        ruleChainConnections: null,
+      }
+      const res = await saveRuleChainMetaData(metaData);
+      showMessage('保存规则链成功！');
+    } catch (error: any) {
+      if (error && error.errorFields) {
+        showMessage(t('common.validateError'));
+      }
+      console.log('error', error);
+    } finally {
+      loading.value = false;
+      renderMetaData();
+    }
+
+  }
 }
+
+onBeforeRouteLeave((_to, _from, next) => {
+  if (disableSaveButton.value == true) {
+    return next();
+  }
+  createConfirm({
+    iconType: 'warning',
+    title: `未保存的更改`,
+    content: '有未保存的更改。确定要离开此页面吗？',
+    okText: '确定',
+    okButtonProps: { type: 'primary' },
+    onOk: () => next(),
+  })
+})
 
 
 // 初始化编辑器
