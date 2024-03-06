@@ -394,7 +394,7 @@ function createEdge(this: Graph, args: { sourceCell: Cell; sourceView: CellView;
 
 // 边连接成功后 弹框 
 function onEdgeConnected({ isNew, edge }) {
-  if (isNew && edge.data.relationType && edge.data.relationType.length) {
+  if (isNew && edge.data.relationTypes && edge.data.relationTypes.length) {
     //新增
     openConnectModal(true, { ...edge.data, edgeId: edge.id })
   }
