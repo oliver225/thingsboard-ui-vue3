@@ -1,8 +1,6 @@
 <template>
   <BasicModal v-bind="$attrs" @register="registerModal" @ok="handleSubmit" @cancel="handleCancel" width="40%" okText="添加"
-    :okButtonProps="{
-      disabled: (currentTypes?.length || 0) < 1
-    }">
+    :okButtonProps="{ disabled: (currentTypes?.length || 0) < 1 }">
     <template #title>
       <Icon :icon="getTitle.icon" class="pr-1 m-1" />
       <span> {{ getTitle.value }} </span>
@@ -40,8 +38,8 @@ const edgeId = ref('');
 
 const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
   setModalProps({ loading: true });
-  currentTypes.value = [];
   edgeId.value = data.edgeId;
+  currentTypes.value = data.currentTypes || [];
   relationTypes.value = data.relationTypes || [];
   customRelations.value = data.customRelations || [];
   setModalProps({ loading: false });

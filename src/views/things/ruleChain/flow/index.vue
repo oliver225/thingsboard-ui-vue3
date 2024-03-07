@@ -71,6 +71,7 @@ import NodeForm from './nodeComp/nodeForm.vue';
 import { Loading } from '/@/components/Loading';
 import ConnectTypeForm from './connectTypeForm.vue';
 import { useMessage } from '/@/hooks/web/useMessage';
+import { createContextMenu } from '/@/components/ContextMenu';
 import { primaryColor } from '../../../../../build/config/themeConfig';
 import { ComponentDescriptor, getComponentDescriptorList } from '/@/api/things/componentDescriptor';
 import { RuleChain, RuleChainMetaData, getRuleChainById, getRuleChainMetaData, saveRuleChainMetaData } from '/@/api/things/ruleChain';
@@ -278,6 +279,8 @@ async function renderGraph() {
   graph.on('edge:mouseenter', onEdgeMouseEnter);
   graph.on('edge:mouseleave', onEdgeMouseLeave);
   graph.on('history:change', onHistoryChange);
+  graph.on('node:contextmenu', onNodeContextMenu);
+  graph.on('edge:contextmenu', onEdgeContextMenu);
   loading.value = false;
 
 }
@@ -327,8 +330,7 @@ async function renderMetaData() {
             shape: 'rule-chain-node', // 可以直接使用上面注册过的 shape
             x: node.additionalInfo?.layoutX,
             y: node.additionalInfo?.layoutY,
-            width: 200,
-            height: 50,
+            width: 200, height: 50,
             ports: { items: portItems },
             data: { descriptor: desc, data: node }
           }
@@ -406,7 +408,7 @@ const [registerConnectModal, { openModal: openConnectModal }] = useModal();
 function handleConnectSuccess({ edgeId, currentTypes }) {
   if (currentTypes && currentTypes.length > 0) {
     const edge = graphRef.value?.getCellById(edgeId) as Edge;
-    edge.appendLabel(currentTypes.join(' / '))
+    edge.setLabels([{ attrs: { label: { text: currentTypes.join(' / ') } } }]);
   } else {
     graphRef.value?.removeEdge(edgeId);
   }
@@ -466,14 +468,8 @@ function onNodeSelected({ node }) {
     node.addTools([{
       name: 'button-remove',
       args: {
-        markup: [{
-          tagName: 'circle',
-          selector: 'button',
-          attrs: { r: 12, cursor: 'pointer' },
-        }],
-        x: '100%',
-        y: 0,
-        offset: { x: 0, y: -10 },
+        markup: [{ tagName: 'circle', selector: 'button', attrs: { r: 12, cursor: 'pointer' } }],
+        x: '100%', y: 0, offset: { x: 0, y: -10 },
       },
     }]);
   }
@@ -491,11 +487,7 @@ function onEdgeSelected({ edge }) {
     edge.addTools([{
       name: 'button-remove',
       args: {
-        markup: [{
-          tagName: 'circle',
-          selector: 'button',
-          attrs: { r: 10, cursor: 'pointer' },
-        }],
+        markup: [{ tagName: 'circle', selector: 'button', attrs: { r: 10, cursor: 'pointer' } }],
         distance: (labelRect.width == 0 && labelRect.height == 0) ? 0.2 : 0.5,
         offset: { x: (labelRect.width / 2), y: -(labelRect.height) },
       },
@@ -562,9 +554,50 @@ function handleDeleteSelection() {
 
 async function handleReduction() {
   await renderMetaData();
-  
+
   graphRef.value?.cleanHistory();
   graphRef.value?.cleanSelection();
+}
+
+
+function onNodeContextMenu({ e, node }) {
+  if (node.id == inputNodeId) {
+    return;
+  }
+  createContextMenu({
+    event: e,
+    items: [
+      { label: '详情', icon: 'ant-design:align-right-outlined', divider: true },
+      { label: '编辑', icon: 'clarity:note-edit-line', divider: true, handler: () => openNodeModal(true, { ...node.data }) },
+      { label: '复制', icon: 'ant-design:copy-outlined', divider: true, handler: () => graphRef.value?.copy([node]) },
+      { label: '删除', icon: 'ant-design:delete-outlined', divider: true, handler: () => graphRef.value?.removeNode(node.id) }
+    ]
+  });
+
+}
+
+function onEdgeContextMenu({ e, edge }) {
+  if (isEmpty(edge.labels)) {
+    return;
+  }
+  let data = edge.data;
+  if (data == undefined) {
+    const node = graphRef.value?.getCellById(edge.source.cell) as Node;
+    data = {
+      customRelations: node.data.descriptor.configurationDescriptor.nodeDefinition?.customRelations,
+      relationTypes: node.data.descriptor.configurationDescriptor.nodeDefinition?.relationTypes,
+    };
+  }
+  data.currentTypes = edge.labels[0].attrs?.label?.text.split(" / ");
+  createContextMenu({
+    event: e,
+    items: [
+      { label: '编辑', icon: 'clarity:note-edit-line', divider: true, handler: () => openConnectModal(true, { ...data, edgeId: edge.id }) },
+      { label: '复制', icon: 'ant-design:copy-outlined', divider: true, handler: () => graphRef.value?.copy([edge]) },
+      { label: '删除', icon: 'ant-design:delete-outlined', divider: true, handler: () => graphRef.value?.removeEdge(edge.id) }
+    ]
+  });
+
 }
 
 async function handleSave() {
