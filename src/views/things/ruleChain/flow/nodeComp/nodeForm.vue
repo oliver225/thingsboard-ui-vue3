@@ -1,90 +1,128 @@
 <template>
-  <BasicModal v-bind="$attrs" :showFooter="true" @register="registerModal" @ok="handleSubmit" width="40%">
+  <BasicModal v-bind="$attrs" :showFooter="true" @register="registerModal" @cancel="handleCancel" @ok="handleSubmit"
+    width="40%">
     <template #title>
       <Icon :icon="getTitle.icon" class="pr-1 m-1" />
-      <span> {{ getTitle.value }} </span>
+      <span> {{ getTitle.value }} - {{ descriptor?.name }} </span>
     </template>
-    <BasicForm @register="registerForm">
+    <Form ref="formRef" :model="formState" layout="vertical">
 
-    </BasicForm>
+      <Row :gutter="16">
+        <Col :span="18">
+        <Form.Item label="节点名称" name="name" :rules="[{ required: true, message: '请输入节点名称!' }]">
+          <Input v-model:value="formState.name" placeholder="请输入节点名称" />
+        </Form.Item>
+        </Col>
+        <Col :span="6">
+        <Form.Item label="&nbsp;" name="debugMode">
+          <Switch v-model:checked="formState.debugMode" size="small" /><span class="ml-2">调试模式</span>
+        </Form.Item>
+        </Col>
+      </Row>
+
+
+      <Form.Item label="描述信息" :name="['additionalInfo', 'description']">
+        <Textarea v-model:value="formState.additionalInfo.description" placeholder="输入节点描述信息" :rows="3" />
+      </Form.Item>
+      <Form.Item name="singletonMode" v-show="false">
+        <Switch v-model:checked="formState.singletonMode" />
+      </Form.Item>
+      <Form.Item name="type" v-show="false">
+        <Input v-model:value="formState.type" />
+      </Form.Item>
+      <Form.Item :name="['additionalInfo', 'layoutX']" v-show="false">
+        <InputNumber v-model:value="formState.additionalInfo.layoutX" />
+      </Form.Item>
+      <Form.Item :name="['additionalInfo', 'layoutY']" v-show="false">
+        <InputNumber v-model:value="formState.additionalInfo.layoutY" />
+      </Form.Item>
+    </Form>
   </BasicModal>
 </template>
 <script lang="ts" setup name="RuleChainNodeDataForm">
-import { ref, unref, computed, } from 'vue';
+import { ref, unref, computed, reactive } from 'vue';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { router } from '/@/router';
 import { Icon } from '/@/components/Icon';
 import { useUserStore } from '/@/store/modules/user';
 
-import { BasicForm, FormSchema, useForm } from '/@/components/Form';
+import { RuleNode } from '/@/api/things/ruleChain';
 import { BasicModal, useModalInner } from '/@/components/Modal';
+import { Form, Row, Col, Textarea, Input, Switch, InputNumber } from 'ant-design-vue';
+import { FormInstance } from 'ant-design-vue/lib/form';
+import { ComponentDescriptor } from '/@/api/things/componentDescriptor';
+import { EntityType } from '/@/enums/entityTypeEnum';
+import { isEmpty } from 'lodash';
 
-const emit = defineEmits(['success', 'register']);
+const emit = defineEmits(['success', 'cancel', 'register']);
 
 const { t } = useI18n('things');
 const userStore = useUserStore();
 const { showMessage } = useMessage();
 const { meta } = unref(router.currentRoute);
+
+const formRef = ref<FormInstance>();
+
+const nodeId = ref('');
+const descriptor = ref<ComponentDescriptor>();
+const record = ref<RuleNode>();
+
 const getTitle = computed(() => ({
   icon: meta.icon || 'ant-design:book-outlined',
-  value: t('编辑规则节点数据'),
+  value: record.value?.id?.id ? t('编辑规则节点') : t('添加规则节点'),
 }));
 
 
-
-const inputFormSchemas: FormSchema[] = [
-  { field: 'type', component: 'Input', defaultValue: 'CORE', show: false },
-  { field: 'tenantId', component: 'Input', defaultValue: userStore.getUserInfo?.tenantId, show: false },
-  {
-    label: t('规则链名称'),
-    field: 'name',
-    component: 'Input',
-    componentProps: {
-      maxlength: 100,
-      placeholder: '请输入规则链名称',
-    },
-    required: true,
-  },
-  {
-    field: 'debugMode',
-    component: 'Checkbox',
-    defaultValue: false,
-    slot: 'debugMode'
-  },
-  {
-    label: t('描 述 信 息'),
-    field: 'additionalInfo.description',
-    component: 'InputTextArea',
-    componentProps: {
-      maxlength: 500,
-    },
-  },
-];
-
-const [registerForm, { resetFields, setFieldsValue, getFieldsValue, validate }] = useForm({
-  labelWidth: 120,
-  schemas: inputFormSchemas,
-  baseColProps: { lg: 24, md: 24 },
+const formState = reactive<RuleNode>({
+  id: { entityType: EntityType.RULE_NODE, id: '' },
+  ruleChainId: { entityType: EntityType.RULE_CHAIN, id: '' },
+  name: '',
+  debugMode: false,
+  singletonMode: false,
+  type: descriptor.value?.clazz || '',
+  configuration: descriptor.value?.configurationDescriptor.nodeDefinition.defaultConfiguration || {},
+  additionalInfo: { description: '', layoutX: 0, layoutY: 0 },
 });
+
+
 
 const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
   setModalProps({ loading: true });
-  await resetFields();
-
-  console.log('编辑规则节点', data)
+  clear();
+  descriptor.value = data.descriptor;
+  record.value = data.data || {};
+  nodeId.value = data.nodeId || '';
+  formState.ruleChainId = data.ruleChainId;
+  Object.keys(record.value as any).forEach(key => {
+    formState[key] = record.value[key];
+  })
+  if (isEmpty(formState.id.id)) {
+    formState.id.id = nodeId.value;
+  }
 
   setModalProps({ loading: false });
 });
 
+function clear() {
+  formState.id = { entityType: EntityType.RULE_NODE, id: '' };
+  formState.ruleChainId = { entityType: EntityType.RULE_CHAIN, id: '' };
+  formState.name = '';
+  formState.debugMode = false;
+  formState.singletonMode = false;
+  formState.type = descriptor.value?.clazz || '';
+  formState.configuration = descriptor.value?.configurationDescriptor.nodeDefinition.defaultConfiguration || {};
+  formState.additionalInfo = { description: '', layoutX: 0, layoutY: 0 };
+}
+
 async function handleSubmit() {
   try {
-    const data = await validate();
     setModalProps({ confirmLoading: true });
+    const data = await formRef.value?.validate();
 
     // console.log('submit', params, data, record);
     setTimeout(closeModal);
-    emit('success', data);
+    emit('success', { ...data, id: formState.id, ruleChainId: formState.ruleChainId, });
   } catch (error: any) {
     if (error && error.errorFields) {
       showMessage(t('common.validateError'));
@@ -93,6 +131,16 @@ async function handleSubmit() {
   } finally {
     setModalProps({ confirmLoading: false });
   }
+}
+
+function handleCancel() {
+  setTimeout(closeModal);
+  if (record.value?.id?.id) {
+    emit('success', { ...record.value });
+  } else {
+    emit('cancel', { nodeId: nodeId.value });
+  }
+
 }
 
 

@@ -4,11 +4,26 @@ import { defHttp } from "/@/utils/http/axios";
 
 export interface ComponentDescriptor extends BasicModel<null> {
   name: string;
-  clazz?: string;
+  clazz: string;
   type: ComponentDescriptorType;
   scope: 'SYSTEM' | 'TENANT';
   clusteringMode: 'USER_PREFERENCE' | 'ENABLED' | 'SINGLETON';
-  configurationDescriptor?: Recordable;
+  configurationDescriptor: {
+    nodeDefinition: {
+      configDirective: string,
+      customRelations: boolean,
+      defaultConfiguration: Recordable,
+      description: string,
+      details: string,
+      docUrl: string,
+      icon: string,
+      iconUrl: string,
+      inEnabled: boolean,
+      outEnabled: boolean,
+      relationTypes: string[],
+      ruleChainNode: boolean,
+    }
+  };
 }
 
 export function getComponentDescriptorList(componentTypes: Array<ComponentDescriptorType>, ruleChainType: 'CORE' | 'EDGE') {

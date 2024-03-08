@@ -21,8 +21,8 @@ export interface RuleNode extends BasicModel<EntityType.RULE_NODE> {
   debugMode: boolean,
   singletonMode: boolean,
   type: string,
-  configuration?: Recordable,
-  additionalInfo?: Recordable,
+  configuration: Recordable,
+  additionalInfo: Recordable,
 }
 
 export interface RuleChainMetaData {

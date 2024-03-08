@@ -33,7 +33,7 @@ export interface Result {
   // result: string;
   createdTime?: number,
   errorCode?: number
-  message: string;
+  message?: string;
   data?: any;
 }
 

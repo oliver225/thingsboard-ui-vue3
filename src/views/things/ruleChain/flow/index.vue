@@ -7,8 +7,9 @@
       {{ record.root ? '（根链）' : '' }}
     </div>
     <TeleportContainer />
-    <ConnectTypeForm @register="registerConnectModal" @success="handleConnectSuccess" />
-    <NodeForm @register="registerNodeModal" @success="handleNodeSuccess" />
+    <ConnectTypeForm @register="registerConnectModal" @success="handleConnectSuccess" @cancel="handleConnectCancel" />
+    <NodeForm @register="registerNodeModal" @success="handleNodeSuccess" @cancel="handleNodeCancel" />
+    <NodeDetail @register="registerNodeDetailDrawer" />
     <Space size="middle" class="fixed bottom-8 right-8 z-50">
       <Tooltip title="删除选中的节点和连接">
         <Button shape="circle" size="large" type="primary" danger style="width: 50px; height: 50px;"
@@ -61,6 +62,7 @@ import { Selection } from '@antv/x6-plugin-selection'
 import { Keyboard } from '@antv/x6-plugin-keyboard'
 import { History } from '@antv/x6-plugin-history'
 import { useModal } from '/@/components/Modal';
+import { useDrawer } from '/@/components/Drawer';
 import { onBeforeRouteLeave } from 'vue-router';
 import { router } from '/@/router';
 import { isEmpty } from 'lodash';
@@ -68,13 +70,14 @@ import { sleep } from '/@/utils';
 import RuleChainNode from './node.vue';
 import { useI18n } from '/@/hooks/web/useI18n';
 import NodeForm from './nodeComp/nodeForm.vue';
+import NodeDetail from './nodeComp/nodeDetail.vue';
 import { Loading } from '/@/components/Loading';
 import ConnectTypeForm from './connectTypeForm.vue';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { createContextMenu } from '/@/components/ContextMenu';
 import { primaryColor } from '../../../../../build/config/themeConfig';
 import { ComponentDescriptor, getComponentDescriptorList } from '/@/api/things/componentDescriptor';
-import { RuleChain, RuleChainMetaData, getRuleChainById, getRuleChainMetaData, saveRuleChainMetaData } from '/@/api/things/ruleChain';
+import { RuleChain, RuleChainMetaData, RuleNode, getRuleChainById, getRuleChainMetaData, saveRuleChainMetaData } from '/@/api/things/ruleChain';
 import { COMPONENTS_DESCRIPTOR_TYPE_OPTIONS, ComponentDescriptorType } from '/@/enums/componentEnum';
 
 register({
@@ -202,9 +205,7 @@ async function renderGraph() {
 
   const stencil = new Stencil({
     target: graph,
-    search(cell, keyword) {
-      return cell.shape.indexOf(keyword) !== -1
-    },
+    search: (cell, keyword) => cell.data.descriptor.name.indexOf(keyword) !== -1,
     placeholder: '查找规则链节点',
     notFoundText: '没有找到',
     layoutOptions: { columns: 1, columnWidth: 210, rowHeight: 60 },
@@ -409,9 +410,11 @@ function handleConnectSuccess({ edgeId, currentTypes }) {
   if (currentTypes && currentTypes.length > 0) {
     const edge = graphRef.value?.getCellById(edgeId) as Edge;
     edge.setLabels([{ attrs: { label: { text: currentTypes.join(' / ') } } }]);
-  } else {
-    graphRef.value?.removeEdge(edgeId);
   }
+}
+
+function handleConnectCancel({ edgeId }) {
+  graphRef.value?.removeEdge(edgeId);
 }
 
 // 节点添加成功
@@ -419,18 +422,28 @@ function onNodeAdded({ node, index, options }) {
   if (node.id == inputNodeId || node.data.data) {
     return;
   }
-  openNodeModal(true, { ...node.data })
+  openNodeModal(true, { ...node.data, ruleChainId: record.value.id, nodeId: node.id })
 }
 
 const [registerNodeModal, { openModal: openNodeModal }] = useModal();
 
 // Node 节点数据编辑成功  更新节点数据
-function handleNodeSuccess({ nodeId, data }) {
-  const node = graphRef.value?.getCellById(nodeId) as Node;
+function handleNodeSuccess(data: RuleNode) {
+  console.log(data);
+  const node = graphRef.value?.getCellById(data.id.id) as Node;
   //TODO： 每个节点的弹框编辑数据 不一样，更新节点数据
 
 
 }
+
+function handleNodeCancel({ nodeId }) {
+  console.log(nodeId);
+  graphRef.value?.removeNode(nodeId);
+
+}
+
+const [registerNodeDetailDrawer, { openDrawer: openNodeDetailDrawer }] = useDrawer();
+
 
 // 鼠标移入连接线/边 后  边变宽，label 变大
 function onEdgeMouseEnter({ edge }) {
@@ -567,8 +580,8 @@ function onNodeContextMenu({ e, node }) {
   createContextMenu({
     event: e,
     items: [
-      { label: '详情', icon: 'ant-design:align-right-outlined', divider: true },
-      { label: '编辑', icon: 'clarity:note-edit-line', divider: true, handler: () => openNodeModal(true, { ...node.data }) },
+      { label: '详情', icon: 'ant-design:align-right-outlined', divider: true, handler: () => openNodeDetailDrawer(true, { ...node.data }) },
+      { label: '编辑', icon: 'clarity:note-edit-line', divider: true, handler: () => openNodeModal(true, { ...node.data, ruleChainId: record.value.id, nodeId: node.id }) },
       { label: '复制', icon: 'ant-design:copy-outlined', divider: true, handler: () => graphRef.value?.copy([node]) },
       { label: '删除', icon: 'ant-design:delete-outlined', divider: true, handler: () => graphRef.value?.removeNode(node.id) }
     ]
