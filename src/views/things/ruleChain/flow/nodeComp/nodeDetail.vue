@@ -63,6 +63,10 @@
 
 
     </div>
+    <div class="event-card">
+      <Event :entityType="EntityType.RULE_NODE" :entityId="record?.id?.id" v-if="tabActiveKey == 'EVENT'" />
+    </div>
+
 
   </BasicDrawer>
 </template>
@@ -71,13 +75,14 @@ import { ref, unref, computed } from 'vue';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { router } from '/@/router';
-import { copyToClipboard } from '/@/utils';
 import { Icon } from '/@/components/Icon';
 import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
 import { Tabs, TabPane, Space, Typography, Form, Input, Row, Col, Switch, Textarea } from 'ant-design-vue';
 import { RuleNode } from '/@/api/things/ruleChain';
+import { EntityType } from '/@/enums/entityTypeEnum';
 import { ComponentDescriptor } from '/@/api/things/componentDescriptor';
 import { COMPONENTS_DESCRIPTOR_TYPE_OPTIONS } from '/@/enums/componentEnum';
+import Event from '/@/views/things/event/index.vue';
 
 
 const emit = defineEmits(['edit', 'register',]);

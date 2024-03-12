@@ -53,6 +53,9 @@
     <div class="telemetry-card">
       <Telemetry :entityType="EntityType.CUSTOMER" :entityId="record?.id?.id" v-if="tabActiveKey == 'TELEMETRY'" />
     </div>
+    <div class="event-card">
+      <Event :entityType="EntityType.CUSTOMER" :entityId="record?.id?.id" v-if="tabActiveKey == 'EVENT'" />
+    </div>
     <div class="-translate-x-6" v-show="tabActiveKey == 'DETAIL'">
       <Space size="middle" class="mb-3">
         <a-button type="primary" @click="handleCustomerUser" v-if="record.title != 'Public'">
@@ -100,6 +103,7 @@ import AuditLog from '/@/views/things/auditLog/list.vue';
 import Alarm from '/@/views/things/alarm/list.vue';
 import Relation from '/@/views/things/relation/list.vue';
 import { EntityType } from '/@/enums/entityTypeEnum';
+import Event from '/@/views/things/event/index.vue';
 
 
 const emit = defineEmits(['edit', 'delete', 'user', 'register',]);

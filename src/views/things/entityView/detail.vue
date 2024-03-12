@@ -53,6 +53,9 @@
     <div class="telemetry-card">
       <Telemetry :entityType="EntityType.ENTITY_VIEW" :entityId="record?.id?.id" v-if="tabActiveKey == 'TELEMETRY'" />
     </div>
+    <div class="event-card">
+      <Event :entityType="EntityType.ENTITY_VIEW" :entityId="record?.id?.id" v-if="tabActiveKey == 'EVENT'" />
+    </div>
     <div class="-translate-x-6" v-show="tabActiveKey == 'DETAIL'">
       <Space size="middle" class="mb-3">
 
@@ -180,6 +183,7 @@ import Telemetry from '/@/views/things/telemetry/index.vue';
 import AuditLog from '/@/views/things/auditLog/list.vue';
 import Alarm from '/@/views/things/alarm/list.vue';
 import Relation from '/@/views/things/relation/list.vue';
+import Event from '/@/views/things/event/index.vue';
 
 import { EntityType } from '/@/enums/entityTypeEnum';
 import { getTenantDeviceInfoList } from '/@/api/things/device';

@@ -75,6 +75,17 @@ export interface DeviceQueryParam extends Recordable {
   sortOrder?: 'ASC' | 'DESC';
 }
 
+export interface EventQueryParam extends Recordable {
+  pageSize: number;
+  page: number;
+  textSearch?: string;
+  sortProperty?: string;
+  sortOrder?: 'ASC' | 'DESC';
+  startTime: number;
+  endTime: number;
+  tenantId: string;
+}
+
 export interface AuditLogQueryParam extends Recordable {
   pageSize: number;
   page: number;
