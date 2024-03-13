@@ -1,9 +1,8 @@
 # thingsboard-ui-vue
 
 
-ThingsBoard凭借其优秀的性能和高效的性能得到了广大开发者的认可
+ThingsBoard凭借其优秀的性能和高效的性能得到了广大开发者的认可, 本项目为基于Vue开发的 ThingsBoard 前台
 
-本项目为基于Vue开发的 ThingsBoard 前台
 
 🎉 亲爱的用户，感谢您使用我们的项目，点个 Star 为我们的项目加油助力吧！
 
