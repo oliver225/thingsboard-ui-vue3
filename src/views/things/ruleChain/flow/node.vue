@@ -1,15 +1,15 @@
 <template>
   <div class="rule-chain-node" :style="{ backgroundColor: backgroundColor }">
-    <Popover placement="right" :mouseEnterDelay="0.5" :title="data?.name ? data.name : descriptor?.name"
+    <Popover placement="right" :mouseEnterDelay="0.5" :title="record?.name ? record.name : descriptor?.name"
       overlayClassName="rule-chain-node-popover-card">
       <template #content>
         <div class="popover-card-content">
-          <div v-if="data?.name" class="type">
+          <div v-if="record?.name" class="type">
             {{ COMPONENTS_DESCRIPTOR_TYPE_OPTIONS.find(item => item.value == descriptor?.type)?.label }}
             - {{ descriptor?.name }}
           </div>
           <div class="description" v-html="descriptor?.configurationDescriptor?.nodeDefinition?.description"></div>
-          <div v-if="!data?.name" class="details" v-html="descriptor?.configurationDescriptor?.nodeDefinition?.details">
+          <div v-if="!record?.name" class="details" v-html="descriptor?.configurationDescriptor?.nodeDefinition?.details">
           </div>
         </div>
       </template>
@@ -21,7 +21,7 @@
         <Icon v-else :icon="defaultIcon" />
         <div class="title">
           <div class="type">{{ descriptor?.name }}</div>
-          <div class="name">{{ data?.name }}</div>
+          <div class="name">{{ record?.name }}</div>
         </div>
       </div>
     </Popover>
@@ -36,7 +36,7 @@ import { COMPONENTS_DESCRIPTOR_TYPE_OPTIONS, ComponentDescriptorType } from '/@/
 import { RuleNode } from '/@/api/things/ruleChain';
 
 const descriptor = ref<ComponentDescriptor>();
-const data = ref<RuleNode>();
+const record = ref<RuleNode>();
 
 const getNode = inject('getNode', () => { })
 
@@ -44,9 +44,14 @@ const backgroundColor = computed(() => COMPONENTS_DESCRIPTOR_TYPE_OPTIONS.find(i
 
 onMounted(() => {
   const node = getNode() as any;
-  descriptor.value = node.data.descriptor;
-  data.value = node.data.data;
+  setValue(node.data);
+  node.on('change:data', ({ current }) => setValue(current));
 })
+
+function setValue(data: any) {
+  descriptor.value = data.descriptor;
+  record.value = data.data;
+}
 
 const defaultIcon = computed(() => {
   if (ComponentDescriptorType.FILTER == descriptor.value?.type) {

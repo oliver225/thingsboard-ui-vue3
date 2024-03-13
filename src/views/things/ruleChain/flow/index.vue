@@ -20,7 +20,8 @@
         </Button>
       </Tooltip>
       <Tooltip title="重置所有节点的调试模式">
-        <Button shape="circle" size="large" style="width: 50px; height: 50px;" :disabled="disableDebugButton">
+        <Button shape="circle" size="large" danger style="width: 50px; height: 50px;" :disabled="disableDebugButton"
+          @click="handleResetDebug">
           <template #icon>
             <Icon icon="ant-design:bug-outlined" />
           </template>
@@ -49,7 +50,6 @@
 
 <script  lang="ts" setup name="RuleChainFLow">
 import { ref, watch, onMounted } from 'vue';
-import { Dom } from '@antv/x6-common';
 import { Icon } from '/@/components/Icon';
 import { Button, Space, Tooltip } from 'ant-design-vue';
 import { Graph, Cell, CellView, Edge, Node } from '@antv/x6';
@@ -282,6 +282,8 @@ async function renderGraph() {
   graph.on('history:change', onHistoryChange);
   graph.on('node:contextmenu', onNodeContextMenu);
   graph.on('edge:contextmenu', onEdgeContextMenu);
+  graph.on('node:change:data', onNodeChangeData);
+
   loading.value = false;
 
 }
@@ -364,6 +366,7 @@ async function renderMetaData() {
       })));
     }
   }
+  onNodeChangeData();
   graphRef.value?.cleanSelection();
   graphRef.value?.cleanHistory();
   loading.value = false;
@@ -377,7 +380,7 @@ function validateEdge(this: Graph, args: { edge: Edge; type: Edge.TerminalType; 
   return false;
 }
 // 校验连接柱是否能 拉出来连接线
-function validateMagnet(this: Graph, args: { cell: Cell; view: CellView; magnet: Element; e: Dom.MouseDownEvent | Dom.MouseEnterEvent; }) {
+function validateMagnet(this: Graph, args: { cell: Cell; view: CellView; magnet: Element }) {
   if (args.magnet.getAttribute('port-group') == 'out') {
     return true;
   }
@@ -429,16 +432,20 @@ const [registerNodeModal, { openModal: openNodeModal }] = useModal();
 
 // Node 节点数据编辑成功  更新节点数据
 function handleNodeSuccess(data: RuleNode) {
-  console.log(data);
   const node = graphRef.value?.getCellById(data.id.id) as Node;
   //TODO： 每个节点的弹框编辑数据 不一样，更新节点数据
-
+  if (node) {
+    node.setData({ descriptor: node.data.descriptor, data: data })
+  }
 
 }
 
 function handleNodeCancel({ nodeId }) {
-  console.log(nodeId);
-  graphRef.value?.removeNode(nodeId);
+  if (graphRef.value?.canUndo()) {
+    graphRef.value?.undo()
+  } else {
+    graphRef.value?.removeNode(nodeId);
+  }
 
 }
 
@@ -553,6 +560,10 @@ function beforeAddCommand(event, args) {
   }
 }
 
+function onNodeChangeData() {
+  disableDebugButton.value = (graphRef.value?.getNodes().filter(node => node.data?.data?.debugMode == true).length || 0) < 1;
+}
+
 function onHistoryChange({ cmds }) {
   disableSaveButton.value = (graphRef.value?.getUndoStackSize() || 0) < 1;
 }
@@ -570,6 +581,20 @@ async function handleReduction() {
 
   graphRef.value?.cleanHistory();
   graphRef.value?.cleanSelection();
+}
+
+function handleResetDebug() {
+  const nodeList = graphRef.value?.getNodes();
+  if (nodeList?.length) {
+    nodeList.forEach(node => {
+      if (node.data?.data?.debugMode == true) {
+        node.setData({
+          ...node.data,
+          data: { ...node.data.data, debugMode: false }
+        })
+      }
+    })
+  }
 }
 
 

@@ -99,6 +99,8 @@ const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data
   })
   if (isEmpty(formState.id.id)) {
     formState.id.id = nodeId.value;
+    formState.type = descriptor.value?.clazz || '';
+    formState.configuration = descriptor.value?.configurationDescriptor.nodeDefinition.defaultConfiguration || {};
   }
 
   setModalProps({ loading: false });
