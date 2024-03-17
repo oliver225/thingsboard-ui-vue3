@@ -175,8 +175,8 @@ async function handleLogin() {
       toRaw({
         password: data.password,
         username: data.account,
-        validCode: data.validCode,
-        rememberMe: unref(rememberMe.value),
+        // validCode: data.validCode,
+        // rememberMe: unref(rememberMe.value),
       }),
     );
     // refreshValidCodeStatus(userInfo);
