@@ -48,13 +48,13 @@ import { useModal } from '/@/components/Modal';
 import { useDrawer } from '/@/components/Drawer';
 import { Icon } from '/@/components/Icon';
 import { convertBytesToSize } from '/@/utils';
-import { BasicTable, BasicColumn, useTable } from '/@/components/Table';
-import { useMessage } from '/@/hooks/web/useMessage';
 import { isEmpty } from 'lodash';
+import { downloadByData } from '/@/utils/file/download';
+import { useMessage } from '/@/hooks/web/useMessage';
+import { BasicTable, BasicColumn, useTable } from '/@/components/Table';
 import { getOtaPackageList, deleteOtaPackage, downloadOtaPackage } from '/@/api/things/otaPackage';
 import InputForm from './form.vue';
 import DetailDrawer from './detail.vue';
-import { downloadByData } from '/@/utils/file/download';
 
 
 

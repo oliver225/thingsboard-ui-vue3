@@ -85,6 +85,7 @@ import { Checkbox, Input, Select, RadioGroup, Textarea, Form, Row, Col, Upload }
 import { OtaPackageInfo, getOtaPackageInfoById, saveOtaPackageInfo } from '/@/api/things/otaPackage';
 import { EntityType } from '/@/enums/entityTypeEnum';
 import { CHECK_SUM_ALGORITHM_OPTIONS, CHECK_SUM_ALGORITHM } from '/@/enums/otaPackageEnum';
+import { watch } from 'vue';
 
 const emit = defineEmits(['success', 'register']);
 
@@ -115,6 +116,10 @@ const formState = reactive<any>({
     checksum: '',
     additionalInfo: { description: '' },
 });
+
+watch([() => formState.title, () => formState.version], () => {
+    formState.tag = (formState.title || '') + ' ' + (formState.version || '')
+})
 
 const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
     setModalProps({ loading: true });
