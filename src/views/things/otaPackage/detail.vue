@@ -176,7 +176,6 @@ function handleEditOtaPackage() {
 
 function handleDownload() {
     emit('download', record.value);
-    closeDrawer();
 }
 
 </script>

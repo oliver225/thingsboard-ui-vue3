@@ -51,9 +51,10 @@ import { convertBytesToSize } from '/@/utils';
 import { BasicTable, BasicColumn, useTable } from '/@/components/Table';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { isEmpty } from 'lodash';
-import { getOtaPackageList, deleteOtaPackage } from '/@/api/things/otaPackage';
+import { getOtaPackageList, deleteOtaPackage, downloadOtaPackage } from '/@/api/things/otaPackage';
 import InputForm from './form.vue';
 import DetailDrawer from './detail.vue';
+import { downloadByData } from '/@/utils/file/download';
 
 
 
@@ -151,6 +152,7 @@ const actionColumn: BasicColumn = {
             icon: 'ant-design:download-outlined',
             title: t('下载包'),
             onClick: handleDownload.bind(this, { ...record }),
+            disabled: !record.dataSize,
         },
         {
             icon: 'ant-design:delete-outlined',
@@ -217,9 +219,14 @@ function handleDetail(record: Recordable) {
     openDrawer(true, record);
 }
 
-function handleDownload(record: Recordable) {
-    console.log(record);
-
+async function handleDownload(record: Recordable) {
+    if (record.dataSize) {
+        const res = await downloadOtaPackage(record.id.id);
+        let name = res.headers['content-disposition'];
+        name = name && name.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/);
+        name = name && name.length >= 1 && name[1].replace("utf-8'zh_cn'", '');
+        downloadByData(res.data, name);
+    }
 }
 
 

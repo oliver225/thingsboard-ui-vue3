@@ -23,6 +23,13 @@ export interface otaPackage extends OtaPackageInfo {
     data?: Recordable;
 }
 
+export function downloadOtaPackage(otaPackageId: string) {
+    return defHttp.get(
+        { url: `/api/otaPackage/${otaPackageId}/download`, responseType: 'blob' },
+        { isReturnNativeResponse: true, joinPrefix: false }
+    );
+}
+
 export function getOtaPackageInfoById(otaPackageId: string) {
     return defHttp.get<OtaPackageInfo>({
         url: `/api/otaPackage/info/${otaPackageId}`,
