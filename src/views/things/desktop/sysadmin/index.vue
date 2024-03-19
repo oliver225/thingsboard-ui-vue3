@@ -150,6 +150,7 @@ import CpuStateLine from '../components/chart/CpuStateLine.vue';
 import { ref, onMounted, onBeforeUnmount } from 'vue';
 import { EntityType } from '/@/enums/entityTypeEnum';
 import { isArray } from 'lodash';
+import { convertBytesToSize } from '/@/utils';
 const go = useGo();
 const { getAndIncrementCmdId, send, unsubscribe } = useWebsocketStore();
 
@@ -331,12 +332,7 @@ function initCmdId() {
   CPU_STATUS_CMD_ID.value = getAndIncrementCmdId();
 }
 
-function convertBytesToSize(bytes: number) {
-  const sizes = ['b', 'Kb', 'Mb', 'Gb', 'Tb']; // 存储单位的数组
-  if (bytes === 0) { return '0 b' };
-  const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
-  return Number(bytes / Math.pow(1024, i)).toFixed(2) + ' ' + sizes[i];
-}
+
 
 onBeforeUnmount(() => {
   unsubscribeEntityCount();

@@ -229,7 +229,7 @@ const things: AppRouteModule = {
       component: LAYOUT,
       redirect: '/rule-chain/list',
       meta: {
-        orderNo: 130,
+        orderNo: 120,
         icon: 'ant-design:subnode-outlined',
         tabIcon: 'ant-design:subnode-outlined',
         title: t('things.ruleChain'),
@@ -261,6 +261,18 @@ const things: AppRouteModule = {
           },
         },
       ]
+    },
+    {
+      path: '/otaPackage/list',
+      name: 'OtaPackage',
+      component: () => import('/@/views/things/otaPackage/list.vue'),
+      meta: {
+        orderNo: 130,
+        icon: 'ant-design:paper-clip-outlined',
+        tabIcon: 'ant-design:paper-clip-outlined',
+        title: t('things.ota'),
+        useAuthority: [Authority.TENANT_ADMIN]
+      },
     },
     {
       path: 'resources',

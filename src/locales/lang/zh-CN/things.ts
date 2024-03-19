@@ -27,4 +27,5 @@ export default {
   entity: '实体',
   asset: '资产',
   entityView: '实体视图',
+  ota: 'OTA升级',
 }
