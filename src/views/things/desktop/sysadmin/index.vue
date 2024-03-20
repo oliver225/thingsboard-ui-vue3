@@ -122,13 +122,13 @@
         </Row>
         </Col>
       </Row>
-      <Row :gutter="[16, 16]">
+      <!-- <Row :gutter="[16, 16]">
         <Col span="24">
         <Card size="small">
           <GeoMap height="600px" />
         </Card>
         </Col>
-      </Row>
+      </Row> -->
       </Col>
       <Col span="6">
       <GetStarted />
