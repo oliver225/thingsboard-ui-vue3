@@ -91,51 +91,28 @@ const things: AppRouteModule = {
       },
     },
     {
-      path: 'entity',
-      name: 'Entity',
-      component: LAYOUT,
-      redirect: '/entity/index',
+      path: '/asset/list',
+      name: 'AssetList',
+      component: () => import('/@/views/things/asset/list.vue'),
       meta: {
         orderNo: 50,
-        single: true,
         icon: 'ant-design:desktop-outlined',
         tabIcon: 'ant-design:desktop-outlined',
-        title: t('things.entity'),
+        title: t('things.asset'),
         useAuthority: [Authority.TENANT_ADMIN, Authority.CUSTOMER_USER]
       },
-      children: [
-        {
-          path: '/entity/index',
-          name: 'EntityIndex',
-          component: () => import('/@/views/things/entityIndex.vue'),
-          meta: {
-            icon: 'ant-design:desktop-outlined',
-            tabIcon: 'ant-design:desktop-outlined',
-            title: t('things.entity'),
-            useAuthority: [Authority.TENANT_ADMIN, Authority.CUSTOMER_USER]
-          }
-        }, {
-          path: '/asset/list',
-          name: 'AssetList',
-          component: () => import('/@/views/things/asset/list.vue'),
-          meta: {
-            icon: 'ant-design:desktop-outlined',
-            tabIcon: 'ant-design:desktop-outlined',
-            title: t('things.asset'),
-            useAuthority: [Authority.TENANT_ADMIN, Authority.CUSTOMER_USER]
-          },
-        },
-        {
-          path: '/entity-view/list',
-          name: 'EntityViewList',
-          component: () => import('/@/views/things/entityView/list.vue'),
-          meta: {
-            icon: 'ant-design:right-circle-outlined',
-            tabIcon: 'ant-design:right-circle-outlined',
-            title: t('things.entityView'),
-            useAuthority: [Authority.TENANT_ADMIN, Authority.CUSTOMER_USER]
-          },
-        }]
+    },
+    {
+      path: '/entity-view/list',
+      name: 'EntityViewList',
+      component: () => import('/@/views/things/entityView/list.vue'),
+      meta: {
+        orderNo: 60,
+        icon: 'ant-design:windows-outlined',
+        tabIcon: 'ant-design:windows-outlined',
+        title: t('things.entityView'),
+        useAuthority: [Authority.TENANT_ADMIN, Authority.CUSTOMER_USER]
+      },
     },
     {
       path: 'profile',
