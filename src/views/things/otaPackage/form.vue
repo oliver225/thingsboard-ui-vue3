@@ -20,6 +20,14 @@
             <Form.Item label="版本标签" name="tag" help="自定义标签应与您设备报告的软件包版本相匹配。">
                 <Input v-model:value="formState.tag" placeholder="请输入版本标签" />
             </Form.Item>
+            <Form.Item :name="['deviceProfileId', 'entityType']" v-show="false">
+                <Input v-model:value="formState.deviceProfileId.entityType" />
+            </Form.Item>
+            <Form.Item label="设备配置" :name="['deviceProfileId', 'id']" :rules="[{ required: true, message: '请选择设备配置' }]"
+                help="上传的包仅适用于具有所选配置的设备。">
+                <Select v-model:value="formState.deviceProfileId.id" :options="deviceProfileOptions" placeholder="请选择设备配置">
+                </Select>
+            </Form.Item>
             <Form.Item label="包类型" name="type" :rules="[{ required: true, message: '请选择包类型' }]"
                 help="上传包后，您将无法修改标题、版本、设备配置和包类型">
                 <Select v-model:value="formState.type" :defaultValue="'FIRMWARE'" placeholder="请选择包类型">
@@ -41,14 +49,17 @@
                 </Form.Item>
             </template>
             <template v-else>
-                <Upload.Dragger name="file">
-                    <p class="ant-upload-drag-icon">
-                        <Icon :icon="'ant-design:upload-outlined'" />
-                    </p>
-                    <p class="ant-upload-text">拖放或者点击选择一个文件</p>
-                </Upload.Dragger>
+                <Form.Item name="fileList" :rules="[{ validator: validatorFile }]">
+                    <Upload.Dragger v-model:fileList="fileList" :before-upload="beforeUpload">
+                        <p class="ant-upload-drag-icon">
+                            <Icon :icon="'ant-design:upload-outlined'" />
+                        </p>
+                        <p class="ant-upload-text">拖放或者点击选择一个文件</p>
+                    </Upload.Dragger>
+                </Form.Item>
+
                 <Form.Item name="autoCheck">
-                    <Checkbox v-model:checked="formState.autoCheck">自动生成校验和</Checkbox>
+                    <Checkbox v-model:checked="formState.autoCheck" @change="handleAutoCheckChange">自动生成校验和</Checkbox>
                 </Form.Item>
                 <template v-if="formState.autoCheck == false">
                     <Row :gutter="20">
@@ -74,18 +85,18 @@
     </BasicModal>
 </template>
 <script lang="ts" setup name="OtaPackageForm">
-import { ref, unref, computed, reactive } from 'vue';
-import { useI18n } from '/@/hooks/web/useI18n';
-import { useMessage } from '/@/hooks/web/useMessage';
-import { router } from '/@/router';
 import { Icon } from '/@/components/Icon';
-import { BasicModal, useModalInner } from '/@/components/Modal';
 import { FormInstance } from 'ant-design-vue/lib/form';
-import { Checkbox, Input, Select, RadioGroup, Textarea, Form, Row, Col, Upload } from 'ant-design-vue';
-import { OtaPackageInfo, getOtaPackageInfoById, saveOtaPackageInfo } from '/@/api/things/otaPackage';
+import { computed, reactive, ref, unref, watch } from 'vue';
+import { getDeviceProfileInfoList } from '/@/api/things/deviceProfile';
+import { Checkbox, Col, Form, Input, RadioGroup, Row, Select, Textarea, Upload } from 'ant-design-vue';
+import { OtaPackageInfo, getOtaPackageInfoById, saveOtaPackageInfo, saveOtaPackageData } from '/@/api/things/otaPackage';
+import { BasicModal, useModalInner } from '/@/components/Modal';
 import { EntityType } from '/@/enums/entityTypeEnum';
-import { CHECK_SUM_ALGORITHM_OPTIONS, CHECK_SUM_ALGORITHM } from '/@/enums/otaPackageEnum';
-import { watch } from 'vue';
+import { useMessage } from '/@/hooks/web/useMessage';
+import { useI18n } from '/@/hooks/web/useI18n';
+import { router } from '/@/router';
+import { CHECK_SUM_ALGORITHM, CHECK_SUM_ALGORITHM_OPTIONS } from '/@/enums/otaPackageEnum';
 
 const emit = defineEmits(['success', 'register']);
 
@@ -93,6 +104,7 @@ const { t } = useI18n('things');
 const { showMessage } = useMessage();
 const { meta } = unref(router.currentRoute);
 
+const fileList = ref<Array<any>>([]);
 const formRef = ref<FormInstance>();
 
 const record = ref<OtaPackageInfo>({} as OtaPackageInfo);
@@ -101,6 +113,8 @@ const getTitle = computed(() => ({
     icon: meta.icon || 'ant-design:book-outlined',
     value: record.value.id?.id ? t('编辑OTA包') : t('添加OTA包'),
 }));
+
+const deviceProfileOptions = ref<Array<any>>();
 
 
 const formState = reactive<any>({
@@ -132,6 +146,7 @@ const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data
             formState[key] = record.value[key];
         })
     }
+    await fetchDeviceProfile();
     setModalProps({ loading: false });
 });
 
@@ -147,7 +162,30 @@ function clear() {
     formState.checksumAlgorithm = CHECK_SUM_ALGORITHM.SHA256;
     formState.checksum = undefined;
     formState.additionalInfo = { description: undefined };
+    fileList.value = [];
 
+}
+
+function validatorFile() {
+    if (formState.isURL == false && fileList.value.length < 1) {
+        return Promise.reject('请选择一个软件包！');
+    } else {
+        return Promise.resolve();
+    }
+}
+
+async function fetchDeviceProfile() {
+    const res = await getDeviceProfileInfoList({ pageSize: 2147483647, page: 0, sortProperty: 'name', sortOrder: 'ASC' });
+    deviceProfileOptions.value = res.data.map(profile => ({ label: profile.name, value: profile.id?.id }));
+}
+
+function handleAutoCheckChange() {
+    formState.checksumAlgorithm = CHECK_SUM_ALGORITHM.SHA256;
+}
+
+function beforeUpload(file: any) {
+    fileList.value = [file];
+    return false;
 }
 
 async function handleSubmit() {
@@ -157,7 +195,17 @@ async function handleSubmit() {
         setModalProps({ confirmLoading: true });
 
         // console.log('submit', params, data, record);
-        const res = await saveOtaPackageInfo({ ...data, id: record.value.id });
+        const res = await saveOtaPackageInfo({ ...data, id: record.value.id })
+            .then(async (packageInfo) => {
+                if (formState.isURL == false) {
+                    return await saveOtaPackageData({
+                        otaPackageId: packageInfo.id.id,
+                        file: fileList.value[0].originFileObj,
+                        checksumAlgorithm: formState.checksumAlgorithm,
+                        checksum: formState.checksum
+                    })
+                }
+            })
         showMessage(`${record.value.id?.id ? '修改' : '添加'}OTA包成功！`);
         setTimeout(closeModal);
         emit('success', data);

@@ -10,9 +10,9 @@
             </div>
         </template>
         <Space size="middle" class="mb-3">
-            <a-button type="primary success" @click="handleEditOtaPackage">
+            <!-- <a-button type="primary success" @click="handleEditOtaPackage">
                 <Icon :icon="'clarity:note-edit-line'" />编辑包
-            </a-button>
+            </a-button> -->
             <a-button type="primary" @click="handleDownload" :disabled="!record.dataSize">
                 <Icon :icon="'ant-design:download-outlined'" />下载包
             </a-button>
@@ -31,74 +31,25 @@
                 复制校验和
             </a-button>
         </Space>
-        <div class="px-4 py-2 pointer-events-none">
-            <Form ref="formRef" layout="vertical">
-                <Row :gutter="16">
-                    <Col :span="8">
-                    <Form.Item label="标题" name="title">
-                        <Input :value="record.title" placeholder="标题" />
-                    </Form.Item>
-                    </Col>
-                    <Col :span="8">
-                    <Form.Item label="版本" name="version">
-                        <Input :value="record.version" placeholder="版本" />
-                    </Form.Item>
-                    </Col>
-                    <Col :span="8">
-                    <Form.Item label="版本标签" name="tag">
-                        <Input :value="record.tag" placeholder="版本标签" />
-                    </Form.Item>
-                    </Col>
-                    <Col :span="8">
-                    <Form.Item label="包类型" name="type">
-                        <Select :value="record.type" placeholder="包类型">
-                            <Select.Option value="FIRMWARE">固件</Select.Option>
-                            <Select.Option value="SOFTWARE">软件</Select.Option>
-                        </Select>
-                    </Form.Item>
-                    </Col>
-                    <Col :span="16">
-                    <Form.Item label="设备配置" :name="['deviceProfileId', 'id']">
-                        <Select :value="record.deviceProfileId?.id" placeholder="设备配置">
-                            <Select.Option :value="deviceProfile?.id?.id">{{ deviceProfile?.name }}</Select.Option>
-                        </Select>
-                    </Form.Item>
-                    </Col>
-                    <template v-if="!isEmpty(record.checksum)">
-                        <Col :span="8">
-                        <Form.Item label="校验和算法" name="checksumAlgorithm">
-                            <Input :value="record.checksumAlgorithm" placeholder="校验和算法" />
-                        </Form.Item>
-                        </Col>
-                        <Col :span="16">
-                        <Form.Item label="校验和" name="checksum">
-                            <Input :value="record.checksum" placeholder="校验和" />
-                        </Form.Item>
-                        </Col>
-                    </template>
-                    <template v-if="!isEmpty(record.fileName)">
-                        <Col :span="8">
-                        <Form.Item label="文件名" name="fileName">
-                            <Input :value="record.fileName" placeholder="文件名" />
-                        </Form.Item>
-                        </Col>
-                        <Col :span="8">
-                        <Form.Item label="文件大小（以字节为单位）" name="dataSize">
-                            <Input :value="record.dataSize" placeholder="文件大小" />
-                        </Form.Item>
-                        </Col>
-                        <Col :span="8">
-                        <Form.Item label="内容类型" name="dataSize">
-                            <Input :value="record.contentType" placeholder="内容类型" />
-                        </Form.Item>
-                        </Col>
-                    </template>
-                </Row>
-                <Form.Item label="说明" :name="['additionalInfo', 'description']">
-                    <Textarea :value="record.additionalInfo?.description" placeholder="说明" />
-                </Form.Item>
-            </Form>
-        </div>
+        <Descriptions bordered>
+            <Descriptions.Item label="标题" :span="2">{{ record.title }}</Descriptions.Item>
+            <Descriptions.Item label="版本">{{ record.version }}</Descriptions.Item>
+            <Descriptions.Item label="版本标签" :span="3">{{ record.tag }}</Descriptions.Item>
+            <Descriptions.Item label="包类型">{{ record.type == 'SOFTWARE' ? '软件' : '固件' }}</Descriptions.Item>
+            <Descriptions.Item label="设备配置" :span="2">{{ deviceProfile?.name }}</Descriptions.Item>
+            <template v-if="!isEmpty(record.checksum)">
+                <Descriptions.Item label="校验和算法">{{ record.checksumAlgorithm }}</Descriptions.Item>
+                <Descriptions.Item label="校验和" :span="2">{{ record.checksum }}</Descriptions.Item>
+            </template>
+            <template v-if="!isEmpty(record.fileName)">
+                <Descriptions.Item label="文件名">{{ record.fileName }}</Descriptions.Item>
+                <Descriptions.Item label="文件大小（以字节为单位）">{{ record.dataSize }}</Descriptions.Item>
+                <Descriptions.Item label="内容类型">{{ record.contentType }}</Descriptions.Item>
+            </template>
+
+            <Descriptions.Item label="说明" :span="3">{{ record.additionalInfo?.description }}</Descriptions.Item>
+
+        </Descriptions>
 
     </BasicDrawer>
 </template>
@@ -113,7 +64,7 @@ import { isEmpty } from 'lodash';
 import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
 import { OtaPackageInfo, getOtaPackageInfoById } from '/@/api/things/otaPackage';
 import { getDeviceProfileInfoById, DeviceProfileInfo } from '/@/api/things/deviceProfile';
-import { Space, Form, Input, Textarea, Select, Row, Col } from 'ant-design-vue';
+import { Space, Descriptions } from 'ant-design-vue';
 
 
 const emit = defineEmits(['edit', 'delete', 'download', 'register',]);

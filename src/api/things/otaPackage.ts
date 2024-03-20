@@ -1,7 +1,9 @@
 import { BasicModel, BasicQuery, Page } from "../model/baseModel";
 import { EntityId } from "/#/store";
 import { EntityType } from "/@/enums/entityTypeEnum";
+import { ContentTypeEnum } from "/@/enums/httpEnum";
 import { defHttp } from "/@/utils/http/axios";
+import { AxiosProgressEvent } from 'axios';
 
 export interface OtaPackageInfo extends BasicModel<EntityType.OTA_PACKAGE> {
     tenantId: EntityId<EntityType.TENANT>;
@@ -21,6 +23,13 @@ export interface OtaPackageInfo extends BasicModel<EntityType.OTA_PACKAGE> {
 
 export interface otaPackage extends OtaPackageInfo {
     data?: Recordable;
+}
+
+export interface OtaPackageUploadParam {
+    otaPackageId: string,
+    file: File | Blob,
+    checksumAlgorithm?: string,
+    checksum?: string,
 }
 
 export function downloadOtaPackage(otaPackageId: string) {
@@ -49,14 +58,13 @@ export function saveOtaPackageInfo(data: { otaPackageInfo: OtaPackageInfo, usesU
     })
 }
 
-export function saveOtaPackageData(otaPackageId: string, checksum: string, checksumAlgorithmStr: string, file: any) {
+export function saveOtaPackageData(params: OtaPackageUploadParam, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void) {
     return defHttp.post<OtaPackageInfo>({
-        url: `/api/otaPackage/${otaPackageId}`,
-        data: {
-            checksum: checksum,
-            checksumAlgorithmStr: checksumAlgorithmStr,
-            file: file,
-        }
+        url: `/api/otaPackage/${params.otaPackageId}`,
+        params: { checksum: params.checksum, checksumAlgorithm: params.checksumAlgorithm },
+        data: { file: params.file },
+        headers: { 'Content-type': ContentTypeEnum.FORM_DATA, },
+        onUploadProgress
     })
 }
 
