@@ -19,6 +19,9 @@
         </Form.Item>
         </Col>
       </Row>
+      <component ref="compRef" :is="ruleChainTypes[formState.type]" :configuration="formState.configuration">
+
+      </component>
 
 
       <Form.Item label="描述信息" :name="['additionalInfo', 'description']">
@@ -39,29 +42,45 @@
     </Form>
   </BasicModal>
 </template>
-<script lang="ts" setup name="RuleChainNodeDataForm">
-import { ref, unref, computed, reactive } from 'vue';
-import { useI18n } from '/@/hooks/web/useI18n';
-import { useMessage } from '/@/hooks/web/useMessage';
+
+<script lang="ts">
+export default defineComponent({
+  name: "RuleChainNodeDataForm",
+});
+</script>
+
+<script lang="ts" setup >
+import { ref, unref, computed, defineComponent, reactive, getCurrentInstance } from 'vue';
+import { isEmpty } from 'lodash';
 import { router } from '/@/router';
 import { Icon } from '/@/components/Icon';
-import { useUserStore } from '/@/store/modules/user';
-
+import { useI18n } from '/@/hooks/web/useI18n';
 import { RuleNode } from '/@/api/things/ruleChain';
-import { BasicModal, useModalInner } from '/@/components/Modal';
-import { Form, Row, Col, Textarea, Input, Switch, InputNumber } from 'ant-design-vue';
-import { FormInstance } from 'ant-design-vue/lib/form';
-import { ComponentDescriptor } from '/@/api/things/componentDescriptor';
+import { useMessage } from '/@/hooks/web/useMessage';
 import { EntityType } from '/@/enums/entityTypeEnum';
-import { isEmpty } from 'lodash';
+import { FormInstance } from 'ant-design-vue/lib/form';
+import { BasicModal, useModalInner } from '/@/components/Modal';
+import { ComponentDescriptor } from '/@/api/things/componentDescriptor';
+import { Form, Row, Col, Textarea, Input, Switch, InputNumber } from 'ant-design-vue';
+import ruleChainTypes from './nodeTpl/rule-chain-types.json';
+const nodeTemplates = import.meta.glob('./nodeTpl/**/*.vue', { eager: true });
+
+const instance = getCurrentInstance();
+
+Object.keys(nodeTemplates).forEach(fileName => {
+  const comp = nodeTemplates[fileName];
+  if (instance && comp.default && comp.default.name) {
+    instance.appContext.components[comp.default.name] = comp.default
+  }
+})
 
 const emit = defineEmits(['success', 'cancel', 'register']);
 
 const { t } = useI18n('things');
-const userStore = useUserStore();
 const { showMessage } = useMessage();
 const { meta } = unref(router.currentRoute);
 
+const compRef = ref<any>();
 const formRef = ref<FormInstance>();
 
 const nodeId = ref('');
@@ -72,6 +91,7 @@ const getTitle = computed(() => ({
   icon: meta.icon || 'ant-design:book-outlined',
   value: record.value?.id?.id ? t('编辑规则节点') : t('添加规则节点'),
 }));
+
 
 
 const formState = reactive<RuleNode>({
@@ -103,6 +123,9 @@ const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data
     formState.configuration = descriptor.value?.configurationDescriptor.nodeDefinition.defaultConfiguration || {};
   }
 
+  console.log(descriptor.value);
+
+
   setModalProps({ loading: false });
 });
 
@@ -122,9 +145,11 @@ async function handleSubmit() {
     setModalProps({ confirmLoading: true });
     const data = await formRef.value?.validate();
 
+    const configuration = await compRef.value.getConfiguration();
+
     // console.log('submit', params, data, record);
     setTimeout(closeModal);
-    emit('success', { ...data, id: formState.id, ruleChainId: formState.ruleChainId, });
+    emit('success', { ...data, configuration: configuration, id: formState.id, ruleChainId: formState.ruleChainId, });
   } catch (error: any) {
     if (error && error.errorFields) {
       showMessage(t('common.validateError'));
