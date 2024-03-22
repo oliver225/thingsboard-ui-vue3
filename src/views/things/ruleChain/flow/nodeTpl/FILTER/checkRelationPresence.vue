@@ -163,7 +163,7 @@ async function handleEntityTypeChange(entityType) {
             entityIdOptions.value = customerResult.data.map(item => ({ value: item.id.id, label: item.title }))
             break;
         case EntityType.USER:
-            const userResultList = await userList({ pageSize: 1000, page: 0, sortProperty: 'name', sortOrder: 'ASC' });
+            const userResultList = await userList({ pageSize: 1000, page: 0, sortProperty: 'email', sortOrder: 'ASC' });
             entityIdOptions.value = userResultList.data.map(item => ({ value: item.id.id, label: item.name }))
             break;
         case EntityType.DASHBOARD:
