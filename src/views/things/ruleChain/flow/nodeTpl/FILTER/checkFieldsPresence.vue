@@ -29,10 +29,10 @@ export default defineComponent({
 });
 </script>
 <script lang="ts" setup >
-import { ref, watch, defineComponent, reactive } from 'vue';
-import { Form, Select, Checkbox } from 'ant-design-vue';
+import { Checkbox, Form, Select } from 'ant-design-vue';
 import { FormInstance } from 'ant-design-vue/lib/form';
 import { isEmpty } from 'lodash';
+import { defineComponent, reactive, ref, watch } from 'vue';
 
 
 interface Configuration {
@@ -69,10 +69,10 @@ watch(
 )
 
 function validatorFieldName() {
-    if (isEmpty(formState.messageNames) || isEmpty(formState.metadataNames)) {
-        return Promise.reject('检查字段必填！');
-    } else {
+    if (!isEmpty(formState.messageNames) || !isEmpty(formState.metadataNames)) {
         return Promise.resolve();
+    } else {
+        return Promise.reject('检查字段必填！');
     }
 }
 

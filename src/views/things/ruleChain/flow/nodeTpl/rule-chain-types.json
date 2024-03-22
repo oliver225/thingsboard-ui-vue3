@@ -6,6 +6,9 @@
     "org.thingsboard.rule.engine.filter.TbDeviceTypeSwitchNode": "device-profile-switch",
     "org.thingsboard.rule.engine.filter.TbOriginatorTypeFilterNode": "entity-type-filter",
     "org.thingsboard.rule.engine.filter.TbOriginatorTypeSwitchNode": "entity-type-switch",
-    "org.thingsboard.rule.engine.filter.TbMsgTypeFilterNode":"message-type-filter",
-    "org.thingsboard.rule.engine.filter.TbMsgTypeSwitchNode": "message-type-switch"
+    "org.thingsboard.rule.engine.filter.TbMsgTypeFilterNode": "message-type-filter",
+    "org.thingsboard.rule.engine.filter.TbMsgTypeSwitchNode": "message-type-switch",
+    "org.thingsboard.rule.engine.geo.TbGpsGeofencingFilterNode": "gps-geofencing-filter",
+    "org.thingsboard.rule.engine.filter.TbJsFilterNode": "script",
+    "org.thingsboard.rule.engine.filter.TbJsSwitchNode": "switch"
 }
