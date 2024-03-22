@@ -15,9 +15,9 @@
         <Col span="6">
         <CustomerCountCard />
         </Col>
-        <Col span="24">
+        <!-- <Col span="24">
         <GeoMap :height="mapHeight + 'px'" :center="mapCity" />
-        </Col>
+        </Col> -->
         <Col span="24">
         <Card :tab-list="tabListTitle" :active-tab-key="activeKey" @tabChange="onTabChange">
           <p v-if="activeKey === 'tab1'">

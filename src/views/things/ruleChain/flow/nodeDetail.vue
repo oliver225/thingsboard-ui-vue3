@@ -28,24 +28,17 @@
         </TabPane>
       </Tabs>
     </template>
-    <div class="-translate-x-6 pointer-events-none" v-show="tabActiveKey == 'DETAIL'">
-      <Form layout="vertical">
-        <Row :gutter="16">
-          <Col :span="20">
-          <Form.Item label="节点名称" name="name">
-            <Input :value="record.name" placeholder="请输入节点名称" />
-          </Form.Item>
-          </Col>
-          <Col :span="4">
-          <Form.Item label="&nbsp;" name="debugMode">
+    <div class="-translate-x-6" v-show="tabActiveKey == 'DETAIL'">
+      <Descriptions layout="vertical" bordered :column="1">
+        <Descriptions.Item label="节点名称">
+          {{ record.name }}
+          <span :style="{ float: 'right' }">
             <Switch :checked="record.debugMode" size="small" /><span class="ml-2">调试模式</span>
-          </Form.Item>
-          </Col>
-        </Row>
-        <Form.Item label="描述信息" :name="['additionalInfo', 'description']">
-          <Textarea :value="record.additionalInfo?.description" placeholder="输入节点描述信息" :rows="3" />
-        </Form.Item>
-      </Form>
+          </span>
+        </Descriptions.Item>
+
+        <Descriptions.Item label="描述信息">{{ record.additionalInfo?.description }}</Descriptions.Item>
+      </Descriptions>
 
     </div>
     <div class="-translate-x-6" v-show="tabActiveKey == 'HELP'">
@@ -77,7 +70,7 @@ import { useMessage } from '/@/hooks/web/useMessage';
 import { router } from '/@/router';
 import { Icon } from '/@/components/Icon';
 import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
-import { Tabs, TabPane, Space, Typography, Form, Input, Row, Col, Switch, Textarea } from 'ant-design-vue';
+import { Tabs, TabPane, Space, Typography, Form, Input, Row, Col, Switch, Descriptions, Textarea } from 'ant-design-vue';
 import { RuleNode } from '/@/api/things/ruleChain';
 import { EntityType } from '/@/enums/entityTypeEnum';
 import { ComponentDescriptor } from '/@/api/things/componentDescriptor';

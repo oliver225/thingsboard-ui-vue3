@@ -27,4 +27,5 @@ export default {
   entity: 'Entity',
   asset: 'Asset',
   entityView: 'Entity View',
+  ota: 'OTA Update',
 }
