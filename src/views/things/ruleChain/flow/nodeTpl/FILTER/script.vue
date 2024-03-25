@@ -1,12 +1,14 @@
 <template>
     <Form ref="formRef" :model="formState" layout="vertical">
 
-        <div class="flex justify-center mb-2">
-            <Radio.Group v-model:value="formState.scriptLang" button-style="solid">
-                <Radio.Button value="JS">JavaScript</Radio.Button>
-                <Radio.Button value="TBEL">&nbsp;&nbsp;&nbsp;TBEL&nbsp;&nbsp;&nbsp;</Radio.Button>
-            </Radio.Group>
-        </div>
+        <Form.Item name="scriptLang">
+            <div class="flex justify-center mb-2">
+                <Radio.Group v-model:value="formState.scriptLang" button-style="solid">
+                    <Radio.Button value="JS">JavaScript</Radio.Button>
+                    <Radio.Button value="TBEL">&nbsp;&nbsp;&nbsp;TBEL&nbsp;&nbsp;&nbsp;</Radio.Button>
+                </Radio.Group>
+            </div>
+        </Form.Item>
         <Form.Item :name="formState.scriptLang == 'JS' ? 'jsScript' : 'tbelScript'">
             <div>
                 <div class="flex justify-between">
