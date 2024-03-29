@@ -36,6 +36,16 @@
                 <Alert type="success" message="所有输入字段都支持模板化。使用$[messageKey]从消息中提取值，使用${metadataKey}从元数据中提取值。" />
             </Form.Item>
         </div>
+        <Form.Item name="fetchTo">
+            <div class="flex justify-between items-center border border-neutral-300 rounded-md py-2 px-4">
+                <span>添加映射属性到</span>
+                <Radio.Group v-model:value="formState.fetchTo" button-style="solid">
+                    <Radio.Button value="DATA">Message</Radio.Button>
+                    <Radio.Button value="METADATA">Metadata</Radio.Button>
+                </Radio.Group>
+            </div>
+
+        </Form.Item>
 
 
 

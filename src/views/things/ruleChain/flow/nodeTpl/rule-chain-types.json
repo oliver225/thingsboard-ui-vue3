@@ -13,5 +13,6 @@
     "org.thingsboard.rule.engine.filter.TbJsSwitchNode": "switch",
 
     "org.thingsboard.rule.engine.metadata.CalculateDeltaNode":"calculate-delta",
-    "org.thingsboard.rule.engine.metadata.TbGetCustomerAttributeNode":"customer-attributes"
+    "org.thingsboard.rule.engine.metadata.TbGetCustomerAttributeNode":"customer-attributes",
+    "org.thingsboard.rule.engine.metadata.TbGetCustomerDetailsNode":"customer-details"
 }
