@@ -431,8 +431,8 @@ function onNodeAdded({ node, index, options }) {
 const [registerNodeModal, { openModal: openNodeModal }] = useModal();
 
 // Node 节点数据编辑成功  更新节点数据
-function handleNodeSuccess(data: RuleNode) {
-  const node = graphRef.value?.getCellById(data.id.id) as Node;
+function handleNodeSuccess({ nodeId, data }) {
+  const node = graphRef.value?.getCellById(nodeId) as Node;
   //TODO： 每个节点的弹框编辑数据 不一样，更新节点数据
   if (node) {
     node.setData({ descriptor: node.data.descriptor, data: data })
@@ -643,7 +643,6 @@ async function handleSave() {
   const jsonData = graphRef.value?.toJSON();
   if (jsonData) {
     const cells = jsonData.cells;
-
     const nodes = cells
       .filter(cell => cell.shape == 'rule-chain-node' && cell.data.data)
       .map(cell => {

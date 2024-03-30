@@ -39,6 +39,9 @@
       <Form.Item :name="['additionalInfo', 'layoutY']" v-show="false">
         <InputNumber v-model:value="formState.additionalInfo.layoutY" />
       </Form.Item>
+      <Form.Item name="configurationVersion" v-show="false">
+        <InputNumber v-model:value="formState.configurationVersion" />
+      </Form.Item>
     </Form>
   </BasicModal>
 </template>
@@ -102,6 +105,7 @@ const formState = reactive<RuleNode>({
   singletonMode: false,
   type: descriptor.value?.clazz || '',
   configuration: descriptor.value?.configurationDescriptor.nodeDefinition.defaultConfiguration || {},
+  configurationVersion: 0,
   additionalInfo: { description: '', layoutX: 0, layoutY: 0 },
 });
 
@@ -118,13 +122,10 @@ const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data
     formState[key] = record.value[key];
   })
   if (isEmpty(formState.id.id)) {
-    formState.id.id = nodeId.value;
     formState.type = descriptor.value?.clazz || '';
     formState.configuration = descriptor.value?.configurationDescriptor.nodeDefinition.defaultConfiguration || {};
+    formState.configurationVersion = descriptor.value?.configurationVersion || 0;
   }
-
-  console.log(descriptor.value);
-
 
   setModalProps({ loading: false });
 });
@@ -149,7 +150,8 @@ async function handleSubmit() {
 
     // console.log('submit', params, data, record);
     setTimeout(closeModal);
-    emit('success', { ...data, configuration: configuration, id: formState.id, ruleChainId: formState.ruleChainId, });
+    const ruleNode = { ...data, configuration: configuration, id: record.value?.id, ruleChainId: formState.ruleChainId };
+    emit('success', { nodeId: nodeId.value, data: ruleNode });
   } catch (error: any) {
     if (error && error.errorFields) {
       showMessage(t('common.validateError'));
@@ -163,7 +165,7 @@ async function handleSubmit() {
 function handleCancel() {
   setTimeout(closeModal);
   if (record.value?.id?.id) {
-    emit('success', { ...record.value });
+    emit('success', { nodeId: nodeId.value, data: { ...record.value } });
   } else {
     emit('cancel', { nodeId: nodeId.value });
   }

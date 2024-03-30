@@ -8,6 +8,7 @@ export interface ComponentDescriptor extends BasicModel<null> {
   type: ComponentDescriptorType;
   scope: 'SYSTEM' | 'TENANT';
   clusteringMode: 'USER_PREFERENCE' | 'ENABLED' | 'SINGLETON';
+  configurationVersion: number,
   configurationDescriptor: {
     nodeDefinition: {
       configDirective: string,
