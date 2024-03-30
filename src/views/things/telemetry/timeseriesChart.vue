@@ -54,6 +54,7 @@ import { TsData, } from '/@/api/things/telemetry';
 import { BasicForm, FormSchema, useForm } from '/@/components/Form';
 import TimeseriesModal from './timeseriesModal.vue';
 import { isArray } from 'lodash';
+import { AGGREGATION_OPTIONS, Aggregation } from '/@/enums/telemetryEnum';
 
 const { t } = useI18n('things');
 const { showMessage } = useMessage();
@@ -163,16 +164,9 @@ const inputFormSchemas: FormSchema[] = [
     label: t('聚合函数'),
     field: 'agg',
     component: 'Select',
-    defaultValue: 'NONE',
+    defaultValue: Aggregation.NONE,
     componentProps: {
-      options: [
-        { label: '无', value: 'NONE' },
-        { label: '最小值', value: 'MIN' },
-        { label: '最大值', value: 'MAX' },
-        { label: '平均数', value: 'AVG' },
-        { label: '求和', value: 'SUM' },
-        { label: '计数', value: 'COUNT' },
-      ]
+      options: AGGREGATION_OPTIONS
     },
   },
 ];
@@ -244,7 +238,7 @@ async function sendQuery() {
     timeRange: [dayjs().subtract(2, 'hour'), dayjs()],
     interval: 60000,
     limit: 1000,
-    agg: 'NONE',
+    agg: Aggregation.NONE,
     ...data,
   }
   websocketSend(
