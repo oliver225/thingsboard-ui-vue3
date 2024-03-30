@@ -121,11 +121,12 @@ const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data
   Object.keys(record.value as any).forEach(key => {
     formState[key] = record.value[key];
   })
-  if (isEmpty(formState.id.id)) {
+  if (isEmpty(formState.id?.id)) {
     formState.type = descriptor.value?.clazz || '';
     formState.configuration = descriptor.value?.configurationDescriptor.nodeDefinition.defaultConfiguration || {};
     formState.configurationVersion = descriptor.value?.configurationVersion || 0;
   }
+  console.log(descriptor.value)
 
   setModalProps({ loading: false });
 });

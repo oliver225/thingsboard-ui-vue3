@@ -14,5 +14,7 @@
 
     "org.thingsboard.rule.engine.metadata.CalculateDeltaNode":"calculate-delta",
     "org.thingsboard.rule.engine.metadata.TbGetCustomerAttributeNode":"customer-attributes",
-    "org.thingsboard.rule.engine.metadata.TbGetCustomerDetailsNode":"customer-details"
+    "org.thingsboard.rule.engine.metadata.TbGetCustomerDetailsNode":"customer-details",
+    "org.thingsboard.rule.engine.metadata.TbFetchDeviceCredentialsNode":"fetch-device-credentials",
+    "org.thingsboard.rule.engine.metadata.TbGetAttributesNode":"originator-attributes"
 }
