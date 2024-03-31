@@ -1,7 +1,7 @@
 import { useI18n } from '/@/hooks/web/useI18n';
 import { BasicColumn, BasicTableProps, FormProps } from '/@/components/Table';
 import { officeTreeData } from '/@/api/sys/office';
-import { companyTreeData } from '/@/api/sys/company';
+// import { companyTreeData } from '/@/api/sys/company';
 import { empUserListData } from '/@/api/sys/empUser';
 
 const { t } = useI18n('sys.empUser');
@@ -48,7 +48,7 @@ const searchForm: FormProps = {
       field: 'employee.company.companyCode',
       component: 'TreeSelect',
       componentProps: {
-        api: companyTreeData,
+        // api: companyTreeData,
         allowClear: true,
       },
     },
