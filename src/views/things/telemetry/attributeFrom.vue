@@ -1,0 +1,110 @@
+<template>
+    <BasicModal v-bind="$attrs" @register="registerModal" @ok="handleSubmit" width="40%">
+        <template #title>
+            <span>
+                添加属性
+            </span>
+        </template>
+        <Form ref="formRef" :model="formState" layout="vertical">
+
+            <Form.Item label="键名" name="key" :rules="[{ required: true, message: '请输入键名!' }]">
+                <Input v-model:value="formState.key" placeholder="输入键名" />
+            </Form.Item>
+            <Row :gutter="20">
+                <Col :span="12">
+                <Form.Item label="值类型" name="type" :rules="[{ required: true, message: '请选择值类型!' }]">
+                    <Select v-model:value="formState.type" :default-value="'STRING'" :options="typeOptions" />
+                </Form.Item>
+                </Col>
+                <Col :span="12">
+                <Form.Item :label="typeOptions.find(type => type.value == formState.type)?.label + '值'" name="value"
+                    :rules="[{ required: true, message: '请输入数值!' }]">
+                    <Input v-if="formState.type == 'STRING'" v-model:value="formState.value" placeholder="请输入字符串值" />
+                    <InputNumber v-if="formState.type == 'NUMERIC'" :precision="0" :step="1" v-model:value="formState.value"
+                        :style="{ width: '100%' }" placeholder="请输入数值" />
+                    <InputNumber v-if="formState.type == 'DOUBLE'" :precision="2" :step="0.01"
+                        v-model:value="formState.value" :style="{ width: '100%' }" placeholder="请输入小数值" />
+                    <Radio.Group v-if="formState.type == 'BOOLEAN'" v-model:value="formState.value">
+                        <Radio :value=true>真</Radio>
+                        <Radio :value=false>假</Radio>
+                    </Radio.Group>
+                    <Textarea v-if="formState.type == 'JSON'" v-model:value="formState.value" placeholder="输入JSON值" />
+                </Form.Item>
+                </Col>
+
+            </Row>
+
+        </Form>
+    </BasicModal>
+</template>
+<script lang="ts" setup name="AttributeFrom">
+import { ref, reactive } from 'vue';
+import { useMessage } from '/@/hooks/web/useMessage';
+import { Form, Input, Radio, Textarea, InputNumber, Row, Col, Select } from 'ant-design-vue';
+import { FormInstance } from 'ant-design-vue/lib/form';
+import { BasicModal, useModalInner } from '/@/components/Modal';
+import { saveEntityAttributesV1 } from '/@/api/things/telemetry';
+import { Scope } from '/@/enums/telemetryEnum';
+
+const { showMessage } = useMessage();
+
+const formRef = ref<FormInstance>();
+
+const record = ref<any>();
+
+const entityType = ref('');
+const entityId = ref('');
+const scope = ref<Scope>(Scope.SERVER_SCOPE);
+
+const formState = reactive<any>({
+    key: '',
+    value: undefined,
+    type: '',
+});
+
+const typeOptions = [
+    { value: 'STRING', label: '字符串' },
+    { value: 'NUMERIC', label: '整数' },
+    { value: 'DOUBLE', label: '小数' },
+    { value: 'BOOLEAN', label: '布尔' },
+    { value: 'JSON', label: 'JSON' },
+]
+
+
+const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
+    setModalProps({ loading: true });
+    clear();
+    entityType.value = data.entityType;
+    entityId.value = data.entityId;
+    scope.value = data.scope || Scope.SERVER_SCOPE;
+    record.value = data.attribute;
+    setModalProps({ loading: false });
+});
+
+function clear() {
+    entityType.value = '';
+    entityId.value = '';
+    scope.value = Scope.SERVER_SCOPE;
+    formState.key = '';
+    formState.value = undefined;
+    formState.type = 'STRING';
+}
+
+async function handleSubmit() {
+    try {
+        const data = await formRef.value?.validate();
+        if (data) {
+            let result = {};
+            result[data.key] = data.value
+            setModalProps({ confirmLoading: true });
+            const res = await saveEntityAttributesV1({ entityType: entityType.value, id: entityId.value }, scope.value, result);
+            showMessage(`添加属性成功！`);
+        }
+    } catch (error: any) {
+        throw error;
+    } finally {
+        setModalProps({ confirmLoading: false });
+    }
+}
+
+</script>

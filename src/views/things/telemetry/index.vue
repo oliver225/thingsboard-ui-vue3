@@ -7,6 +7,10 @@
             <Segmented v-model:value="selectedScope" :options="typeTabList" @change="handleScopeChange" />
           </div>
           <Space :size="1" class="mx-4">
+            <Tooltip title="添加属性"
+              v-if="selectedScope != LATEST_TELEMETRY && selectedScope != Scope.CLIENT_SCOPE && showSelectedButton != true">
+              <Icon icon="ant-design:plus-outlined" :size="20" class="cursor-pointer" @click="addAttribute" />
+            </Tooltip>
             <Tooltip title="刷新数据" v-if="selectedScope != LATEST_TELEMETRY && showSelectedButton != true">
               <Icon icon="ant-design:redo-outlined" :size="20" class="cursor-pointer" @click="fetchAttributes" />
             </Tooltip>
@@ -52,6 +56,7 @@
         </List.Item>
       </template>
     </List>
+    <AttributeModal @register="registerAttributeModal" @success="handleSuccess" />
     <TimeseriesModal @register="registerTimeseriesModal" />
     <DeleteModal @register="registerDeleteModal" @success="handleSuccess" />
   </div>
@@ -62,7 +67,7 @@ export default defineComponent({
 });
 </script>
 <script lang="ts" setup>
-import { PropType, defineComponent, ref, onMounted, computed, reactive, onBeforeUnmount, watchEffect } from 'vue';
+import { PropType, defineComponent, ref, onMounted, computed, reactive, onBeforeUnmount } from 'vue';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { Icon } from '/@/components/Icon';
@@ -78,6 +83,7 @@ import { getAttributesByScope, deleteEntityAttributes, getLatestTimeseries } fro
 import TimeseriesChart from './timeseriesChart.vue';
 import TimeseriesModal from './timeseriesModal.vue';
 import { isBoolean } from 'lodash';
+import AttributeModal from './attributeFrom.vue';
 import DeleteModal from './delete.vue';
 const LATEST_TELEMETRY = "LATEST_TELEMETRY";
 
@@ -102,8 +108,8 @@ const props = defineProps({
 
 const typeTabList = reactive([
   { value: LATEST_TELEMETRY, label: '时序数据', className: 'segment-tab' },
-  { value: Scope.SERVER_SCOPE, label: '服务端属性', className: 'segment-tab' },
   { value: Scope.CLIENT_SCOPE, label: '客户端属性', className: 'segment-tab' },
+  { value: Scope.SERVER_SCOPE, label: '服务端属性', className: 'segment-tab' },
   { value: Scope.SHARED_SCOPE, label: '共享属性', className: 'segment-tab' },
 ]);
 const selectedScope = ref(LATEST_TELEMETRY);
@@ -148,10 +154,10 @@ const tableColumns: BasicColumn[] = [
   },
 ]
 
-
+const [registerAttributeModal, { openModal: openAttributeModal }] = useModal();
 const [registerTimeseriesModal, { openModal: openTimeseriesModal }] = useModal();
 const [registerDeleteModal, { openModal: openDeleteModal }] = useModal();
-const [registerTable, { reload, updateColumn, setSelectedRowKeys }] = useTable({
+const [registerTable, { setSelectedRowKeys }] = useTable({
   rowKey: 'key',
   columns: tableColumns,
   showTableSetting: false,
@@ -174,7 +180,6 @@ async function handleScopeChange(scope: string) {
     await fetchAttributes();
   }
 }
-
 
 async function fetchAttributes() {
   try {
@@ -302,6 +307,10 @@ function handleSuccess() {
 
 function handleTimeseriesModal() {
   openTimeseriesModal(true, { entityType: props.entityType, entityId: props.entityId, keys: selectedRowKeys.value })
+}
+
+function addAttribute() {
+  openAttributeModal(true, { entityType: props.entityType, entityId: props.entityId, scope: selectedScope.value, attribute: {} })
 }
 
 
