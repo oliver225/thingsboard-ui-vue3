@@ -2,7 +2,7 @@
     <BasicModal v-bind="$attrs" @register="registerModal" @ok="handleSubmit" width="40%">
         <template #title>
             <span>
-                添加属性
+                {{ getTitle.value }}
             </span>
         </template>
         <Form ref="formRef" :model="formState" layout="vertical">
@@ -38,22 +38,28 @@
     </BasicModal>
 </template>
 <script lang="ts" setup name="AttributeFrom">
-import { ref, reactive } from 'vue';
+import { ref, computed, reactive } from 'vue';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { Form, Input, Radio, Textarea, InputNumber, Row, Col, Select } from 'ant-design-vue';
 import { FormInstance } from 'ant-design-vue/lib/form';
 import { BasicModal, useModalInner } from '/@/components/Modal';
 import { saveEntityAttributesV1 } from '/@/api/things/telemetry';
-import { Scope } from '/@/enums/telemetryEnum';
+import { Scope, SCOPE_OPTIONS } from '/@/enums/telemetryEnum';
+import { EntityId } from '/#/store';
+
+const emit = defineEmits(['success', 'register']);
 
 const { showMessage } = useMessage();
+
+const getTitle = computed(() => ({
+    value: '添加' + SCOPE_OPTIONS.find(item => item.value == scope.value)?.label || '属性',
+}));
 
 const formRef = ref<FormInstance>();
 
 const record = ref<any>();
 
-const entityType = ref('');
-const entityId = ref('');
+const entityId = ref<EntityId<any>>();
 const scope = ref<Scope>(Scope.SERVER_SCOPE);
 
 const formState = reactive<any>({
@@ -74,16 +80,14 @@ const typeOptions = [
 const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
     setModalProps({ loading: true });
     clear();
-    entityType.value = data.entityType;
-    entityId.value = data.entityId;
+    entityId.value = { entityType: data.entityType, id: data.entityId };
     scope.value = data.scope || Scope.SERVER_SCOPE;
     record.value = data.attribute;
     setModalProps({ loading: false });
 });
 
 function clear() {
-    entityType.value = '';
-    entityId.value = '';
+    entityId.value = undefined;
     scope.value = Scope.SERVER_SCOPE;
     formState.key = '';
     formState.value = undefined;
@@ -97,8 +101,10 @@ async function handleSubmit() {
             let result = {};
             result[data.key] = data.value
             setModalProps({ confirmLoading: true });
-            const res = await saveEntityAttributesV1({ entityType: entityType.value, id: entityId.value }, scope.value, result);
+            const res = await saveEntityAttributesV1(entityId.value, scope.value, result);
             showMessage(`添加属性成功！`);
+            setTimeout(closeModal);
+            emit('success', data);
         }
     } catch (error: any) {
         throw error;

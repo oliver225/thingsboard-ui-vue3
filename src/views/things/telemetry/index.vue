@@ -7,9 +7,8 @@
             <Segmented v-model:value="selectedScope" :options="typeTabList" @change="handleScopeChange" />
           </div>
           <Space :size="1" class="mx-4">
-            <Tooltip title="添加属性"
-              v-if="selectedScope != LATEST_TELEMETRY && selectedScope != Scope.CLIENT_SCOPE && showSelectedButton != true">
-              <Icon icon="ant-design:plus-outlined" :size="20" class="cursor-pointer" @click="addAttribute" />
+            <Tooltip title="添加属性" v-if="selectedScope != Scope.CLIENT_SCOPE && showSelectedButton != true">
+              <Icon icon="ant-design:plus-outlined" :size="20" class="cursor-pointer" @click="handledAttributeForm({})" />
             </Tooltip>
             <Tooltip title="刷新数据" v-if="selectedScope != LATEST_TELEMETRY && showSelectedButton != true">
               <Icon icon="ant-design:redo-outlined" :size="20" class="cursor-pointer" @click="fetchAttributes" />
@@ -107,7 +106,7 @@ const props = defineProps({
 });
 
 const typeTabList = reactive([
-  { value: LATEST_TELEMETRY, label: '时序数据', className: 'segment-tab' },
+  { value: LATEST_TELEMETRY, label: '遥测数据', className: 'segment-tab' },
   { value: Scope.CLIENT_SCOPE, label: '客户端属性', className: 'segment-tab' },
   { value: Scope.SERVER_SCOPE, label: '服务端属性', className: 'segment-tab' },
   { value: Scope.SHARED_SCOPE, label: '共享属性', className: 'segment-tab' },
@@ -276,7 +275,7 @@ function handleDeleteKey() {
       },
       onOk: async () => {
         try {
-          await deleteEntityAttributes(entityId.value, selectedScope.value as Scope, selectedRowKeys.value.join(','));
+          await deleteEntityAttributes(entityId.value, selectedScope.value as Scope, selectedRowKeys.value);
           showMessage(`删除${selectedRowKeys.value.length}个属性成功！`);
         } catch (error: any) {
           console.log(error);
@@ -309,8 +308,8 @@ function handleTimeseriesModal() {
   openTimeseriesModal(true, { entityType: props.entityType, entityId: props.entityId, keys: selectedRowKeys.value })
 }
 
-function addAttribute() {
-  openAttributeModal(true, { entityType: props.entityType, entityId: props.entityId, scope: selectedScope.value, attribute: {} })
+function handledAttributeForm(data) {
+  openAttributeModal(true, { entityType: props.entityType, entityId: props.entityId, scope: selectedScope.value, attribute: data })
 }
 
 

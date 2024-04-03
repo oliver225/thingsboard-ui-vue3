@@ -42,3 +42,10 @@ export const AGGREGATION_OPTIONS = [
   { value: Aggregation.SUM, label: '求和' },
   { value: Aggregation.COUNT, label: '计数' }
 ]
+
+export const SCOPE_OPTIONS = [
+  { value: Scope.CLIENT_SCOPE, label: '客户端属性' },
+  { value: Scope.SERVER_SCOPE, label: '服务端属性' },
+  { value: Scope.SHARED_SCOPE, label: '共享属性' },
+  { value: 'LATEST_TELEMETRY', label: '遥测数据' },
+]

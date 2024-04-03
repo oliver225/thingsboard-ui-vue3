@@ -93,17 +93,17 @@ export function getTimeseries(params: TelemetryQuery) {
 }
 
 
-export function deleteDeviceAttributes(deviceId: string, scope: Scope, keys: string) {
+export function deleteDeviceAttributes(deviceId: string, scope: Scope, keys: Array<string>) {
   return defHttp.delete<void>({
     url: `/api/plugins/telemetry/${deviceId}/${scope}`,
-    params: { keys: keys }
+    params: { keys: keys.join(',') }
   });
 }
 
-export function deleteEntityAttributes(entityId: EntityId<any>, scope: Scope, keys: string) {
+export function deleteEntityAttributes(entityId: EntityId<any>, scope: Scope, keys: Array<string>) {
   return defHttp.delete<void>({
     url: `/api/plugins/telemetry/${entityId.entityType}/${entityId.id}/${scope}`,
-    params: { keys: keys }
+    params: { keys: keys.join(',') }
   });
 }
 
