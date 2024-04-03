@@ -7,36 +7,23 @@
             <Segmented v-model:value="selectedScope" :options="typeTabList" @change="handleScopeChange" />
           </div>
           <Space :size="1" class="mx-4">
-            <Tooltip title="添加属性" v-if="selectedScope != Scope.CLIENT_SCOPE && showSelectedButton != true">
+            <Tooltip title="添加属性" v-if="selectedScope != Scope.CLIENT_SCOPE">
               <Icon icon="ant-design:plus-outlined" :size="20" class="cursor-pointer" @click="handledAttributeForm({})" />
             </Tooltip>
-            <Tooltip title="刷新数据" v-if="selectedScope != LATEST_TELEMETRY && showSelectedButton != true">
+            <Tooltip title="刷新数据" v-if="selectedScope != LATEST_TELEMETRY">
               <Icon icon="ant-design:redo-outlined" :size="20" class="cursor-pointer" @click="fetchAttributes" />
             </Tooltip>
-            <Tooltip title="查询名称" v-if="showSelectedButton != true">
+            <Tooltip title="查询名称">
               <Icon icon="ant-design:search-outlined" :size="20" class="cursor-pointer" />
             </Tooltip>
-            <Tooltip title="查看图表"
-              v-if="selectedScope == LATEST_TELEMETRY && showChartView == false && showSelectedButton != true">
+            <Tooltip title="查看图表" v-if="selectedScope == LATEST_TELEMETRY && showChartView == false">
               <Icon icon="ant-design:line-chart-outlined" :size="20" class="cursor-pointer"
                 @click="() => { showChartView = true }" />
             </Tooltip>
-            <Tooltip title="查看表格"
-              v-if="selectedScope == LATEST_TELEMETRY && showChartView == true && showSelectedButton != true">
+            <Tooltip title="查看表格" v-if="selectedScope == LATEST_TELEMETRY && showChartView == true">
               <Icon icon="ant-design:insert-row-below-outlined" :size="20" class="cursor-pointer"
                 @click="() => { showChartView = false }" />
             </Tooltip>
-            <a-button v-if="selectedScope == LATEST_TELEMETRY && showSelectedButton == true"
-              @click="handleTimeseriesModal">
-              <Icon icon="ant-design:line-chart-outlined" :size="20" />
-              查看图表
-            </a-button>
-            <a-button type="primary" danger
-              v-if="showSelectedButton == true && userStore.getAuthority == Authority.TENANT_ADMIN"
-              @click="handleDeleteKey">
-              <Icon icon="ant-design:delete-outlined" :size="20" />
-              删除数据
-            </a-button>
             <template #split>
               <Divider type="vertical" />
             </template>
@@ -44,8 +31,11 @@
         </div>
       </template>
     </TableHeader>
-    <BasicTable @register="registerTable" :loading="loading" :dataSource="dataSource"
-      @selection-change="handleSelectionChange" v-show="!showChartView" />
+    <BasicTable @register="registerTable" :loading="loading" :dataSource="dataSource" v-show="!showChartView">
+      <template #valueColumn="{ record }">
+        {{ formatValue(record.value) }}
+      </template>
+    </BasicTable>
     <List v-if="showChartView" :loading="loading" :dataSource="dataSource"
       :grid="{ gutter: 5, xs: 1, sm: 1, md: 2, lg: 2, xl: 3, xxl: 3 }">
       <template #renderItem="{ item }">
@@ -81,7 +71,7 @@ import { BasicTable, BasicColumn, useTable, TableHeader } from '/@/components/Ta
 import { getAttributesByScope, deleteEntityAttributes, getLatestTimeseries } from '/@/api/things/telemetry';
 import TimeseriesChart from './timeseriesChart.vue';
 import TimeseriesModal from './timeseriesModal.vue';
-import { isBoolean } from 'lodash';
+import { isString, isBoolean } from 'lodash';
 import AttributeModal from './attributeFrom.vue';
 import DeleteModal from './delete.vue';
 const LATEST_TELEMETRY = "LATEST_TELEMETRY";
@@ -115,13 +105,9 @@ const selectedScope = ref(LATEST_TELEMETRY);
 
 const loading = ref(false);
 const dataSource = ref<any[]>([]);
-const selectedRowKeys = ref<string[]>([]);
 const LATEST_TELEMETRY_CMD_ID = ref(0);
 const ATTRIBUTE_CMD_ID = ref(0);
 
-const showSelectedButton = computed(() => {
-  return selectedRowKeys.value.length > 0;
-})
 const showChartView = ref(false);
 
 const entityId = computed(() => {
@@ -141,6 +127,7 @@ const tableColumns: BasicColumn[] = [
     dataIndex: 'value',
     key: 'value',
     align: 'center',
+    slot: 'valueColumn'
   },
   {
     title: t('最后更新时间'),
@@ -153,16 +140,41 @@ const tableColumns: BasicColumn[] = [
   },
 ]
 
+const actionColumn: BasicColumn = {
+  width: 100,
+  actions: (record: Recordable) => [
+    {
+      icon: 'clarity:note-edit-line',
+      title: t('编辑'),
+      onClick: handledAttributeForm.bind(this, { ...record }),
+      ifShow: selectedScope.value == Scope.SERVER_SCOPE || selectedScope.value == Scope.SHARED_SCOPE,
+    },
+    {
+      icon: 'ant-design:line-chart-outlined',
+      title: t('查看图表'),
+      ifShow: selectedScope.value == LATEST_TELEMETRY,
+      onClick: handleTimeseriesModal.bind(this, { ...record }),
+    },
+    {
+      icon: 'ant-design:delete-outlined',
+      color: 'error',
+      title: t('删除'),
+      ifShow: userStore.getAuthority == Authority.TENANT_ADMIN,
+      onClick: handleDelete.bind(this, { ...record }),
+    },
+  ],
+};
+
 const [registerAttributeModal, { openModal: openAttributeModal }] = useModal();
 const [registerTimeseriesModal, { openModal: openTimeseriesModal }] = useModal();
 const [registerDeleteModal, { openModal: openDeleteModal }] = useModal();
 const [registerTable, { setSelectedRowKeys }] = useTable({
   rowKey: 'key',
   columns: tableColumns,
+  actionColumn: actionColumn,
   showTableSetting: false,
   useSearchForm: false,
   canResize: true,
-  rowSelection: { type: 'checkbox' },
 });
 
 onMounted(async () => {
@@ -171,6 +183,7 @@ onMounted(async () => {
 
 async function handleScopeChange(scope: string) {
   showChartView.value = false;
+  setSelectedRowKeys([]);
   if (LATEST_TELEMETRY == scope) {
     await subLatestTimeseries();
   } else if (Scope.CLIENT_SCOPE == scope) {
@@ -186,7 +199,7 @@ async function fetchAttributes() {
     const dataList = await getAttributesByScope(entityId.value, selectedScope.value as Scope);
     dataSource.value = dataList.map(kvEntity => ({
       key: kvEntity.key,
-      value: isBoolean(kvEntity.value) ? kvEntity.value + '' : kvEntity.value,
+      value: kvEntity.value,
       lastUpdateTs: kvEntity.lastUpdateTs
     }));
   } catch (error: any) {
@@ -195,6 +208,16 @@ async function fetchAttributes() {
     loading.value = false;
   }
 
+}
+
+function formatValue(value: any) {
+  if (isString(value)) {
+    return value
+  } else if (isBoolean(value)) {
+    return value + ''
+  } else {
+    return JSON.stringify(value);
+  }
 }
 
 async function subClientScopeAttribute() {
@@ -257,15 +280,13 @@ function onWebsocketMessage(data: any) {
   }));
 }
 
-function handleDeleteKey() {
-  if (selectedRowKeys.value.length < 1) {
-    showMessage('请选择要删除的数值！');
-    return;
-  }
+
+
+function handleDelete(data: any) {
   if (LATEST_TELEMETRY != selectedScope.value) {
     createConfirm({
       iconType: 'error',
-      title: `确定删除属性[${selectedRowKeys.value.join(',')}]吗？`,
+      title: `确定删除属性[${data.key}]吗？`,
       content: '注意,确认后所有选中的属性都会被删除。',
       centered: false,
       okText: '删除',
@@ -275,8 +296,8 @@ function handleDeleteKey() {
       },
       onOk: async () => {
         try {
-          await deleteEntityAttributes(entityId.value, selectedScope.value as Scope, selectedRowKeys.value);
-          showMessage(`删除${selectedRowKeys.value.length}个属性成功！`);
+          await deleteEntityAttributes(entityId.value, selectedScope.value as Scope, [data.key]);
+          showMessage(`删除${data.key}属性成功！`);
         } catch (error: any) {
           console.log(error);
         } finally {
@@ -289,26 +310,21 @@ function handleDeleteKey() {
     openDeleteModal(true, {
       entityType: props.entityType,
       entityId: props.entityId,
-      keys: selectedRowKeys.value,
+      keys: [data.key],
     })
   }
 
 }
 
-function handleSelectionChange({ rows }) {
-  selectedRowKeys.value = rows.map((item) => item.key);
-}
-
 function handleSuccess() {
-  setSelectedRowKeys([]);
   handleScopeChange(selectedScope.value);
 }
 
-function handleTimeseriesModal() {
-  openTimeseriesModal(true, { entityType: props.entityType, entityId: props.entityId, keys: selectedRowKeys.value })
+function handleTimeseriesModal(data: any) {
+  openTimeseriesModal(true, { entityType: props.entityType, entityId: props.entityId, keys: data.key })
 }
 
-function handledAttributeForm(data) {
+function handledAttributeForm(data: any) {
   openAttributeModal(true, { entityType: props.entityType, entityId: props.entityId, scope: selectedScope.value, attribute: data })
 }
 

@@ -18,7 +18,7 @@
                 </Col>
                 <Col :span="12">
                 <Form.Item :label="typeOptions.find(type => type.value == formState.type)?.label + '值'" name="value"
-                    :rules="[{ required: true, message: '请输入数值!' }]">
+                    :rules="[{ required: true, message: '请输入数值!' }, { validator: validatorValue }]">
                     <Input v-if="formState.type == 'STRING'" v-model:value="formState.value" placeholder="请输入字符串值" />
                     <InputNumber v-if="formState.type == 'NUMERIC'" :precision="0" :step="1" v-model:value="formState.value"
                         :style="{ width: '100%' }" placeholder="请输入数值" />
@@ -28,7 +28,8 @@
                         <Radio :value=true>真</Radio>
                         <Radio :value=false>假</Radio>
                     </Radio.Group>
-                    <Textarea v-if="formState.type == 'JSON'" v-model:value="formState.value" placeholder="输入JSON值" />
+                    <CodeEditor v-if="formState.type == 'JSON'" v-model:value="formState.value"
+                        class="border border-gray-400" />
                 </Form.Item>
                 </Col>
 
@@ -40,19 +41,21 @@
 <script lang="ts" setup name="AttributeFrom">
 import { ref, computed, reactive } from 'vue';
 import { useMessage } from '/@/hooks/web/useMessage';
-import { Form, Input, Radio, Textarea, InputNumber, Row, Col, Select } from 'ant-design-vue';
+import { Form, Input, Radio, InputNumber, Row, Col, Select } from 'ant-design-vue';
 import { FormInstance } from 'ant-design-vue/lib/form';
 import { BasicModal, useModalInner } from '/@/components/Modal';
 import { saveEntityAttributesV1 } from '/@/api/things/telemetry';
 import { Scope, SCOPE_OPTIONS } from '/@/enums/telemetryEnum';
+import { CodeEditor } from '/@/components/CodeEditor';
 import { EntityId } from '/#/store';
+import { isBoolean, isEmpty, isNumber, isString } from 'lodash';
 
 const emit = defineEmits(['success', 'register']);
 
 const { showMessage } = useMessage();
 
 const getTitle = computed(() => ({
-    value: '添加' + SCOPE_OPTIONS.find(item => item.value == scope.value)?.label || '属性',
+    value: (record.value?.key ? '修改' : '添加') + SCOPE_OPTIONS.find(item => item.value == scope.value)?.label || '属性',
 }));
 
 const formRef = ref<FormInstance>();
@@ -80,9 +83,15 @@ const typeOptions = [
 const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
     setModalProps({ loading: true });
     clear();
+    console.log(data);
     entityId.value = { entityType: data.entityType, id: data.entityId };
     scope.value = data.scope || Scope.SERVER_SCOPE;
     record.value = data.attribute;
+    if (!isEmpty(record.value)) {
+        formState.key = record.value.key;
+        formState.value = record.value.value;
+        formState.type = valueType(record.value.value);
+    }
     setModalProps({ loading: false });
 });
 
@@ -92,6 +101,22 @@ function clear() {
     formState.key = '';
     formState.value = undefined;
     formState.type = 'STRING';
+}
+
+function valueType(value: any) {
+    if (isBoolean(value)) {
+        return 'BOOLEAN';
+    } else if (isNumber(value)) {
+        if (/^-?\d+(\.\d+)?$/.test(value + '')) {
+            return 'DOUBLE';
+        }
+        return 'NUMERIC';
+    } else if (isString(value)) {
+        return 'STRING';
+    } else {
+        return 'JSON';
+    }
+
 }
 
 async function handleSubmit() {
@@ -111,6 +136,18 @@ async function handleSubmit() {
     } finally {
         setModalProps({ confirmLoading: false });
     }
+}
+
+function validatorValue(_rule: any, value: any) {
+    if (formState.type == 'JSON') {
+        try {
+            formState.value = JSON.parse(value);
+        } catch (e) {
+            return Promise.reject('请输入JSON格式数据');
+        }
+    }
+    return Promise.resolve();
+
 }
 
 </script>
