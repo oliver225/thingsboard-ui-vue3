@@ -1,7 +1,7 @@
 <template>
     <Form ref="formRef" :model="formState" layout="vertical">
 
-        <Form.Item label="时序数据Keys" name="latestTsKeyNames" :rules="[{ required: true, message: '请选择时序数据Keys!' }]"
+        <Form.Item label="遥测数据Keys" name="latestTsKeyNames" :rules="[{ required: true, message: '请选择遥测数据Keys!' }]"
             help="使用${metadataKey}表示元数据中的值，$[messageKey]表示消息正文中的值。">
             <Select v-model:value="formState.latestTsKeyNames" mode="tags">
             </Select>

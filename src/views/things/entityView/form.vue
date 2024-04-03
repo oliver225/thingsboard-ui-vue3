@@ -68,9 +68,9 @@
         <div class="p-4">
           <p class="text-help">配置目标实体的 Timeseries 数据键,以便实体视图可以访问这些键。此 Timeseries 数据是只读的。</p>
         </div>
-        <Form.Item label="时序数据" :name="['keys', 'timeseries']">
+        <Form.Item label="遥测数据" :name="['keys', 'timeseries']">
           <Select v-model:value="formState.keys.timeseries" :options="timeseriesOptions" :mode="'tags'"
-            :loading="selectFetchLoading" :allow-clear="true" @focus="fetchTimeseriesAttribute" placeholder="请选择时序数据">
+            :loading="selectFetchLoading" :allow-clear="true" @focus="fetchTimeseriesAttribute" placeholder="请选择遥测数据">
           </Select>
         </Form.Item>
       </CollapseContainer>

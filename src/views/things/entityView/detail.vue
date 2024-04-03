@@ -141,7 +141,7 @@
           <div class="p-4">
             <p class="text-help">配置目标实体的 Timeseries 数据键,以便实体视图可以访问这些键。此 Timeseries 数据是只读的。</p>
           </div>
-          <Form.Item label="时序数据" :name="['keys', 'timeseries']">
+          <Form.Item label="遥测数据" :name="['keys', 'timeseries']">
             <Select :value="record.keys?.timeseries" mode="tags">
             </Select>
           </Form.Item>

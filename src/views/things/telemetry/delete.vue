@@ -5,7 +5,7 @@
     <template #title>
       <Icon :icon="getTitle.icon" class="pr-1 m-1" color="red" />
       <span>
-        删除时序数据
+        删除遥测数据
       </span>
     </template>
 
@@ -102,7 +102,7 @@ const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data
 async function handleDelete() {
   try {
     if (isEmpty(record.value)) {
-      showMessage('没有找到需要删除的时序数据！', 'error');
+      showMessage('没有找到需要删除的遥测数据！', 'error');
       return;
     }
     const data = await validate();

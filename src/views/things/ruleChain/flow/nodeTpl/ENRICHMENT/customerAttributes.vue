@@ -11,7 +11,7 @@
         </Form.Item>
 
         <div class="border border-neutral-300 rounded-md py-2 px-3 mb-4">
-            <Form.Item :label="formState.dataToFetch == 'ATTRIBUTES' ? '属性映射' : '时序数据映射'" name="dataMapping"
+            <Form.Item :label="formState.dataToFetch == 'ATTRIBUTES' ? '属性映射' : '遥测数据映射'" name="dataMapping"
                 :rules="[{ validator: validatorDataMapping }]">
                 <Table class="mapping-table">
                     <tr class="header">

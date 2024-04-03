@@ -15,7 +15,7 @@
                     <Select v-model:value="formState.serverAttributeNames" mode="tags">
                     </Select>
                 </Form.Item>
-                <Form.Item label="时序数据" name="latestTsKeyNames" :rules="[{ validator: validatorAttributeNames }]">
+                <Form.Item label="遥测数据" name="latestTsKeyNames" :rules="[{ validator: validatorAttributeNames }]">
                     <Select v-model:value="formState.latestTsKeyNames" mode="tags">
                     </Select>
                 </Form.Item>
