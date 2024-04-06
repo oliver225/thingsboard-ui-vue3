@@ -1,16 +1,89 @@
 <template>
   <Form ref="formRef" :model="formState" layout="vertical">
     <Form.Item label="实体类型" name="originatorSource" :rules="[{ required: true, message: '实体类型必选!' }]">
-      <Select v-model:value="formState.originatorSource" @change="handleEntityTypeChange">
-        <Select.Option value="CUSTOMER">CUSTOMER</Select.Option>
-        <Select.Option value="TENANT">TENANT</Select.Option>
-        <Select.Option value="RELATED">RELATED</Select.Option>
-        <Select.Option value="ALARM_ORIGINATOR">ALARM_ORIGINATOR</Select.Option>
-        <Select.Option value="ENTITY">ENTITY</Select.Option>
+      <Select v-model:value="formState.originatorSource" @change="handleOriginatorSourceChange">
+        <Select.Option value="CUSTOMER">客户</Select.Option>
+        <Select.Option value="TENANT">租户</Select.Option>
+        <Select.Option value="RELATED">关系</Select.Option>
+        <Select.Option value="ALARM_ORIGINATOR">发起者警报</Select.Option>
+        <Select.Option value="ENTITY">实体名称匹配</Select.Option>
       </Select>
     </Form.Item>
-    <div class="border  border-neutral-400 p-2 rounded">
+    <div class="border border-neutral-300 rounded-md py-2 px-3 mb-4"
+      v-if="formState.originatorSource == OriginatorSource.RELATED">
       <p class="text-base font-medium">关系查询</p>
+      <div class="p-2">
+        <Row :gutter="20">
+          <Col :span="12">
+          <Form.Item label="方向" name="formState.relationsQuery.direction">
+            <Select v-model:value="formState.relationsQuery.direction">
+              <Select.Option value="FROM">从 发起者</Select.Option>
+              <Select.Option value="TO">到 发起者</Select.Option>
+            </Select>
+          </Form.Item>
+          </Col>
+          <Col :span="12">
+          <Form.Item label="层级" name="formState.relationsQuery.maxLevel">
+            <Input v-model:value="formState.relationsQuery.maxLevel">
+            </Input>
+          </Form.Item>
+          </Col>
+        </Row>
+      </div>
+      <div class="border border-neutral-300 rounded-md py-2 px-3 mb-4">
+        <Form.Item label="关联筛选器" name="relationsQuery">
+          <Table class="mapping-table">
+            <tr class="header">
+              <th>关联类型</th>
+              <th>实体类型</th>
+            </tr>
+            <tr class="content" v-for="(item, index) in formState.relationsQuery.filters" :key="index">
+              <td class="py-2 px-4">
+                <Input v-model:value="item.relationType" placeholder="任何类型" />
+              </td>
+              <td>
+                <Select name="originatorTypes" v-model:value="item.entityTypes" :options="allowedEntityTypes"
+                  placeholder="设备类型" mode="multiple">
+                </Select>
+              </td>
+              <td>
+                <Tooltip title="删除" class="pl-4">
+                  <Icon :icon="'ant-design:delete-outlined'" :size="20" color="red" class="cursor-pointer"
+                    @click="handleDeleteFilter(index)" />
+                </Tooltip>
+              </td>
+            </tr>
+          </Table>
+          <Button class="my-4" type="primary" @click="handleAddFilter">添加筛选器</Button>
+        </Form.Item>
+      </div>
+    </div>
+    <div class="border border-neutral-300 rounded-md py-2 px-3 mb-4"
+      v-if="formState.originatorSource == OriginatorSource.ENTITY">
+      <p class="text-base font-medium">实体名称匹配模式</p>
+      <div class="p-2">
+        <Row :gutter="20">
+          <Col :span="12">
+          <Form.Item label="类型" name="entityType">
+            <Select v-model:value="formState.entityType">
+              <Select.Option value="DEVICE">设备</Select.Option>
+              <Select.Option value="ASSET">资产</Select.Option>
+              <Select.Option value="ENTITY_VIEW">实体视图</Select.Option>
+              <Select.Option value="USER">用户</Select.Option>
+              <Select.Option value="EDGE">边缘</Select.Option>
+            </Select>
+          </Form.Item>
+          </Col>
+          <Col :span="12">
+          <Form.Item label="名称匹配" name="entityNamePattern">
+            <Input v-model:value="formState.entityNamePattern">
+            </Input>
+          </Form.Item>
+          </Col>
+        </Row>
+        <Alert type="success" message="名称匹配字段支持模板化使用$[messageKey]从消息中提取值;使用${metadataKey}从元数据中提取值。" />
+      </div>
+
     </div>
   </Form>
 </template>
@@ -24,8 +97,9 @@ export default defineComponent({
 import { ref, watch, defineComponent, reactive } from 'vue';
 import { Form, Switch, Select, Row, Col, Radio, Input, InputNumber, Alert } from 'ant-design-vue';
 import { FormInstance } from 'ant-design-vue/lib/form';
-import { Aggregation, OrderBy, TimeUnit, TIME_UNIT_OPTIONS, AGGREGATION_OPTIONS } from '/@/enums/telemetryEnum';
-import { ENTITY_TYPE_OPTIONS, EntityType } from '/@/enums/entityTypeEnum';
+import { OriginatorSource, EntityType, ENTITY_TYPE_OPTIONS } from '/@/enums/entityTypeEnum';
+import { isEmpty } from 'lodash';
+import { filter } from '/@/utils/helper/treeHelper';
 
 interface Configuration {
   entityNamePattern: any,
@@ -36,7 +110,7 @@ interface Configuration {
     fetchLastLevelOnly: boolean,
     filters: [],
     maxLevel: number
-  },
+  }
 }
 
 const props = defineProps({
@@ -45,6 +119,23 @@ const props = defineProps({
     required: true,
   },
 });
+
+const allowedEntityTypes = ENTITY_TYPE_OPTIONS.filter(item => {
+  return item.value == EntityType.TENANT
+    || item.value == EntityType.ASSET
+    || item.value == EntityType.ENTITY_VIEW
+    || item.value == EntityType.USER
+    || item.value == EntityType.EDGE
+});
+
+function handleAddFilter() {
+
+  formState.relationsQuery.filters.push({ relationType: "Contains", entityTypes: [] });
+}
+
+function handleDeleteFilter(index: number) {
+  formState.relationsQuery.filters.splice(index, 1);
+}
 
 const formRef = ref<FormInstance>();
 
@@ -55,7 +146,7 @@ const formState = reactive<any>({
   relationsQuery: {
     direction: "FROM",
     fetchLastLevelOnly: false,
-    filters: [{ relationType: "Contains", entityTypes: [] }],
+    filters: [{ relationType: "", entityTypes: [] }],
     maxLevel: 1
   }
 });
@@ -71,18 +162,15 @@ watch(
   { immediate: true }
 )
 
-async function handleEntityTypeChange(entityType) {
-    formState.entityId = undefined;
-    switch (entityType) {
-        case EntityType.CUSTOMER:
-           
-            break;
-        case EntityType.TENANT:
-           
-            break;
-    }
-    //TODO edge;
+async function handleOriginatorSourceChange(originatorSource) {
+  switch (originatorSource) {
+    case OriginatorSource.RELATED:
 
+      break;
+    case OriginatorSource.ENTITY:
+
+      break;
+  }
 }
 
 async function getConfiguration() {

@@ -131,3 +131,11 @@ export const ACTION_TYPE_OPTIONS = [
   { value: ActionType.UPDATED_COMMENT, label: '更新评论' },
   { value: ActionType.DELETED_COMMENT, label: '删除评论' }
 ];
+
+export enum OriginatorSource {
+  CUSTOMER = 'CUSTOMER',
+  TENANT = 'TENANT',
+  RELATED = 'RELATED',
+  ALARM_ORIGINATOR = 'ALARM_ORIGINATOR',
+  ENTITY = 'ENTITY'
+}
