@@ -9,7 +9,7 @@
         </Radio.Group>
       </div>
     </Form.Item>
-    <Form.Item label="keys" name="keys" :rules="[{ validator: validatorKeys }]">
+    <Form.Item label="keys" name="Keys" :rules="[{ required: true, validator: validatorKeys,message: 'key值不能为空!' }]">
       <Select v-model:value="formState.keys" mode="tags">
       </Select>
     </Form.Item>

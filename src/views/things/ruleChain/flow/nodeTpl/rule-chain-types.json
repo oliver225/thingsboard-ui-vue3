@@ -22,5 +22,6 @@
 
     "org.thingsboard.rule.engine.transform.TbChangeOriginatorNode":"change-originator",
     "org.thingsboard.rule.engine.transform.TbCopyKeysNode":"copy-key-value-pairs",
-    "org.thingsboard.rule.engine.transform.TbDeleteKeysNode":"delete-key-value-pairs"
+    "org.thingsboard.rule.engine.transform.TbDeleteKeysNode":"delete-key-value-pairs",
+    "org.thingsboard.rule.engine.transform.TbJsonPathNode":"json-path"
 }

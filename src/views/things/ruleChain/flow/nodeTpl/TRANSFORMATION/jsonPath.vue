@@ -1,23 +1,14 @@
 <template>
   <Form ref="formRef" :model="formState" layout="vertical">
-    <Form.Item name="copyFrom">
-      <div class="flex justify-between items-center border border-neutral-300 rounded-md py-2 px-4">
-        <span>复制key</span>
-        <Radio.Group v-model:value="formState.copyFrom" button-style="solid">
-          <Radio.Button value="DATA">消息到元数据</Radio.Button>
-          <Radio.Button value="METADATA">元数据到消息</Radio.Button>
-        </Radio.Group>
-      </div>
-    </Form.Item>
-    <Form.Item label="keys" name="Keys" :rules="[{ required: true, validator: validatorKeys, message: 'key值不能为空!' }]">
-      <Select v-model:value="formState.keys" mode="tags">
-      </Select>
-    </Form.Item>
+    <Form.Item label="jsonPath表达式" name="jsonPath" :rules="[{ required: true,validator: validatorJsonPath, message: 'jsonPaht值不能为空!' }]">
+            <Input v-model:value="formState.jsonPath" style="width: 100%;">
+            </Input>
+        </Form.Item>
   </Form>
 </template>
 <script lang="ts">
 export default defineComponent({
-  name: 'copy-key-value-pairs',
+  name: 'json-path',
 });
 </script>
 <script lang="ts" setup>
@@ -29,8 +20,7 @@ import { isEmpty } from 'lodash';
 import { filter } from '/@/utils/helper/treeHelper';
 
 interface Configuration {
-  copyFrom: string;
-  keys: [];
+  jsonPath: string;
 }
 
 const props = defineProps({
@@ -43,15 +33,13 @@ const props = defineProps({
 const formRef = ref<FormInstance>();
 
 const formState = reactive<any>({
-  copyFrom: 'DATA',
-  keys: [],
+  jsonPath: '$'
 });
 
 watch(
   () => props.configuration,
   () => {
-    formState.copyFrom = props.configuration.copyFrom;
-    formState.keys = props.configuration.keys;
+    formState.jsonPath = props.configuration.jsonPath;
   },
   { immediate: true },
 );
@@ -64,11 +52,11 @@ async function getConfiguration() {
   }
 }
 
-function validatorKeys() {
-  if (!isEmpty(formState.keys)) {
+function validatorJsonPath() {
+  if (!isEmpty(formState.jsonPath)) {
     return Promise.resolve();
   } else {
-    return Promise.reject('key必须填写一项！');
+    return Promise.reject('jsonPaht必须填写！');
   }
 }
 
