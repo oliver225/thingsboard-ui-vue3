@@ -1,7 +1,7 @@
 <template>
     <Form ref="formRef" :model="formState" layout="vertical">
 
-        <Form.Item name="detailsList">
+        <Form.Item label="选择详情" name="detailsList" :rules="[{ required: true, message: '请选择设备详情!' }]">
             <Select v-model:value="formState.detailsList" :options="detailsOptions" mode="multiple">
             </Select>
         </Form.Item>
