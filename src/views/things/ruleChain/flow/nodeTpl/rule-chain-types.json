@@ -19,6 +19,7 @@
     "org.thingsboard.rule.engine.metadata.TbGetAttributesNode":"originator-attributes",
     "org.thingsboard.rule.engine.metadata.TbGetOriginatorFieldsNode":"originator-fields",
     "org.thingsboard.rule.engine.metadata.TbGetTelemetryNode":"originator-telemetry",
+    "org.thingsboard.rule.engine.metadata.TbGetDeviceAttrNode":"related-device-attributes",
 
     "org.thingsboard.rule.engine.transform.TbChangeOriginatorNode":"change-originator",
     "org.thingsboard.rule.engine.transform.TbCopyKeysNode":"copy-key-value-pairs",

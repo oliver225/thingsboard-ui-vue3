@@ -94,8 +94,8 @@
                         </Select>
                     </Form.Item>
                     <Form.Item label="Limit" name="limit" :rules="[{ required: true, message: 'Limit必填!' }]"
-                        help="最小限值为2，最大值为-1000。如果要提取单个条目，请选择提提取策略'First'或 'Last'。">
-                        <InputNumber v-model:value="formState.limit" :min="2" :style="{ width: '100%' }" />
+                        help="最小限值为2，最大值为1000。如果要提取单个条目，请选择提提取策略'First'或 'Last'。">
+                        <InputNumber v-model:value="formState.limit" :min="2" :max="1000" :style="{ width: '100%' }" />
                     </Form.Item>
                 </template>
 
