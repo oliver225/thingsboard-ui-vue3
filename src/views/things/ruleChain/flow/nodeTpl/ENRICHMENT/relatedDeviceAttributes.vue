@@ -22,7 +22,7 @@
                 </Row>
                 <Form.Item :name="['deviceRelationsQuery', 'fetchLastLevelOnly']"
                     v-show="formState.deviceRelationsQuery.maxLevel && formState.deviceRelationsQuery.maxLevel > 1">
-                    <Checkbox v-model:value="formState.deviceRelationsQuery.fetchLastLevelOnly">
+                    <Checkbox v-model:checked="formState.deviceRelationsQuery.fetchLastLevelOnly">
                         仅获取最后一级关联
                     </Checkbox>
                 </Form.Item>
@@ -126,8 +126,8 @@ interface Configuration {
     deviceRelationsQuery: {
         deviceTypes: [],
         direction: 'FROM' | 'TO',
-        maxLevel: 1,
-        fetchLastLevelOnly: false,
+        maxLevel: number,
+        fetchLastLevelOnly: boolean,
         relationType: "Contains",
     }
 }
