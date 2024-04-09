@@ -24,6 +24,11 @@
     "org.thingsboard.rule.engine.metadata.TbGetTenantAttributeNode":"tenant-attributes",
     "org.thingsboard.rule.engine.metadata.TbGetTenantDetailsNode":"tenant-details",
 
+    "org.thingsboard.rule.engine.flow.TbAckNode":"acknowledge",
+    "org.thingsboard.rule.engine.flow.TbCheckpointNode":"checkpoint",
+    "org.thingsboard.rule.engine.flow.TbRuleChainOutputNod":"output",
+    "org.thingsboard.rule.engine.flow.TbRuleChainInputNode":"rule-chain",
+
     "org.thingsboard.rule.engine.transform.TbChangeOriginatorNode":"change-originator",
     "org.thingsboard.rule.engine.transform.TbCopyKeysNode":"copy-key-value-pairs",
     "org.thingsboard.rule.engine.transform.TbDeleteKeysNode":"delete-key-value-pairs",
