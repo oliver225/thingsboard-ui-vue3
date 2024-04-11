@@ -26,7 +26,7 @@
 
     "org.thingsboard.rule.engine.flow.TbAckNode":"acknowledge",
     "org.thingsboard.rule.engine.flow.TbCheckpointNode":"checkpoint",
-    "org.thingsboard.rule.engine.flow.TbRuleChainOutputNod":"output",
+    "org.thingsboard.rule.engine.flow.TbRuleChainOutputNode":"output",
     "org.thingsboard.rule.engine.flow.TbRuleChainInputNode":"rule-chain",
 
     "org.thingsboard.rule.engine.transform.TbChangeOriginatorNode":"change-originator",
