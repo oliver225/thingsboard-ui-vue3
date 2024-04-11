@@ -32,6 +32,7 @@ const props = defineProps({
         type: Object as PropType<Configuration>,
         required: true,
     },
+    ruleChainId: { type: String, default: '' }
 
 });
 
@@ -56,7 +57,7 @@ onMounted(async () => {
 
 async function fetchRuleChainList() {
     const ruleChainListResult = await ruleChainList({ pageSize: 50, page: 0, sortProperty: 'name', sortOrder: 'ASC' }, 'CORE');
-    ruleChainOptions.value = ruleChainListResult.data.map(item => {
+    ruleChainOptions.value = ruleChainListResult.data.filter(item => item.id.id != props.ruleChainId).map(item => {
         return {
             value: item.id.id,
             label: item.name,

@@ -19,7 +19,8 @@
         </Form.Item>
         </Col>
       </Row>
-      <component ref="compRef" :is="ruleChainTypes[formState.type]" :configuration="formState.configuration">
+      <component ref="compRef" :is="ruleChainTypes[formState.type]" :configuration="formState.configuration"
+        :ruleChainId="formState.ruleChainId?.id">
 
       </component>
 
