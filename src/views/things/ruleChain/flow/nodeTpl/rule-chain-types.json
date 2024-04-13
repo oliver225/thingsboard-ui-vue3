@@ -39,5 +39,6 @@
     "org.thingsboard.rule.engine.transform.TbDeleteKeysNode":"delete-key-value-pairs",
     "org.thingsboard.rule.engine.transform.TbJsonPathNode":"json-path",
     "org.thingsboard.rule.engine.transform.TbTransformMsgNode":"script",
-    "org.thingsboard.rule.engine.transform.TbRenameKeysNode":"rename-keys"
+    "org.thingsboard.rule.engine.transform.TbRenameKeysNode":"rename-keys",
+    "org.thingsboard.rule.engine.deduplication.TbMsgDeduplicationNode":"deduplication"
 }
