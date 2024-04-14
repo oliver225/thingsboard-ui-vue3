@@ -95,11 +95,9 @@ export default defineComponent({
 
 <script lang="ts" setup>
 import { ref, watch, defineComponent, reactive } from 'vue';
-import { Form, Button, Switch, Select, Row, Col, Radio, Input, InputNumber, Alert } from 'ant-design-vue';
+import { Form, Button, Select, Row, Col, Input, Alert } from 'ant-design-vue';
 import { FormInstance } from 'ant-design-vue/lib/form';
 import { OriginatorSource, EntityType, ENTITY_TYPE_OPTIONS } from '/@/enums/entityTypeEnum';
-import { isEmpty } from 'lodash';
-import { filter } from '/@/utils/helper/treeHelper';
 import { Icon } from '/@/components/Icon';
 
 interface Configuration {

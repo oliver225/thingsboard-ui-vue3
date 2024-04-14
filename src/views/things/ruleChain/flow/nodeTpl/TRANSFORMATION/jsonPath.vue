@@ -1,9 +1,10 @@
 <template>
   <Form ref="formRef" :model="formState" layout="vertical">
-    <Form.Item label="jsonPath表达式" name="jsonPath" :rules="[{ required: true,validator: validatorJsonPath, message: 'jsonPaht值不能为空!' }]">
-            <Input v-model:value="formState.jsonPath" style="width: 100%;">
-            </Input>
-        </Form.Item>
+    <Form.Item label="jsonPath表达式" name="jsonPath"
+      :rules="[{ required: true, validator: validatorJsonPath, message: 'jsonPaht值不能为空!' }]">
+      <Input v-model:value="formState.jsonPath" style="width: 100%;">
+      </Input>
+    </Form.Item>
   </Form>
 </template>
 <script lang="ts">
@@ -13,11 +14,9 @@ export default defineComponent({
 </script>
 <script lang="ts" setup>
 import { ref, watch, defineComponent, reactive } from 'vue';
-import { Form, Switch, Select, Row, Col, Radio, Input, InputNumber, Alert } from 'ant-design-vue';
+import { Form, Input, } from 'ant-design-vue';
 import { FormInstance } from 'ant-design-vue/lib/form';
-import { OriginatorSource, EntityType, ENTITY_TYPE_OPTIONS } from '/@/enums/entityTypeEnum';
 import { isEmpty } from 'lodash';
-import { filter } from '/@/utils/helper/treeHelper';
 
 interface Configuration {
   jsonPath: string;

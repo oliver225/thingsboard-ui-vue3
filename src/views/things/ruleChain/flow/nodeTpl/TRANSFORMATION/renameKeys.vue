@@ -57,6 +57,7 @@ const props = defineProps({
     type: Object as PropType<Configuration>,
     required: true,
   },
+  ruleChainId: { type: String, default: '' }
 });
 
 const mappingList = ref<Array<any>>([]);

@@ -9,7 +9,7 @@
         </Radio.Group>
       </div>
     </Form.Item>
-    <Form.Item label="keys" name="Keys" :rules="[{ required: true, validator: validatorKeys,message: 'key值不能为空!' }]">
+    <Form.Item label="keys" name="Keys" :rules="[{ required: true, validator: validatorKeys, message: 'key值不能为空!' }]">
       <Select v-model:value="formState.keys" mode="tags">
       </Select>
     </Form.Item>
@@ -22,11 +22,9 @@ export default defineComponent({
 </script>
 <script lang="ts" setup>
 import { ref, watch, defineComponent, reactive } from 'vue';
-import { Form, Switch, Select, Row, Col, Radio, Input, InputNumber, Alert } from 'ant-design-vue';
+import { Form, Select, Radio } from 'ant-design-vue';
 import { FormInstance } from 'ant-design-vue/lib/form';
-import { OriginatorSource, EntityType, ENTITY_TYPE_OPTIONS } from '/@/enums/entityTypeEnum';
 import { isEmpty } from 'lodash';
-import { filter } from '/@/utils/helper/treeHelper';
 
 interface Configuration {
   deleteFrom: string;
