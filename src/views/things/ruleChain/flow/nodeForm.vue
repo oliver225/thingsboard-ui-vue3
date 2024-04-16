@@ -19,6 +19,10 @@
         </Form.Item>
         </Col>
       </Row>
+      <Form.Item name="singletonMode" v-show="singletonModeShow">
+        <Switch v-model:checked="formState.singletonMode" size="small" /><span class="ml-2">单节点模式</span>
+      </Form.Item>
+
       <component ref="compRef" :is="ruleChainTypes[formState.type]" :configuration="formState.configuration"
         :ruleChainId="formState.ruleChainId?.id">
 
@@ -28,9 +32,7 @@
       <Form.Item label="描述信息" :name="['additionalInfo', 'description']">
         <Textarea v-model:value="formState.additionalInfo.description" placeholder="输入节点描述信息" :rows="3" />
       </Form.Item>
-      <Form.Item name="singletonMode" v-show="false">
-        <Switch v-model:checked="formState.singletonMode" />
-      </Form.Item>
+
       <Form.Item name="type" v-show="false">
         <Input v-model:value="formState.type" />
       </Form.Item>
@@ -96,7 +98,9 @@ const getTitle = computed(() => ({
   value: record.value?.id?.id ? t('编辑规则节点') : t('添加规则节点'),
 }));
 
-
+const singletonModeShow = computed(() => {
+  return descriptor.value?.name == 'mqtt';
+})
 
 const formState = reactive<RuleNode>({
   id: { entityType: EntityType.RULE_NODE, id: '' },
@@ -127,6 +131,7 @@ const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data
     formState.configuration = descriptor.value?.configurationDescriptor.nodeDefinition.defaultConfiguration || {};
     formState.configurationVersion = descriptor.value?.configurationVersion || 0;
   }
+  formState.singletonMode = descriptor.value?.name == 'mqtt'
   console.log(descriptor.value)
 
   setModalProps({ loading: false });
