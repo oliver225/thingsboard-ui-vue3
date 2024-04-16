@@ -214,7 +214,13 @@ watch(
 
 async function getConfiguration() {
     try {
-        return await formRef.value?.validate();
+        const data = await formRef.value?.validate();
+        if (data) {
+            headerList.value.forEach(header => {
+                data.headers[header.key] = header.value;
+            })
+        }
+        return data;
     } catch (error: any) {
         throw error;
     }

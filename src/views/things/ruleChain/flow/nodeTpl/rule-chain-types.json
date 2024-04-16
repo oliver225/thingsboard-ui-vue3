@@ -33,6 +33,7 @@
     "org.thingsboard.rule.engine.notification.TbNotificationNode":"send-notification",
     "org.thingsboard.rule.engine.mail.TbSendEmailNode":"send-email",
     "org.thingsboard.rule.engine.rest.TbRestApiCallNode":"rest-api-call",
+    "org.thingsboard.rule.engine.rabbitmq.TbRabbitMqNode":"rabbitmq",
 
     "org.thingsboard.rule.engine.transform.TbChangeOriginatorNode":"change-originator",
     "org.thingsboard.rule.engine.transform.TbCopyKeysNode":"copy-key-value-pairs",
