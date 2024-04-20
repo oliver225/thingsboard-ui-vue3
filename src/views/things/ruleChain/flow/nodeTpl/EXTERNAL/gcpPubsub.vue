@@ -108,6 +108,7 @@ async function getConfiguration() {
                 data.messageAttributes[attribute.key] = attribute.value;
             })
             data.serviceAccountKeyFileName = fileList.value[0].name;
+            //TODO: 文件转化
             data.serviceAccountKey = fileList.value[0].originFileObj;
         }
         return data;
