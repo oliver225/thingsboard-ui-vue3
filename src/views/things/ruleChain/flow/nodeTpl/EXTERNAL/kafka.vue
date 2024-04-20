@@ -43,7 +43,7 @@
         </Form.Item>
         <Form.Item label="Other Properties" name="otherProperties" :rules="[{ validator: validatorOtherProperties }]">
 
-            <Table class="header-table">
+            <Table class="properties-table">
                 <tr class="header">
                     <th>Key</th>
                     <th>Value</th>
@@ -205,3 +205,31 @@ function handleAddProperty() {
 defineExpose({ getConfiguration })
 
 </script>
+<style lang="less">
+.ant-form-item-has-error {
+    .properties-table {
+        border: 1px solid #ff4d4f;
+    }
+}
+
+.properties-table {
+    width: 100%;
+    align: "center";
+    border: 1px solid @border-color-base;
+    border-radius: 4px;
+
+    .header {
+        border-bottom: 1px solid @border-color-base;
+    }
+
+    th {
+        padding: 10px 8px;
+        text-align: left;
+        color: @border-color-base;
+    }
+
+    .td {
+        padding: 2px 2px;
+    }
+}
+</style>
