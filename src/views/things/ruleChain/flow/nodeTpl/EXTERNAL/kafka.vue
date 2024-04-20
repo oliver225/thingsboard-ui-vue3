@@ -4,15 +4,42 @@
             help="使用${metadataKey}表示元数据中的值，$[messageKey]表示消息正文中的值。">
             <Input v-model:value="formState.topicPattern" />
         </Form.Item>
-        <Form.Item label="Key Pattern" name="keyPattern" help="使用${metadataKey}表示元数据中的值，$[messageKey]表示消息正文中的值。
-        可选择的如果指定了有效的分区号，则在发送记录时将使用该分区号。如果没有指定分区，则将使用密钥。如果两者都未指定，则将以循环方式分配分区。">
+        <Form.Item label="Key Pattern" name="keyPattern"
+            help="使用${metadataKey}表示元数据中的值，$[messageKey]表示消息正文中的值。
+                                                                    可选择的如果指定了有效的分区号，则在发送记录时将使用该分区号。如果没有指定分区，则将使用密钥。如果两者都未指定，则将以循环方式分配分区。">
             <Input v-model:value="formState.keyPattern" />
         </Form.Item>
-        <Form.Item label="Bootstrap servers" name="bootstrapServers" :rules="[{ required: true, message: '请输入Bootstrap servers!' }]">
+        <Form.Item label="Bootstrap servers" name="bootstrapServers"
+            :rules="[{ required: true, message: '请输入Bootstrap servers!' }]">
             <Input v-model:value="formState.bootstrapServers" />
         </Form.Item>
         <Form.Item label="Automatically retry times if fails" name="retries">
-           <InputNumber v-model:value="formState.retries" :min="0"/>
+            <InputNumber v-model:value="formState.retries" :min="0" :style="{ width: '100%' }" />
+        </Form.Item>
+        <Form.Item label="Produces batch size in bytes" name="batchSize">
+            <InputNumber v-model:value="formState.batchSize" :min="0" :style="{ width: '100%' }" />
+        </Form.Item>
+        <Form.Item label="Time to buffer locally" name="linger">
+            <InputNumber v-model:value="formState.linger" :min="0" addon-after="毫秒" :style="{ width: '100%' }" />
+        </Form.Item>
+        <Form.Item label="Client buffer max size in bytes" name="bufferMemory">
+            <InputNumber v-model:value="formState.bufferMemory" :min="0" :style="{ width: '100%' }" />
+        </Form.Item>
+        <Form.Item label="Number of acknowledgements" name="acks"
+            :rules="[{ required: true, message: '请选择acknowledgements 数量' }]">
+            <Select v-model:value="formState.acks" :min="0" :style="{ width: '100%' }">
+                <Select.Option value="all">all</Select.Option>
+                <Select.Option value="-1">-1</Select.Option>
+                <Select.Option value="0">0</Select.Option>
+                <Select.Option value="1">1</Select.Option>
+            </Select>
+        </Form.Item>
+        <Form.Item label="key serializer" name="keySerializer" :rules="[{ required: true, message: '请输入 key serializer' }]">
+            <Input v-model:value="formState.keySerializer" />
+        </Form.Item>
+        <Form.Item label="value serializer" name="valueSerializer"
+            :rules="[{ required: true, message: '请输入 value serializer' }]">
+            <Input v-model:value="formState.valueSerializer" />
         </Form.Item>
         <Form.Item label="Other Properties" name="otherProperties" :rules="[{ validator: validatorOtherProperties }]">
 
@@ -36,6 +63,23 @@
             </Table>
             <Button class="my-4" type="primary" @click="handleAddProperty">添加</Button>
         </Form.Item>
+        <Form.Item name="addMetadataKeyValuesAsKafkaHeaders" help="如果选中，消息元数据中的键值对将作为具有预定义字符集编码的字节数组添加到传出记录头中。">
+            <Checkbox v-model:checked="formState.addMetadataKeyValuesAsKafkaHeaders">
+                向Kafka记录头添加消息元数据键值对
+            </Checkbox>
+        </Form.Item>
+        <Form.Item label="charset encoding" name="kafkaHeadersCharset"
+            v-if="formState.addMetadataKeyValuesAsKafkaHeaders == true">
+            <Select v-model:value="formState.kafkaHeadersCharset">
+                <Select.Option value="US-ASCII">US-ASCII</Select.Option>
+                <Select.Option value="ISO-8859-1">ISO-8859-1</Select.Option>
+                <Select.Option value="UTF-8">UTF-8</Select.Option>
+                <Select.Option value="UTF-16BE">UTF-16BE</Select.Option>
+                <Select.Option value="UTF-16LE">UTF-16LE</Select.Option>
+                <Select.Option value="UTF-16">UTF-16</Select.Option>
+            </Select>
+
+        </Form.Item>
     </Form>
 </template>
 <script lang="ts">
@@ -46,7 +90,7 @@ export default defineComponent({
 <script lang="ts" setup >
 import { ref, watch, defineComponent, reactive } from 'vue';
 import { Icon } from '/@/components/Icon';
-import { Form, Input, Button, Tooltip, InputNumber, Checkbox, Select, Row, Col, InputPassword } from 'ant-design-vue';
+import { Form, Input, Button, Tooltip, InputNumber, Checkbox, Select } from 'ant-design-vue';
 import { FormInstance } from 'ant-design-vue/lib/form';
 import { isEmpty } from 'lodash';
 
