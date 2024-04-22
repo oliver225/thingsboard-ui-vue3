@@ -7,7 +7,7 @@
             </Select>
         </Form.Item>
         <div class="border border-neutral-300 rounded-md py-2 px-3 mb-4">
-            <p class="text-base font-medium">提取间隔</p>
+            <p class="text-base font-bold">提取间隔</p>
             <div class="p-2">
                 <Form.Item name="useMetadataIntervalPatterns">
                     <div class="flex items-center">
@@ -66,7 +66,7 @@
             </div>
         </div>
         <div class="border border-neutral-300 rounded-md py-2 px-3 mb-4">
-            <p class="text-base font-medium">提取策略</p>
+            <p class="text-base font-bold">提取策略</p>
             <div class="p-2">
                 <Form.Item name="fetchMode">
                     <Radio.Group v-model:value="formState.fetchMode" button-style="solid" :style="{ display: 'flex' }"

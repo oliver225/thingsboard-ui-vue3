@@ -4,7 +4,7 @@
       <InputNumber v-model:value="formState.interval" :min="1" :step="1" :precision="0" :style="{ width: '100%' }" />
     </Form.Item>
     <div class="border border-neutral-300 rounded-md py-2 px-3 mb-4">
-      <p class="text-base font-medium">存储</p>
+      <p class="text-base font-bold">存储</p>
       <div class="p-2">
         <Form.Item name="strategy">
           <Radio.Group v-model:value="formState.strategy" button-style="solid" :style="{ display: 'flex' }" class="w-full"

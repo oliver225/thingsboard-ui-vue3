@@ -1,7 +1,7 @@
 <template>
     <Form ref="formRef" :model="formState" layout="vertical">
         <div class="border border-neutral-300 rounded-md py-2 px-3 mb-4">
-            <p class="text-base font-medium">原始属性</p>
+            <p class="text-base font-bold">原始属性</p>
             <div class="p-2">
                 <Form.Item label="客户端属性" name="clientAttributeNames" :rules="[{ validator: validatorAttributeNames }]">
                     <Select v-model:value="formState.clientAttributeNames" mode="tags">

@@ -1,7 +1,7 @@
 <template>
     <Form ref="formRef" :model="formState" layout="vertical">
         <div class="border border-neutral-300 rounded-md py-2 px-3 mb-4">
-            <p class="text-base font-medium">关系查询</p>
+            <p class="text-base font-bold">关系查询</p>
             <div class="p-2">
                 <Row :gutter="20">
                     <Col :span="12">
@@ -77,7 +77,7 @@
 
         </div>
         <div class="border border-neutral-300 rounded-md py-2 px-3 mb-4">
-            <p class="text-base font-medium">要获取的数据</p>
+            <p class="text-base font-bold">要获取的数据</p>
             <div class="p-2">
                 <Form.Item name="dataToFetch">
                     <Radio.Group v-model:value="formState.dataToFetch" button-style="solid" :style="{ display: 'flex' }"

@@ -11,7 +11,7 @@
     </Form.Item>
     <div class="border border-neutral-300 rounded-md py-2 px-3 mb-4"
       v-if="formState.originatorSource == OriginatorSource.RELATED">
-      <p class="text-base font-medium">关系查询</p>
+      <p class="text-base font-bold">关系查询</p>
       <div class="p-2">
         <Row :gutter="20">
           <Col :span="12">
@@ -60,7 +60,7 @@
     </div>
     <div class="border border-neutral-300 rounded-md py-2 px-3 mb-4"
       v-if="formState.originatorSource == OriginatorSource.ENTITY">
-      <p class="text-base font-medium">实体名称匹配模式</p>
+      <p class="text-base font-bold">实体名称匹配模式</p>
       <div class="p-2">
         <Row :gutter="20">
           <Col :span="12">

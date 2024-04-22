@@ -1,7 +1,7 @@
 <template>
     <Form ref="formRef" :model="formState" layout="vertical">
         <div class="border  border-neutral-400 p-2 rounded">
-            <p class="text-base font-medium">坐标字段</p>
+            <p class="text-base font-bold">坐标字段</p>
             <div class="p-2">
                 <Row :gutter="20">
                     <Col :span="12">
@@ -20,7 +20,7 @@
             </div>
         </div>
         <div class="border  border-neutral-400 p-2 rounded mt-3">
-            <p class="text-base font-medium">地理围栏</p>
+            <p class="text-base font-bold">地理围栏</p>
             <div class="p-2">
                 <Form.Item label="边界类型" name="perimeterType" :rules="[{ required: true, message: '边界类型必选!' }]">
                     <Select v-model:value="formState.perimeterType">

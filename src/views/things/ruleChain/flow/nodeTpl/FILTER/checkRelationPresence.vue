@@ -1,7 +1,7 @@
 <template>
     <Form ref="formRef" :model="formState" layout="vertical">
         <div class="border  border-neutral-400 p-2 rounded">
-            <p class="text-base font-medium">关系搜索参数</p>
+            <p class="text-base font-bold">关系搜索参数</p>
             <div class="p-2">
                 <Form.Item label="方向" name="direction">
                     <Select v-model:value="formState.direction">
