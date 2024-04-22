@@ -9,10 +9,6 @@
             <Select v-model:value="formState.keys" mode="tags">
             </Select>
         </Form.Item>
-        <Form.Item label="属性值" name="keys" :rules="[{ required: true, message: '属性值必填!' }]">
-            <Select v-model:value="formState.keys" mode="tags">
-            </Select>
-        </Form.Item>
         <Form.Item name="sendAttributesDeletedNotification" help="将有关已删除属性的通知作为单独的消息发送到规则引擎队列。">
             <Checkbox v-model:checked="formState.sendAttributesDeletedNotification">发送属性删除通知</Checkbox>
         </Form.Item>
@@ -56,7 +52,7 @@ const formRef = ref<FormInstance>();
 const formState = reactive<any>({
     keys: [],
     notifyDevice: false,
-    scope: "SERVER_SCOPE",
+    scope: Scope.SERVER_SCOPE,
     sendAttributesDeletedNotification: false,
 });
 
