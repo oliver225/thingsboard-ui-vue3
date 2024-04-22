@@ -49,3 +49,9 @@ export const SCOPE_OPTIONS = [
   { value: Scope.SHARED_SCOPE, label: '共享属性' },
   { value: 'LATEST_TELEMETRY', label: '遥测数据' },
 ]
+
+export const SCOPE_OPTIONS_SIMPLE = [
+  { value: Scope.CLIENT_SCOPE, label: '客户端属性' },
+  { value: Scope.SERVER_SCOPE, label: '服务端属性' },
+  { value: Scope.SHARED_SCOPE, label: '共享属性' },
+]

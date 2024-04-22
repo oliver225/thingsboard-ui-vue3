@@ -11,7 +11,7 @@
     <Form.Item :name="formState.scriptLang == 'TBEL' ? 'tbelScript' : 'jsScript'">
       <div>
         <div class="flex justify-between">
-          <p class="text-gray-500">function Filter(msg, metadata, msgType) {</p>
+          <p class="text-gray-500">function Transform(msg, metadata, msgType) {</p>
           <Space>
             <Tooltip title="格式化">
               <Icon class="cursor-pointer" @click="handleFormatScript" :icon="'ant-design:format-painter-filled'" />
@@ -32,7 +32,7 @@
         </div>
         <div class="text-gray-500">}</div>
       </div>
-      <Button class="mt-2" type="primary" @click="handleTestScript">测试脚本功能</Button>
+      <Button class="mt-2" type="primary" @click="handleTestScript">测试转换函数</Button>
     </Form.Item>
   </Form>
 </template>

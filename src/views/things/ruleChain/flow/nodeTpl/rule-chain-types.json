@@ -34,6 +34,14 @@
     "org.thingsboard.rule.engine.transform.TbSplitArrayMsgNod":"split-array-msg",
     "org.thingsboard.rule.engine.mail.TbMsgToEmailNode":"to-email",
 
+    "org.thingsboard.rule.engine.action.TbAssignToCustomerNode":"assign-to-customer",
+    "org.thingsboard.rule.engine.action.TbClearAlarmNode":"clear-alarm",
+    "org.thingsboard.rule.engine.action.TbCopyAttributesToEntityViewNode":"copy-to-view",
+    "org.thingsboard.rule.engine.action.TbCreateAlarmNode":"create-alarm",
+    "org.thingsboard.rule.engine.action.TbCreateRelationNode":"create-relation",
+    "org.thingsboard.rule.engine.delay.TbMsgDelayNode":"delay-deprecated",
+    "org.thingsboard.rule.engine.telemetry.TbMsgDeleteAttributesNode":"delete-attributes",
+
     "org.thingsboard.rule.engine.sms.TbSendSmsNode":"send-sms",
     "org.thingsboard.rule.engine.notification.TbNotificationNode":"send-notification",
     "org.thingsboard.rule.engine.mail.TbSendEmailNode":"send-email",
