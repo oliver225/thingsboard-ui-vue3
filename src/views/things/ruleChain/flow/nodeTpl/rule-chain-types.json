@@ -44,6 +44,8 @@
     "org.thingsboard.rule.engine.action.TbDeleteRelationNode":"delete-relation",
     "org.thingsboard.rule.engine.profile.TbDeviceProfileNode":"device-profile",
     "org.thingsboard.rule.engine.action.TbDeviceStateNode":"device-state",
+    "org.thingsboard.rule.engine.debug.TbMsgGeneratorNode":"generator",
+    "org.thingsboard.rule.engine.geo.TbGpsGeofencingActionNode":"gps-geofencing-events",
     "org.thingsboard.rule.engine.action.TbLogNode":"log",
     "org.thingsboard.rule.engine.math.TbMathNode":"math-function",
     "org.thingsboard.rule.engine.action.TbMsgCountNode":"message-count",
