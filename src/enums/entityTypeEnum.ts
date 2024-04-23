@@ -103,8 +103,8 @@ export const ACTION_TYPE_OPTIONS = [
   { value: ActionType.LOCKOUT, label: '锁定' },
   { value: ActionType.ATTRIBUTES_UPDATED, label: '更新属性' },
   { value: ActionType.ATTRIBUTES_DELETED, label: '删除属性' },
-  { value: ActionType.TIMESERIES_UPDATED, label: '更新时序数据' },
-  { value: ActionType.TIMESERIES_DELETED, label: '删除时序数据' },
+  { value: ActionType.TIMESERIES_UPDATED, label: '更新遥测数据' },
+  { value: ActionType.TIMESERIES_DELETED, label: '删除遥测数据' },
   { value: ActionType.RPC_CALL, label: 'RCP 调用' },
   { value: ActionType.CREDENTIALS_UPDATED, label: '更新凭证' },
   { value: ActionType.ASSIGNED_TO_CUSTOMER, label: '委给客户' },
@@ -131,3 +131,11 @@ export const ACTION_TYPE_OPTIONS = [
   { value: ActionType.UPDATED_COMMENT, label: '更新评论' },
   { value: ActionType.DELETED_COMMENT, label: '删除评论' }
 ];
+
+export enum OriginatorSource {
+  CUSTOMER = 'CUSTOMER',
+  TENANT = 'TENANT',
+  RELATED = 'RELATED',
+  ALARM_ORIGINATOR = 'ALARM_ORIGINATOR',
+  ENTITY = 'ENTITY'
+}

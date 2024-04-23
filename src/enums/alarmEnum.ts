@@ -52,7 +52,7 @@ export enum AlarmConditionKeyType {
 
 export const ALARM_CONDITION_KEY_TYPE_OPTIONS = [
   { value: AlarmConditionKeyType.ATTRIBUTE, label: '属性' },
-  { value: AlarmConditionKeyType.TIME_SERIES, label: '时序数据' },
+  { value: AlarmConditionKeyType.TIME_SERIES, label: '遥测数据' },
   { value: AlarmConditionKeyType.CONSTANT, label: '常量' },
 ];
 

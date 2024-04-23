@@ -1,7 +1,7 @@
 <template>
     <Form ref="formRef" :model="formState" layout="vertical">
         <div class="border  border-neutral-400 p-2 rounded">
-            <p class="text-base font-medium">检查字段</p>
+            <p class="text-base font-bold">检查字段</p>
             <div class="p-2">
                 <Form.Item label="消息字段" name="messageNames" :rules="[{ validator: validatorFieldName }]">
                     <Select v-model:value="formState.messageNames" mode="tags">
@@ -47,6 +47,7 @@ const props = defineProps({
         type: Object as PropType<Configuration>,
         required: true,
     },
+    ruleChainId: { type: String, default: '' }
 });
 
 

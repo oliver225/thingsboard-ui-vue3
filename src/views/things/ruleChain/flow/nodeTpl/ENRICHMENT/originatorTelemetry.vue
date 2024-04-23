@@ -1,13 +1,13 @@
 <template>
     <Form ref="formRef" :model="formState" layout="vertical">
 
-        <Form.Item label="时序数据Keys" name="latestTsKeyNames" :rules="[{ required: true, message: '请选择时序数据Keys!' }]"
+        <Form.Item label="遥测数据Keys" name="latestTsKeyNames" :rules="[{ required: true, message: '请选择遥测数据Keys!' }]"
             help="使用${metadataKey}表示元数据中的值，$[messageKey]表示消息正文中的值。">
             <Select v-model:value="formState.latestTsKeyNames" mode="tags">
             </Select>
         </Form.Item>
         <div class="border border-neutral-300 rounded-md py-2 px-3 mb-4">
-            <p class="text-base font-medium">提取间隔</p>
+            <p class="text-base font-bold">提取间隔</p>
             <div class="p-2">
                 <Form.Item name="useMetadataIntervalPatterns">
                     <div class="flex items-center">
@@ -66,7 +66,7 @@
             </div>
         </div>
         <div class="border border-neutral-300 rounded-md py-2 px-3 mb-4">
-            <p class="text-base font-medium">提取策略</p>
+            <p class="text-base font-bold">提取策略</p>
             <div class="p-2">
                 <Form.Item name="fetchMode">
                     <Radio.Group v-model:value="formState.fetchMode" button-style="solid" :style="{ display: 'flex' }"
@@ -94,8 +94,8 @@
                         </Select>
                     </Form.Item>
                     <Form.Item label="Limit" name="limit" :rules="[{ required: true, message: 'Limit必填!' }]"
-                        help="最小限值为2，最大值为-1000。如果要提取单个条目，请选择提提取策略'First'或 'Last'。">
-                        <InputNumber v-model:value="formState.limit" :min="2" :style="{ width: '100%' }" />
+                        help="最小限值为2，最大值为1000。如果要提取单个条目，请选择提提取策略'First'或 'Last'。">
+                        <InputNumber v-model:value="formState.limit" :min="2" :max="1000" :style="{ width: '100%' }" />
                     </Form.Item>
                 </template>
 
@@ -138,6 +138,7 @@ const props = defineProps({
         type: Object as PropType<Configuration>,
         required: true,
     },
+    ruleChainId: { type: String, default: '' }
 });
 
 

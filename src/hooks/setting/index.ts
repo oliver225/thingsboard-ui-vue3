@@ -9,7 +9,7 @@ export const useGlobSetting = (): Readonly<GlobConfig> => {
     VITE_GLOB_API_URL,
     VITE_GLOB_APP_SHORT_NAME,
     VITE_GLOB_API_URL_PREFIX,
-    VITE_WS_URL_PREFIX,
+    VITE_GLOB_WS_PREFIX,
     VITE_PROXY
     // VITE_GLOB_UPLOAD_URL,
   } = getAppEnvConfig();
@@ -37,10 +37,10 @@ export const useGlobSetting = (): Readonly<GlobConfig> => {
 
   const wsPath = ((): string => {
     if (isProdMode()) {
-      return `${location.protocol.replace('https:', 'wss://').replace('http:', 'ws://')}${location.host}${VITE_WS_URL_PREFIX}`;
+      return `${location.protocol.replace('https:', 'wss://').replace('http:', 'ws://')}${location.host}${VITE_GLOB_WS_PREFIX}`;
     }
     const proxyHost = VITE_PROXY[0][1].replace(VITE_PROXY[0][0], '');
-    return `${proxyHost.replace('https:', 'wss://').replace('http:', 'ws://')}${VITE_WS_URL_PREFIX}`;
+    return `${proxyHost.replace('https:', 'wss://').replace('http:', 'ws://')}${VITE_GLOB_WS_PREFIX}`;
   })();
 
 

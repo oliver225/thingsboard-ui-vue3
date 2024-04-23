@@ -90,6 +90,7 @@ const inputFormSchemas: FormSchema[] = [
     defaultValue: 25,
     componentProps: {
       min: 1,
+      max: 65535,
       placeholder: t('SMTP端口号码'),
     },
     required: true,

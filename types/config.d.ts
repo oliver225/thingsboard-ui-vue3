@@ -166,7 +166,7 @@ export interface GlobEnvConfig {
   // Project abbreviation
   VITE_GLOB_APP_SHORT_NAME: string;
 
-  VITE_WS_URL_PREFIX: string;
+  VITE_GLOB_WS_PREFIX: string;
   // Upload url（5.5.2+弃用）
   // VITE_GLOB_UPLOAD_URL?: string;
 }
