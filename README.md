@@ -8,7 +8,7 @@ ThingsBoard凭借其优秀的性能和高效的性能得到了广大开发者的
 
 ## thingsbaord
  
-- 后台版本为 thingsboard：V3.5.1 
+- 后台版本为 thingsboard：V3.6.1 
 
 ## 使用技术
 
