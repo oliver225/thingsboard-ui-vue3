@@ -1,14 +1,24 @@
 # thingsboard-ui-vue
 
 
-ThingsBoard凭借其优秀的性能和高效的性能得到了广大开发者的认可, 本项目为基于Vue开发的 ThingsBoard 前台
+ThingsBoard凭借其优秀的性能和高效的性能得到了广大开发者的认可,但基于Angular的前端不符合中国的用户习惯， 本项目为基于Vue3开发的 ThingsBoard 前台
+
+📌 规则链代码已全部开源
+
+📌 web组态 开发中...
+
+📌 大屏组态 开发中...
+
+📌 uniapp小程序 开发中...
+
+📌 仪表板 开发中...
 
 
-🎉 亲爱的用户，感谢您使用我们的项目，点个 Star 为我们的项目加油助力吧！
+🎉 请大家持续关注，watch、star、fork 一键三连
 
 ## thingsbaord
  
-- 后台版本为 thingsboard：V3.6.1 
+- 后台版本为 thingsboard：V3.X，持续跟进更新中
 
 ## 使用技术
 
@@ -55,3 +65,6 @@ ThingsBoard凭借其优秀的性能和高效的性能得到了广大开发者的
 ![租户仪表盘](images/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240219165300.png)
 ![租户仪表盘](images/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240219165313.png)
 ![租户仪表盘](images/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240219165618.png)
+
+## 联系我
+![管理员仪表盘](images/weixin.jpg)
