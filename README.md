@@ -3,7 +3,7 @@
 
 ThingsBoard凭借其优秀的性能和高效的性能得到了广大开发者的认可,但基于Angular的前端不符合中国的用户习惯， 本项目为基于Vue3开发的 ThingsBoard 前台
 
-📌 规则链代码已全部开源
+📌 规则链代码已全部开放
 
 📌 web组态 开发中...
 
@@ -66,5 +66,8 @@ ThingsBoard凭借其优秀的性能和高效的性能得到了广大开发者的
 ![租户仪表盘](images/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240219165313.png)
 ![租户仪表盘](images/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240219165618.png)
 
-## 联系我
-![管理员仪表盘](images/weixin.jpg)
+## 🙋‍♂️联系我们
+
+<left class ='img'>
+<img title="扫码沟通" src="./images/weixin.jpg" width=40%" />
+</left>
