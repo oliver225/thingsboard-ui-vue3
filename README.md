@@ -13,13 +13,13 @@ ThingsBoard凭借其优秀的性能和高效的性能得到了广大开发者的
 
 📌 仪表板 开发中...
 
-📌 Modbus、BAcnet、Siemens S7、DL/T 645、 DL/T 698.45 、GB28181-2016  接入....
+📌 Modbus、BAcnet、Siemens S7、DL/T 645、 DL/T 698.45 、GB28181-2016  接入.... [接入平台](https://vitejs.dev/) 
 
 🎉 请大家持续关注，watch、star、fork 一键三连
 
 ## thingsbaord
  
-- 后台版本为 thingsboard：V3.X，持续跟进更新中
+   thingsboard：V3.X，持续跟进更新中
 
 ## 使用技术
 
