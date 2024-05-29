@@ -21,9 +21,9 @@ ThingsBoard凭借其优秀的性能和高效的性能得到了广大开发者的
 ## 预览地址
   thingsboard:   http://thingsboard.yantsing.com/
    
-   用户名：1069035666@qq.com
+   用户名：1069035666@qq.com (我的邮箱)
 
-   密码: 17621315188
+   密码: 17621315188 (我的微信，欢迎讨论交流)
 
   thingsbox:  http://thingsbox.yantsing.com/
 
