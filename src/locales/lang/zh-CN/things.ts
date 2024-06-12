@@ -13,7 +13,7 @@ export default {
   notification_list: '通知列表',
   notification_request_list: '发送记录',
   notification_template_list: '通知模板',
-  notification_recipient_list: '通知接收组',
+  notification_recipient_list: '接收人',
   notification_rule_list: '通知规则',
   adminSetting: '系统设置',
   auditLog: '审计日志',

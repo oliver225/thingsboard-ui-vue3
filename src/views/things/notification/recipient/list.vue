@@ -6,7 +6,7 @@
       </template>
       <template #leftToolbar>
         <a-button type="primary" @click="handleForm({})">
-          <Icon icon="fluent:add-12-filled" /> 新增接收组
+          <Icon icon="fluent:add-12-filled" /> 新增接收人组
         </a-button>
         <a-input v-model:value="searchParam.textSearch" placeholder="输入搜索内容" allow-clear @change="reload"
           style="width: 240px;">
@@ -56,7 +56,7 @@ const { t } = useI18n('things');
 const { createConfirm, showMessage } = useMessage();
 
 const getTitle = {
-  value: router.currentRoute.value.meta.title || '通知接收组',
+  value: router.currentRoute.value.meta.title || '通知接收人组',
 };
 
 
@@ -65,7 +65,7 @@ const searchParam = reactive({
 })
 const tableColumns: BasicColumn[] = [
   {
-    title: t('名称'),
+    title: t('接收人组'),
     dataIndex: 'name',
     key: 'name',
     sorter: true,

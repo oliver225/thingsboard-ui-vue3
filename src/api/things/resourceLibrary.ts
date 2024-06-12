@@ -8,6 +8,13 @@ export interface ResourceInfo extends BasicModel<EntityType.TB_RESOURCE> {
   title?: string;
   resourceType?: 'LWM2M_MODEL' | 'JKS' | 'PKCS_12';
   resourceKey?: string;
+  isPublic?: boolean;
+  publicResourceKey?: string;
+  searchText?: string;
+  etag?: string;
+  fileName?: string;
+  descriptor?: Recordable;
+  externalId?: EntityId<EntityType.TB_RESOURCE>;
 }
 
 export interface Resource extends ResourceInfo {
@@ -87,7 +94,7 @@ export function getLwm2mByObjects(
   });
 }
 
-export function lwm2mObjectList(params: QueryParam) {
+export function lwm2mObjectList(params: BasicQuery) {
   return defHttp.get<[LwM2mObject]>({
     url: `/api/resource/lwm2m/page`,
     params,
