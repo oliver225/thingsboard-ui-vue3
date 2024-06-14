@@ -14,6 +14,11 @@
                         <icon icon="ant-design:search-outlined" />
                     </template>
                 </a-input>
+                <template v-if="userStore.getAuthority == Authority.TENANT_ADMIN">
+                    <Checkbox v-model:checked="searchParam.includeSystemImages" @change="reload()">
+                        包含系统图像
+                    </Checkbox>
+                </template>
             </template>
             <template #firstColumn="{ record }">
                 <Space>
@@ -35,9 +40,13 @@
                     -
                 </div>
             </template>
+            <template #isSystem="{ record }">
+                <Checkbox :checked="record.link.indexOf('system') > -1" />
+            </template>
 
         </BasicTable>
         <EmbedImage @register="registerEmbedModal" />
+        <Detail @register="registerDetailModal" />
     </div>
 </template>
 <script lang="ts">
@@ -50,18 +59,20 @@ import { defineComponent, reactive } from 'vue';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { convertBytesToSize } from '/@/utils';
 import { useModal } from '/@/components/Modal';
-import { useDrawer } from '/@/components/Drawer';
+import { useUserStore } from '/@/store/modules/user';
 import { BasicTable, BasicColumn, useTable } from '/@/components/Table';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { Icon } from '/@/components/Icon';
 import { router } from '/@/router';
 import { imageList, imagePreview, deleteImage, downloadImage } from '/@/api/things/images';
-import { Space } from 'ant-design-vue';
+import { Space, Checkbox } from 'ant-design-vue';
 import EmbedImage from './embedImage.vue';
-import { SYS_TENANT_ID } from '/@/enums/constant';
+import Detail from './detail.vue';
+import { Authority } from '/@/enums/authorityEnum';
 import { downloadByData } from '/@/utils/file/download';
 
 const { t } = useI18n('things');
+const userStore = useUserStore();
 const { createConfirm, showMessage } = useMessage();
 
 
@@ -71,6 +82,7 @@ const getTitle = {
 
 const searchParam = reactive({
     textSearch: '',
+    includeSystemImages: false,
 })
 
 const tableColumns: BasicColumn[] = [
@@ -110,6 +122,15 @@ const tableColumns: BasicColumn[] = [
         align: 'right',
         slot: 'descriptorSize',
     },
+    {
+        title: '系统',
+        dataIndex: 'link',
+        key: 'link',
+        ifShow: userStore.getAuthority == Authority.TENANT_ADMIN,
+        width: 80,
+        align: 'center',
+        slot: 'isSystem',
+    },
 
 ]
 
@@ -143,10 +164,11 @@ const actionColumn: BasicColumn = {
 
 
 const [registerEmbedModal, { openModal: openEmbedModal }] = useModal();
+const [registerDetailModal, { openModal: openDetailModal }] = useModal();
 // const [registerDrawer, { openDrawer }] = useDrawer();
 const [registerTable, { reload }] = useTable({
     rowKey: (record) => record.id.id,
-    api: imageList,
+    api: params => imageList(params, searchParam.includeSystemImages),
     beforeFetch: wrapFetchParams,
     afterFetch: handleFetchAfter,
     defSort: { sortProperty: 'createdTime', sortOrder: 'DESC' },
@@ -261,7 +283,7 @@ function handleEmbedImage(record: Recordable) {
 }
 
 function handleDetail(record: Recordable) {
-    // openDrawer(true, record);
+    openDetailModal(true, record);
 }
 
 

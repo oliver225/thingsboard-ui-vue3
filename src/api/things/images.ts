@@ -20,6 +20,13 @@ export function getImageInfo(type: string, key: string) {
   });
 }
 
+export function updateImageInfo(data: ResourceInfo | any) {
+  return defHttp.put<ResourceInfo>({
+    url: `${data.link}/info`,
+    data
+  });
+}
+
 export function deleteImage(link: string, force = false) {
   return defHttp.delete<{ success: boolean, references: Recordable }>({
     url: `${link}?force=${force}`,
@@ -58,5 +65,11 @@ export function exportImage(type: string, key: string,) {
 export function importImage() {
   return defHttp.put<any>({
     url: '/api/image/import',
+  });
+}
+
+export function updateImagePublicStatus(link: string, isPublic: boolean) {
+  return defHttp.put<ResourceInfo>({
+    url: `${link}/public/${isPublic}`,
   });
 }

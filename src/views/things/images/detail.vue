@@ -1,0 +1,79 @@
+<template>
+    <BasicModal v-bind="$attrs" :footer="null" :can-fullscreen="false" @register="registerModal">
+        <template #title>
+            <Icon icon="clarity:note-edit-line" class="pr-1 m-1" />
+            <span> 编辑图片 </span>
+        </template>
+        <div class="w-full">
+            <Input v-model:value="record.title" />
+        </div>
+
+        <div class="rounded-sm  bg-gray-100 p-4  mt-4">
+            <div class="flex justify-between">
+                <Space :size="15">
+                    <Icon :size="26" icon="ant-design:down-square-twotone" />
+                    <Icon :size="26" icon="ant-design:code-twotone" />
+                </Space>
+                <a-button type="primary">
+                    更新图片
+                </a-button>
+            </div>
+            <img :src="record.preview" :alt="record.name" class="w-full bg-white rounded-md my-2">
+            <Space :size="1">
+                <template #split>
+                    <Divider type="vertical" />
+                </template>
+                <div>{{ record.descriptor?.width }}×{{ record.descriptor?.height }}</div>
+                <div> {{ convertBytesToSize(record.descriptor?.size) }}</div>
+            </Space>
+
+        </div>
+    </BasicModal>
+</template>
+<script lang="ts" setup name="EmbedImage">
+import { Icon } from '/@/components/Icon';
+import { ref } from 'vue';
+import { BasicModal, useModalInner } from '/@/components/Modal';
+import { ResourceInfo } from '/@/api/things/resourceLibrary';
+import { Input, Space, Divider } from 'ant-design-vue';
+import { convertBytesToSize } from '/@/utils';
+import { updateImageInfo, imagePreview } from '/@/api/things/images';
+
+const emit = defineEmits(['register']);
+
+const record = ref<ResourceInfo>({} as ResourceInfo);
+
+
+
+const [registerModal, { setModalProps }] = useModalInner(async (data) => {
+    setModalProps({ loading: true });
+    clear();
+    record.value = { ...data, } as ResourceInfo;
+    if (record.value.link) {
+        record.value['preview'] = await fetchPreviewImage(record.value.link);
+    }
+    setModalProps({ loading: false });
+});
+
+function clear() {
+    record.value = {} as ResourceInfo;
+}
+
+async function fetchPreviewImage(link: string) {
+    return new Promise(resolve => {
+        imagePreview(link).then((file) => {
+            let fileReader = new FileReader();
+            fileReader.onloadend = (e) => {
+                resolve(e.target?.result);
+            }
+            fileReader.readAsDataURL(file);
+        })
+    })
+
+}
+
+
+
+
+
+</script>

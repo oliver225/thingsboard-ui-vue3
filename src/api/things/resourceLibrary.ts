@@ -8,7 +8,7 @@ export interface ResourceInfo extends BasicModel<EntityType.TB_RESOURCE> {
   title?: string;
   resourceType?: 'LWM2M_MODEL' | 'JKS' | 'PKCS_12';
   resourceKey?: string;
-  isPublic?: boolean;
+  public?: boolean;
   publicResourceKey?: string;
   searchText?: string;
   etag?: string;
