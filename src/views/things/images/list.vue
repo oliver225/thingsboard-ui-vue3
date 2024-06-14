@@ -6,7 +6,7 @@
             </template>
             <template #leftToolbar>
                 <a-button type="primary">
-                    <Icon icon="fluent:add-12-filled" /> 新增部件包
+                    <Icon icon="ant-design:upload-outlined" /> 上传图片
                 </a-button>
                 <a-input v-model:value="searchParam.textSearch" placeholder="输入搜索内容" allow-clear @change="reload"
                     style="width: 240px;">
