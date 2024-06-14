@@ -111,6 +111,7 @@ const actionColumn: BasicColumn = {
 
 const [registerModal, { openModal }] = useModal();
 const [registerTable, { reload }] = useTable({
+  rowKey: (record) => record.id.id,
   api: notificationRuleInfoList,
   beforeFetch: wrapFetchParams,
   defSort: { sortProperty: 'createdTime', sortOrder: 'DESC' },

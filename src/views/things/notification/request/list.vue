@@ -173,6 +173,7 @@ const [registerFormModal, { openModal: openFormModal }] = useModal();
 
 
 const [registerTable, { reload }] = useTable({
+  rowKey: (record) => record.id.id,
   api: notificationRequestList,
   beforeFetch: wrapFetchParams,
   defSort: { sortProperty: 'createdTime', sortOrder: 'DESC' },

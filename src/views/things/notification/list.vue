@@ -128,6 +128,7 @@ const actionColumn: BasicColumn = {
 };
 
 const [registerTable, { reload }] = useTable({
+  rowKey: (record) => record.id.id,
   api: (arg) => notificationList(arg, unreadOnly.value == 'true'),
   beforeFetch: wrapFetchParams,
   defSort: { sortProperty: 'createdTime', sortOrder: 'DESC' },

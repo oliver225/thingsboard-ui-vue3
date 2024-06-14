@@ -154,6 +154,7 @@ const actionColumn: BasicColumn = {
 
 const [registerModal, { openModal }] = useModal();
 const [registerTable, { reload }] = useTable({
+  rowKey: (record) => record.id.id,
   api: (arg) => fetchAuditLog(arg),
   beforeFetch: wrapFetchParams,
   defSort: { sortProperty: 'createdTime', sortOrder: 'DESC' },

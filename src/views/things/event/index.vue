@@ -229,7 +229,7 @@ const tableColumns = computed(() => {
 const [registerTable, { reload, updateColumn }] = useTable({
   api: fetchData,
   beforeFetch: wrapFetchParams,
-  rowKey: 'id.id',
+  rowKey: (record) => record.id.id,
   showIndexColumn: false,
   defSort: { sortProperty: 'createdTime', sortOrder: 'DESC' },
   // columns: tableColumns,

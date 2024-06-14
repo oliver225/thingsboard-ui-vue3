@@ -136,6 +136,7 @@ const actionColumn: BasicColumn = {
 const [registerModal, { openModal }] = useModal();
 const [registerDrawer, { openDrawer }] = useDrawer();
 const [registerTable, { reload }] = useTable({
+  rowKey: (record) => record.id.id,
   api: deviceProfileList,
   beforeFetch: wrapFetchParams,
   defSort: { sortProperty: 'createdTime', sortOrder: 'DESC' },

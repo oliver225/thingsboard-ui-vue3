@@ -192,7 +192,7 @@ const [registerAssignCustomerModal, { openModal: openAssignCustomerModal }] = us
 const [registerFormModal, { openModal: openFormModal }] = useModal();
 const [registerDetailDrawer, { openDrawer: openDetailDrawer }] = useDrawer();
 const [registerTable, { reload, updateColumn }] = useTable({
-  rowKey: 'id.id',
+  rowKey: (record) => record.id.id,
   api: fetchDeviceList,
   beforeFetch: wrapFetchParams,
   defSort: { sortProperty: 'createdTime', sortOrder: 'DESC' },
