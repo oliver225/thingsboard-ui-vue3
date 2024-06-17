@@ -5,7 +5,7 @@
                 {{ t(getTitle.value) }}
             </template>
             <template #leftToolbar>
-                <a-button type="primary">
+                <a-button type="primary" @click="handleUpload({})">
                     <Icon icon="ant-design:upload-outlined" /> 上传图片
                 </a-button>
                 <a-input v-model:value="searchParam.textSearch" placeholder="输入搜索内容" allow-clear @change="reload"
@@ -46,7 +46,9 @@
 
         </BasicTable>
         <EmbedImage @register="registerEmbedModal" />
-        <Detail @register="registerDetailModal" />
+        <Detail @register="registerDetailModal" @upload="handleUpload" @download="handleDownload"
+            @embed="handleEmbedImage" />
+        <ImageUpload @register="registerUploadModal" @success="reload" />
     </div>
 </template>
 <script lang="ts">
@@ -68,6 +70,7 @@ import { imageList, imagePreview, deleteImage, downloadImage } from '/@/api/thin
 import { Space, Checkbox } from 'ant-design-vue';
 import EmbedImage from './embedImage.vue';
 import Detail from './detail.vue';
+import ImageUpload from './upload.vue';
 import { Authority } from '/@/enums/authorityEnum';
 import { downloadByData } from '/@/utils/file/download';
 
@@ -156,6 +159,7 @@ const actionColumn: BasicColumn = {
         {
             icon: 'ant-design:delete-outlined',
             color: 'error',
+            ifShow: !!!(userStore.getAuthority == Authority.TENANT_ADMIN && record.link.indexOf('system') > -1),
             title: t('删除图片'),
             onClick: handleDelete.bind(this, { ...record }),
         },
@@ -165,6 +169,7 @@ const actionColumn: BasicColumn = {
 
 const [registerEmbedModal, { openModal: openEmbedModal }] = useModal();
 const [registerDetailModal, { openModal: openDetailModal }] = useModal();
+const [registerUploadModal, { openModal: openUploadModal }] = useModal();
 // const [registerDrawer, { openDrawer }] = useDrawer();
 const [registerTable, { reload }] = useTable({
     rowKey: (record) => record.id.id,
@@ -284,6 +289,10 @@ function handleEmbedImage(record: Recordable) {
 
 function handleDetail(record: Recordable) {
     openDetailModal(true, record);
+}
+
+function handleUpload(record: Recordable) {
+    openUploadModal(true, record);
 }
 
 

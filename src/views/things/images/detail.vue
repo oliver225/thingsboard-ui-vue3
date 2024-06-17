@@ -10,11 +10,16 @@
 
         <div class="rounded-sm  bg-gray-100 p-4  mt-4">
             <div class="flex justify-between">
-                <Space :size="15">
-                    <Icon :size="26" icon="ant-design:down-square-twotone" />
-                    <Icon :size="26" icon="ant-design:code-twotone" />
+                <Space :size="25">
+                    <Tooltip title="下载图片">
+                        <Icon :size="26" icon="ant-design:download-outlined" @click="handleDownload" />
+                    </Tooltip>
+                    <Tooltip title="嵌入图片">
+                        <Icon :size="26" icon="ant-design:code-outlined" @click="handleEmbedImage" />
+                    </Tooltip>
                 </Space>
-                <a-button type="primary">
+                <a-button type="primary"
+                    v-if="!!!(userStore.getAuthority == Authority.TENANT_ADMIN && record.link?.indexOf('system') > -1)">
                     更新图片
                 </a-button>
             </div>
@@ -35,13 +40,17 @@ import { Icon } from '/@/components/Icon';
 import { ref } from 'vue';
 import { BasicModal, useModalInner } from '/@/components/Modal';
 import { ResourceInfo } from '/@/api/things/resourceLibrary';
-import { Input, Space, Divider } from 'ant-design-vue';
+import { Input, Space, Divider, Tooltip } from 'ant-design-vue';
 import { convertBytesToSize } from '/@/utils';
 import { updateImageInfo, imagePreview } from '/@/api/things/images';
+import { Authority } from '/@/enums/authorityEnum';
+import { useUserStore } from '/@/store/modules/user';
 
-const emit = defineEmits(['register']);
+
+const emit = defineEmits(['register', 'embed', 'download']);
 
 const record = ref<ResourceInfo>({} as ResourceInfo);
+const userStore = useUserStore();
 
 
 
@@ -69,6 +78,15 @@ async function fetchPreviewImage(link: string) {
             fileReader.readAsDataURL(file);
         })
     })
+
+}
+
+function handleEmbedImage() {
+    emit('embed', record.value);
+}
+
+function handleDownload() {
+    emit('download', record.value);
 
 }
 

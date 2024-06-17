@@ -1,6 +1,8 @@
 import { BasicQuery, Page } from "../model/baseModel";
 import { ResourceInfo } from "./resourceLibrary";
+import { ContentTypeEnum } from "/@/enums/httpEnum";
 import { defHttp } from "/@/utils/http/axios";
+import { AxiosProgressEvent } from 'axios';
 
 
 
@@ -71,5 +73,14 @@ export function importImage() {
 export function updateImagePublicStatus(link: string, isPublic: boolean) {
   return defHttp.put<ResourceInfo>({
     url: `${link}/public/${isPublic}`,
+  });
+}
+
+export function uploadImage(file: File | Blob, title: string, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void) {
+  return defHttp.post<ResourceInfo>({
+    url: `/api/image`,
+    data: { file: file, title: title },
+    headers: { 'Content-type': ContentTypeEnum.FORM_DATA, },
+    onUploadProgress
   });
 }
