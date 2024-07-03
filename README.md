@@ -25,21 +25,10 @@ ThingsBoard凭借其优秀的性能和高效的性能得到了广大开发者的
 
    密码: 17621315188 (我的微信，欢迎讨论交流)
 
-  thingsbox:  http://thingsbox.yantsing.com/
 
 ## Thingsbaord
  
    thingsboard：V3.7，持续跟进更新中
-
-## Thingsbox
- 
-   -  边缘网关、上位机
-   -  Modbus、BAcnet、Siemens S7、DL/T 645、 DL/T 698.45 、GB28181-2016 接入
-   -  MQTT 上传云端
-   -  WEB 组态 、websocket 实时推送
-   -  报表组态
-   -  CRUD、RBAC 开发基座
-   -  能源管理、生产管理、工厂PMC 等能力
 
 
 ## 使用技术
