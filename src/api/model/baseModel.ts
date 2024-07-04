@@ -64,6 +64,18 @@ export interface BasicQuery extends Recordable {
   sortOrder?: 'ASC' | 'DESC';
 }
 
+export interface WidgetTypeQueryParam extends Recordable {
+  pageSize: number;
+  page: number;
+  tenantOnly?: boolean;
+  fullSearch?: boolean;
+  deprecatedFilter?: string;
+  widgetTypeList?: Array<string>;
+  textSearch?: string;
+  sortProperty?: string;
+  sortOrder?: 'ASC' | 'DESC';
+}
+
 export interface DeviceQueryParam extends Recordable {
   pageSize: number;
   page: number;

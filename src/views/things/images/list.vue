@@ -20,6 +20,17 @@
                     </Checkbox>
                 </template>
             </template>
+            <template #toolbar>
+                <Tooltip placement="top">
+                    <template #title>
+                        <span>{{ t('贴换布局') }}</span>
+                    </template>
+                    <Icon @click="handleChangeLayout('list')" v-if="layout == 'grid'" style="margin-top: 6px;" :size="20"
+                        icon="ant-design:bars-outlined" />
+                    <Icon @click="handleChangeLayout('grid')" v-if="layout == 'list'" style="margin-top: 6px;" :size="20"
+                        icon="ant-design:appstore-outlined" />
+                </Tooltip>
+            </template>
             <template #firstColumn="{ record }">
                 <Space>
                     <img :src="record.preview" :width="40" :alt="record.name" class="cursor-pointer"
@@ -45,6 +56,15 @@
             </template>
 
         </BasicTable>
+        <!-- <List v-if="layout == 'grid'" :dataSource="getDataSource()"
+            :grid="{ gutter: 5, xs: 1, sm: 1, md: 2, lg: 2, xl: 3, xxl: 3 }">
+            <template #renderItem="{ item }">
+                <List.Item v-bind:style="{ padding: '6px' }">
+                    <img :src="item.preview" :width="40" :alt="item.name" class="cursor-pointer"
+                        @click="handleDetail(item)">
+                </List.Item>
+            </template>
+        </List> -->
         <EmbedImage @register="registerEmbedModal" />
         <Detail @register="registerDetailModal" @upload="handleUpload" @download="handleDownload"
             @embed="handleEmbedImage" />
@@ -57,7 +77,7 @@ export default defineComponent({
 });
 </script>
 <script lang="ts" setup>
-import { defineComponent, reactive } from 'vue';
+import { defineComponent, reactive, ref } from 'vue';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { convertBytesToSize } from '/@/utils';
 import { useModal } from '/@/components/Modal';
@@ -67,7 +87,7 @@ import { useMessage } from '/@/hooks/web/useMessage';
 import { Icon } from '/@/components/Icon';
 import { router } from '/@/router';
 import { imageList, imagePreview, deleteImage, downloadImage } from '/@/api/things/images';
-import { Space, Checkbox } from 'ant-design-vue';
+import { Space, Checkbox, Tooltip, List } from 'ant-design-vue';
 import EmbedImage from './embedImage.vue';
 import Detail from './detail.vue';
 import ImageUpload from './upload.vue';
@@ -78,6 +98,7 @@ const { t } = useI18n('things');
 const userStore = useUserStore();
 const { createConfirm, showMessage } = useMessage();
 
+const layout = ref('list');
 
 const getTitle = {
     value: router.currentRoute.value.meta.title || '图片集',
@@ -171,7 +192,7 @@ const [registerEmbedModal, { openModal: openEmbedModal }] = useModal();
 const [registerDetailModal, { openModal: openDetailModal }] = useModal();
 const [registerUploadModal, { openModal: openUploadModal }] = useModal();
 // const [registerDrawer, { openDrawer }] = useDrawer();
-const [registerTable, { reload }] = useTable({
+const [registerTable, { reload, getDataSource }] = useTable({
     rowKey: (record) => record.id.id,
     api: params => imageList(params, searchParam.includeSystemImages),
     beforeFetch: wrapFetchParams,
@@ -268,6 +289,11 @@ async function fetchPreviewImage(record: Recordable) {
             fileReader.readAsDataURL(file);
         })
     })
+
+}
+
+function handleChangeLayout(dist: string) {
+    layout.value = dist;
 
 }
 
