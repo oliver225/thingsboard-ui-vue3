@@ -8,6 +8,7 @@ export default {
   tenantProfile: '租户配置',
   resource: '资源',
   widgetsBundle: '部件包',
+  widgetType:'部件',
   resourceLibrary: '资源库',
   notification_center: '通知中心',
   notification_list: '通知列表',

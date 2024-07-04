@@ -1,12 +1,12 @@
 <template>
-    <div class="widgets-bundle-list">
+    <div class="widget-type-list">
         <BasicTable @register="registerTable">
             <template #headerTop>
                 {{ t(getTitle.value) }}
             </template>
             <template #leftToolbar>
                 <a-button type="primary" @click="handleForm({})">
-                    <Icon icon="fluent:add-12-filled" /> 新增部件包
+                    <Icon icon="fluent:add-12-filled" /> 新增部件
                 </a-button>
                 <a-input v-model:value="searchParam.textSearch" placeholder="输入搜索内容" allow-clear @change="reload"
                     style="width: 240px;">
@@ -17,50 +17,45 @@
             </template>
             <template #firstColumn="{ record }">
                 <a @click="handleDetail({ id: record.id })" :title="record.title">
-                    {{ record.title }}
+                    {{ record.name }}
                 </a>
             </template>
             <template #isSystem="{ record }">
                 <Checkbox :checked="isEqual(SYS_TENANT_ID, record.tenantId)" />
             </template>
+            <template #deprecated="{ record }">
+                <Checkbox :checked="record.deprecate" />
+            </template>
 
 
         </BasicTable>
-        <WidgetTypeInfoList @register="registerWidgetType" @success="handleSuccess" />
-        <InputForm @register="registerModal" @success="handleSuccess" />
-        <DetailDrawer @register="registerDrawer" @edit="handleForm" @delete="handleDelete" @download="handleDownload"
-            @open="handleOpenBundle" />
     </div>
 </template>
 <script lang="ts">
 export default defineComponent({
-    name: "WidgetsBundleList",
+    name: "WidgetTypeList",
 });
 </script>
 <script lang="ts" setup>
-import { defineComponent } from 'vue';
+import { defineComponent,reactive } from 'vue';
 import { useI18n } from '/@/hooks/web/useI18n';
-import { useModal } from '/@/components/Modal';
-import { useDrawer } from '/@/components/Drawer';
 import { BasicTable, BasicColumn, useTable } from '/@/components/Table';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { Icon } from '/@/components/Icon';
 import { router } from '/@/router';
-import { widgetsBundleList, deleteWidgetsBundle } from '/@/api/things/widgetsBundle';
-import { reactive } from 'vue';
-import InputForm from './form.vue';
-import DetailDrawer from './detail.vue';
+import { getWidgetTypeList, deleteWidgetType } from '/@/api/things/widgetType';
 import { Checkbox } from 'ant-design-vue';
 import { isEqual } from 'lodash';
 import { SYS_TENANT_ID } from '/@/enums/constant';
-import WidgetTypeInfoList from './widgetTypesInfo.vue';
+import { WIDGET_TYPE_OPTIONS } from '/@/enums/widgetTypeEnum';
+
 
 
 const { t } = useI18n('things');
 const { createConfirm, showMessage } = useMessage();
 
 const getTitle = {
-    value: router.currentRoute.value.meta.title || '部件包',
+    value: router.currentRoute.value.meta.title || '部件',
 };
 
 
@@ -70,20 +65,20 @@ const searchParam = reactive({
 const tableColumns: BasicColumn[] = [
     {
         title: t('标题'),
-        dataIndex: 'title',
-        key: 'title',
+        dataIndex: 'name',
+        key: 'name',
         sorter: true,
-        width: 260,
         align: 'left',
         fixed: 'left',
         slot: 'firstColumn',
     },
     {
-        title: '描述信息',
-        dataIndex: 'description',
-        key: 'description',
-        align: 'left',
-        ellipsis: true,
+        title: '部件类型',
+        dataIndex: 'widgetType',
+        key: 'widgetType',
+        align: 'center',
+        width: 180,
+        format: (text: any) => text ? WIDGET_TYPE_OPTIONS.find((item) => item.value === text)?.label || text : ''
     },
     {
         title: '系统',
@@ -92,6 +87,14 @@ const tableColumns: BasicColumn[] = [
         width: 80,
         align: 'center',
         slot: 'isSystem',
+    },
+    {
+        title: '过时的',
+        dataIndex: 'deprecated',
+        key: 'deprecated',
+        width: 80,
+        align: 'center',
+        slot: 'deprecated',
     },
     {
         title: t('创建时间'),
@@ -108,11 +111,6 @@ const actionColumn: BasicColumn = {
     width: 160,
     actions: (record: Recordable) => [
         {
-            icon: 'ant-design:folder-open-outlined',
-            title: t('打开部件包'),
-            onClick: handleOpenBundle.bind(this, { ...record }),
-        },
-        {
             icon: 'ant-design:download-outlined',
             title: t('导出部件包'),
             onClick: handleDownload.bind(this, { ...record }),
@@ -126,14 +124,11 @@ const actionColumn: BasicColumn = {
     ],
 };
 
-const [registerWidgetType, { openDrawer: openWidgetType }] = useDrawer();
-const [registerModal, { openModal }] = useModal();
-const [registerDrawer, { openDrawer }] = useDrawer();
 const [registerTable, { reload }] = useTable({
     rowKey: (record) => record.id.id,
-    api: widgetsBundleList,
+    api: getWidgetTypeList,
     beforeFetch: wrapFetchParams,
-    defSort: { sortProperty: 'title', sortOrder: 'ASC' },
+    defSort: { sortProperty: 'name', sortOrder: 'ASC' },
     columns: tableColumns,
     actionColumn: actionColumn,
     showTableSetting: true,
@@ -153,10 +148,10 @@ function handleForm(record: Recordable) {
 }
 
 async function handleDelete(record: Recordable) {
-    const modalFunc = createConfirm({
+    createConfirm({
         iconType: 'error',
-        title: `确定删除部件包[${record.title}]吗？`,
-        content: '请注意：确认后，部件包和所有相关数据将不可恢复。',
+        title: `确定删除部件[${record.title}]吗？`,
+        content: '请注意：确认后，部件和所有相关数据将不可恢复。',
         centered: false,
         okText: '删除',
         okButtonProps: {
@@ -165,8 +160,8 @@ async function handleDelete(record: Recordable) {
         },
         onOk: async () => {
             try {
-                await deleteWidgetsBundle(record.id.id);
-                showMessage('删除部件包成功！');
+                await deleteWidgetType(record.id.id);
+                showMessage('删除部件成功！');
             } catch (error: any) {
                 console.log(error);
             } finally {
@@ -175,10 +170,6 @@ async function handleDelete(record: Recordable) {
         }
 
     })
-}
-
-function handleOpenBundle(record: Recordable) {
-    openWidgetType(true, record);
 }
 
 function handleDownload(record: Recordable) {
@@ -196,5 +187,5 @@ function handleDetail(record: Recordable) {
 
 </script>
 <style lang="less">
-.widgets-bundle-list {}
+.widget-type-list {}
 </style>

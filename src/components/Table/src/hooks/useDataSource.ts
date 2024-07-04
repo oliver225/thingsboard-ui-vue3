@@ -55,10 +55,7 @@ export function useDataSource(
 ) {
   const emitter = useEmitter();
   const searchState = reactive<SearchState>({
-    sortInfo: {
-      sortProperty: DEFAULT_SORT_KEY,
-      sortOrder: 'desc'
-    },
+    sortInfo: {},
     filterInfo: {},
   });
   const dataSourceRef = ref<Recordable[]>([]);

@@ -8,6 +8,7 @@ export default {
   tenantProfile: 'Tenant Profile',
   resource: 'Resource',
   widgetsBundle: 'Widgets Bundle',
+  widgetType:'Widget Type',
   resourceLibrary: 'Resource Library',
   notification_center: 'Notification Center',
   notification_list: 'Notification List',

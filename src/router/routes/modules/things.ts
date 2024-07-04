@@ -286,6 +286,17 @@ const things: AppRouteModule = {
           },
         },
         {
+          path: '/widget-type/list',
+          name: 'widgetTypeList',
+          component: () => import('/@/views/things/widgetType/list.vue'),
+          meta: {
+            icon: 'ant-design:right-circle-outlined',
+            tabIcon: 'ant-design:right-circle-outlined',
+            title: t('things.widgetType'),
+            useAuthority: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN]
+          },
+        },
+        {
           path: '/resource-library/list',
           name: 'ResourceLibraryList',
           component: () => import('/@/views/things/resourceLibrary/list.vue'),

@@ -52,7 +52,7 @@ import { DescItem, Description, useDescription } from '/@/components/Description
 
 
 
-const emit = defineEmits(['edit', 'delete', 'download', 'register',]);
+const emit = defineEmits(['edit', 'delete', 'download', 'open', 'register',]);
 
 const { t } = useI18n('things');
 const { showMessage } = useMessage();
@@ -121,12 +121,13 @@ function handleEdit() {
   closeDrawer();
 }
 
-function handleDownload(){
+function handleDownload() {
   emit('download', record.value);
   closeDrawer();
 }
 function handleOpen() {
- 
+  emit('open', record.value);
+
 }
 
 

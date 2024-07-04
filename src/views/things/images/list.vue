@@ -192,7 +192,7 @@ const [registerEmbedModal, { openModal: openEmbedModal }] = useModal();
 const [registerDetailModal, { openModal: openDetailModal }] = useModal();
 const [registerUploadModal, { openModal: openUploadModal }] = useModal();
 // const [registerDrawer, { openDrawer }] = useDrawer();
-const [registerTable, { reload, getDataSource }] = useTable({
+const [registerTable, { reload, getDataSource,getSize }] = useTable({
     rowKey: (record) => record.id.id,
     api: params => imageList(params, searchParam.includeSystemImages),
     beforeFetch: wrapFetchParams,
@@ -212,10 +212,10 @@ function wrapFetchParams(fetchParam: any) {
     return { ...fetchParam, page: page, textSearch: searchParam.textSearch }
 }
 
-function handleFetchAfter(dataList) {
-    dataList.forEach(async (item: any) => {
-        item['preview'] = await fetchPreviewImage(item);
-    });
+async function handleFetchAfter(dataList) {
+    for (let i = 0; i < dataList.length; i++) {
+        dataList[i].preview = await fetchPreviewImage(dataList[i]);
+    }
     return dataList;
 }
 
