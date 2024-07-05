@@ -8,8 +8,8 @@
             <Input v-model:value="record.title" />
         </div>
 
-        <div class="rounded-sm  bg-gray-100 p-4  mt-4">
-            <div class="flex justify-between">
+        <div class="rounded  border-slate-200 bg-slate-100 mt-4  p-4 ">
+            <div class="flex justify-between px-1">
                 <Space :size="25">
                     <Tooltip title="下载图片">
                         <Icon :size="26" icon="ant-design:download-outlined" @click="handleDownload" />
@@ -23,14 +23,19 @@
                     更新图片
                 </a-button>
             </div>
-            <img :src="record.preview" :alt="record.name" class="w-full bg-white rounded-md my-2">
-            <Space :size="1">
-                <template #split>
-                    <Divider type="vertical" />
-                </template>
-                <div>{{ record.descriptor?.width }}×{{ record.descriptor?.height }}</div>
-                <div> {{ convertBytesToSize(record.descriptor?.size) }}</div>
-            </Space>
+            <div class="h-100 bg-white flex justify-center my-2">
+                <img :src="record.preview" :alt="record.name" class="h-full p-2">
+            </div>
+            <div class="px-1">
+                <Space :size="1">
+                    <template #split>
+                        <Divider type="vertical" />
+                    </template>
+                    <div>{{ record.descriptor?.width }}×{{ record.descriptor?.height }}</div>
+                    <div> {{ convertBytesToSize(record.descriptor?.size) }}</div>
+                </Space>
+            </div>
+
 
         </div>
     </BasicModal>

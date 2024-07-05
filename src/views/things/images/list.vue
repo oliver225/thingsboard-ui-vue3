@@ -1,6 +1,6 @@
 <template>
     <div class="image-list">
-        <BasicTable @register="registerTable">
+        <TableHeader :style="{ padding: '5px 2px 5px 7px' }">
             <template #headerTop>
                 {{ t(getTitle.value) }}
             </template>
@@ -8,14 +8,14 @@
                 <a-button type="primary" @click="handleUpload({})">
                     <Icon icon="ant-design:upload-outlined" /> 上传图片
                 </a-button>
-                <a-input v-model:value="searchParam.textSearch" placeholder="输入搜索内容" allow-clear @change="reload"
+                <a-input v-model:value="searchParam.textSearch" placeholder="输入搜索内容" allow-clear @change="fetch()"
                     style="width: 240px;">
                     <template #suffix>
                         <icon icon="ant-design:search-outlined" />
                     </template>
                 </a-input>
                 <template v-if="userStore.getAuthority == Authority.TENANT_ADMIN">
-                    <Checkbox v-model:checked="searchParam.includeSystemImages" @change="reload()">
+                    <Checkbox v-model:checked="searchParam.includeSystemImages" @change="fetch()">
                         包含系统图像
                     </Checkbox>
                 </template>
@@ -25,18 +25,30 @@
                     <template #title>
                         <span>{{ t('贴换布局') }}</span>
                     </template>
-                    <Icon @click="handleChangeLayout('list')" v-if="layout == 'grid'" style="margin-top: 6px;" :size="20"
+                    <Icon @click="handleChangeLayout('list')" v-if="layout == 'grid'" style="margin-top: 6px;" :size="24"
                         icon="ant-design:bars-outlined" />
-                    <Icon @click="handleChangeLayout('grid')" v-if="layout == 'list'" style="margin-top: 6px;" :size="20"
+                    <Icon @click="handleChangeLayout('grid')" v-if="layout == 'list'" style="margin-top: 6px;" :size="24"
                         icon="ant-design:appstore-outlined" />
                 </Tooltip>
+                <Tooltip placement="top">
+                    <template #title>
+                        <span>{{ t('刷新') }}</span>
+                    </template>
+                    <Icon @click="fetch()" style="margin-top: 6px;" :size="24" icon="ant-design:redo-outlined" />
+                </Tooltip>
+
             </template>
+        </TableHeader>
+        <BasicTable @register="registerTable" :data-source="dataSource" :pagination="paginationSetting"
+            v-if="layout == 'list'">
             <template #firstColumn="{ record }">
+
                 <Space>
-                    <img :src="record.preview" :width="40" :alt="record.name" class="cursor-pointer"
-                        @click="handleDetail(record)">
+                    <div class="h-10 w-10 bg-white flex justify-center">
+                        <img :src="record.preview" :alt="record.name" class="cursor-pointer h-full"
+                            @click="handleDetail(record)">
+                    </div>
                     {{ record.title }}
-                    <!-- <span class="hidden">{{ record.preview }}</span> -->
                 </Space>
 
             </template>
@@ -56,19 +68,36 @@
             </template>
 
         </BasicTable>
-        <!-- <List v-if="layout == 'grid'" :dataSource="getDataSource()"
-            :grid="{ gutter: 5, xs: 1, sm: 1, md: 2, lg: 2, xl: 3, xxl: 3 }">
+        <List v-if="layout == 'grid'" :dataSource="dataSource"
+            :grid="{ gutter: 5, xs: 1, sm: 2, md: 2, lg: 3, xl: 5, xxl: 6 }">
             <template #renderItem="{ item }">
                 <List.Item v-bind:style="{ padding: '6px' }">
-                    <img :src="item.preview" :width="40" :alt="item.name" class="cursor-pointer"
-                        @click="handleDetail(item)">
+                    <div class="h-80 border rounded-md border-slate-200 bg-slate-100 p-2 ">
+                        <div class="h-60 w-full flex justify-center py-2 ">
+                            <img :src="item.preview" :alt="item.name" class="cursor-pointer h-full"
+                                @click="handleDetail(item)">
+                        </div>
+                        <div class="flex flex-col justify-between h-16">
+                            <div class="font-medium">
+                                {{ item.name }}
+                            </div>
+                            <Space :size="1">
+                                <template #split>
+                                    <Divider type="vertical" />
+                                </template>
+                                <div class="text-zinc-500">{{ item.descriptor?.width }}×{{ item.descriptor?.height }}</div>
+                                <div class="text-zinc-500"> {{ convertBytesToSize(item.descriptor?.size) }}</div>
+                            </Space>
+                        </div>
+                    </div>
+
                 </List.Item>
             </template>
-        </List> -->
+        </List>
         <EmbedImage @register="registerEmbedModal" />
         <Detail @register="registerDetailModal" @upload="handleUpload" @download="handleDownload"
             @embed="handleEmbedImage" />
-        <ImageUpload @register="registerUploadModal" @success="reload" />
+        <ImageUpload @register="registerUploadModal" @success="fetch()" />
     </div>
 </template>
 <script lang="ts">
@@ -82,17 +111,20 @@ import { useI18n } from '/@/hooks/web/useI18n';
 import { convertBytesToSize } from '/@/utils';
 import { useModal } from '/@/components/Modal';
 import { useUserStore } from '/@/store/modules/user';
-import { BasicTable, BasicColumn, useTable } from '/@/components/Table';
+import { BasicTable, BasicColumn, useTable, TableHeader } from '/@/components/Table';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { Icon } from '/@/components/Icon';
 import { router } from '/@/router';
 import { imageList, imagePreview, deleteImage, downloadImage } from '/@/api/things/images';
-import { Space, Checkbox, Tooltip, List } from 'ant-design-vue';
+import { Space, Checkbox, Tooltip, List, Divider } from 'ant-design-vue';
 import EmbedImage from './embedImage.vue';
 import Detail from './detail.vue';
 import ImageUpload from './upload.vue';
 import { Authority } from '/@/enums/authorityEnum';
 import { downloadByData } from '/@/utils/file/download';
+import { ResourceInfo } from '/@/api/things/resourceLibrary';
+import { PAGE_SIZE } from '/@/components/Table/src/const';
+import { onMounted } from 'vue';
 
 const { t } = useI18n('things');
 const userStore = useUserStore();
@@ -104,9 +136,17 @@ const getTitle = {
     value: router.currentRoute.value.meta.title || '图片集',
 };
 
+const dataSource = ref<ResourceInfo[]>([]);
+
 const searchParam = reactive({
     textSearch: '',
     includeSystemImages: false,
+})
+
+const paginationSetting = reactive({
+    total: 0,
+    pageSize: PAGE_SIZE,
+    current: 1,
 })
 
 const tableColumns: BasicColumn[] = [
@@ -191,32 +231,42 @@ const actionColumn: BasicColumn = {
 const [registerEmbedModal, { openModal: openEmbedModal }] = useModal();
 const [registerDetailModal, { openModal: openDetailModal }] = useModal();
 const [registerUploadModal, { openModal: openUploadModal }] = useModal();
-// const [registerDrawer, { openDrawer }] = useDrawer();
-const [registerTable, { reload, getDataSource,getSize }] = useTable({
+const [registerTable] = useTable({
     rowKey: (record) => record.id.id,
-    api: params => imageList(params, searchParam.includeSystemImages),
-    beforeFetch: wrapFetchParams,
-    afterFetch: handleFetchAfter,
-    defSort: { sortProperty: 'createdTime', sortOrder: 'DESC' },
+    onChange: fetch,
     columns: tableColumns,
     actionColumn: actionColumn,
-    showTableSetting: true,
+    showTableSetting: false,
     useSearchForm: false,
     canResize: true,
 });
 
+onMounted(() => {
+    fetch();
+})
 
-function wrapFetchParams(fetchParam: any) {
 
-    const page = fetchParam.page ? fetchParam.page - 1 : 0;
-    return { ...fetchParam, page: page, textSearch: searchParam.textSearch }
-}
-
-async function handleFetchAfter(dataList) {
-    for (let i = 0; i < dataList.length; i++) {
-        dataList[i].preview = await fetchPreviewImage(dataList[i]);
+async function fetch(pagination?: any, filters?: any, sorter?: any) {
+    const params = {
+        pageSize: pagination?.pageSize ? pagination.pageSize : PAGE_SIZE,
+        page: pagination?.current ? pagination.current - 1 : 0,
+        textSearch: searchParam.textSearch,
+        sortProperty: sorter?.field ? sorter.field : 'createdTime',
+        sortOrder: sorter?.order ? sorter.order.replace('end', '') : 'DESC',
     }
-    return dataList;
+    try {
+        const result = await imageList(params, searchParam.includeSystemImages);
+        dataSource.value = result.data;
+        paginationSetting.total = result.totalElements;
+        paginationSetting.current = params.page + 1;
+    } catch (error) {
+        console.log(error);
+    } finally {
+        for (let i = 0; i < dataSource.value.length; i++) {
+            await fetchPreviewImage(dataSource.value[i]).then(base64 => dataSource.value[i].preview = base64)
+        }
+    }
+
 }
 
 async function handleDelete(record: Recordable) {
@@ -320,7 +370,6 @@ function handleDetail(record: Recordable) {
 function handleUpload(record: Recordable) {
     openUploadModal(true, record);
 }
-
 
 
 

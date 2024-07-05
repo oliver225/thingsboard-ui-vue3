@@ -1,10 +1,10 @@
 <template>
-    <BasicDrawer v-bind="$attrs" :showFooter="false" @register="registerDrawer" width="50%">
+    <BasicDrawer v-bind="$attrs" :showFooter="false" @register="registerDrawer" width="50%" style="z-index: 99;">
         <template #title>
             <div class="flex flex-row items-center">
                 <Icon :icon="getTitle.icon" class="pr-3 m-1 drawer-title-icon" />
                 <div class="flex flex-col">
-                    <span class="text-lg font-bold">{{ getTitle.value || '· · · ·' }}</span>
+                    <span class="text-lg font-bold">{{ getTitle.value || '· · · ·' }}({{ widgetTypeList.length }})</span>
                     <span class="text-sm">部件列表</span>
                 </div>
             </div>
@@ -17,10 +17,12 @@
                             {{ item.name }}
                         </template>
                         <template #description>
-                            {{ item.description }}
+                            <div class="w-2/3 h-10 truncate">
+                                {{ item.description }}
+                            </div>
                         </template>
                         <template #avatar>
-                            <img  :src="item.base64" width="100" />
+                            <img :src="item.base64" width="100" />
                         </template>
                     </List.Item.Meta>
 
@@ -62,6 +64,7 @@ const getTitle = computed(() => ({
 const [registerDrawer, { setDrawerProps, closeDrawer }] = useDrawerInner(async (data) => {
     try {
         setDrawerProps({ loading: true });
+        widgetTypeList.value = [];
         record.value = await getWidgetsBundleById(data.id.id);
         const widgetTypeInfos = await getBundleWidgetTypesInfos({ page: 0, pageSize: 1024, widgetsBundleId: data.id.id, fullSearch: false, deprecatedFilter: 'ALL' });
         widgetTypeList.value = widgetTypeInfos.data;
