@@ -45,7 +45,7 @@ const columns: BasicColumn[] = [
   {
     title: '最后访问',
     dataIndex: 'lastVisited',
-    width: 60,
+    width: 80,
     align: 'left',
     slot: "lastVisited",
   },
