@@ -1,7 +1,7 @@
 <template>
   <Card title="仪表板" class="dashboard-card" :bodyStyle="{ padding: '12px 24px 12px 24px' }">
     <BasicTable :columns="columns" size="small" :striped="false" :bordered="false" :showIndexColumn="false"
-      :pagination="false" :dataSource="data?.last">
+                :pagination="false" :dataSource="data?.last">
       <template #starred="{ record }">
         <Icon :icon="'ant-design:star-filled'" size="24" color="#fadb14" v-if="record.starred == true" />
         <Icon :icon="'ant-design:star-outlined'" size="24" color="#fadb14" v-else />
@@ -33,18 +33,19 @@ const columns: BasicColumn[] = [
     key: 'starred',
     align: 'center',
     slot: 'starred',
-    width: 80,
+    width: 40,
   },
   {
     title: '名称',
     dataIndex: 'title',
     key: 'title',
     align: 'left',
+    width: 200,
   },
   {
     title: '最后访问',
     dataIndex: 'lastVisited',
-    width: 200,
+    width: 60,
     align: 'left',
     slot: "lastVisited",
   },
