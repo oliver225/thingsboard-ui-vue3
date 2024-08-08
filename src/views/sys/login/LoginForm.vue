@@ -93,6 +93,7 @@ import { useGlobSetting } from '/@/hooks/setting';
 import { userInfoApi } from '/@/api/sys/login';
 import { PageEnum } from '/@/enums/pageEnum';
 import { openWindow } from '/@/utils';
+import weixinUrl from '/@/assets/images/weixin.jpg';
 // import { onKeyStroke } from '@vueuse/core';
 // import { Select } from '/@/components/Form';
 // import { corpAdminTreeData } from '/@/api/sys/corpAdmin';
@@ -180,7 +181,7 @@ function handle2Wechat() {
   showMessageModal(
     {
       icon: null,
-      content: `<img src='/src/assets/images/weixin.jpg'/>`,
+      content: `<img src='` + weixinUrl + `'/>`,
       closable: true,
       footer: null,
     }
