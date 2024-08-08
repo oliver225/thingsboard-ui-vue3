@@ -49,31 +49,31 @@
         {{ t('sys.login.registerButton') }}
       </Button> -->
     </FormItem>
-    <ARow class="enter-x md:pl-3">
+    <!-- <ARow class="enter-x md:pl-3">
       <ACol :md="11" :xs="24" class="!mr-2 !md:my-0 xs:mr-0 md:mx-2">
         <Button block @click="setLoginState(LoginStateEnum.MOBILE)">
           {{ t('sys.login.mobileSignInFormTitle') }}
         </Button>
       </ACol>
-      <!-- <ACol :md="8" :xs="24" class="!my-2 !md:my-0 xs:mx-0 md:mx-2">
+      <ACol :md="8" :xs="24" class="!my-2 !md:my-0 xs:mx-0 md:mx-2">
         <Button block @click="setLoginState(LoginStateEnum.QR_CODE)">
           {{ t('sys.login.qrSignInFormTitle') }}
         </Button>
       </ACol> -->
-      <ACol :md="12" :xs="24">
+    <!-- <ACol :md="12" :xs="24">
         <Button block @click="setLoginState(LoginStateEnum.REGISTER)">
           {{ t('sys.login.registerButton') }}
         </Button>
-      </ACol>
-    </ARow>
+      </ACol> 
+    </ARow> -->
 
     <Divider class="enter-x">{{ t('sys.login.otherSignIn') }}</Divider>
 
-    <!-- <div class="flex justify-evenly enter-x" :class="`${prefixCls}-sign-in-way`">
-      <Icon icon="ant-design:qq-circle-filled" size="28" @click="handleOauth2" />
-      <Icon icon="ant-design:wechat-filled" size="28" @click="handleOauth2" />
-      <Icon icon="ant-design:github-filled" size="28" @click="handleOauth2" />
-    </div> -->
+    <div class="flex justify-evenly enter-x" :class="`${prefixCls}-sign-in-way`">
+      <Icon icon="gitee|svg" size="24" @click="handle2Gitee" />
+      <Icon icon="ant-design:wechat-filled" size="28" @click="handle2Wechat" />
+      <Icon icon="ant-design:github-filled" size="28" @click="handle2Github" />
+    </div>
   </Form>
 </template>
 <script lang="ts" setup>
@@ -84,13 +84,15 @@ import LoginFormTitle from './LoginFormTitle.vue';
 
 import { useI18n } from '/@/hooks/web/useI18n';
 import { useMessage } from '/@/hooks/web/useMessage';
+import { Icon } from '/@/components/Icon';
 
 import { useUserStore } from '/@/store/modules/user';
 import { LoginStateEnum, useLoginState, useFormRules, useFormValid } from './useLogin';
-// import { useDesign } from '/@/hooks/web/useDesign';
+import { useDesign } from '/@/hooks/web/useDesign';
 import { useGlobSetting } from '/@/hooks/setting';
 import { userInfoApi } from '/@/api/sys/login';
 import { PageEnum } from '/@/enums/pageEnum';
+import { openWindow } from '/@/utils';
 // import { onKeyStroke } from '@vueuse/core';
 // import { Select } from '/@/components/Form';
 // import { corpAdminTreeData } from '/@/api/sys/corpAdmin';
@@ -100,8 +102,8 @@ const ARow = Row;
 const FormItem = Form.Item;
 const InputPassword = Input.Password;
 const { t } = useI18n();
-const { showMessage, notification } = useMessage();
-// const { prefixCls } = useDesign('login');
+const { showMessage, showMessageModal, notification } = useMessage();
+const { prefixCls } = useDesign('login');
 const { ctxPath } = useGlobSetting();
 const userStore = useUserStore();
 
@@ -165,6 +167,26 @@ onMounted(async () => {
 // async function handleSwitchCorp(corpCode) {
 //   formData.corpCode = corpCode;
 // }
+
+function handle2Gitee() {
+  openWindow("https://gitee.com/oliver225/thingsboard-ui-vue3")
+
+}
+function handle2Github() {
+  openWindow("https://github.com/oliver225/thingsboard-ui-vue3")
+}
+
+function handle2Wechat() {
+  showMessageModal(
+    {
+      icon: null,
+      content: `<img src='/src/assets/images/weixin.jpg'/>`,
+      closable: true,
+      footer: null,
+    }
+  )
+}
+
 
 async function handleLogin() {
   try {
