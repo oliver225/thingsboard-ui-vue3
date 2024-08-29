@@ -8,47 +8,39 @@
           <span class="text-sm">租户详情</span>
         </div>
       </div>
-      <Tabs v-model:activeKey="tabActiveKey" class="drawer-title-tabs">
-        <TabPane key="DETAIL">
-          <template #tab><span>
-              <Icon :icon="'ant-design:appstore-outlined'" /> 详情
-            </span> </template>
-        </TabPane>
-        <TabPane key="TELEMETRY">
-          <template #tab><span>
-              <Icon :icon="'ant-design:line-chart-outlined'" /> 数据
-            </span> </template>
-        </TabPane>
-        <TabPane key="ALARM">
-          <template #tab><span>
-              <Icon :icon="'ant-design:alert-outlined'" /> 报警
-            </span> </template>
-        </TabPane>
-        <TabPane key="EVENT">
-          <template #tab><span>
-              <Icon :icon="'ant-design:info-circle-outlined'" /> 事件
-            </span> </template>
-        </TabPane>
-        <TabPane key="RELATION">
-          <template #tab><span>
-              <Icon :icon="'ant-design:radar-chart-outlined'" /> 关联
-            </span> </template>
-        </TabPane>
-      </Tabs>
+      <div class="tb-detail-menu">
+        <Menu v-model:selectedKeys="tabActiveKey" mode="horizontal" :items="titleMenu" />
+      </div>
     </template>
     <div class="detail-info-card">
-      <Relation :entityType="EntityType.TENANT" :entityId="record?.id?.id" v-if="tabActiveKey == 'RELATION'" />
+      <Relation
+        :entityType="EntityType.TENANT"
+        :entityId="record?.id?.id"
+        v-if="tabActiveKey.includes('RELATION')"
+      />
     </div>
     <div class="detail-info-card">
-      <Alarm :entityType="EntityType.TENANT" :entityId="record?.id?.id" v-if="tabActiveKey == 'ALARM'" />
+      <Alarm
+        :entityType="EntityType.TENANT"
+        :entityId="record?.id?.id"
+        v-if="tabActiveKey.includes('ALARM')"
+      />
     </div>
     <div class="telemetry-card">
-      <Telemetry :entityType="EntityType.TENANT" :entityId="record?.id?.id" v-if="tabActiveKey == 'TELEMETRY'" />
+      <Telemetry
+        :entityType="EntityType.TENANT"
+        :entityId="record?.id?.id"
+        v-if="tabActiveKey.includes('TELEMETRY')"
+      />
     </div>
     <div class="event-card">
-      <Event :entityType="EntityType.TENANT" :entityId="record?.id?.id" v-if="tabActiveKey == 'EVENT'" />
+      <Event
+        :entityType="EntityType.TENANT"
+        :entityId="record?.id?.id"
+        v-if="tabActiveKey.includes('EVENT')"
+      />
     </div>
-    <div class="-translate-x-6" v-show="tabActiveKey == 'DETAIL'">
+    <div class="-translate-x-6" v-show="tabActiveKey.includes('DETAIL')">
       <Space size="middle" class="mb-3">
         <a-button type="primary" @click="handleTenantAdmin">
           <Icon :icon="'ant-design:team-outlined'" />租户管理员
@@ -69,168 +61,190 @@
       </Space>
       <Description @register="register" size="default">
         <template #state="{ data }">
-          {{ areaList.province_list[data.state] }}/
-          {{ areaList.city_list[data.city] }}/
+          {{ areaList.province_list[data.state] }}/ {{ areaList.city_list[data.city] }}/
           {{ areaList.county_list[data.country] }}
         </template>
       </Description>
     </div>
-
   </BasicDrawer>
 </template>
 <script lang="ts" setup name="TenantDetail">
-import { ref, unref, computed } from 'vue';
-import { useI18n } from '/@/hooks/web/useI18n';
-import { useMessage } from '/@/hooks/web/useMessage';
-import { router } from '/@/router';
-import { copyToClipboard } from '/@/utils';
-import { Icon } from '/@/components/Icon';
-import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
-import { TenantInfo, tenantInfoById } from '/@/api/things/tenant';
-import { areaList } from '@vant/area-data';
-import { Tabs, TabPane, Space } from 'ant-design-vue';
-import { DescItem, Description, useDescription } from '/@/components/Description';
-import Telemetry from '/@/views/things/telemetry/index.vue';
-import Alarm from '/@/views/things/alarm/list.vue';
-import Relation from '/@/views/things/relation/list.vue';
-import Event from '/@/views/things/event/index.vue';
+  import { h, ref, unref, computed } from 'vue';
+  import { useI18n } from '/@/hooks/web/useI18n';
+  import { useMessage } from '/@/hooks/web/useMessage';
+  import { router } from '/@/router';
+  import { copyToClipboard } from '/@/utils';
+  import { Icon } from '/@/components/Icon';
+  import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
+  import { TenantInfo, tenantInfoById } from '/@/api/things/tenant';
+  import { areaList } from '@vant/area-data';
+  import { Menu, MenuProps, Space } from 'ant-design-vue';
+  import { DescItem, Description, useDescription } from '/@/components/Description';
+  import Telemetry from '/@/views/things/telemetry/index.vue';
+  import Alarm from '/@/views/things/alarm/list.vue';
+  import Relation from '/@/views/things/relation/list.vue';
+  import Event from '/@/views/things/event/index.vue';
 
-import { EntityType } from '/@/enums/entityTypeEnum';
+  import { EntityType } from '/@/enums/entityTypeEnum';
 
+  const emit = defineEmits(['edit', 'delete', 'admin', 'register']);
 
-const emit = defineEmits(['edit', 'delete', 'admin', 'register',]);
+  const { t } = useI18n('things');
+  const { showMessage } = useMessage();
+  const { meta } = unref(router.currentRoute);
+  const record = ref<TenantInfo>({} as TenantInfo);
 
-const { t } = useI18n('things');
-const { showMessage } = useMessage();
-const { meta } = unref(router.currentRoute);
-const record = ref<TenantInfo>({} as TenantInfo);
+  const getTitle = computed(() => ({
+    icon: meta.icon || 'ant-design:book-outlined',
+    value: record.value.title,
+  }));
 
-const getTitle = computed(() => ({
-  icon: meta.icon || 'ant-design:book-outlined',
-  value: record.value.title,
-}));
+  const tabActiveKey = ref<string[]>(['DETAIL']);
+  const titleMenu = ref<MenuProps['items']>([
+    {
+      key: 'DETAIL',
+      icon: () => h(Icon, { icon: 'ant-design:appstore-outlined' }),
+      label: '详情',
+      title: '详情',
+    },
+    {
+      key: 'TELEMETRY',
+      icon: () => h(Icon, { icon: 'ant-design:line-chart-outlined' }),
+      label: '数据',
+      title: '数据',
+    },
+    {
+      key: 'ALARM',
+      icon: () => h(Icon, { icon: 'ant-design:alert-outlined' }),
+      label: '报警',
+      title: '报警',
+    },
+    {
+      key: 'EVENT',
+      icon: () => h(Icon, { icon: 'ant-design:info-circle-outlined' }),
+      label: '事件',
+      title: '事件',
+    },
+    {
+      key: 'RELATION',
+      icon: () => h(Icon, { icon: 'ant-design:radar-chart-outlined' }),
+      label: '关联',
+      title: '关联',
+    },
+  ]);
 
-const tabActiveKey = ref('DETAIL');
+  const descSchema: DescItem[] = [
+    {
+      label: t('租户名称'),
+      field: 'title',
+      span: 4,
+    },
+    {
+      label: t('租户配置'),
+      field: 'tenantProfileName',
+      span: 2,
+    },
+    {
+      label: t('手机号码'),
+      field: 'phone',
+      span: 2,
+    },
+    {
+      label: t('邮政编码'),
+      field: 'zip',
+      span: 2,
+    },
+    {
+      label: t('邮箱地址'),
+      field: 'email',
+      span: 2,
+    },
+    {
+      label: t('省市区域'),
+      field: 'state',
+      span: 4,
+      slot: 'state',
+    },
 
-const descSchema: DescItem[] = [
-  {
-    label: t('租户名称'),
-    field: 'title',
-    span: 4,
-  },
-  {
-    label: t('租户配置'),
-    field: 'tenantProfileName',
-    span: 2,
+    {
+      label: t('详细地址'),
+      field: 'address',
+      span: 4,
+    },
+    {
+      label: t('备用地址'),
+      field: 'address2',
+      span: 4,
+    },
 
-  },
-  {
-    label: t('手机号码'),
-    field: 'phone',
-    span: 2,
-  },
-  {
-    label: t('邮政编码'),
-    field: 'zip',
-    span: 2,
+    {
+      label: t('描述信息'),
+      field: 'additionalInfo.description',
+      span: 4,
+    },
+  ];
+  const [register, { setDescProps }] = useDescription({
+    schema: descSchema,
+  });
 
-  },
-  {
-    label: t('邮箱地址'),
-    field: 'email',
-    span: 2,
-
-  },
-  {
-    label: t('省市区域'),
-    field: 'state',
-    span: 4,
-    slot: 'state',
-  },
-
-  {
-    label: t('详细地址'),
-    field: 'address',
-    span: 4,
-  },
-  {
-    label: t('备用地址'),
-    field: 'address2',
-    span: 4,
-  },
-
-  {
-    label: t('描述信息'),
-    field: 'additionalInfo.description',
-    span: 4,
-  },
-];
-const [register, { setDescProps }] = useDescription({
-  schema: descSchema,
-})
-
-
-
-const [registerDrawer, { setDrawerProps, closeDrawer }] = useDrawerInner(async (data) => {
-  try {
-    setDrawerProps({ loading: true });
-    await clear();
-    record.value = await tenantInfoById(data.id.id);
-    setDescProps({ data: record.value });
-  } catch (error: any) {
-    if (error.message) {
-      showMessage(error.message, 'error')
+  const [registerDrawer, { setDrawerProps, closeDrawer }] = useDrawerInner(async (data) => {
+    try {
+      setDrawerProps({ loading: true });
+      await clear();
+      record.value = await tenantInfoById(data.id.id);
+      setDescProps({ data: record.value });
+    } catch (error: any) {
+      if (error.message) {
+        showMessage(error.message, 'error');
+      }
+      console.log('error', error);
+    } finally {
+      setDrawerProps({ loading: false });
     }
-    console.log('error', error);
-  } finally {
-    setDrawerProps({ loading: false });
+  });
+
+  async function clear() {
+    record.value = {} as TenantInfo;
+    setDescProps({ data: {} });
   }
-});
 
-async function clear() {
-  record.value = {} as TenantInfo;
-  setDescProps({ data: {} });
-}
+  function handleCopyTenantId() {
+    copyToClipboard(record.value.id.id, '复制租户ID成功！');
+  }
 
+  function handleDeleteTenant() {
+    emit('delete', record.value);
+    closeDrawer();
+  }
 
-function handleCopyTenantId() {
-  copyToClipboard(record.value.id.id, '复制租户ID成功！')
-}
+  function handleEditTenant() {
+    emit('edit', record.value);
+    closeDrawer();
+  }
 
-function handleDeleteTenant() {
-  emit('delete', record.value);
-  closeDrawer();
-}
-
-function handleEditTenant() {
-  emit('edit', record.value);
-  closeDrawer();
-}
-
-function handleTenantAdmin() {
-  emit('admin', record.value);
-  closeDrawer();
-}
-
+  function handleTenantAdmin() {
+    emit('admin', record.value);
+    closeDrawer();
+  }
 </script>
 <style lang="less">
-.telemetry-card {
-  .jeesite-basic-table {
-    padding: 0;
+  .telemetry-card {
+    .jeesite-basic-table {
+      padding: 0;
 
-    .jeesite-basic-table-header__header-top {
-      margin-top: 0;
+      .jeesite-basic-table-header__header-top {
+        margin-top: 0;
+      }
     }
   }
-}
 
-.detail-info-card {
-  .jeesite-basic-table {
-    padding: 0;
+  .detail-info-card {
+    .jeesite-basic-table {
+      padding: 0;
 
-    .jeesite-basic-table-header__header-top {
-      display: none;
+      .jeesite-basic-table-header__header-top {
+        display: none;
+      }
     }
   }
-}
 </style>
