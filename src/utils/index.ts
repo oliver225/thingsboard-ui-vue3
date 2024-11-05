@@ -1,13 +1,11 @@
 import type { RouteLocationNormalized, RouteRecordNormalized } from 'vue-router';
 import type { App, Plugin } from 'vue';
-import { useMessage } from '/@/hooks/web/useMessage';
 
-import { unref } from 'vue';
+import { unref, Component } from 'vue';
 import { isObject } from '/@/utils/is';
+import { useMessage } from '../hooks/web/useMessage';
 
-export const noop = () => { };
-
-export const REGULAR_HTML_ENCODE = /"|&|'|<|>|[\x00-\x20]|[\x7F-\xFF]|[\u0100-\u2700]/g;
+export const noop = () => {};
 
 /**
  * @description:  Set ui mount node
@@ -58,11 +56,36 @@ export function openWindow(
   window.open(url, target, feature.join(','));
 }
 
+export function openWindowLayer(url: string, opt?: { width?: number; height?: number }) {
+  const win = window as any;
+  let layerWidth = opt?.width || win.$(win).width();
+  if (layerWidth < 800) {
+    layerWidth -= 15 * 2;
+  } else {
+    layerWidth -= 100 * 2;
+  }
+  let layerHeight = opt?.height || win.$(win).height();
+  if (layerHeight < 500) {
+    layerHeight -= 15 * 2;
+  } else {
+    layerHeight -= 25 * 2;
+  }
+  win.layer.open({
+    type: 2,
+    maxmin: true,
+    shadeClose: true, // 点击背景关闭
+    title: false,
+    area: [layerWidth + 'px', layerHeight + 'px'],
+    method: 'get',
+    content: url,
+  });
+}
+
 // dynamic use hook props
 export function getDynamicProps<T, U>(props: T): Partial<U> {
   const ret: Recordable = {};
 
-  Object.keys(props).map((key) => {
+  Object.keys(props as any).map((key) => {
     ret[key] = unref((props as Recordable)[key]);
   });
 
@@ -76,15 +99,15 @@ export function getRawRoute(route: RouteLocationNormalized): RouteLocationNormal
     ...opt,
     matched: (matched
       ? matched.map((item) => ({
-        meta: item.meta,
-        name: item.name,
-        path: item.path,
-      }))
+          meta: item.meta,
+          name: item.name,
+          path: item.path,
+        }))
       : undefined) as RouteRecordNormalized[],
   };
 }
 
-export const withInstall = <T>(component: T, alias?: string) => {
+export const withInstall = <T extends Component>(component: T, alias?: string) => {
   const comp = component as any;
   comp.install = (app: App) => {
     app.component(comp.name || comp.displayName, component);
@@ -92,8 +115,9 @@ export const withInstall = <T>(component: T, alias?: string) => {
       app.config.globalProperties[alias] = component;
     }
   };
-  return component as T & Plugin;
+  return component as T & Plugin & any;
 };
+
 
 /**
  * 复制文本
@@ -112,27 +136,15 @@ export function copyToClipboard(value: string, msg: string | undefined = '复制
   document.body.removeChild(input);
 };
 
+
 export const sleep = (time: number) => {
   return new Promise(resolve => setTimeout(resolve, time));
 }
+
 
 export function convertBytesToSize(bytes: number) {
   const sizes = ['b', 'Kb', 'Mb', 'Gb', 'Tb']; // 存储单位的数组
   if (bytes === 0) { return '0 b' };
   const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
   return Number(bytes / Math.pow(1024, i)).toFixed(2) + ' ' + sizes[i];
-}
-
-
-
-export function encodeHtml(s:any) {
-  return (typeof s != "string") ? s :
-    s.replace(REGULAR_HTML_ENCODE,
-      function ($0) {
-        var c = $0.charCodeAt(0), r = ["&#"];
-        c = (c == 0x20) ? 0xA0 : c;
-        r.push(c); 
-        r.push(";");
-        return r.join("");
-      });
 }

@@ -1,13 +1,7 @@
 import type { Component } from 'vue';
 import type { ComponentType } from './types/index';
-
-/**
- * Component list, register here to setting it in the form
- */
 import {
   Input,
-  // Select,
-  // Radio,
   Checkbox,
   AutoComplete,
   Cascader,
@@ -15,7 +9,6 @@ import {
   InputNumber,
   Switch,
   TimePicker,
-  // TreeSelect,
   Slider,
   Rate,
   Divider,
@@ -33,7 +26,6 @@ import { ListSelect } from '/@/components/ListSelect';
 import { BasicUpload } from '/@/components/Upload';
 import { StrengthMeter } from '/@/components/StrengthMeter';
 import { IconPicker } from '/@/components/Icon';
-import { ColorPicker } from '/@/components/ColorPicker';
 import { CountdownInput } from '/@/components/CountDown';
 
 const componentMap = new Map<ComponentType, Component>();
@@ -65,7 +57,6 @@ componentMap.set('WeekPicker', DatePicker.WeekPicker);
 componentMap.set('TimePicker', TimePicker);
 componentMap.set('StrengthMeter', StrengthMeter);
 componentMap.set('IconPicker', IconPicker);
-componentMap.set('ColorPicker', ColorPicker);
 componentMap.set('InputCountDown', CountdownInput);
 
 componentMap.set('ListSelect', ListSelect);

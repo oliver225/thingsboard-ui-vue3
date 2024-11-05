@@ -8,7 +8,7 @@ import { isArray } from "/@/utils/is";
 
 interface WebsocketState {
   cmdId: number;
-  websocket: UseWebSocketReturn<any> | undefined;
+  websocket: Nullable<UseWebSocketReturn<any>>;
   callbackMap: Map<number, (data: any) => void>;
 }
 
@@ -16,7 +16,7 @@ export const useWebsocketStore = defineStore({
   id: 'websocket-store',
   state: (): WebsocketState => ({
     cmdId: 0,
-    websocket: undefined,
+    websocket: null,
     callbackMap: new Map(),
   }),
   getters: {
@@ -27,20 +27,20 @@ export const useWebsocketStore = defineStore({
   },
   actions: {
     close(): any {
-      if (this.websocket) {
+      if (this.websocket!= null) {
         this.websocket.close();
       }
-      this.websocket = undefined;
+      this.websocket = null;
     },
     getAndIncrementCmdId(): number {
       this.cmdId = this.cmdId + 1;
       return this.cmdId;
     },
     async send(cmdId: number | Array<number>, data: any, callback?: (data: any) => void): Promise<boolean> {
-      if (!this.websocket) {
+      if (!this.websocket!= null) {
         this.initWebsocket();
       }
-      if (this.websocket) {
+      if (this.websocket!= null) {
         if (this.websocket.status == 'CLOSED') {
           this.websocket.open();
           await sleep(500);
@@ -57,7 +57,7 @@ export const useWebsocketStore = defineStore({
       return false;
     },
     async unsubscribe(cmdId: number | Array<number>, data: any) {
-      if (this.websocket) {
+      if (this.websocket!= null) {
         if (this.websocket.status == 'CLOSED') {
           this.websocket.open();
           await sleep(500);

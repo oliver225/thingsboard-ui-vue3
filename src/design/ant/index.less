@@ -3,24 +3,13 @@
 @import './btn.less';
 // @import './table.less';
 
-html[data-theme=dark] {
-  h1, h2, h3, h4, h5, h6 {
-    color: rgba(255, 255, 255, .65);
-  }
-}
-
-// TODO beta.11 fix
-.ant-col {
-  width: 100%;
-}
-
 .ant-image-preview-root {
   img {
     display: unset;
   }
 }
 
-// span.anticon:not(.app-iconify) {
+// span.anticon:not(.jeesite-icon) {
 //   vertical-align: 0.125em !important;
 // }
 
@@ -36,13 +25,17 @@ html[data-theme=dark] {
 }
 
 .ant-image-preview-operations {
-  background-color: rgba(0, 0, 0, 0.3);
+  background-color: rgb(0 0 0 / 30%);
 }
 
 .ant-popover {
   &-content {
-    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2px 12px 0 rgb(0 0 0 / 10%);
   }
+}
+
+.ant-modal > div[aria-hidden='true'] {
+  display: none !important;
 }
 
 // =================================
@@ -87,8 +80,9 @@ html[data-theme=dark] {
     display: block !important;
     width: 6px !important;
   }
+
   &-list-scrollbar-thumb {
-    background: rgba(0, 0, 0, 0.2) !important;
+    background: rgb(0 0 0 / 20%) !important;
   }
 }
 
@@ -97,10 +91,26 @@ html[data-theme=dark] {
 }
 
 html[data-theme='dark'] {
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    color: rgb(255 255 255 / 65%);
+  }
+
   .ant-tree,
   .ant-select-tree {
     &-list-scrollbar-thumb {
-      background: rgba(255, 255, 255, 0.2) !important;
+      background: rgb(255 255 255 / 20%) !important;
     }
+  }
+}
+
+// fix unocss for login.vue
+@media (max-width: @screen-md) {
+  .md\:hidden {
+    display: none;
   }
 }

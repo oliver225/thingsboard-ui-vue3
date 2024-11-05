@@ -4,12 +4,7 @@
 
 html[data-theme='light'] {
   .text-secondary {
-    color: rgba(0, 0, 0, 0.45);
-  }
-
-  .text-help {
-    color: rgba(0, 0, 0, 0.45);
-    font-size: 12px;
+    color: rgb(0 0 0 / 45%);
   }
 
   .ant-alert-success {
@@ -37,27 +32,28 @@ html[data-theme='dark'] {
     color: #8b949e;
   }
 
-  .text-help {
-    color: #8b949e;
-    font-size: 12px;
-  }
-
   .ant-card-grid-hoverable:hover {
-    box-shadow: 0 3px 6px -4px rgb(0 0 0 / 48%), 0 6px 16px 0 rgb(0 0 0 / 32%),
+    box-shadow:
+      0 3px 6px -4px rgb(0 0 0 / 48%),
+      0 6px 16px 0 rgb(0 0 0 / 32%),
       0 9px 28px 8px rgb(0 0 0 / 20%);
   }
 
   .ant-card-grid {
-    box-shadow: 1px 0 0 0 #434343, 0 1px 0 0 #434343, 1px 1px 0 0 #434343, 1px 0 0 0 #434343 inset,
+    box-shadow:
+      1px 0 0 0 #434343,
+      0 1px 0 0 #434343,
+      1px 1px 0 0 #434343,
+      1px 0 0 0 #434343 inset,
       0 1px 0 0 #434343 inset;
   }
 
   .ant-calendar-selected-day .ant-calendar-date {
-    color: rgba(0, 0, 0, 0.8);
+    color: rgb(0 0 0 / 80%);
   }
 
   .ant-select-tree li .ant-select-tree-node-content-wrapper.ant-select-tree-node-selected {
-    color: rgba(0, 0, 0, 0.9);
+    color: rgb(0 0 0 / 90%);
   }
 
   .table {
@@ -82,11 +78,10 @@ html[data-theme='dark'] {
   }
 
   .ant-picker-input {
-
-    &>input,
-    &>input:hover,
-    &>input:focus,
-    &>input-focused {
+    & > input,
+    & > input:hover,
+    & > input:focus,
+    & > input-focused {
       border-color: transparent;
       box-shadow: none;
     }

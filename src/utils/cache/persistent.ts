@@ -14,6 +14,7 @@ import {
   APP_LOCAL_CACHE_KEY,
   APP_SESSION_CACHE_KEY,
   MULTIPLE_TABS_KEY,
+  REFRESHTOKEN_KEY,
 } from '/@/enums/cacheEnum';
 import { DEFAULT_CACHE_TIME } from '/@/settings/encryptionSetting';
 import { toRaw } from 'vue';
@@ -21,6 +22,7 @@ import { pick, omit } from 'lodash-es';
 
 interface BasicStore {
   [TOKEN_KEY]: string | number | null | undefined;
+  [REFRESHTOKEN_KEY]: string | number | null | undefined;
   [SESSION_TIMEOUT_KEY]: boolean | undefined;
   [USER_INFO_KEY]: UserInfo;
   [ROLES_KEY]: string[];

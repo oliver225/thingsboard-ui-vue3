@@ -49,7 +49,7 @@
         return props.def ? { value: props.def, defaultValue: props.initValue || props.def } : {};
       });
 
-      function handleChange(e: ChangeEvent) {
+      function handleChange(e: any) {
         props.event && baseHandler(props.event, e);
       }
       return {
@@ -60,13 +60,14 @@
     },
   });
 </script>
-<style lang="less" scoped>
+<style lang="less">
   @prefix-cls: ~'jeesite-setting-select-item';
 
   .@{prefix-cls} {
     display: flex;
     justify-content: space-between;
     margin: 16px 0;
+    color: @text-color-base;
 
     &-select {
       width: 126px;

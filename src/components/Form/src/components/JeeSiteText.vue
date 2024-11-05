@@ -14,28 +14,19 @@
     </div>
   </div>
 </template>
-<script lang="ts">
-  import { defineComponent } from 'vue';
+<script lang="ts" setup name="JeeSiteText">
   import { propTypes } from '/@/utils/propTypes';
   import { DictLabel } from '/@/components/Dict';
 
-  export default defineComponent({
-    name: 'JeeSiteText',
-    // inheritAttrs: false,
-    components: { DictLabel },
-    props: {
-      value: {
-        type: [Array, Object, String, Number] as PropType<Array<any> | object | string | number>,
-      },
-      labelValue: {
-        type: [Array, Object, String, Number] as PropType<Array<any> | object | string | number>,
-      },
-      dictType: propTypes.string,
-      isHtml: propTypes.bool,
+  defineProps({
+    value: {
+      type: [Array, Object, String, Number] as PropType<Array<any> | object | string | number>,
     },
-    setup() {
-      return {};
+    labelValue: {
+      type: [Array, Object, String, Number] as PropType<Array<any> | object | string | number>,
     },
+    dictType: propTypes.string,
+    isHtml: propTypes.bool,
   });
 </script>
 <style lang="less">

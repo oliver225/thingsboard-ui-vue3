@@ -22,26 +22,21 @@
     </Select>
   </div>
 </template>
-<script lang="ts">
-import { defineComponent, ref, unref, computed, watch, onMounted } from 'vue';
-import { Select } from 'ant-design-vue';
-import { isEmpty, isFunction } from '/@/utils/is';
-import { propTypes } from '/@/utils/propTypes';
-import { useAttrs } from '/@/hooks/core/useAttrs';
-import { useRuleFormItem } from '/@/hooks/component/useFormItem';
-import { get } from 'lodash-es';
-import { LoadingOutlined } from '@ant-design/icons-vue';
-import { useI18n } from '/@/hooks/web/useI18n';
-import { useDict } from '/@/components/Dict';
+<script lang="ts" setup name="JeeSiteSelect">
+  import { ref, unref, computed, watch, onMounted } from 'vue';
+  import { Select } from 'ant-design-vue';
+  import { isEmpty, isFunction } from '/@/utils/is';
+  import { propTypes } from '/@/utils/propTypes';
+  import { useAttrs } from '/@/hooks/core/useAttrs';
+  import { useRuleFormItem } from '/@/hooks/component/useFormItem';
+  import { get } from 'lodash-es';
+  import { LoadingOutlined } from '@ant-design/icons-vue';
+  import { useI18n } from '/@/hooks/web/useI18n';
+  import { useDict } from '/@/components/Dict';
 
-type OptionsItem = { label: string; value: string; disabled?: boolean };
+  type OptionsItem = { label: string; value: string; disabled?: boolean };
 
-export default defineComponent({
-  name: 'JeeSiteSelect',
-  // eslint-disable-next-line vue/no-reserved-component-names
-  components: { Select, LoadingOutlined },
-  // inheritAttrs: false,
-  props: {
+  const props = defineProps({
     value: {
       type: [Array, Object, String, Number] as PropType<Array<any> | object | string | number>,
     },
@@ -57,10 +52,6 @@ export default defineComponent({
       type: Function as PropType<(arg?: Recordable) => Promise<Recordable[] | OptionsItem[]>>,
       default: null,
     },
-    mapFn: {
-      type: Function as PropType<(arg?: Recordable) => Recordable[] | OptionsItem[]>,
-      default: null,
-    },
     params: {
       type: Object as PropType<Recordable>,
       default: () => ({}),
@@ -70,109 +61,114 @@ export default defineComponent({
     each: propTypes.bool.def(false),
     dictType: propTypes.string,
     mode: propTypes.string,
-  },
-  emits: ['options-change', 'change', 'click'],
-  setup(props, { emit }) {
-    const { t } = useI18n();
-    const attrs = useAttrs();
-    const optionsRef = ref<Recordable[]>(props.options);
-    const isFirstLoad = ref<Boolean>(false);
-    const loading = ref<Boolean>(false);
+  });
 
-    const getAttrs = computed(() => {
-      return {
-        ...unref(attrs),
-        ...(props as Recordable),
-      };
-    });
+  const emit = defineEmits([
+    'change',
+    'update:value',
+    'update:labelValue',
+    'options-change',
+    'click',
+  ]);
 
-    const [state] = useRuleFormItem(props);
+  const { t } = useI18n();
+  const attrs = useAttrs();
+  const optionsRef = ref<Recordable[]>(props.options);
+  const isFirstLoad = ref<boolean>(false);
+  const loading = ref<boolean>(false);
 
-    if (!isEmpty(props.dictType)) {
-      const { initSelectOptions } = useDict();
-      initSelectOptions(optionsRef, props.dictType);
+  const getAttrs = computed(() => {
+    return {
+      showSearch: true,
+      optionFilterProp: 'label',
+      ...unref(attrs),
+      ...(props as Recordable),
+    };
+  });
+
+  const [state] = useRuleFormItem(props);
+
+  if (!isEmpty(props.dictType)) {
+    const { initSelectOptions } = useDict();
+    initSelectOptions(optionsRef, props.dictType);
+  }
+
+  watch(
+    () => props.options,
+    () => {
+      optionsRef.value = props.options;
+      emit('options-change', unref(optionsRef));
+    },
+  );
+
+  watch(
+    () => props.params,
+    () => {
+      isFirstLoad.value && fetch();
+    },
+    { deep: true },
+  );
+
+  watch(
+    () => props.immediate,
+    (v) => {
+      v && !isFirstLoad.value && fetch();
+    },
+  );
+
+  onMounted(async () => {
+    if (props.options && props.options.length > 0) {
+      optionsRef.value = props.options;
     }
-
-    watch(
-      () => props.options,
-      () => {
-        optionsRef.value = props.options;
-        emit('options-change', unref(optionsRef));
-      },
-    );
-
-    watch(
-      () => props.params,
-      () => {
-        isFirstLoad.value && fetch();
-      },
-      { deep: true },
-    );
-
-    watch(
-      () => props.immediate,
-      (v) => {
-        v && !isFirstLoad.value && fetch();
-      },
-    );
-
-    onMounted(async () => {
-      if (props.options && props.options.length > 0) {
-        optionsRef.value = props.options;
-      }
-      if (props.immediate) {
-        await fetch();
-        isFirstLoad.value = true;
-      }
-    });
-
-    async function fetch() {
-      const { api } = props;
-      if (!api || !isFunction(api)) return;
-      optionsRef.value = [];
-      try {
-        loading.value = true;
-        let res = await api(props.params);
-        if (props.resultField) {
-          res = get(res, props.resultField) || [];
-        }
-        if (Array.isArray(res)) {
-          if (props.mapFn) {
-            res = res.map((item) => props.mapFn(item));
-          }
-          optionsRef.value = res;
-        }
-
-        emit('options-change', unref(optionsRef));
-      } catch (error) {
-        console.warn(error);
-      } finally {
-        loading.value = false;
-      }
+    if (props.immediate) {
+      await fetch();
+      isFirstLoad.value = true;
     }
+  });
 
-    async function handleFetch() {
-      if (!props.immediate && !unref(isFirstLoad)) {
-        await fetch();
-        isFirstLoad.value = true;
-      } else if (props.each) {
-        await fetch();
+  async function fetch() {
+    const { api } = props;
+    if (!api || !isFunction(api)) return;
+    optionsRef.value = [];
+    try {
+      loading.value = true;
+      let res = await api(props.params);
+      if (props.resultField) {
+        res = get(res, props.resultField) || [];
       }
-      emit('click');
+      if (Array.isArray(res)) {
+        optionsRef.value = res;
+      }
+      emit('options-change', unref(optionsRef));
+    } catch (error) {
+      console.warn(error);
+    } finally {
+      loading.value = false;
     }
+  }
 
-    return { t, getAttrs, state, optionsRef, loading, handleFetch };
-  },
-});
+  async function handleFetch() {
+    if (!props.immediate && !unref(isFirstLoad)) {
+      await fetch();
+      isFirstLoad.value = true;
+    } else if (props.each) {
+      await fetch();
+    }
+    emit('click');
+  }
 </script>
 <style lang="less">
-@prefix-cls: ~'jeesite-select';
+  @prefix-cls: ~'jeesite-select';
 
-.@{prefix-cls} {
-  width: 100%;
-
-  .ant-select {
+  .@{prefix-cls} {
     width: 100%;
+
+    .ant-select {
+      width: 100%;
+    }
   }
-}
+  // 嵌入在 input 内部 addonAfter 插槽时的样式设置
+  .ant-input-group .ant-input-group-addon .@{prefix-cls} {
+    margin: -5px -11px;
+  }
 </style>

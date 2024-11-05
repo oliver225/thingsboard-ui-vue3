@@ -1,7 +1,7 @@
 export default {
   api: {
     operationFailed: 'Operation failed',
-    errorTip: 'Error Tip',
+    errorTip: 'System Tip',
     errorMessage: 'The operation failed, the system is abnormal!',
     timeoutMessage: 'Login timed out, please log in again!',
     apiTimeoutMessage: 'The interface request timed out, please refresh the page and try again!',
@@ -47,8 +47,7 @@ export default {
     fireResourceError: 'Fire resource error',
     fireAjaxError: 'Fire ajax error',
 
-    enableMessage:
-      'Only effective when useErrorHandle is true in `/src/settings/projectSetting.ts`.',
+    enableMessage: 'Only effective when useErrorHandle is true in `projectSetting.ts`.',
   },
   exception: {
     backLogin: 'Back Login',
@@ -135,9 +134,4 @@ export default {
     newPasswordNotBlank: 'Password not blank',
     newPasswordNotEquals: 'The two password entries are inconsistent',
   },
-  authority: {
-    SYS_ADMIN: 'SysAdmin',
-    TENANT_ADMIN: 'TenantAdmin',
-    CUSTOMER_USER: 'Customer',
-  }
 };

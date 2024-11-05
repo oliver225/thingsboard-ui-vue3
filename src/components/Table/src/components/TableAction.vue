@@ -33,11 +33,11 @@
       <Divider
         type="vertical"
         class="action-divider"
-        v-if="divider && index < getActions.length - 1"
+        v-if="props.divider && index < getActions.length - 1"
       />
     </template>
     <Popover
-      v-if="dropDownActions && getDropdownList.length > 0"
+      v-if="props.dropDownActions && getDropdownList.length > 0"
       :trigger="['hover']"
       :dropMenuList="getDropdownList"
       popconfirm
@@ -53,7 +53,7 @@
   import { defineComponent, PropType, computed, toRaw, unref } from 'vue';
   import { MoreOutlined } from '@ant-design/icons-vue';
   import { Divider, Tooltip, TooltipProps } from 'ant-design-vue';
-  import Icon from '/@/components/Icon/index';
+  import Icon from '/@/components/Icon';
   import { ActionItem, TableActionType } from '/@/components/Table';
   import { PopConfirmButton } from '/@/components/Button';
   import { Popover } from '/@/components/Popover';
@@ -64,31 +64,33 @@
   import { propTypes } from '/@/utils/propTypes';
   import { ACTION_COLUMN_FLAG } from '../const';
 
+  const props = {
+    actions: {
+      type: Array as PropType<ActionItem[]>,
+      default: null,
+    },
+    dropDownActions: {
+      type: Array as PropType<ActionItem[]>,
+      default: null,
+    },
+    divider: propTypes.bool.def(true),
+    outside: propTypes.bool.def(false),
+    stopButtonPropagation: propTypes.bool.def(false),
+    align: propTypes.string,
+  };
+
   export default defineComponent({
     name: 'TableAction',
     components: { Icon, PopConfirmButton, Divider, Popover, MoreOutlined, Tooltip },
-    props: {
-      actions: {
-        type: Array as PropType<ActionItem[]>,
-        default: null,
-      },
-      dropDownActions: {
-        type: Array as PropType<ActionItem[]>,
-        default: null,
-      },
-      divider: propTypes.bool.def(true),
-      outside: propTypes.bool.def(false),
-      stopButtonPropagation: propTypes.bool.def(false),
-      align: propTypes.string,
-    },
-    setup(props) {
+    props,
+    setup(props: any) {
       const { prefixCls } = useDesign('basic-table-action');
       let table: Partial<TableActionType> = {};
       if (!props.outside) {
         table = useTableContext();
       }
 
-      const { hasAuthority } = usePermission();
+      const { hasPermission } = usePermission();
       function isIfShow(action: ActionItem): boolean {
         const ifShow = action.ifShow;
 
@@ -106,7 +108,7 @@
       const getActions = computed(() => {
         return (toRaw(props.actions) || [])
           .filter((action) => {
-            return hasAuthority(action.auth) && isIfShow(action);
+            return hasPermission(action.auth) && isIfShow(action);
           })
           .map((action) => {
             const { popConfirm } = action;
@@ -167,7 +169,7 @@
         isInButton && e.stopPropagation();
       }
 
-      return { prefixCls, getActions, getDropdownList, getAlign, onCellClick, getTooltip };
+      return { props, prefixCls, getActions, getDropdownList, getAlign, onCellClick, getTooltip };
     },
   });
 </script>

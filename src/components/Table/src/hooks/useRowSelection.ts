@@ -1,4 +1,4 @@
-import { isFunction } from '/@/utils/is';
+import { isFunction, isString } from '/@/utils/is';
 import type { BasicTableProps, TableRowSelection } from '../types/table';
 import { computed, ComputedRef, nextTick, Ref, ref, toRaw, unref, watch } from 'vue';
 import { ROW_KEY } from '../const';
@@ -10,7 +10,7 @@ export function useRowSelection(
   tableData: Ref<Recordable[]>,
   emit: EmitType,
 ) {
-  const selectedRowKeysRef = ref<string[]>([]);
+  const selectedRowKeysRef = ref<string[] | number[]>([]);
   const selectedRowRef = ref<Recordable[]>([]);
 
   const getRowSelectionRef = computed((): TableRowSelection | null => {
@@ -21,10 +21,12 @@ export function useRowSelection(
 
     return {
       selectedRowKeys: unref(selectedRowKeysRef),
-      onChange: (selectedRowKeys: string[]) => {
+      preserveSelectedRowKeys: true, // ç”± clearSelectedOnReload é€‰é¡¹æŽ§åˆ¶æ˜¯å¦ä¿ç•™é€‰æ‹©é¡¹
+      onChange: (selectedRowKeys: string[] | number[], selectedRows: any[]) => {
         setSelectedRowKeys(selectedRowKeys);
-        // selectedRowKeysRef.value = selectedRowKeys;
-        // selectedRowRef.value = selectedRows;
+        if (rowSelection && rowSelection.onChange) {
+          rowSelection.onChange(selectedRowKeys, selectedRows);
+        }
       },
       ...omit(rowSelection, ['onChange']),
     };
@@ -32,7 +34,7 @@ export function useRowSelection(
 
   watch(
     () => unref(propsRef).rowSelection?.selectedRowKeys,
-    (v: string[]) => {
+    (v: string[] | any) => {
       setSelectedRowKeys(v);
     },
   );
@@ -44,9 +46,11 @@ export function useRowSelection(
         const { rowSelection } = unref(propsRef);
         if (rowSelection) {
           const { onChange } = rowSelection;
-          if (onChange && isFunction(onChange)) onChange(getSelectRowKeys(), getSelectRows());
+          if (onChange && isFunction(onChange)) {
+            onChange(getSelectRowKeys(), getSelectRows());
+          }
         }
-        // ÓÐÊý¾ÝÊ±£¬ÔÙµ÷ÓÃÑ¡Ôñ±ä¸üÊÂ¼þ
+        // æœ‰æ•°æ®æ—¶ï¼Œå†è°ƒç”¨é€‰æ‹©å˜æ›´äº‹ä»¶
         if (unref(tableData).length > 0) {
           emit('selection-change', {
             keys: getSelectRowKeys(),
@@ -67,18 +71,31 @@ export function useRowSelection(
     return unref(getAutoCreateKey) ? ROW_KEY : rowKey;
   });
 
-  function setSelectedRowKeys(rowKeys: string[]) {
+  function getKey(record: Recordable) {
+    const rowKey = unref(getRowKey);
+
+    if (isString(rowKey)) {
+      return record[rowKey];
+    }
+
+    if (isFunction(rowKey)) {
+      return rowKey(record, null);
+    }
+    return null;
+  }
+
+  function setSelectedRowKeys(rowKeys: string[] | number[]) {
     selectedRowKeysRef.value = rowKeys;
     const allSelectedRows = findNodeAll(
       toRaw(unref(tableData)).concat(toRaw(unref(selectedRowRef))),
-      (item) => rowKeys.includes(item[unref(getRowKey) as string]),
+      (item) => rowKeys.includes(getKey(item) as never),
       {
         children: propsRef.value.childrenColumnName ?? 'children',
       },
     );
     const trueSelectedRows: any[] = [];
-    rowKeys.forEach((key: string) => {
-      const found = allSelectedRows.find((item) => item[unref(getRowKey) as string] === key);
+    rowKeys.forEach((key: string | number) => {
+      const found = allSelectedRows.find((item) => getKey(item) === key);
       found && trueSelectedRows.push(found);
     });
     selectedRowRef.value = trueSelectedRows;

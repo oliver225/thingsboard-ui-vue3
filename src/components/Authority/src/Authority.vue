@@ -23,7 +23,7 @@
       },
     },
     setup(props, { slots }) {
-      const { hasAuthority } = usePermission();
+      const { hasPermission } = usePermission();
 
       /**
        * Render role button
@@ -33,7 +33,7 @@
         if (!value) {
           return getSlot(slots);
         }
-        return hasAuthority(value) ? getSlot(slots) : null;
+        return hasPermission(value) ? getSlot(slots) : null;
       }
 
       return () => {

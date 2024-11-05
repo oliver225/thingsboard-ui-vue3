@@ -1,3 +1,8 @@
+<!--
+ * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
+ * No deletion without permission, or be held responsible to law.
+ * @author ThinkGem
+-->
 <template>
   <a-input
     disabled
@@ -8,7 +13,7 @@
   >
     <template #addonAfter>
       <a-popover
-        placement="bottomLeft"
+        placement="bottom"
         trigger="click"
         v-model="open"
         :overlayClassName="`${prefixCls}-popover`"
@@ -22,26 +27,21 @@
             />
           </div>
         </template>
-
         <template #content>
           <div v-if="getPaginationList.length">
-            <ScrollContainer class="border border-solid border-t-0">
-              <ul class="flex flex-wrap px-2">
-                <li
-                  v-for="icon in getPaginationList"
-                  :key="icon"
-                  :class="currentSelect === icon ? 'border border-primary' : ''"
-                  class="p-2 w-1/16 cursor-pointer mr-1 mt-1 flex justify-center items-center border border-solid hover:border-primary"
-                  @click="handleClick(icon)"
-                  :title="icon"
-                >
-                  <!-- <Icon :icon="icon" :prefix="prefix" /> -->
-                  <SvgIcon v-if="isSvgMode" :name="icon" />
-                  <Icon :icon="icon" v-else />
-                </li>
-              </ul>
-            </ScrollContainer>
-            <div class="flex py-2 items-center justify-center" v-if="getTotal >= pageSize">
+            <ul class="content flex flex-wrap flex-content-start">
+              <li
+                v-for="icon in getPaginationList"
+                :key="icon"
+                :class="currentSelect === icon ? 'active' : ''"
+                class="flex cursor-pointer items-center justify-center"
+                @click="handleClick(icon)"
+                :title="icon"
+              >
+                <Icon :icon="icon" />
+              </li>
+            </ul>
+            <div class="flex items-center justify-center py-2" v-if="getTotal >= pageSize">
               <a-pagination
                 size="small"
                 :pageSize="pageSize"
@@ -56,11 +56,9 @@
             ><div class="p-5"><a-empty /></div>
           </template>
         </template>
-
-        <span class="cursor-pointer px-2 py-1 flex items-center" v-if="isSvgMode && currentSelect">
-          <SvgIcon :name="currentSelect" />
+        <span class="flex cursor-pointer items-center px-2 py-1">
+          <Icon :icon="currentSelect || 'ion:apps-outline'" />
         </span>
-        <Icon :icon="currentSelect || 'ion:apps-outline'" class="cursor-pointer px-2 py-1" v-else />
       </a-popover>
     </template>
   </a-input>
@@ -68,40 +66,30 @@
 <script lang="ts" setup>
   import { ref, watchEffect, watch, unref } from 'vue';
   import { useDesign } from '/@/hooks/web/useDesign';
-  import { ScrollContainer } from '/@/components/Container';
-  import { Input, Popover, Pagination, Empty } from 'ant-design-vue';
-  import Icon from './Icon.vue';
-  import SvgIcon from './SvgIcon.vue';
-
-  import iconsData from '../data/icons.data';
+  import { Popover, Pagination, Empty } from 'ant-design-vue';
   import { propTypes } from '/@/utils/propTypes';
   import { usePagination } from '/@/hooks/web/usePagination';
   import { useDebounceFn } from '@vueuse/core';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { useCopyToClipboard } from '/@/hooks/web/useCopyToClipboard';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import svgIcons from 'virtual:svg-icons-names';
+  import IconData from './IconData';
+  import Icon from './Icon.vue';
 
-  // 没有使用别名引入，是因为WebStorm当前版本还不能正确识别，会报unused警告
-  const AInput = Input;
   const APopover = Popover;
   const APagination = Pagination;
   const AEmpty = Empty;
 
   function getIcons() {
-    const data = iconsData as any;
+    const data = IconData as any;
     const prefix: string = data?.prefix ?? '';
     let result: string[] = [];
     if (prefix) {
       result = (data?.icons ?? []).map((item) => `${prefix}:${item}`);
-    } else if (Array.isArray(iconsData)) {
-      result = iconsData as string[];
+    } else if (Array.isArray(IconData)) {
+      result = IconData as string[];
     }
     return result;
-  }
-
-  function getSvgIcons() {
-    return svgIcons.map((icon) => icon.replace('icon-', ''));
   }
 
   const props = defineProps({
@@ -109,13 +97,11 @@
     width: propTypes.string.def('100%'),
     pageSize: propTypes.number.def(70),
     copy: propTypes.bool.def(false),
-    mode: propTypes.oneOf(['svg', 'iconify']).def('iconify'),
   });
 
   const emit = defineEmits(['change', 'update:value']);
 
-  const isSvgMode = props.mode === 'svg';
-  const icons = isSvgMode ? getSvgIcons() : getIcons();
+  const icons = getIcons();
 
   const currentSelect = ref('');
   const open = ref(false);
@@ -124,7 +110,7 @@
   const { t } = useI18n();
   const { prefixCls } = useDesign('icon-picker');
 
-  const debounceHandleSearchChange = useDebounceFn(handleSearchChange, 100);
+  const debounceHandleSearchChange = useDebounceFn(handleSearchChange, 100) as any;
   const { clipboardRef, isSuccessRef } = useCopyToClipboard(props.value);
   const { createMessage } = useMessage();
 
@@ -174,18 +160,35 @@
 
   .@{prefix-cls} {
     .ant-input-group-addon {
-      padding: 0 !important;
+      padding: 0;
+
+      > span {
+        width: 30px;
+        height: 30px;
+      }
     }
 
     &-popover {
-      width: 500px;
+      width: 540px;
 
-      .ant-popover-inner-content {
-        padding: 0;
-      }
+      .content {
+        border: 1px solid @border-color-base;
+        border-radius: 8px;
+        margin-bottom: 0;
+        padding: 5px;
 
-      .scrollbar {
-        height: 185px;
+        li {
+          width: 32px;
+          height: 32px;
+          font-size: 16px;
+          border: 1px solid @border-color-base;
+          border-radius: 4px;
+          margin: 2px;
+
+          &.active {
+            border-color: @primary-color;
+          }
+        }
       }
     }
   }

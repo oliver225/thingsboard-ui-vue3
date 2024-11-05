@@ -1,8 +1,8 @@
 import type { GlobEnvConfig } from '/#/config';
 
-import { warn } from '/@/utils/log';
+import { warn, env } from '/@/utils/log';
 import { version } from '../../package.json';
-import { getConfigFileName } from '../../build/getConfigFileName';
+import { getEnvConfigName } from '../../build/config/getEnvConfigName';
 
 export function getCommonStoragePrefix() {
   const { VITE_GLOB_APP_SHORT_NAME } = getAppEnvConfig();
@@ -11,41 +11,23 @@ export function getCommonStoragePrefix() {
 
 // Generate cache key according to version
 export function getStorageShortName() {
-  return `${getCommonStoragePrefix()}${`__${version}`}__`.toUpperCase();
+  return `${getCommonStoragePrefix().replace(/\s/g, '_')}${`__${version}`}__`.toUpperCase();
 }
 
 export function getAppEnvConfig() {
-  const ENV_NAME = getConfigFileName(import.meta.env);
+  const ENV_CONFIG_NAME = getEnvConfigName(env);
+  const ENV = (env.DEV
+    ? (env as unknown as GlobEnvConfig)
+    : window[ENV_CONFIG_NAME as any]) as unknown as GlobEnvConfig;
 
-  const ENV = (import.meta.env.DEV
-    ? // Get the global configuration (the configuration will be extracted independently when packaging)
-    (import.meta.env as unknown as GlobEnvConfig)
-    : window[ENV_NAME as any]) as unknown as GlobEnvConfig;
-
-  const {
-    VITE_PROXY,
-    VITE_GLOB_APP_TITLE,
-    VITE_GLOB_API_URL,
-    VITE_GLOB_APP_SHORT_NAME,
-    VITE_GLOB_API_URL_PREFIX,
-    VITE_GLOB_WS_PREFIX,
-    // VITE_GLOB_UPLOAD_URL,
-  } = ENV;
-
-  if (!/^[a-zA-Z\_]*$/.test(VITE_GLOB_APP_SHORT_NAME)) {
+  if (!/^[a-zA-Z_]*$/.test(ENV.VITE_GLOB_APP_SHORT_NAME)) {
     warn(
       `VITE_GLOB_APP_SHORT_NAME Variables can only be characters/underscores, please modify in the environment variables and re-running.`,
     );
   }
-
   return {
-    VITE_PROXY: isProdMode() ? [] : JSON.parse(VITE_PROXY),
-    VITE_GLOB_APP_TITLE,
-    VITE_GLOB_API_URL,
-    VITE_GLOB_APP_SHORT_NAME,
-    VITE_GLOB_API_URL_PREFIX,
-    VITE_GLOB_WS_PREFIX,
-    // VITE_GLOB_UPLOAD_URL,
+    VITE_PROXY: env.DEV ? JSON.parse(env.VITE_PROXY):[],
+    ...ENV
   };
 }
 
@@ -60,28 +42,32 @@ export const devMode = 'development';
 export const prodMode = 'production';
 
 /**
- * @description: Get environment variables
- * @returns:
- * @example:
+ * @description: Get environment mode
  */
 export function getEnv(): string {
-  return import.meta.env.MODE;
+  return env.MODE;
 }
 
 /**
  * @description: Is it a development mode
- * @returns:
- * @example:
  */
 export function isDevMode(): boolean {
-  return import.meta.env.DEV;
+  return env.DEV;
 }
 
 /**
  * @description: Is it a production mode
- * @returns:
- * @example:
  */
 export function isProdMode(): boolean {
-  return import.meta.env.PROD;
+  return env.PROD;
 }
+
+/**
+ * @description: VITE_PUBLIC_PATH
+ */
+function getPublicPath(): string {
+  const publicPath = env.VITE_PUBLIC_PATH || '';
+  return publicPath == '/' ? '' : publicPath;
+}
+
+export const publicPath = getPublicPath();

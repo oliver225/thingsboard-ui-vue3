@@ -4,35 +4,24 @@
  * @author Vben、ThinkGem
 -->
 <template>
-  <div class="jeesite-form-group">
+  <div v-bind="$attrs" class="jeesite-form-group">
     <div class="title">
       <slot></slot>
     </div>
   </div>
 </template>
-<script lang="ts">
-  import { defineComponent } from 'vue';
-  export default defineComponent({
-    name: 'JeeSiteFormGroup',
-    inheritAttrs: false,
-  });
-</script>
+<script lang="ts" setup name="JeeSiteFormGroup"></script>
 <style lang="less">
   @prefix-cls: ~'jeesite-form-group';
 
   .@{prefix-cls} {
     .title {
-      width: 100%;
+      //width: 100%;
       font-size: 15px;
-      font-style: oblique;
-      padding: 0 0 3px 10px;
-      margin: 0 0 20px;
+      //font-style: oblique;
+      padding: 0 0 3px 3px;
+      margin: 0 0 20px 20px;
       border-bottom: 1px solid @header-light-bottom-border-color;
-    }
-  }
-
-  .@{prefix-cls} {
-    .title {
       color: @primary-color;
     }
   }

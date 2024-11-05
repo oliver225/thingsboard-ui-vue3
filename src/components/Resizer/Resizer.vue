@@ -36,7 +36,7 @@
     emits: ['move', 'update:collapsed'],
     setup(props, { emit }) {
       const { t } = useI18n();
-      const isCollapsed = ref<Boolean>(false);
+      const isCollapsed = ref<boolean>(false);
       const drift = reactive({
         lastX: 0,
         lastY: 0,
@@ -60,30 +60,30 @@
 
       const getCaretIcon = computed(() => {
         if (!isCollapsed.value && props.position == 'top') {
-          return 'ant-design:caret-up-outlined';
+          return 'i-ant-design:caret-up-outlined';
         }
         if (!isCollapsed.value && props.position == 'bottom') {
-          return 'ant-design:caret-down-outlined';
+          return 'i-ant-design:caret-down-outlined';
         }
         if (!isCollapsed.value && props.position == 'left') {
-          return 'ant-design:caret-left-outlined';
+          return 'i-ant-design:caret-left-outlined';
         }
         if (!isCollapsed.value && props.position == 'right') {
-          return 'ant-design:caret-right-outlined';
+          return 'i-ant-design:caret-right-outlined';
         }
         if (isCollapsed.value && props.position == 'top') {
-          return 'ant-design:caret-down-outlined';
+          return 'i-ant-design:caret-down-outlined';
         }
         if (isCollapsed.value && props.position == 'bottom') {
-          return 'ant-design:caret-up-outlined';
+          return 'i-ant-design:caret-up-outlined';
         }
         if (isCollapsed.value && props.position == 'left') {
-          return 'ant-design:caret-right-outlined';
+          return 'i-ant-design:caret-right-outlined';
         }
         if (isCollapsed.value && props.position == 'right') {
-          return 'ant-design:caret-left-outlined';
+          return 'i-ant-design:caret-left-outlined';
         }
-        return 'ant-design:caret-right-outlined';
+        return 'i-ant-design:caret-right-outlined';
       });
 
       useEventListener({
@@ -148,16 +148,16 @@
         padding: 15px 1px;
         font-size: 10px;
         color: @text-color-secondary;
-        -moz-user-select: none;
-        -webkit-user-select: none;
-        -ms-user-select: none;
-        -khtml-user-select: none;
         user-select: none;
       }
 
       :hover {
         background-color: @border-color-base;
         border-radius: @border-radius-base;
+      }
+
+      .anticon span:hover {
+        background-color: @text-color-base;
       }
     }
   }

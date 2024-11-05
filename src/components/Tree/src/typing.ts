@@ -1,6 +1,7 @@
 import type { TreeDataItem } from 'ant-design-vue/es/tree';
 import { ContextMenuItem } from '/@/hooks/web/useContextMenu';
-export interface ActionItem {
+
+export interface TreeActionItem {
   render: (record: Recordable) => any;
   show?: boolean | ((record: Recordable) => boolean);
 }
@@ -31,13 +32,13 @@ export interface TreeActionType {
   getExpandedKeys: () => Keys;
   setSelectedKeys: (keys: Keys) => void;
   getSelectedKeys: () => Keys;
-  setCheckedKeys: (keys: CheckKeys) => void;
-  getCheckedKeys: () => CheckKeys;
+  setCheckedKeys: (keys: Keys) => void;
+  getCheckedKeys: () => Keys;
   filterByLevel: (level: number) => void;
   insertNodeByKey: (opt: InsertNodeParams) => void;
   insertNodesByKey: (opt: InsertNodeParams) => void;
   deleteNodeByKey: (key: string) => void;
-  updateNodeByKey: (key: string, node: Omit<TreeDataItem, 'key'>) => void;
+  updateNodeByKey: (key: string, node: Omit<TreeDataItem, 'key'>, list?: TreeDataItem[]) => void;
   setSearchValue: (value: string) => void;
   getSearchValue: () => string;
   setTreeData: (treeData: Recordable[] | undefined) => void;

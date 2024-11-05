@@ -21,7 +21,7 @@ export const asyncRoutes = [PAGE_NOT_FOUND_ROUTE, ...routeModuleList];
 export const RootRoute: AppRouteRecordRaw = {
   path: '/',
   name: 'Root',
-  redirect: PageEnum.BASE_HOME,
+  redirect: PageEnum.BASE_LOGIN,
   meta: {
     title: 'Root',
   },
@@ -41,7 +41,7 @@ const ModPwdRoute: AppRouteModule = {
   name: 'ModPwd',
   component: () => import('/@/views/sys/account/modPwd.vue'),
   meta: {
-    icon: 'ion:key-outline',
+    icon: 'i-ion:key-outline',
     title: t('sys.account.modifyPwd'),
   },
 };

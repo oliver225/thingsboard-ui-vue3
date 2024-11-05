@@ -26,6 +26,24 @@
   import { DictLabel } from '/@/components/Dict';
   import { dateUtil } from '/@/utils/dateUtil';
 
+  const props = {
+    value: {
+      type: [String, Number, Boolean, Object] as PropType<string | number | boolean | Recordable>,
+      default: '',
+    },
+    labelValue: {
+      type: [Array, Object, String, Number] as PropType<Array<any> | object | string | number>,
+    },
+    record: {
+      type: Object as PropType<EditRecordRow>,
+    },
+    column: {
+      type: Object as PropType<BasicColumn>,
+      default: () => ({}),
+    },
+    index: propTypes.number,
+  };
+
   export default defineComponent({
     name: 'EditableCell',
     components: {
@@ -39,24 +57,8 @@
     directives: {
       clickOutside,
     },
-    props: {
-      value: {
-        type: [String, Number, Boolean, Object] as PropType<string | number | boolean | Recordable>,
-        default: '',
-      },
-      labelValue: {
-        type: [Array, Object, String, Number] as PropType<Array<any> | object | string | number>,
-      },
-      record: {
-        type: Object as PropType<EditRecordRow>,
-      },
-      column: {
-        type: Object as PropType<BasicColumn>,
-        default: () => ({}),
-      },
-      index: propTypes.number,
-    },
-    setup(props) {
+    props,
+    setup(props: any) {
       const table = useTableContext();
       const isEdit = ref(false);
       const elRef = ref();
@@ -85,7 +87,9 @@
 
       const getIsDateComp = computed(() => {
         const component = unref(getComponent);
-        return ['DatePicker', 'MonthPicker', 'WeekPicker', 'TimePicker', 'RangePicker'].includes(component);
+        return ['DatePicker', 'MonthPicker', 'WeekPicker', 'TimePicker', 'RangePicker'].includes(
+          component,
+        );
       });
 
       const getEditComponentProps = computed(() => {
@@ -121,7 +125,7 @@
         }
 
         return {
-          size: 'small',
+          // size: 'small',
           getPopupContainer: () => unref(table?.wrapRef.value) ?? document.body,
           placeholder: createPlaceholderMessage(unref(getComponent)),
           dropdownMatchSelectWidth: false,
@@ -141,6 +145,9 @@
         }
         if (props.column?.format && isDef(value)) {
           return formatCell(value, props.column.format, props.record as Recordable, props.index);
+        }
+        if (typeof value == 'object') {
+          return '\u00A0';
         }
         return value;
       });
@@ -163,6 +170,11 @@
       const getRowEditable = computed(() => {
         const { editable } = props.record || {};
         return !!editable;
+      });
+
+      const getForceEditable = computed(() => {
+        const { editComponent } = props.column || {};
+        return editComponent === 'Upload';
       });
 
       watchEffect(() => {
@@ -189,7 +201,7 @@
         });
       }
 
-      async function handleChange(e: any, labelValue: any) {
+      async function handleChange(e: any, labelValue?: any) {
         const component = unref(getComponent);
         let value;
         if (!e) {
@@ -242,7 +254,7 @@
             return false;
           }
           if (isFunction(editRule)) {
-            editRule(currentValue, record as Recordable)
+            return await editRule(currentValue, record as Recordable)
               .then(() => {
                 ruleMessage.value = '';
                 return true;
@@ -406,27 +418,33 @@
         getWrapperStyle,
         getWrapperClass,
         getRowEditable,
+        getForceEditable,
         getValues,
         handleEnter,
         handleSubmitClick,
         spinning,
+        value: props.value,
+        record: props.record,
+        column: props.column,
+        index: props.index,
       };
     },
     render() {
       return (
         <div class={this.prefixCls}>
           <div
-            v-show={!this.isEdit}
+            v-show={!this.isEdit && !this.getForceEditable}
             class={{ [`${this.prefixCls}__normal`]: true, 'ellipsis-cell': this.column.ellipsis }}
             onClick={this.handleEdit}
           >
-            {this.column.dictType
-              ? <DictLabel
+            {this.column.dictType ? (
+              <DictLabel
                 dictType={this.column.dictType}
                 dictValue={this.currentValueRef}
                 defaultValue={this.column.defaultValue}
               />
-              : <div class="cell-content" title={this.column.ellipsis ? this.getValues ?? '' : ''}>
+            ) : (
+              <div class="cell-content" title={this.column.ellipsis ? (this.getValues ?? '') : ''}>
                 {this.column.editRender
                   ? this.column.editRender({
                       text: this.value,
@@ -434,19 +452,19 @@
                       column: this.column,
                       index: this.index,
                     })
-                  : this.getValues ?? '\u00A0'}
+                  : (this.getValues ?? '\u00A0')}
               </div>
-            }
+            )}
             {!this.column.editRow && <FormOutlined class={`${this.prefixCls}__normal-icon`} />}
           </div>
-          {this.isEdit && (
+          {(this.isEdit || this.getForceEditable) && (
             <Spin spinning={this.spinning}>
               <div class={`${this.prefixCls}__wrapper`} v-click-outside={this.onClickOutside}>
                 <CellComponent
                   {...this.getComponentProps}
                   component={this.getComponent}
                   style={this.getWrapperStyle}
-                  popoverOpen={this.getRuleOpen}
+                  popoverOpen={this.getRuleOpen as any}
                   rule={this.getRule}
                   ruleMessage={this.ruleMessage}
                   class={this.getWrapperClass}
@@ -454,7 +472,7 @@
                   onChange={this.handleChange}
                   onPressEnter={this.handleEnter}
                 />
-                {!this.getRowEditable && (
+                {!this.getRowEditable && !this.getForceEditable && (
                   <div class={`${this.prefixCls}__action`}>
                     <CheckOutlined
                       class={[`${this.prefixCls}__icon`, 'mx-2']}
@@ -500,23 +518,74 @@
 
   .edit-cell-rule-popover {
     left: 50px !important;
-    .ant-popover-inner-content {
-      padding: 4px 8px;
-      color: @error-color;
-      // border: 1px solid @error-color;
-      border-radius: 2px;
+
+    .ant-popover-inner {
+      padding: 0 !important;
+
+      &-content {
+        padding: 4px 8px 4px 2px;
+        color: @error-color !important;
+        // border: 1px solid @error-color;
+      }
     }
   }
   .@{prefix-cls} {
     position: relative;
+    margin: -5px;
 
     &__wrapper {
       display: flex;
       align-items: center;
-      justify-content: center;
+      //justify-content: center;
 
       > .ant-select {
         min-width: calc(100% - 50px);
+      }
+
+      .ant-input,
+      .ant-picker,
+      .ant-select-selector {
+        background: transparent !important;
+        border: 0 !important;
+        border-radius: 0;
+        box-shadow: none !important;
+        padding: 0 5px !important;
+
+        &:focus {
+          border-bottom: 1px dotted #999 !important;
+        }
+
+        .ant-select-selection-search {
+          left: 4px !important;
+        }
+
+        .ant-select-selection-placeholder {
+          left: 4px !important;
+        }
+      }
+
+      textarea.ant-input {
+        padding-top: 5px !important;
+      }
+
+      .ant-select-selector {
+        padding-top: 2px !important;
+      }
+
+      .ant-select-single.ant-select-open {
+        .ant-select-selection-item {
+          color: @text-color-base!important;
+        }
+      }
+
+      .ant-select-multiple {
+        .ant-select-selection-search {
+          left: -10px !important;
+        }
+      }
+
+      .jeesite-basic-upload {
+        padding-left: 3px;
       }
     }
 
@@ -541,7 +610,9 @@
     }
 
     &__normal {
+      margin: 5px;
       // display: inline-block; // 去掉，否则编辑表格的 ellipsis 省略号失效
+
       &-icon {
         position: absolute;
         top: 4px;

@@ -3,7 +3,6 @@
     <template v-for="src in imgList" :key="src">
       <img :src="src" v-show="false" />
     </template>
-    <DetailModal :info="rowInfo" @register="registerModal" />
     <BasicTable @register="register" class="error-handle-table" @row-click="handleDetail">
       <template #toolbar>
         <a-button @click="fireVueError" type="primary">
@@ -24,21 +23,24 @@
         />
       </template>
     </BasicTable>
+    <DetailModal :info="rowInfo" @register="registerModal" />
   </div>
 </template>
 
 <script lang="ts" setup>
   import type { ErrorLogInfo } from '/#/store';
-  import { watch, ref, nextTick } from 'vue';
-  import DetailModal from './DetailModal.vue';
-  import { BasicTable, useTable, TableAction } from '/@/components/Table/index';
+  import { watch, ref, unref, nextTick } from 'vue';
+  import { cloneDeep } from 'lodash-es';
+  import { BasicTable, useTable, TableAction } from '/@/components/Table';
   import { useModal } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { useI18n } from '/@/hooks/web/useI18n';
+  import { useRootSetting } from '/@/hooks/setting/useRootSetting';
   import { useErrorLogStore } from '/@/store/modules/errorLog';
-  import { fireErrorApi } from '/@/api/demo/error';
+  import { defHttp } from '/@/utils/http/axios';
+  import { isDevMode } from '/@/utils/env';
   import { getColumns } from './data';
-  import { cloneDeep } from 'lodash-es';
+  import DetailModal from './DetailModal.vue';
 
   const rowInfo = ref<ErrorLogInfo>();
   const imgList = ref<string[]>([]);
@@ -54,6 +56,7 @@
       dataIndex: 'action',
       slot: 'action',
     },
+    canResize: true,
   });
   const [registerModal, { openModal }] = useModal();
 
@@ -68,8 +71,10 @@
       immediate: true,
     },
   );
+
+  const { getUseErrorHandle } = useRootSetting();
   const { createMessage } = useMessage();
-  if (import.meta.env.DEV) {
+  if (isDevMode() && !unref(getUseErrorHandle)) {
     createMessage.info(t('sys.errorLog.enableMessage'));
   }
   // 查看详情
@@ -87,6 +92,6 @@
   }
 
   async function fireAjaxError() {
-    await fireErrorApi();
+    await defHttp.get({ url: '/error' });
   }
 </script>

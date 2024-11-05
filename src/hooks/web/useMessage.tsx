@@ -17,7 +17,7 @@ export interface NotifyApi {
   warn(config: NotificationArgsProps): void;
   warning(config: NotificationArgsProps): void;
   open(args: NotificationArgsProps): void;
-  close(key: String): void;
+  close(key: string): void;
   config(options: ConfigProps): void;
   destroy(): void;
 }
@@ -63,7 +63,7 @@ function renderContent({ content }: Pick<ModalOptionsEx, 'content'>) {
 /**
  * @description: Create confirmation box
  */
-function createConfirm(options: ModalOptionsEx): ModalFunc {
+function createConfirm(options: ModalOptionsEx) {
   const iconType = options.iconType || 'info';
   Reflect.deleteProperty(options, 'iconType');
   const opt: ModalFuncProps = {
@@ -73,7 +73,7 @@ function createConfirm(options: ModalOptionsEx): ModalFunc {
     ...options,
     content: renderContent(options),
   };
-  return Modal.confirm(opt) as unknown as ModalFunc;
+  return Modal.confirm(opt);
 }
 
 const getBaseOptions = () => {

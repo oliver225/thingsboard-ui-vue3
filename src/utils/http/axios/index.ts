@@ -10,13 +10,15 @@ import { useGlobSetting } from '/@/hooks/setting';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { RequestEnum, ContentTypeEnum } from '/@/enums/httpEnum';
 import { isString } from '/@/utils/is';
+import { getToken } from '/@/utils/auth';
 import { setObjToUrlParams, deepMerge } from '/@/utils';
 import { useErrorLogStoreWithOut } from '/@/store/modules/errorLog';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { joinTimestamp, formatRequestDate } from './helper';
 import { useUserStoreWithOut } from '/@/store/modules/user';
 import { isExpired } from '/@/utils/jwt';
-import { refreshTokenApi } from '/@/api/sys/login';
+import { refreshTokenApi } from '/@/api/tb/login';
+
 
 const globSetting = useGlobSetting();
 const urlPrefix = globSetting.urlPrefix;
@@ -51,16 +53,23 @@ const transform: AxiosTransform = {
     //   throw new Error(t('sys.api.apiRequestFailed'));
     // }
 
+    // 处理响应头中的令牌
+    // const token = res?.headers[(config as any)?.authenticationHeader];
+    // if (token) {
+    //   const userStore = useUserStoreWithOut();
+    //   userStore.setToken(token);
+    // }
+
     // 非对象类型的直接返回数据
     if (typeof data !== 'object') return data;
 
     //  这里 code，result，message为 后台统一的字段，需要在 types.ts内修改为项目自己的接口返回格式
-    // // const { code, result, message } = data;
+    // const { code, result, message } = data;
     // const { sessionid, result, message } = data;
 
     // // 设置会话编码
-    // const userStore = useUserStoreWithOut();
     // if (data && Reflect.has(data, 'sessionid')) {
+    //   const userStore = useUserStoreWithOut();
     //   userStore.setToken(sessionid);
     // }
 
@@ -107,18 +116,6 @@ const transform: AxiosTransform = {
     //     }
     //   }
     // }
-    const { createdTime, errorCode, message } = data;
-    if (data.hasOwnProperty('errorCode')) {
-      const errorMessage = message || t('sys.api.apiRequestFailed');
-      if (options.errorMessageMode === 'modal') {
-        showMessageModal({ content: `${errorCode}: ${errorMessage}` }, 'error');
-        throw new Error(`${errorCode}: ${errorMessage}`);
-      } else if (options.errorMessageMode === 'message') {
-        showMessage(`${errorCode}: ${errorMessage}`, 'error');
-        throw new Error(`${errorCode}: ${errorMessage}`);
-      }
-    }
-
     return data;
   },
 
@@ -176,16 +173,13 @@ const transform: AxiosTransform = {
    */
   requestInterceptors: (config: Recordable, options) => {
     // 请求之前处理config
-    const userStore = useUserStoreWithOut();
-    const token = userStore.getToken;
-    if (token && config?.requestOptions?.withToken !== false) {
-      // // jwt token
-      // config.headers.Authorization = options.authenticationScheme
-      //   ? `${options.authenticationScheme} ${token}`
-      //   : token;
-      config.headers['X-Authorization'] = options.authenticationScheme
-        ? `${options.authenticationScheme} ${token}`
-        : token;
+    if (config?.requestOptions?.withToken !== false && options.authenticationHeader) {
+      const token = getToken();
+      if (token) {
+        config.headers[options.authenticationHeader] = options.authenticationScheme
+          ? `${options.authenticationScheme} ${token}`
+          : token;
+      }
     }
     return config;
   },
@@ -219,8 +213,6 @@ const transform: AxiosTransform = {
         errMessage = t('sys.api.networkExceptionMsg');
       } else if (code === 'ERR_BAD_RESPONSE') {
         errMessage = t('sys.api.apiRequestFailed');
-      } else if (code == 'ERR_BAD_REQUEST') {
-        errMessage = t('sys.api.apiRequestFailed');
       }
 
       if (status == 401 && errorCode == 11) {
@@ -234,10 +226,7 @@ const transform: AxiosTransform = {
               return instance.request(config)
             })
         } else {
-          // 退出登录
-          showMessage({ content: '登录过期,请重新登陆。。。' }, 'error');
-          userStore.logout();
-          return Promise.reject(errMessage);
+          errMessage = error?.response?.data?.message || '登录过期,请重新登陆。。。'
         }
       }
 
@@ -252,8 +241,7 @@ const transform: AxiosTransform = {
                 isShowMessageModal = false;
                 return Promise.resolve();
               },
-            }, 'error',
-            );
+            });
           }
         } else if (errorMessageMode === 'message') {
           if (!isShowMessage) {
@@ -262,16 +250,13 @@ const transform: AxiosTransform = {
             setTimeout(() => (isShowMessage = false), 1000);
           }
         }
-        if (response?.data) {
-          return Promise.reject(response?.data);
-        }
         return Promise.reject(error);
       }
     } catch (error: any) {
       throw new Error(error);
     }
 
-    checkStatus(error?.response?.status, msg, errorMessageMode);
+    checkStatus(error?.response?.status, error?.response?.data?.errorCode, msg, errorMessageMode);
     return Promise.reject(error);
   },
 };
@@ -280,10 +265,10 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
   return new VAxios(
     deepMerge(
       {
-        // See https://developer.mozilla.org/en-US/docs/Web/HTTP/Authentication#authentication_schemes
-        // authentication schemes，e.g: Bearer
-        // authenticationScheme: 'Bearer',
+        // authenticationHeader: 'Authorization',
         authenticationScheme: 'Bearer',
+        authenticationHeader: 'X-Authorization',
+        // authenticationScheme: '',
         // 请求超时时间，默认3分钟
         timeout: 3 * 60 * 1000,
         // 基础接口地址

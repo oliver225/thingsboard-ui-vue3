@@ -24,14 +24,14 @@
         <div :class="`${prefixCls}-toolbar`">
           <Upload :fileList="[]" accept="image/*" :beforeUpload="handleBeforeUpload">
             <Tooltip :title="t('component.cropper.selectImage')" placement="bottom">
-              <a-button size="small" preIcon="ant-design:upload-outlined" type="primary" />
+              <a-button size="small" preIcon="i-ant-design:upload-outlined" type="primary" />
             </Tooltip>
           </Upload>
           <Space>
             <Tooltip :title="t('component.cropper.btn_reset')" placement="bottom">
               <a-button
                 type="primary"
-                preIcon="ant-design:reload-outlined"
+                preIcon="i-ant-design:reload-outlined"
                 size="small"
                 :disabled="!src"
                 @click="handlerToolbar('reset')"
@@ -40,7 +40,7 @@
             <Tooltip :title="t('component.cropper.btn_rotate_left')" placement="bottom">
               <a-button
                 type="primary"
-                preIcon="ant-design:rotate-left-outlined"
+                preIcon="i-ant-design:rotate-left-outlined"
                 size="small"
                 :disabled="!src"
                 @click="handlerToolbar('rotate', -45)"
@@ -49,7 +49,7 @@
             <Tooltip :title="t('component.cropper.btn_rotate_right')" placement="bottom">
               <a-button
                 type="primary"
-                preIcon="ant-design:rotate-right-outlined"
+                preIcon="i-ant-design:rotate-right-outlined"
                 size="small"
                 :disabled="!src"
                 @click="handlerToolbar('rotate', 45)"
@@ -58,7 +58,7 @@
             <Tooltip :title="t('component.cropper.btn_scale_x')" placement="bottom">
               <a-button
                 type="primary"
-                preIcon="vaadin:arrows-long-h"
+                preIcon="i-vaadin:arrows-long-h"
                 size="small"
                 :disabled="!src"
                 @click="handlerToolbar('scaleX')"
@@ -67,7 +67,7 @@
             <Tooltip :title="t('component.cropper.btn_scale_y')" placement="bottom">
               <a-button
                 type="primary"
-                preIcon="vaadin:arrows-long-v"
+                preIcon="i-vaadin:arrows-long-v"
                 size="small"
                 :disabled="!src"
                 @click="handlerToolbar('scaleY')"
@@ -76,7 +76,7 @@
             <Tooltip :title="t('component.cropper.btn_zoom_in')" placement="bottom">
               <a-button
                 type="primary"
-                preIcon="ant-design:zoom-in-outlined"
+                preIcon="i-ant-design:zoom-in-outlined"
                 size="small"
                 :disabled="!src"
                 @click="handlerToolbar('zoom', 0.1)"
@@ -85,7 +85,7 @@
             <Tooltip :title="t('component.cropper.btn_zoom_out')" placement="bottom">
               <a-button
                 type="primary"
-                preIcon="ant-design:zoom-out-outlined"
+                preIcon="i-ant-design:zoom-out-outlined"
                 size="small"
                 :disabled="!src"
                 @click="handlerToolbar('zoom', -0.1)"
@@ -233,19 +233,21 @@
       background: #eee;
       background-image: linear-gradient(
           45deg,
-          rgba(0, 0, 0, 0.25) 25%,
+          rgb(0 0 0 / 25%) 25%,
           transparent 0,
           transparent 75%,
-          rgba(0, 0, 0, 0.25) 0
+          rgb(0 0 0 / 25%) 0
         ),
         linear-gradient(
           45deg,
-          rgba(0, 0, 0, 0.25) 25%,
+          rgb(0 0 0 / 25%) 25%,
           transparent 0,
           transparent 75%,
-          rgba(0, 0, 0, 0.25) 0
+          rgb(0 0 0 / 25%) 0
         );
-      background-position: 0 0, 12px 12px;
+      background-position:
+        0 0,
+        12px 12px;
       background-size: 24px 24px;
     }
 

@@ -38,14 +38,14 @@ export const useLockStore = defineStore({
       }
       const tryLogin = async () => {
         try {
-          const email = userStore.getUserInfo?.email;
+          const username = userStore.getUserInfo?.loginCode;
           const res = await userStore.login({
-            username: email,
+            username: username,
             password: password!,
             goHome: false,
             mode: 'none',
           });
-          if (res) {
+          if (res.result == 'true') {
             this.resetLockInfo();
             return true;
           }

@@ -35,15 +35,13 @@
     <div :class="`${prefixCls}-action`">
       <AppSearch v-if="getShowSearch" :class="`${prefixCls}-action__item `" />
 
-      <!-- <OnlineCount :class="`${prefixCls}-action__item online-count`" /> -->
+      <OnlineCount :class="`${prefixCls}-action__item online-count`" />
 
       <Notify v-if="getShowNotice" :class="`${prefixCls}-action__item notify-item`" />
 
       <ErrorAction v-if="getUseErrorHandle" :class="`${prefixCls}-action__item error-action`" />
 
       <FullScreen v-if="getShowFullScreen" :class="`${prefixCls}-action__item fullscreen-item`" />
-
-      <AppLocalePicker v-if="getShowLocalePicker" :reload="true" :showText="false" :class="`${prefixCls}-action__item`"/>
 
       <UserDropDown :theme="getHeaderTheme" />
 
@@ -53,37 +51,32 @@
 </template>
 <script lang="ts">
   import { defineComponent, ref, unref, computed } from 'vue';
-
   import { propTypes } from '/@/utils/propTypes';
-
   import { Layout } from 'ant-design-vue';
   import { AppLogo } from '/@/components/Application';
-  import LayoutMenu from '../menu/index.vue';
-  import LayoutTrigger from '../trigger/index.vue';
-
   import { AppSearch } from '/@/components/Application';
-
+  import { MenuModeEnum, MenuSplitTyeEnum } from '/@/enums/menuEnum';
+  import { SettingButtonPositionEnum } from '/@/enums/appEnum';
   import { useHeaderSetting } from '/@/hooks/setting/useHeaderSetting';
   import { useMenuSetting } from '/@/hooks/setting/useMenuSetting';
   import { useRootSetting } from '/@/hooks/setting/useRootSetting';
-
-  import { MenuModeEnum, MenuSplitTyeEnum } from '/@/enums/menuEnum';
-  import { SettingButtonPositionEnum } from '/@/enums/appEnum';
-  import { AppLocalePicker } from '/@/components/Application';
-
+  import { useAppInject } from '/@/hooks/web/useAppInject';
+  import { useDesign } from '/@/hooks/web/useDesign';
+  import { usePermission } from '/@/hooks/web/usePermission';
+  import { useLocale } from '/@/locales/useLocale';
+  import { useUserStore } from '/@/store/modules/user';
+  import { onMountedOrActivated } from '/@/hooks/core/onMountedOrActivated';
+  import LayoutMenu from '../menu/index.vue';
+  import LayoutTrigger from '../trigger/index.vue';
   import {
     UserDropDown,
     LayoutBreadcrumb,
     FullScreen,
     Notify,
     ErrorAction,
+    OnlineCount,
+    SettingDrawer,
   } from './components';
-  import { useAppInject } from '/@/hooks/web/useAppInject';
-  import { useDesign } from '/@/hooks/web/useDesign';
-
-  import { createAsyncComponent } from '/@/utils/factory/createAsyncComponent';
-  import { useLocale } from '/@/locales/useLocale';
-  import { onMountedOrActivated } from '/@/hooks/core/onMountedOrActivated';
 
   export default defineComponent({
     name: 'LayoutHeader',
@@ -94,14 +87,12 @@
       LayoutBreadcrumb,
       LayoutMenu,
       UserDropDown,
-      AppLocalePicker,
       FullScreen,
       Notify,
       AppSearch,
       ErrorAction,
-      SettingDrawer: createAsyncComponent(() => import('/@/layouts/default/setting/index.vue'), {
-        loading: true,
-      }),
+      OnlineCount,
+      SettingDrawer,
     },
     props: {
       fixed: propTypes.bool,
@@ -153,13 +144,13 @@
         ];
       });
 
-      // const getUseCorpModel = computed(() => {
-      //   const userStore = useUserStore();
-      //   const { hasAuthority } = usePermission();
-      //   return (
-      //     userStore.getPageCacheByKey('useCorpModel', false) && hasAuthority('sys:corpAdmin:edit')
-      //   );
-      // });
+      const getUseCorpModel = computed(() => {
+        const userStore = useUserStore();
+        const { hasPermission } = usePermission();
+        return (
+          userStore.getPageCacheByKey('useCorpModel', false) && hasPermission('sys:corpAdmin:edit')
+        );
+      });
 
       const getShowSetting = computed(() => {
         if (!unref(getShowSettingButton)) {
@@ -212,7 +203,7 @@
         getShowSettingButton,
         getShowSetting,
         getShowSearch,
-        // getUseCorpModel,
+        getUseCorpModel,
       };
     },
   });

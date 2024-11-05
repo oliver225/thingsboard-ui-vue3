@@ -2,6 +2,8 @@ import type { PropType } from 'vue';
 import { FileBasicColumn } from './typing';
 import { FileUpload, uploadFile } from '/@/api/sys/upload';
 import { useGlobSetting } from '/@/hooks/setting';
+import type { SizeType } from '/@/components/Table';
+import { DEFAULT_SIZE } from '/@/components/Table/src/const';
 
 type UploadType = 'image' | 'media' | 'file' | 'all';
 
@@ -95,12 +97,21 @@ export const basicProps = {
     type: String as PropType<string>,
     default: '',
   },
+  // 是否文件夹上传（caniuse）
+  directory: {
+    type: Boolean as PropType<boolean>,
+    default: false,
+  },
+  size: {
+    type: String as PropType<SizeType>,
+    default: DEFAULT_SIZE,
+  },
 };
 
 export const uploadContainerProps = {
   ...basicProps,
   value: {
-    type: Object as PropType<{}>,
+    type: Object as PropType<any>,
     default: {},
   },
   showPreview: {
@@ -117,7 +128,7 @@ export const uploadContainerProps = {
   },
   // 加载时间戳，此为监听属性，方便刷新文件列表数据
   loadTime: {
-    type: Number as PropType<Number>,
+    type: Number as PropType<number>,
     default: 0,
   },
 };

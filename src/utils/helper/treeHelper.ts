@@ -3,12 +3,14 @@ interface TreeHelperConfig {
   pid: string;
   children: string;
   callback: Fn;
+  fullNameSplit: string;
 }
 const DEFAULT_CONFIG: TreeHelperConfig = {
   id: 'id',
   pid: 'pId',
   children: 'children',
   callback: () => {},
+  fullNameSplit: '/',
 };
 
 const getConfig = (config: Partial<TreeHelperConfig>) => Object.assign({}, DEFAULT_CONFIG, config);
@@ -18,7 +20,7 @@ export function listToTree<T = any>(list?: any[], config: Partial<TreeHelperConf
   const conf = getConfig(config) as TreeHelperConfig;
   const nodeMap = new Map();
   const result: T[] = [];
-  const { id, pid, children } = conf;
+  const { id, pid, children, fullNameSplit } = conf;
 
   for (const node of list || []) {
     node[children] = node[children] || [];
@@ -27,7 +29,14 @@ export function listToTree<T = any>(list?: any[], config: Partial<TreeHelperConf
   for (const node of list || []) {
     const parent = nodeMap.get(node[pid]);
     (parent ? parent[children] : result).push(node);
-    if (node.name) node._name = node.name;
+    if (node.name) {
+      node._name = node.name;
+      if (parent && parent._fullName) {
+        node._fullName = parent._fullName + fullNameSplit + node._name;
+      } else {
+        node._fullName = node._name;
+      }
+    }
     conf.callback(parent, node);
   }
   return result;
@@ -128,18 +137,26 @@ export function filter<T = any>(
   tree: T[],
   func: (n: T) => boolean,
   config: Partial<TreeHelperConfig> = {},
+  onlySearchLevel?: number,
 ): T[] {
   config = getConfig(config);
   const children = config.children as string;
-  function listFilter(list: T[]) {
+  function listFilter(list: T[], level?: number) {
     return list
       .map((node: any) => ({ ...node }))
       .filter((node) => {
+        if (level === 1) {
+          return func(node);
+        }
+        if (onlySearchLevel && level) {
+          node[children] = node[children] && listFilter(node[children], level - 1);
+          return node[children] && node[children].length;
+        }
         node[children] = node[children] && listFilter(node[children]);
         return func(node) || (node[children] && node[children].length);
       });
   }
-  return listFilter(tree);
+  return listFilter(tree, onlySearchLevel);
 }
 
 export function forEach<T = any>(

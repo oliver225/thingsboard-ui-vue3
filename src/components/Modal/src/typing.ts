@@ -9,7 +9,7 @@ export interface ModalMethods {
   redoModalHeight?: () => void;
 }
 
-export type RegisterFn = (modalMethods: ModalMethods, uuid?: string) => void;
+export type RegisterFn = (modalMethods: ModalMethods, uuid: number) => void;
 
 export interface ReturnMethods extends ModalMethods {
   openModal: <T = any>(props?: boolean, data?: T, openOnSet?: boolean) => void;
@@ -175,7 +175,7 @@ export interface ModalProps {
    * The modal dialog's title
    * @type any (string | slot)
    */
-  title?: VNodeChild | JSX.Element;
+  title?: VNodeChild | JSX.Element | any;
 
   /**
    * Width of the modal dialog

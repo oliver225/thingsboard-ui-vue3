@@ -4,7 +4,7 @@
       <div :class="`${prefixCls}-submenu-title`" @click.stop="handleClick" :style="getItemStyle">
         <slot name="title"></slot>
         <Icon
-          icon="eva:arrow-ios-downward-outline"
+          icon="i-eva:arrow-ios-downward-outline"
           :size="14"
           :class="`${prefixCls}-submenu-title-icon`"
         />
@@ -21,7 +21,7 @@
       :overlayClassName="`${prefixCls}-menu-popover`"
       v-else
       :open="getIsOpend"
-      @openChange="handleOpenChange"
+      @open-change="handleOpenChange"
       :overlayStyle="getOverlayStyle"
       :align="{ offset: [0, 0] }"
     >
@@ -38,7 +38,7 @@
         </div>
         <Icon
           v-if="getParentSubMenu"
-          icon="eva:arrow-ios-downward-outline"
+          icon="i-eva:arrow-ios-downward-outline"
           :size="14"
           :class="`${prefixCls}-submenu-title-icon`"
         />
@@ -74,12 +74,22 @@
   import { useMenuItem } from './useMenu';
   import { useSimpleRootMenuContext } from './useSimpleMenuContext';
   import { CollapseTransition } from '/@/components/Transition';
-  import Icon from '/@/components/Icon';
+  import { Icon } from '/@/components/Icon';
   import { Popover } from 'ant-design-vue';
   import { isBoolean, isObject } from '/@/utils/is';
-  import mitt from '/@/utils/mitt';
+  import { mitt } from '/@/utils/mitt';
 
   const DELAY = 200;
+
+  const props = {
+    name: {
+      type: [String, Number] as PropType<string | number>,
+      required: true,
+    },
+    disabled: propTypes.bool,
+    collapsedShowTitle: propTypes.bool,
+  };
+
   export default defineComponent({
     name: 'SubMenu',
     components: {
@@ -87,14 +97,7 @@
       CollapseTransition,
       Popover,
     },
-    props: {
-      name: {
-        type: [String, Number] as PropType<string | number>,
-        required: true,
-      },
-      disabled: propTypes.bool,
-      collapsedShowTitle: propTypes.bool,
-    },
+    props,
     setup(props) {
       const instance = getCurrentInstance();
 
@@ -156,13 +159,13 @@
       const getIsOpend = computed(() => {
         const name = props.name;
         if (unref(getCollapse)) {
-          return parentGetOpenNames().includes(name);
+          return parentGetOpenNames().includes(name as string);
         }
         return state.opened;
       });
 
       const getSubClass = computed(() => {
-        const isActive = rootProps.activeSubMenuNames.includes(props.name);
+        const isActive = rootProps.activeSubMenuNames.includes(props.name as string);
         return [
           `${prefixCls}-submenu-title`,
           {
@@ -218,10 +221,10 @@
         if (isRoot) {
           parentRemoveAll();
         }
-        data.isChild = parentGetOpenNames().includes(props.name);
+        data.isChild = parentGetOpenNames().includes(props.name as string);
         clearTimeout(data.timeout!);
         data.timeout = setTimeout(() => {
-          parentAddSubmenu(props.name);
+          parentAddSubmenu(props.name as string);
         }, DELAY);
       }
 
@@ -242,7 +245,7 @@
             if (isRemoveAllPopup.value) {
               parentRemoveAll();
             } else if (!data.mouseInChild) {
-              parentRemoveSubmenu(props.name);
+              parentRemoveSubmenu(props.name as string);
             }
           }, DELAY);
         }

@@ -16,7 +16,7 @@ import { Persistent } from '/@/utils/cache/persistent';
 import { darkMode } from '/@/settings/designSetting';
 import { resetRouter } from '/@/router';
 import { deepMerge } from '/@/utils';
-// import { switchSkin } from '/@/api/sys/login';
+import { switchSkin } from '/@/api/sys/login';
 
 interface AppState {
   darkMode?: ThemeEnum;
@@ -27,6 +27,7 @@ interface AppState {
   // When the window shrinks, remember some states, and restore these states when the window is restored
   beforeMiniInfo: BeforeMiniState;
 }
+
 let timeId: TimeoutHandle;
 export const useAppStore = defineStore({
   id: 'app',
@@ -73,7 +74,7 @@ export const useAppStore = defineStore({
     setDarkMode(mode: ThemeEnum): void {
       this.darkMode = mode;
       localStorage.setItem(APP_DARK_MODE_KEY, mode);
-      // switchSkin();
+      switchSkin();
     },
 
     setBeforeMiniInfo(state: BeforeMiniState): void {
@@ -87,7 +88,7 @@ export const useAppStore = defineStore({
 
     async resetAllState() {
       resetRouter();
-      Persistent.clearAll();
+      // Persistent.clearAll(); 退出时不清理本地存储
     },
     async setPageLoadingAction(loading: boolean): Promise<void> {
       if (loading) {

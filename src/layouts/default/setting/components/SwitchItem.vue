@@ -43,7 +43,7 @@
       const getBindValue = computed(() => {
         return props.def ? { checked: props.def } : {};
       });
-      function handleChange(e: ChangeEvent) {
+      function handleChange(e: any) {
         props.event && baseHandler(props.event, e);
       }
       return {
@@ -55,12 +55,13 @@
     },
   });
 </script>
-<style lang="less" scoped>
+<style lang="less">
   @prefix-cls: ~'jeesite-setting-switch-item';
 
   .@{prefix-cls} {
     display: flex;
     justify-content: space-between;
     margin: 16px 0;
+    color: @text-color-base;
   }
 </style>

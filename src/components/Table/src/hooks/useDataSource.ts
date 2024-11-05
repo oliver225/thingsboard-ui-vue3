@@ -20,7 +20,7 @@ import { useTimeoutFn } from '/@/hooks/core/useTimeout';
 import { buildUUID } from '/@/utils/uuid';
 import { isFunction, isBoolean } from '/@/utils/is';
 import { get, cloneDeep, merge } from 'lodash-es';
-import { DEFAULT_SORT_KEY, FETCH_SETTING, ROW_KEY, PAGE_SIZE } from '../const';
+import { FETCH_SETTING, ROW_KEY, PAGE_SIZE } from '../const';
 import { useEmitter } from '/@/store/modules/user';
 import { useDict } from '/@/components/Dict';
 
@@ -32,7 +32,7 @@ interface ActionType {
   clearSelectedRowKeys: () => void;
   tableData: Ref<Recordable[]>;
   collapseAll: () => void;
-  expandCollapse: (record: Recordable, onlyLoadData: boolean, forceLoad: boolean) => void;
+  expandCollapse: (record: Recordable, onlyLoadData: boolean, forceLoad: boolean) => Promise<any>;
 }
 
 interface SearchState {
@@ -82,8 +82,8 @@ export function useDataSource(
     filters: Partial<Recordable<string[]>>,
     sorter: SorterResult,
   ) {
-    const { clearSelectOnPageChange, sortFn, filterFn } = unref(propsRef);
-    if (clearSelectOnPageChange) {
+    const { clearSelectedOnReload, sortFn, filterFn } = unref(propsRef);
+    if (clearSelectedOnReload) {
       clearSelectedRowKeys();
     }
     setPagination(pagination);
@@ -124,32 +124,40 @@ export function useDataSource(
     return unref(getAutoCreateKey) ? ROW_KEY : rowKey;
   });
 
-  const getDataSourceRef = computed(() => {
-    const dataSource = unref(dataSourceRef);
-    if (!dataSource || dataSource.length === 0) {
-      return unref(dataSourceRef);
-    }
-    if (unref(getAutoCreateKey)) {
-      const firstItem = dataSource[0];
-      const lastItem = dataSource[dataSource.length - 1];
+  const getDataSourceRef: Ref<Recordable<any>[]> = ref([]);
 
-      if (firstItem && lastItem) {
-        if (!firstItem[ROW_KEY] || !lastItem[ROW_KEY]) {
-          const data = cloneDeep(unref(dataSourceRef));
-          data.forEach((item) => {
-            if (!item[ROW_KEY]) {
-              item[ROW_KEY] = buildUUID();
-            }
-            if (item.children && item.children.length) {
-              setTableKey(item.children);
-            }
-          });
-          dataSourceRef.value = data;
+  watch(
+    () => dataSourceRef.value,
+    () => {
+      const dataSource = unref(dataSourceRef);
+      if (!dataSource || dataSource.length === 0) {
+        getDataSourceRef.value = unref(dataSourceRef);
+        return;
+      }
+      if (unref(getAutoCreateKey)) {
+        const firstItem = dataSource[0];
+        const lastItem = dataSource[dataSource.length - 1];
+        if (firstItem && lastItem) {
+          if (!firstItem[ROW_KEY] || !lastItem[ROW_KEY]) {
+            const data = cloneDeep(unref(dataSourceRef));
+            data.forEach((item) => {
+              if (!item[ROW_KEY]) {
+                item[ROW_KEY] = buildUUID();
+              }
+              if (item.children && item.children.length) {
+                setTableKey(item.children);
+              }
+            });
+            dataSourceRef.value = data;
+          }
         }
       }
-    }
-    return unref(dataSourceRef);
-  });
+      getDataSourceRef.value = unref(dataSourceRef);
+    },
+    {
+      deep: true,
+    },
+  );
 
   async function updateTableData(index: number, key: string, value: any) {
     const record = dataSourceRef.value[index];
@@ -164,10 +172,9 @@ export function useDataSource(
     record: Recordable,
   ): Recordable | undefined {
     const row = findTableDataRecord(rowKey);
-
     if (row) {
-      for (const field in row) {
-        if (Reflect.has(record, field)) row[field] = record[field];
+      for (const field in record) {
+        row[field] = record[field];
       }
       return row;
     }
@@ -203,7 +210,7 @@ export function useDataSource(
     return unref(propsRef).dataSource;
   }
 
-  function insertTableDataRecord(record: Recordable, index: number): Recordable | undefined {
+  function insertTableDataRecord(record: Recordable, index?: number): Recordable | undefined {
     // if (!dataSourceRef.value || dataSourceRef.value.length == 0) return;
     index = index ?? dataSourceRef.value?.length;
     unref(dataSourceRef).splice(index, 0, record);
@@ -248,7 +255,7 @@ export function useDataSource(
     return findRow(dataSourceRef.value);
   }
 
-  async function fetch(opt?: FetchParams) {
+  async function fetch(opt?: FetchParams): Promise<any> {
     const {
       api,
       searchInfo,
@@ -260,6 +267,7 @@ export function useDataSource(
       pagination,
       isTreeTable,
     } = unref(propsRef);
+
     if (!api || !isFunction(api)) return;
     try {
       setLoading(true);
@@ -379,10 +387,37 @@ export function useDataSource(
   }
 
   async function reload(opt?: FetchParams) {
-    if (opt?.parentCode && opt?.parentCode != '0') {
+    const { clearSelectedOnReload } = unref(propsRef);
+    if (clearSelectedOnReload) {
+      clearSelectedRowKeys();
+    }
+    // 如果是树表，则刷新上一个父节点和要转移到目标的父节点下的数据 v5.6.0+
+    if (
+      unref(propsRef).isTreeTable &&
+      opt?.record &&
+      opt?.record.parentCode &&
+      opt?.record.parentCode != '0'
+    ) {
+      // 刷新移动前的父节点 v5.6.0+
+      if (opt?.record.oldParentCode && opt?.record.oldParentCode != '0') {
+        const row = findTableDataRecord(opt?.record.oldParentCode);
+        if (row) await expandCollapse(row, false, true);
+      } else {
+        await fetch(opt);
+      }
+      // 刷新移动后的父节点 v5.6.0+
+      if (opt?.record.oldParentCode != opt?.record.parentCode) {
+        const row = findTableDataRecord(opt?.record.parentCode);
+        if (row) await expandCollapse(row, false, true);
+      }
+    }
+    // 旧版兼容，建议使用 record 参数替换 v5.6.0 之前
+    else if (opt?.parentCode && opt?.parentCode != '0') {
       const row = findTableDataRecord(opt.parentCode);
       if (row) await expandCollapse(row, false, true);
-    } else {
+    }
+    // 重载表格数据
+    else {
       await fetch(opt);
     }
   }
@@ -399,15 +434,15 @@ export function useDataSource(
     getDelDataSource,
     getRawDataSource,
     getRowKey,
-    setTableData,
     getAutoCreateKey,
-    fetch,
-    reload,
+    setTableData,
     updateTableData,
     updateTableDataRecord,
     deleteTableDataRecord,
     insertTableDataRecord,
     findTableDataRecord,
     handleTableChange,
+    fetch,
+    reload,
   };
 }

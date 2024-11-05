@@ -1,5 +1,5 @@
-import type { AxiosRequestConfig, AxiosInstance, AxiosResponse, AxiosError, InternalAxiosRequestConfig } from 'axios';
-import type { RequestOptions, Result, UploadFileParams } from '../../../../types/axios';
+import type { AxiosRequestConfig, AxiosInstance, AxiosResponse, AxiosError } from 'axios';
+import type { RequestOptions, Result, UploadFileParams } from '/#/axios';
 import type { CreateAxiosOptions } from './axiosTransform';
 import axios from 'axios';
 import qs from 'qs';
@@ -78,7 +78,7 @@ export class VAxios {
     const axiosCanceler = new AxiosCanceler();
 
     // Request interceptor configuration processing
-    this.axiosInstance.interceptors.request.use((config: InternalAxiosRequestConfig) => {
+    this.axiosInstance.interceptors.request.use((config: AxiosRequestConfig | any) => {
       // If cancel repeat request is turned on, then cancel repeat request is prohibited
       const ignoreCancelToken = config.headers?.ignoreCancelToken;
 
@@ -89,7 +89,7 @@ export class VAxios {
 
       !ignoreCancel && axiosCanceler.addPending(config);
       if (requestInterceptors && isFunction(requestInterceptors)) {
-        config = requestInterceptors(config, this.options) as InternalAxiosRequestConfig;
+        config = requestInterceptors(config, this.options);
       }
       return config;
     }, undefined);
@@ -134,7 +134,7 @@ export class VAxios {
         formData.append(key, params.data[key]);
       });
     }
-    formData.append(params.name || 'file', params.file, params.filename);
+    formData.append(params.name || 'file', params.file as any, params.filename);
     const customParams = omit(params, 'file', 'filename');
 
     Object.keys(customParams).forEach((key) => {

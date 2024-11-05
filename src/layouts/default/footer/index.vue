@@ -3,19 +3,22 @@
     <div :class="`${prefixCls}__links`">
       <a @click="openWindow(SITE_URL)">{{ t('layout.footer.onlinePreview') }}</a>
 
-      <GithubFilled @click="openWindow(GITHUB_URL)" :class="`${prefixCls}__github`" />
+      <Icon
+        icon="i-ant-design:github-filled"
+        @click="openWindow(GITHUB_URL)"
+        :class="`${prefixCls}__github`"
+      />
 
-      <a @click="openWindow(DOC_URL)">{{ t('文档') }}</a>
+      <a @click="openWindow(DOC_URL)">{{ t('layout.footer.onlineDocument') }}</a>
     </div>
-    <!-- <div>Copyright &copy;2021 <a href="https://jeesite.com" target="_blank">JeeSite</a></div> -->
+    <div>Copyright &copy;2021 <a href="https://jeesite.com" target="_blank">JeeSite</a></div>
   </Footer>
 </template>
 
 <script lang="ts">
   import { computed, defineComponent, unref, ref } from 'vue';
   import { Layout } from 'ant-design-vue';
-
-  import { GithubFilled } from '@ant-design/icons-vue';
+  import { Icon } from '/@/components/Icon';
 
   import { DOC_URL, GITHUB_URL, SITE_URL } from '/@/settings/siteSetting';
   import { openWindow } from '/@/utils';
@@ -28,7 +31,7 @@
 
   export default defineComponent({
     name: 'LayoutFooter',
-    components: { Footer: Layout.Footer, GithubFilled },
+    components: { Footer: Layout.Footer, Icon },
     setup() {
       const { t } = useI18n();
       const { getShowFooter } = useRootSetting();
@@ -61,34 +64,31 @@
     },
   });
 </script>
-<style lang="less" scoped>
+<style lang="less">
   @prefix-cls: ~'jeesite-layout-footer';
 
-  @normal-color: rgba(0, 0, 0, 0.45);
-
-  @hover-color: rgba(0, 0, 0, 0.85);
-
   .@{prefix-cls} {
-    color: @normal-color;
     text-align: center;
+    opacity: 0.7;
+
+    a {
+      color: @text-color-base !important;
+
+      &:hover {
+        opacity: 1;
+      }
+    }
 
     &__links {
       margin-bottom: 8px;
-
-      a {
-        color: @normal-color;
-
-        &:hover {
-          color: @hover-color;
-        }
-      }
     }
 
     &__github {
       margin: 0 30px;
+      cursor: pointer;
 
       &:hover {
-        color: @hover-color;
+        opacity: 1;
       }
     }
   }

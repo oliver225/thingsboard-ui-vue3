@@ -13,7 +13,7 @@
   import { Form, Col } from 'ant-design-vue';
   import { componentMap } from '../componentMap';
   import { BasicHelp } from '/@/components/Basic';
-  import { isBoolean, isFunction, isNull, isEmpty } from '/@/utils/is';
+  import { isBoolean, isFunction, isNull, isEmpty, isString } from '/@/utils/is';
   import { getSlot } from '/@/utils/helper/tsxHelper';
   import { createPlaceholderMessage, setComponentRuleType } from '../helper';
   import { upperFirst, cloneDeep } from 'lodash-es';
@@ -47,10 +47,14 @@
         default: null,
       },
       tableAction: {
-        type: Object as PropType<TableActionType>,
+        type: Object as PropType<Partial<TableActionType>>,
       },
       formActionType: {
-        type: Object as PropType<FormActionType>,
+        type: Object as PropType<Partial<FormActionType>>,
+      },
+      colLayout: {
+        type: Boolean,
+        default: true,
       },
     },
     setup(props, { slots }) {
@@ -293,12 +297,21 @@
           }
         }
 
+        let value = props.formModel[field];
+        if (isString(value) && component === 'RangePicker') {
+          const vs = value.split(',');
+          if (vs.length > 1) value = [vs[0], vs[1]];
+          else value = [vs[0], ''];
+        } else if (isString(value) && value === '') {
+          value = undefined;
+        }
+
         const bindValue: Recordable = {
-          [valueField || (isCheck ? 'checked' : 'value')]: props.formModel[field] || defaultValue,
+          [valueField || (isCheck ? 'checked' : 'value')]: value ?? defaultValue,
         };
 
         if (fieldLabel) {
-          bindValue[labelField || 'labelValue'] = props.formModel[fieldLabel] || defaultLabel;
+          bindValue[labelField || 'labelValue'] = props.formModel[fieldLabel] ?? defaultLabel;
           // console.log('bindValue', bindValue, props.formModel);
           bindValue.labelInValue = true;
           // bindValue.treeCheckable = true;
@@ -365,8 +378,8 @@
             return slot
               ? getSlot(slots, slot, unref(getValues))
               : render
-              ? render(unref(getValues))
-              : renderComponent();
+                ? render(unref(getValues))
+                : renderComponent();
           };
 
           const showSuffix = !!suffix;
@@ -404,7 +417,10 @@
         }
 
         const { baseColProps = {} } = props.formProps;
-        const realColProps = { ...baseColProps, ...colProps };
+        const realColProps = props.colLayout ? { ...baseColProps, ...colProps } : {};
+        if (!realColProps.xs && (realColProps.sm || realColProps.md)) {
+          realColProps.xs = realColProps.sm || realColProps.md;
+        }
         const { isIfShow, isShow } = getShow();
         const values = unref(getValues);
 
@@ -412,8 +428,8 @@
           return colSlot
             ? getSlot(slots, colSlot, values)
             : renderColContent
-            ? renderColContent(values)
-            : renderItem();
+              ? renderColContent(values)
+              : renderItem();
         };
 
         return (

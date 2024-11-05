@@ -1,5 +1,5 @@
 import { defineComponent, computed, unref } from 'vue';
-import { BasicDrawer } from '/@/components/Drawer/index';
+import { BasicDrawer } from '/@/components/Drawer';
 import { Divider } from 'ant-design-vue';
 import {
   TypePicker,
@@ -216,6 +216,7 @@ export default defineComponent({
           <InputNumberItem
             title={t('layout.setting.autoScreenLock')}
             min={0}
+            max={99999}
             event={HandlerEnum.LOCK_TIME}
             defaultValue={unref(getLockTime)}
             formatter={(value: string) => {

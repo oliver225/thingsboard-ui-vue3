@@ -107,13 +107,17 @@
           onMenuClick: handleMenuClick,
         };
       });
+
       /**
        * click menu
        * @param menu
        */
-
-      function handleMenuClick(path: string) {
-        go(path);
+      function handleMenuClick(path: string, item: any) {
+        if (item.target === '_blank') {
+          window.open(path);
+        } else {
+          go(path);
+        }
       }
 
       /**
@@ -135,8 +139,7 @@
           <AppLogo
             showTitle={!unref(getCollapsed)}
             class={unref(getLogoClass)}
-            //theme={unref(getComputedMenuTheme)}
-            theme='dark'
+            theme={unref(getComputedMenuTheme)}
           />
         );
       }
@@ -194,8 +197,7 @@
     &-logo {
       height: @header-height;
       padding: 10px 4px 10px 10px;
-      background-color: var(--header-bg-color) !important;
-      font-weight: bold;
+
       img {
         width: @logo-width;
         height: @logo-width;

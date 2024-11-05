@@ -28,6 +28,7 @@
   const props = defineProps({
     frame: { type: Object as PropType<AppRouteRecordRaw> },
     query: { type: Object as PropType<Recordable> },
+    fullHeight: { type: Boolean, default: false },
   });
 
   const loading = ref(true);
@@ -85,6 +86,11 @@
     if (!iframe) {
       return;
     }
+    if (props.fullHeight) {
+      const clientHeight = document.documentElement.clientHeight - 6;
+      iframe.style.height = `${clientHeight}px`;
+      return;
+    }
     const top = headerHeightRef.value + padding;
     topRef.value = top;
     heightRef.value = window.innerHeight - top;
@@ -97,7 +103,7 @@
     calcHeight();
   }
 </script>
-<style lang="less" scoped>
+<style lang="less">
   @prefix-cls: ~'jeesite-iframe-page';
 
   .@{prefix-cls} {
@@ -108,7 +114,6 @@
       .ant-spin-container {
         width: 100%;
         height: 100%;
-        padding: 10px;
       }
     }
 

@@ -7,33 +7,34 @@ import type { JwtPair, UserInfo } from '/#/store';
 import type { ErrorMessageMode } from '/#/axios';
 import { defineStore } from 'pinia';
 import { store } from '/@/store';
+import { RoleEnum } from '/@/enums/roleEnum';
 import { PageEnum } from '/@/enums/pageEnum';
-import { TOKEN_KEY, USER_INFO_KEY, SESSION_TIMEOUT_KEY } from '/@/enums/cacheEnum';
+import { TOKEN_KEY, REFRESHTOKEN_KEY, ROLES_KEY, USER_INFO_KEY, SESSION_TIMEOUT_KEY } from '/@/enums/cacheEnum';
 import { getAuthCache, setAuthCache } from '/@/utils/auth';
-import { loginApi, logoutApi, userInfoApi, LoginParams } from '/@/api/sys/login';
+import { loginApi, logoutApi, userInfoApi, LoginParams, LoginResult } from '/@/api/tb/login';
 // import { useI18n } from '/@/hooks/web/useI18n';
-// import { useMessage } from '/@/hooks/web/useMessage';
+import { useMessage } from '/@/hooks/web/useMessage';
 import { router } from '/@/router';
 import { usePermissionStore } from '/@/store/modules/permission';
 import { RouteRecordRaw } from 'vue-router';
 import { PAGE_NOT_FOUND_ROUTE } from '/@/router/routes/basic';
 import { useGlobSetting } from '/@/hooks/setting';
-// import logoImg from '/@/assets/images/logo.png';
-import mitt, { Emitter } from '/@/utils/mitt';
+import logoImg from '/@/assets/images/logo.png';
+import { mitt, Emitter } from '/@/utils/mitt';
 import { Authority } from '/@/enums/authorityEnum';
-import { useWebsocketStore } from '/@/store/modules/websocket';
 
-// const { showMessage, createConfirm } = useMessage();
+const { showMessage, createConfirm } = useMessage();
 
 interface UserState {
   userInfo: Nullable<UserInfo>;
   token?: string;
   refreshToken?: string;
+  authority?: Nullable<Authority>;
   // roleList: RoleEnum[] | string[];
   sessionTimeout?: boolean;
   lastUpdateTime: number;
   pageCache: any;
-  emitter: Emitter;
+  emitter: Emitter<any>;
 }
 
 export const useUserStore = defineStore({
@@ -43,9 +44,11 @@ export const useUserStore = defineStore({
     userInfo: null,
     // token
     token: undefined,
-    // refreshToken
+    // token
     refreshToken: undefined,
-    // // roleList
+    // authority
+    authority: null,
+    // roleList
     // roleList: [],
     // Whether the login expired
     sessionTimeout: undefined,
@@ -63,18 +66,18 @@ export const useUserStore = defineStore({
     getToken(): string {
       return this.token || getAuthCache<string>(TOKEN_KEY);
     },
-    getRefreshToken(): string | undefined {
-      return this.refreshToken || undefined;
+    getRefreshToken(): string {
+      return this.refreshToken || getAuthCache<string>(REFRESHTOKEN_KEY);
+    },
+    getAuthority(): Nullable<Authority> {
+      const userInfo = this.userInfo || getAuthCache<UserInfo>(USER_INFO_KEY) || {};
+      return this.authority ? this.authority : userInfo?.authority;
     },
     // getRoleList(): RoleEnum[] | string[] {
     //   return this.roleList.length > 0
     //     ? this.roleList
     //     : getAuthCache<RoleEnum[] | string[]>(ROLES_KEY);
     // },
-    getAuthority(): Authority | undefined {
-      const userInfo = this.userInfo || getAuthCache<UserInfo>(USER_INFO_KEY) || {};
-      return userInfo ? userInfo.authority : undefined
-    },
     getSessionTimeout(): boolean {
       return !!(this.sessionTimeout || getAuthCache<boolean>(SESSION_TIMEOUT_KEY));
     },
@@ -93,44 +96,37 @@ export const useUserStore = defineStore({
       this.token = jwtPair ? jwtPair.token : ''; // for null or undefined value
       this.refreshToken = jwtPair ? jwtPair.refreshToken : '';
       this.lastUpdateTime = new Date().getTime();
-      setAuthCache(TOKEN_KEY, jwtPair?.token || '');
-      const { close: closeWebsocket } = useWebsocketStore();
-      closeWebsocket();
-    },
-    // setRoleList(roleList: RoleEnum[] | string[]) {
-    //   this.roleList = roleList;
-    //   setAuthCache(ROLES_KEY, roleList);
-    // },
-    setUserInfo(info: UserInfo | null) {
-      //   const info: UserInfo = res?.user;
-      //   if (res && info) {
-      //     const { ctxPath } = useGlobSetting();
-      //     let url = info.avatarUrl || '/ctxPath/static/images/user1.jpg';
-      //     url = url.replace('/ctxPath/', ctxPath + '/');
-      //     info.avatarUrl = url || logoImg;
-      //     info.homePath = res.desktopUrl;
-      //     info.roleList = res.roleList;
-      //   }
-      //   this.userInfo = info;
-      //   this.lastUpdateTime = new Date().getTime();
-      //   setAuthCache(USER_INFO_KEY, info);
-      if (info) {
-        const { ctxPath } = useGlobSetting();
-        let url = info.additionalInfo?.avatarUrl || '/ctxPath/static/images/user1.jpg';
-        url = url.replace('/ctxPath/', ctxPath + '/');
-        info.additionalInfo.avatarUrl = url;
-      }
-      this.userInfo = info;
-      this.lastUpdateTime = new Date().getTime();
-      setAuthCache(USER_INFO_KEY, info);
+      setAuthCache(TOKEN_KEY, jwtPair ? jwtPair.token : '');
+      setAuthCache(REFRESHTOKEN_KEY, jwtPair ? jwtPair.refreshToken : '');
     },
     setSessionTimeout(flag: boolean) {
       this.sessionTimeout = flag;
       setAuthCache(SESSION_TIMEOUT_KEY, flag);
     },
+
+    setAuthority(authority: Authority | null) {
+      this.authority = authority;
+    },
+    setUserInfo(info: UserInfo | null) {
+      if (info) {
+        const { ctxPath } = useGlobSetting();
+        let url = info.additionalInfo?.avatarUrl || '/ctxPath/static/images/user1.jpg';
+        url = url.replace('/ctxPath/', ctxPath + '/');
+        info.additionalInfo.avatarUrl = url || logoImg;
+        // info.additionalInfo.homePath = res.desktopUrl;
+      }
+      this.userInfo = info;
+      this.authority = info?.authority || null;
+      this.lastUpdateTime = new Date().getTime();
+      setAuthCache(USER_INFO_KEY, info);
+    },
+    // setRoleList(roleList: RoleEnum[] | string[]) {
+    //   this.roleList = roleList;
+    //   setAuthCache(ROLES_KEY, roleList);
+    // },
     resetState() {
       this.userInfo = null;
-      // // this.token = '';
+      this.token = '';
       // this.roleList = [];
       this.sessionTimeout = true;
     },
@@ -150,83 +146,78 @@ export const useUserStore = defineStore({
       },
     ) {
       const { goHome = true, mode, ...loginParams } = params;
-      const res = await loginApi(loginParams, mode);
-      // if (res.result !== 'true') {
-      //   showMessage(res.message);
-      //   this.initPageCache(res);
-      //   return res;
-      // }
-      this.setToken(res);
-
-      // const userInfo = await userInfoApi();
-      const userInfo = await this.getUserInfoAction();
-
-      // this.setUserInfo(userInfo);
-      // this.initPageCache(res);
-      this.setSessionTimeout(false);
-      await this.afterLoginAction(userInfo, goHome);
-      return userInfo;
+      const jwtPair = await loginApi(loginParams, mode);
+      if (jwtPair) {
+        this.setToken(jwtPair);
+        const userInfo = await this.getUserInfoAction();
+        this.initPageCache(userInfo);
+        return userInfo;
+      }
+      // await this.afterLoginAction(userInfo, goHome);
+      // return res;
     },
     // async afterLoginAction(goHome?: boolean): Promise<GetUserInfoModel | null> {
-    async afterLoginAction(user?: UserInfo, goHome?: boolean) {
-      if (!this.getToken) return null;
-      const userInfo = user ? user : await this.getUserInfoAction();
-      const sessionTimeout = this.sessionTimeout;
-      if (sessionTimeout) {
-        // this.setSessionTimeout(false);
-      } else {
-        const permissionStore = usePermissionStore();
-        if (!permissionStore.isDynamicAddedRoute) {
-          const routes = await permissionStore.buildRoutesAction();
-          routes.forEach((route) => {
-            router.addRoute(route as unknown as RouteRecordRaw);
-          });
-          router.addRoute(PAGE_NOT_FOUND_ROUTE as unknown as RouteRecordRaw);
-          permissionStore.setDynamicAddedRoute(true);
-        }
-        if (goHome) {
-          const currentRoute = router.currentRoute.value;
-          let path = currentRoute.query.redirect;
-          if (path !== '/') {
-            path = path || userInfo?.additionalInfo?.homePath || PageEnum.BASE_HOME;
-          } else {
-            path = userInfo?.additionalInfo?.homePath || PageEnum.BASE_HOME;
-          }
-          await router.replace(decodeURIComponent(path as string));
-        }
-        // if (res['modifyPasswordTip']) {
-        //   createConfirm({
-        //     content: res['modifyPasswordTip'],
-        //     maskClosable: false,
-        //     iconType: 'info',
-        //     cancelText: '取消',
-        //     okText: '确定',
-        //     onOk: () => {
-        //       router.replace('/account/modPwd');
-        //     },
-        //   });
-        // }
+    async afterLoginAction(res: UserInfo, goHome?: boolean) {
+      this.setUserInfo(res);
+      this.initPageCache(res);
+      this.setSessionTimeout(false);
+      const permissionStore = usePermissionStore();
+      if (!permissionStore.isDynamicAddedRoute) {
+        const routes = await permissionStore.buildRoutesAction();
+        routes.forEach((route) => {
+          router.addRoute(route as unknown as RouteRecordRaw);
+        });
+        router.addRoute(PAGE_NOT_FOUND_ROUTE as unknown as RouteRecordRaw);
+        permissionStore.setDynamicAddedRoute(true);
       }
-      return userInfo || null;
+      if (goHome) {
+        const currentRoute = router.currentRoute.value;
+        let path = currentRoute.query.redirect;
+        if (path !== '/') {
+          path = path || res.additionalInfo?.homePath || PageEnum.BASE_HOME;
+        } else {
+          path = res.additionalInfo?.homePath || PageEnum.BASE_HOME;
+        }
+        await router.replace(decodeURIComponent(path as string));
+      }
+      // if (res['modifyPasswordTip']) {
+      //   createConfirm({
+      //     content: res['modifyPasswordTip'],
+      //     maskClosable: false,
+      //     iconType: 'info',
+      //     cancelText: '取消',
+      //     okText: '确定',
+      //     onOk: () => {
+      //       router.replace('/account/modPwd');
+      //     },
+      //   });
+      // }
+      return res || null;
     },
     async getUserInfoAction() {
       // if (!this.getToken) return null;
       const res = await userInfoApi();
       this.setUserInfo(res);
-      // this.initPageCache(res);
+      this.initPageCache(res);
       // this.setRoleList(roleList);
-      // this.setSessionTimeout(false);
+      this.setSessionTimeout(false);
       return res;
     },
-    // initPageCache(res: LoginResult) {
-    //   this.setPageCache('demoMode', res.demoMode);
-    //   this.setPageCache('useCorpModel', res.useCorpModel);
-    //   this.setPageCache('modifyPasswordTip', res.modifyPasswordTip);
-    //   this.setPageCache('modifyPasswordMsg', res.modifyPasswordMsg);
-    //   this.setPageCache('sysCode', res.sysCode);
-    //   this.setPageCache('roleCode', res.roleCode);
-    //   this.setPageCache('title', res.title);
-    // },
+    initPageCache(res: UserInfo) {
+      // this.setPageCache('demoMode', res.demoMode);
+      // this.setPageCache('useCorpModel', res.useCorpModel);
+      // this.setPageCache('modifyPasswordTip', res.modifyPasswordTip);
+      // this.setPageCache('modifyPasswordMsg', res.modifyPasswordMsg);
+      // this.setPageCache('sysCode', res.sysCode);
+      // this.setPageCache('roleCode', res.roleCode);
+      // this.setPageCache('title', res.title);
+      // this.setPageCache('company', res.company);
+      // this.setPageCache('version', res.version);
+      // this.setPageCache('year', res.year);
+      this.setPageCache('authority', res.authority);
+      this.setPageCache('tenantId', res.tenantId.id);
+      this.setPageCache('customerId', res.customerId.id);
+    },
     /**
      * @description: logout
      */
@@ -241,6 +232,7 @@ export const useUserStore = defineStore({
       this.setToken(undefined);
       this.setSessionTimeout(true);
       this.setUserInfo(null);
+      // this.setRoleList([]);
       goLogin && router.push(PageEnum.BASE_LOGIN);
     },
     /**

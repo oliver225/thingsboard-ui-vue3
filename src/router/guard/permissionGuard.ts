@@ -20,10 +20,10 @@ export function createPermissionGuard(router: Router) {
     if (
       from.path === ROOT_PATH &&
       to.path === HOME_PATH &&
-      userStore.getUserInfo.additionalInfo?.homePath &&
-      userStore.getUserInfo.additionalInfo?.homePath !== HOME_PATH
+      userStore.getUserInfo.homePath &&
+      userStore.getUserInfo.homePath !== HOME_PATH
     ) {
-      next(userStore.getUserInfo.additionalInfo?.homePath);
+      next(userStore.getUserInfo.homePath);
       return;
     }
 

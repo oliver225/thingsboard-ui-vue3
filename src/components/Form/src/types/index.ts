@@ -107,7 +107,6 @@ export type ComponentType =
   | 'StrengthMeter'
   | 'Upload'
   | 'IconPicker'
-  | 'ColorPicker'
   | 'Render'
   | 'Slider'
   | 'Rate'

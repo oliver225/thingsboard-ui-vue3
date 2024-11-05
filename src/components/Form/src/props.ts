@@ -2,7 +2,7 @@ import type { FieldMapToTime, FormSchema } from './types/form';
 import type { CSSProperties, PropType } from 'vue';
 import type { ColEx } from './types';
 import type { TableActionType } from '/@/components/Table';
-import type { ButtonProps } from 'ant-design-vue/es/button/buttonTypes';
+import type { FormButtonProps as ButtonProps } from './types/form';
 import type { RowProps } from 'ant-design-vue/lib/grid/Row';
 import { propTypes } from '/@/utils/propTypes';
 
@@ -94,8 +94,9 @@ export const basicProps = {
   labelCol: Object as PropType<Partial<ColEx>>,
 
   layout: propTypes.oneOf(['horizontal', 'vertical', 'inline']).def('horizontal'),
+
   tableAction: {
-    type: Object as PropType<TableActionType>,
+    type: Object as PropType<Partial<TableActionType>>,
   },
 
   wrapperCol: Object as PropType<Partial<ColEx>>,

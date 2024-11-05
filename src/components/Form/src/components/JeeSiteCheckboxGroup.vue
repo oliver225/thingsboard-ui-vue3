@@ -13,8 +13,8 @@
     </template>
   </CheckboxGroup>
 </template>
-<script lang="ts">
-  import { defineComponent, PropType, computed, ref, unref, watch } from 'vue';
+<script lang="ts" setup name="JeeSiteCheckboxGroup">
+  import { PropType, computed, ref, unref, watch } from 'vue';
   import { Checkbox } from 'ant-design-vue';
   import { isEmpty, isString } from '/@/utils/is';
   import { propTypes } from '/@/utils/propTypes';
@@ -25,51 +25,47 @@
   type OptionsItem = { label: string; value: string | number | boolean; disabled?: boolean };
   type CheckboxItem = string | OptionsItem;
 
-  export default defineComponent({
-    name: 'JeeSiteCheckboxGroup',
-    components: { CheckboxGroup: Checkbox.Group, Checkbox },
-    inheritAttrs: false,
-    props: {
-      value: {
-        type: [Array, Object, String, Number] as PropType<Array<any> | object | string | number>,
-      },
-      options: {
-        type: Array as PropType<CheckboxItem[]>,
-        default: () => [],
-      },
-      dictType: propTypes.string,
+  const CheckboxGroup = Checkbox.Group;
+
+  const props = defineProps({
+    value: {
+      type: [Array, Object, String, Number] as PropType<Array<any> | object | string | number>,
     },
-    setup(props) {
-      const attrs = useAttrs();
-      const [state] = useRuleFormItem(props);
-      const optionsRef = ref<CheckboxItem[]>(props.options);
-
-      const getAttrs = computed(() => {
-        return { ...unref(attrs), ...(props as Recordable) };
-      });
-
-      if (!isEmpty(props.dictType)) {
-        const { initSelectOptions } = useDict();
-        initSelectOptions(optionsRef, props.dictType);
-      }
-
-      watch(
-        () => props.options,
-        () => {
-          optionsRef.value = props.options;
-        },
-      );
-
-      const getOptions = computed((): OptionsItem[] => {
-        const options = unref(optionsRef);
-        if (!options || options?.length === 0) return [];
-        const isStringArr = options.some((item) => isString(item));
-        if (!isStringArr) return options as OptionsItem[];
-        return options.map((item) => ({ label: item, value: item })) as OptionsItem[];
-      });
-
-      return { getAttrs, state, getOptions };
+    options: {
+      type: Array as PropType<CheckboxItem[]>,
+      default: () => [],
     },
+    dictType: propTypes.string,
+  });
+
+  const emit = defineEmits(['change', 'update:value']);
+
+  const attrs = useAttrs();
+  const [state] = useRuleFormItem(props);
+  const optionsRef = ref<CheckboxItem[]>(props.options);
+
+  const getAttrs = computed(() => {
+    return { ...unref(attrs), ...(props as Recordable) };
+  });
+
+  if (!isEmpty(props.dictType)) {
+    const { initSelectOptions } = useDict();
+    initSelectOptions(optionsRef, props.dictType);
+  }
+
+  watch(
+    () => props.options,
+    () => {
+      optionsRef.value = props.options;
+    },
+  );
+
+  const getOptions = computed((): OptionsItem[] => {
+    const options = unref(optionsRef);
+    if (!options || options?.length === 0) return [];
+    const isStringArr = options.some((item) => isString(item));
+    if (!isStringArr) return options as OptionsItem[];
+    return options.map((item) => ({ label: item, value: item })) as OptionsItem[];
   });
 </script>
 <style lang="less">

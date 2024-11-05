@@ -3,7 +3,7 @@
     <div :class="`${prefixCls}-image-wrapper`" :style="getImageWrapperStyle" @click="openModal">
       <div :class="`${prefixCls}-image-mask`" :style="getImageWrapperStyle">
         <Icon
-          icon="ant-design:cloud-upload-outlined"
+          icon="i-ant-design:cloud-upload-outlined"
           :size="getIconWidth"
           :style="getImageWrapperStyle"
           color="#d6d6d6"
@@ -45,7 +45,7 @@
   // import { useMessage } from '/@/hooks/web/useMessage';
   import { useI18n } from '/@/hooks/web/useI18n';
   import type { ButtonProps } from '/@/components/Button';
-  import Icon from '/@/components/Icon';
+  import { Icon } from '/@/components/Icon';
 
   export default defineComponent({
     name: 'CropperAvatar',
@@ -56,7 +56,9 @@
       showBtn: { type: Boolean, default: true },
       btnProps: { type: Object as PropType<ButtonProps> },
       btnText: { type: String, default: '' },
-      uploadApi: { type: Function as PropType<({ file: Blob, name: string }) => Promise<void>> },
+      uploadApi: {
+        type: Function as PropType<({ file, name }: { file: Blob; name: string }) => Promise<void>>,
+      },
     },
     emits: ['update:value', 'change'],
     setup(props, { emit, expose }) {
@@ -113,7 +115,7 @@
   });
 </script>
 
-<style lang="less" scoped>
+<style lang="less">
   @prefix-cls: ~'jeesite-cropper-avatar';
 
   .@{prefix-cls} {
@@ -139,9 +141,8 @@
       height: inherit;
       border-radius: inherit;
       border: inherit;
-      background: rgba(0, 0, 0, 0.4);
+      background: rgb(0 0 0 / 40%);
       cursor: pointer;
-      -webkit-transition: opacity 0.4s;
       transition: opacity 0.4s;
 
       ::v-deep(svg) {

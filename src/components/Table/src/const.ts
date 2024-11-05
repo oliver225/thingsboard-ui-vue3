@@ -7,7 +7,6 @@ const {
   defaultPageSize,
   fetchSetting,
   defaultSize,
-  defaultSortKey,
   defaultSortFn,
   defaultFilterFn,
 } = table;
@@ -25,8 +24,6 @@ export const FETCH_SETTING = fetchSetting;
 
 // Default Size
 export const DEFAULT_SIZE = defaultSize;
-
-export const DEFAULT_SORT_KEY = defaultSortKey;
 
 // Configure general sort function
 export const DEFAULT_SORT_FN = defaultSortFn;

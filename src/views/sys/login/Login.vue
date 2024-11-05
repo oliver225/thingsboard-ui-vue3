@@ -1,28 +1,28 @@
 <template>
-  <div :class="prefixCls" class="relative w-full h-full px-4 bg-light-400">
+  <div :class="prefixCls" class="relative h-full w-full bg-light-400 px-4">
     <AppLocalePicker
-      class="absolute text-white top-4 right-4 enter-x lg:text-gray-600"
+      class="enter-x absolute right-4 top-4 text-white lg:text-gray-600"
       :showText="false"
       v-if="!sessionTimeout && showLocale"
     />
-    <AppDarkModeToggle class="absolute top-3 right-7 enter-x" v-if="!sessionTimeout" />
+    <AppDarkModeToggle class="enter-x absolute right-7 top-3" v-if="!sessionTimeout" />
 
     <span class="-enter-x lg:hidden">
       <AppLogo :alwaysShowTitle="true" />
     </span>
 
-    <div class="container relative h-full py-2 mx-auto">
-      <div class="flex h-full">
-        <div class="hidden min-h-full pl-4 mr-4 lg:flex lg:flex-col lg:w-13/24">
-          <div class="my-auto">
+    <div class="relative mx-auto h-full py-2 container ">
+      <div class="h-full flex ">
+        <div class="mr-4 min-h-full md:hidden lg:w-16/24 lg:flex lg:flex-col">
+           <div class="my-auto ">
             <AppLogo class="-enter-x logo" />
             <img :alt="title" src="../../../assets/images/login-box-bg.png" class="w-1/2 -enter-x" />
           </div>
         </div>
-        <div class="flex w-full h-full py-5 lg:h-auto lg:py-0 lg:my-0 lg:w-11/24 overflow-auto">
+        <div class="h-full w-full flex overflow-auto py-5 lg:my-0 lg:h-auto lg:w-11/24 lg:py-0">
           <div
             :class="`${prefixCls}-form`"
-            class="relative w-full px-5 py-8 mx-auto my-auto rounded-xl shadow-md sm:px-8 lg:px-10 lg:py-9 lg:ml-16 sm:w-3/4 lg:w-2/4 lg:w-auto enter-x"
+            class="enter-x relative mx-auto my-auto w-full rounded-xl px-5 py-8 shadow-md lg:ml-16 lg:w-2/4 lg:w-auto sm:w-3/4 lg:px-10 lg:py-9 sm:px-8"
           >
             <LoginForm />
             <ForgetPasswordForm />
@@ -71,7 +71,7 @@
       background-color: @dark-bg;
 
       &::before {
-        background-image: url(/@/assets/svg/login-bg-dark.svg);
+        background-image: url('/@/assets/svg/login-bg-dark.svg');
       }
 
       .ant-input,
@@ -88,7 +88,7 @@
         box-shadow: none;
       }
 
-      .app-iconify {
+      .jeesite-icon {
         color: #fff;
       }
     }
@@ -127,11 +127,12 @@
       width: 100%;
       height: 100%;
       margin-left: -48%;
-      background-image: url(/@/assets/svg/login-bg.svg);
+      background-image: url('/@/assets/svg/login-bg.svg');
       background-position: 100%;
       background-repeat: no-repeat;
       background-size: auto 100%;
       content: '';
+
       @media (max-width: @screen-lg) {
         display: none;
       }
@@ -158,6 +159,8 @@
     }
 
     .container {
+      max-width: 1280px;
+
       .@{logo-prefix-cls} {
         display: flex;
         width: 60%;
@@ -175,8 +178,9 @@
     }
 
     &-sign-in-way {
-      .anticon {
-        font-size: 22px;
+      .anticon,
+      .iconfont {
+        font-size: 28px;
         color: #888;
         cursor: pointer;
 
@@ -215,7 +219,7 @@
     }
 
     .ant-divider-inner-text {
-      font-size: 12px;
+      font-size: 14px;
       color: @text-color-secondary;
     }
   }

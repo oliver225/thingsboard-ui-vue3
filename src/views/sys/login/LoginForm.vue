@@ -1,34 +1,56 @@
 <template>
   <LoginFormTitle v-show="getShow" class="enter-x" />
-  <Form class="p-4 enter-x" :model="formData" :rules="getFormRules" ref="formRef" v-show="getShow"
-    @keypress.enter="handleLogin">
+  <Form
+    class="enter-x p-4"
+    :model="formData"
+    :rules="getFormRules"
+    ref="formRef"
+    v-show="getShow"
+    @keypress.enter="handleLogin"
+  >
     <FormItem name="account" class="enter-x">
-      <Input size="large" v-model:value="formData.account" :placeholder="t('sys.login.userName')" class="fix-auto-fill" />
+      <Input
+        size="large"
+        v-model:value="formData.account"
+        :placeholder="t('sys.login.userName')"
+        class="fix-auto-fill"
+      />
     </FormItem>
     <FormItem name="password" class="enter-x">
-      <InputPassword size="large" visibilityToggle v-model:value="formData.password"
-        :placeholder="t('sys.login.password')" autocomplete="false" />
+      <InputPassword
+        size="large"
+        visibilityToggle
+        v-model:value="formData.password"
+        :placeholder="t('sys.login.password')"
+        autocomplete="false"
+      />
     </FormItem>
     <FormItem v-if="isValidCodeLogin" name="validCode" class="enter-x valid-code">
-      <Input size="large" visibilityToggle v-model:value="formData.validCode" :placeholder="t('sys.login.validCode')">
-
-      <template #suffix>
-        <img :src="getValidCodeImg" @click="refreshValidCodeImg" class="cursor-pointer" width="100" />
-      </template>
+      <Input
+        size="large"
+        visibilityToggle
+        v-model:value="formData.validCode"
+        :placeholder="t('sys.login.validCode')"
+      >
+        <!-- addonAfter suffix -->
+        <template #suffix>
+          <img
+            :src="getValidCodeImg"
+            @click="refreshValidCodeImg"
+            class="cursor-pointer"
+            width="100"
+          />
+        </template>
       </Input>
     </FormItem>
-    <!-- <FormItem v-if="useCorpModel" name="corpCode" class="enter-x">
-      <Select showSearch :options="corpOptions" @change="handleSwitchCorp"
-        :placeholder="t('sys.login.corpPlaceholder')" />
-    </FormItem> -->
 
     <ARow class="enter-x">
       <ACol :span="12">
         <FormItem>
           <!-- No logic, you need to deal with it yourself -->
-          <Checkbox v-model:checked="rememberMe" size="small">
+          <!-- <Checkbox v-model:checked="rememberMe" size="small">
             {{ t('sys.login.rememberMe') }}
-          </Checkbox>
+          </Checkbox> -->
         </FormItem>
       </ACol>
       <ACol :span="12">
@@ -49,127 +71,161 @@
         {{ t('sys.login.registerButton') }}
       </Button> -->
     </FormItem>
-    <!-- <ARow class="enter-x md:pl-3">
-      <ACol :md="11" :xs="24" class="!mr-2 !md:my-0 xs:mr-0 md:mx-2">
+    <ARow class="enter-x md:pl-3">
+      <ACol :md="7" :xs="24">
         <Button block @click="setLoginState(LoginStateEnum.MOBILE)">
           {{ t('sys.login.mobileSignInFormTitle') }}
         </Button>
       </ACol>
-      <ACol :md="8" :xs="24" class="!my-2 !md:my-0 xs:mx-0 md:mx-2">
+      <ACol :md="8" :xs="24" class="xs:mx-0 !my-2 md:mx-2 !md:my-0">
         <Button block @click="setLoginState(LoginStateEnum.QR_CODE)">
           {{ t('sys.login.qrSignInFormTitle') }}
         </Button>
-      </ACol> -->
-    <!-- <ACol :md="12" :xs="24">
+      </ACol>
+      <ACol :md="7" :xs="24">
         <Button block @click="setLoginState(LoginStateEnum.REGISTER)">
           {{ t('sys.login.registerButton') }}
         </Button>
-      </ACol> 
-    </ARow> -->
+      </ACol>
+    </ARow>
 
-    <Divider class="enter-x">{{ t('sys.login.otherSignIn') }}</Divider>
+    <Divider class="enter-x">{{ t('技术支持') }}</Divider>
 
-    <div class="flex justify-evenly enter-x" :class="`${prefixCls}-sign-in-way`">
-      <Icon icon="gitee|svg" size="24" @click="handle2Gitee" />
+    <div class="enter-x flex justify-evenly" :class="`${prefixCls}-sign-in-way`">
+      <Icon icon="gitee.svg" size="24" @click="handle2Gitee" />
       <Icon icon="ant-design:wechat-filled" size="28" @click="handle2Wechat" />
       <Icon icon="ant-design:github-filled" size="28" @click="handle2Github" />
     </div>
   </Form>
 </template>
 <script lang="ts" setup>
-import { reactive, ref, toRaw, unref, computed, onMounted } from 'vue';
+  import { reactive, ref, toRaw, unref, computed, onMounted } from 'vue';
 
-import { Checkbox, Form, Input, Row, Col, Button, Divider, message } from 'ant-design-vue';
-import LoginFormTitle from './LoginFormTitle.vue';
+  import { Checkbox, Form, Input, Row, Col, Button, Divider, message } from 'ant-design-vue';
+  import { Icon } from '/@/components/Icon';
+  import LoginFormTitle from './LoginFormTitle.vue';
 
-import { useI18n } from '/@/hooks/web/useI18n';
-import { useMessage } from '/@/hooks/web/useMessage';
-import { Icon } from '/@/components/Icon';
+  import { useI18n } from '/@/hooks/web/useI18n';
+  import { useMessage } from '/@/hooks/web/useMessage';
 
-import { useUserStore } from '/@/store/modules/user';
-import { LoginStateEnum, useLoginState, useFormRules, useFormValid } from './useLogin';
-import { useDesign } from '/@/hooks/web/useDesign';
-import { useGlobSetting } from '/@/hooks/setting';
-import { userInfoApi } from '/@/api/sys/login';
-import { PageEnum } from '/@/enums/pageEnum';
-import { openWindow } from '/@/utils';
-import weixinUrl from '/@/assets/images/weixin.jpg';
-// import { onKeyStroke } from '@vueuse/core';
-// import { Select } from '/@/components/Form';
-// import { corpAdminTreeData } from '/@/api/sys/corpAdmin';
+  import { useUserStore } from '/@/store/modules/user';
+  import { LoginStateEnum, useLoginState, useFormRules, useFormValid } from './useLogin';
+  import { useDesign } from '/@/hooks/web/useDesign';
+  import { useGlobSetting } from '/@/hooks/setting';
+  import { userInfoApi } from '/@/api/tb/login';
+  import { openWindow } from '/@/utils';
+  import weixinUrl from '/@/assets/images/weixin.jpg';
+  import { onKeyStroke } from '@vueuse/core';
+import { type } from 'os';
 
-const ACol = Col;
-const ARow = Row;
-const FormItem = Form.Item;
-const InputPassword = Input.Password;
-const { t } = useI18n();
-const { showMessage, showMessageModal, notification } = useMessage();
-const { prefixCls } = useDesign('login');
-const { ctxPath } = useGlobSetting();
-const userStore = useUserStore();
+  const ACol = Col;
+  const ARow = Row;
+  const FormItem = Form.Item;
+  const InputPassword = Input.Password;
+  const { t } = useI18n();
+  const { showMessage, showMessageModal, notification } = useMessage();
+  const { prefixCls } = useDesign('login');
+  const { ctxPath } = useGlobSetting();
+  const userStore = useUserStore();
 
-const { setLoginState, getLoginState } = useLoginState();
-const { getFormRules } = useFormRules();
+  const { setLoginState, getLoginState } = useLoginState();
+  const { getFormRules } = useFormRules();
 
-const formRef = ref();
-const loading = ref(false);
-const rememberMe = ref(false);
-const isValidCodeLogin = ref(false);
-// const useCorpModel = ref(false);
-// const corpOptions = ref<Recordable[]>([]);
+  const formRef = ref();
+  const loading = ref(false);
+  // const rememberMe = ref(false);
+  const isValidCodeLogin = ref(false);
 
-const formData = reactive({
-  account: '',
-  password: '',
-  validCode: '',
-});
+  const formData = reactive({
+    account: 'system',
+    password: '',
+    validCode: '',
+  });
 
-const { validForm } = useFormValid(formRef);
+  const { validForm } = useFormValid(formRef);
 
-//onKeyStroke('Enter', handleLogin);
+  onKeyStroke('Enter', handleLogin);
 
-const getShow = computed(() => unref(getLoginState) === LoginStateEnum.LOGIN);
+  const getShow = computed(() => unref(getLoginState) === LoginStateEnum.LOGIN);
 
-const getValidCodeImg = ref('');
+  const getValidCodeImg = ref('');
 
-function refreshValidCodeImg() {
-  getValidCodeImg.value =
-    ctxPath + '/validCode' + '?__sid=' + userStore.getToken + '&t=' + new Date().getTime();
-}
-
-// is show jee site valid data.
-function refreshValidCodeStatus(res: Recordable) {
-  isValidCodeLogin.value = res.isValidCodeLogin || false;
-  if (isValidCodeLogin.value) {
-    refreshValidCodeImg();
+  function refreshValidCodeImg() {
+    getValidCodeImg.value =
+      ctxPath + '/validCode' + '?__sid=' + userStore.getToken + '&t=' + new Date().getTime();
   }
-}
 
-onMounted(async () => {
-  setTimeout(() => message.destroy());
-  const res = await userInfoApi('none');
-  if (res) {
-    // 如果已经登录，根据业务需要，是否自动跳转到系统首页
-    const publicPath = import.meta.env.VITE_PUBLIC_PATH || '';
-    window.location.href =
-      (publicPath == '' ? publicPath : publicPath.substring(1)) + PageEnum.BASE_HOME;
+  // is show jee site valid data.
+  function refreshValidCodeStatus(res: Recordable) {
+    isValidCodeLogin.value = res.isValidCodeLogin || false;
+    if (isValidCodeLogin.value) {
+      refreshValidCodeImg();
+    }
   }
-  // userStore.initPageCache(res);
-  refreshValidCodeStatus(res);
-  // useCorpModel.value = res.useCorpModel || false;
-  // if (useCorpModel.value) {
-  //   corpOptions.value = (await corpAdminTreeData({ isShowCode: true })).map((item) => ({
-  //     label: item.name,
-  //     value: item.id,
-  //   }));
-  // }
-});
 
-// async function handleSwitchCorp(corpCode) {
-//   formData.corpCode = corpCode;
-// }
+  onMounted(async () => {
+    setTimeout(() => message.destroy());
+    try {
+      const res = await userInfoApi('none');
+      if (res) {
+        // 如果已经登录，根据业务需要，是否自动跳转到系统首页
+        await userStore.afterLoginAction(res, true);
+        return;
+      }
+      userStore.initPageCache(res);
+      refreshValidCodeStatus(res);
+    } catch (error: any) {
+      const err: string = error?.toString?.() ?? '';
+      if (error?.code === 'ECONNABORTED' && err.indexOf('timeout of') !== -1) {
+        showMessage(t('sys.api.apiTimeoutMessage'));
+      } else if (err.indexOf('Network Error') !== -1) {
+        showMessage(t('sys.api.networkExceptionMsg'));
+      } else if (error?.code === 'ERR_BAD_RESPONSE') {
+        showMessage(t('sys.api.apiRequestFailed'));
+      }
+      console.log(error);
+    }
+  });
 
-function handle2Gitee() {
+  async function handleLogin() {
+    try {
+      const data = await validForm();
+      if (!data) return;
+      loading.value = true;
+      const res = await userStore.login(
+        toRaw({
+          password: data.password,
+          username: data.account,
+          validCode: data.validCode,
+          // rememberMe: unref(rememberMe.value),
+        }),
+      );
+      refreshValidCodeStatus(res);
+      if (res) {
+        notification.success({
+          message: t('sys.login.loginSuccessTitle'),
+          description: `${t('sys.login.loginSuccessDesc')}: ${res.firstName}`,
+          duration: 1,
+        });
+      }
+    } catch (error: any) {
+      const err: string = error?.toString?.() ?? '';
+      if (error?.code === 'ECONNABORTED' && err.indexOf('timeout of') !== -1) {
+        showMessage(t('sys.api.apiTimeoutMessage'));
+      } else if (err.indexOf('Network Error') !== -1) {
+        showMessage(t('sys.api.networkExceptionMsg'));
+      } else if (error?.code === 'ERR_BAD_RESPONSE') {
+        showMessage(t('sys.api.apiRequestFailed'));
+      }else if(error?.response?.data?.message){
+        showMessage(t(error?.response?.data?.message),'error');
+      }
+      console.log(error);
+    } finally {
+      loading.value = false;
+    }
+  }
+
+  function handle2Gitee() {
   openWindow("https://gitee.com/oliver225/thingsboard-ui-vue3")
 
 }
@@ -181,61 +237,12 @@ function handle2Wechat() {
   showMessageModal(
     {
       icon: null,
-      content: `<img src='` + weixinUrl + `'/>`,
+      content: `<img style="width:100%" src='` + weixinUrl + `'/>`,
       closable: true,
       footer: null,
     }
   )
 }
-
-
-async function handleLogin() {
-  try {
-    const data = await validForm();
-    if (!data) return;
-    loading.value = true;
-    const userInfo = await userStore.login(
-      toRaw({
-        password: data.password,
-        username: data.account,
-        // validCode: data.validCode,
-        // rememberMe: unref(rememberMe.value),
-      }),
-    );
-    // refreshValidCodeStatus(userInfo);
-
-    if (userInfo) {
-      notification.success({
-        message: t('sys.login.loginSuccessTitle'),
-        description: `${t('sys.login.loginSuccessDesc')}: ${userInfo.firstName}`,
-        duration: 3,
-      });
-    }
-  } catch (error: any) {
-    const err: string = error?.toString?.() ?? '';
-    if (error?.code === 'ECONNABORTED' && err.indexOf('timeout of') !== -1) {
-      showMessage(t('sys.api.apiTimeoutMessage'), 'error');
-    } else if (err.indexOf('Network Error') !== -1) {
-      showMessage(t('sys.api.networkExceptionMsg'), 'error');
-    } else if (error?.code === 'ERR_BAD_RESPONSE') {
-      showMessage(t('sys.api.apiRequestFailed'), 'error');
-    } else if (error?.errorCode === 10) {
-      showMessage(t(error.message), 'error');
-    }
-    console.log(error);
-  } finally {
-    loading.value = false;
-  }
-}
 </script>
 <style>
-.gp {
-  padding-bottom: 15px;
-  font-size: 16px;
-}
-
-.gp,
-.gp a {
-  color: #d21919;
-}
 </style>

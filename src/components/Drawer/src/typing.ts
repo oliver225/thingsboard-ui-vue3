@@ -1,9 +1,9 @@
 import type { ButtonProps } from 'ant-design-vue/lib/button/buttonTypes';
 import type { CSSProperties, VNodeChild, ComputedRef } from 'vue';
-import type { ScrollContainerOptions } from '/@/components/Container/index';
+import type { ScrollContainerOptions } from '/@/components/Container';
 
 export interface DrawerInstance {
-  setDrawerProps: (props: Partial<DrawerProps> | boolean) => void;
+  setDrawerProps: (props: Partial<DrawerProps>) => void;
   emitOpen?: (open: boolean, uid: number) => void;
 }
 
@@ -14,7 +14,7 @@ export interface ReturnMethods extends DrawerInstance {
   setDrawerData: (data: any) => void;
 }
 
-export type RegisterFn = (drawerInstance: DrawerInstance, uuid?: string) => void;
+export type RegisterFn = (drawerInstance: DrawerInstance, uuid: number) => void;
 
 export interface ReturnInnerMethods extends DrawerInstance {
   closeDrawer: () => void;
@@ -54,13 +54,13 @@ export interface DrawerFooterProps {
    * The ok button props, follow jsx rules
    * @type object
    */
-  okButtonProps: { props: ButtonProps; on: {} };
+  okButtonProps: { props: ButtonProps; on: any };
 
   /**
    * The cancel button props, follow jsx rules
    * @type object
    */
-  cancelButtonProps: { props: ButtonProps; on: {} };
+  cancelButtonProps: { props: ButtonProps; on: any };
   /**
    * Whether to apply loading visual effect for OK button or not
    * @default false
@@ -102,7 +102,7 @@ export interface DrawerProps extends DrawerFooterProps {
    * @default 'body'
    * @type any ( HTMLElement| () => HTMLElement | string)
    */
-  getContainer?: () => HTMLElement | string;
+  getContainer?: string | false | HTMLElement | (() => HTMLElement);
 
   /**
    * Whether to show mask or not.
@@ -129,7 +129,7 @@ export interface DrawerProps extends DrawerFooterProps {
    * The title for Drawer.
    * @type any (string | slot)
    */
-  title?: VNodeChild | JSX.Element;
+  title?: VNodeChild | JSX.Element | any;
 
   /**
    * The class name of the container of the Drawer dialog.

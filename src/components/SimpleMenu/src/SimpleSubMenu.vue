@@ -5,9 +5,11 @@
     v-bind="$props"
     :class="getLevelClass"
     :style="`color: ${getColor}`"
+    :title="getI18nName"
+    :item="getMenuItem"
   >
     <Icon v-if="getIcon" :icon="getIcon" :size="16" />
-    <div v-if="collapsedShowTitle && getIsCollapseParent" class="mt-1 collapse-title">
+    <div v-if="collapsedShowTitle && getIsCollapseParent" class="collapse-title mt-1">
       {{ getI18nName }}
     </div>
     <template #title>
@@ -23,11 +25,12 @@
     :class="[getLevelClass, theme]"
     :collapsedShowTitle="collapsedShowTitle"
     :style="`color: ${getColor}`"
+    :title="getI18nName"
   >
     <template #title>
       <Icon v-if="getIcon" :icon="getIcon" :size="16" />
 
-      <div v-if="collapsedShowTitle && getIsCollapseParent" class="mt-2 collapse-title">
+      <div v-if="collapsedShowTitle && getIsCollapseParent" class="collapse-title mt-2">
         {{ getI18nName }}
       </div>
 
@@ -47,32 +50,35 @@
 
   import { defineComponent, computed } from 'vue';
   import { useDesign } from '/@/hooks/web/useDesign';
-  import Icon from '/@/components/Icon/index';
+  import Icon from '/@/components/Icon';
 
   import MenuItem from './components/MenuItem.vue';
   import SubMenu from './components/SubMenuItem.vue';
   import { propTypes } from '/@/utils/propTypes';
   import { useI18n } from '/@/hooks/web/useI18n';
-  import { createAsyncComponent } from '/@/utils/factory/createAsyncComponent';
+  import SimpleMenuTag from './SimpleMenuTag.vue';
+  import { omit } from 'lodash-es';
+
+  const props = {
+    item: {
+      type: Object as PropType<Menu>,
+      default: () => ({}),
+    },
+    parent: propTypes.bool,
+    collapsedShowTitle: propTypes.bool,
+    collapse: propTypes.bool,
+    theme: propTypes.oneOf(['dark', 'light']),
+  };
 
   export default defineComponent({
     name: 'SimpleSubMenu',
     components: {
       SubMenu,
       MenuItem,
-      SimpleMenuTag: createAsyncComponent(() => import('./SimpleMenuTag.vue')),
+      SimpleMenuTag,
       Icon,
     },
-    props: {
-      item: {
-        type: Object as PropType<Menu>,
-        default: () => ({}),
-      },
-      parent: propTypes.bool,
-      collapsedShowTitle: propTypes.bool,
-      collapse: propTypes.bool,
-      theme: propTypes.oneOf(['dark', 'light']),
-    },
+    props,
     setup(props) {
       const { t } = useI18n();
       const { prefixCls } = useDesign('simple-menu');
@@ -90,6 +96,9 @@
             [`${prefixCls}__children`]: !props.parent,
           },
         ];
+      });
+      const getMenuItem = computed(() => {
+        return omit(props.item, 'children', 'icon', 'title', 'color', 'extend');
       });
 
       function menuHasChildren(menuTreeItem: Menu): boolean {
@@ -111,6 +120,7 @@
         getShowSubTitle,
         getLevelClass,
         getIsCollapseParent,
+        getMenuItem,
       };
     },
   });

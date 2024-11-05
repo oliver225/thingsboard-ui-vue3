@@ -30,7 +30,7 @@
           v-for="item in menuModules"
           :key="item.path"
         >
-          <SimpleMenuTag :item="item" collapseParent dot />
+          <SimpleMenuTag :item="item" dot collapseparent />
           <Icon
             :class="`${prefixCls}-module__icon`"
             :size="getCollapsed ? 16 : 20"
@@ -56,7 +56,7 @@
         <span class="text"> {{ title }}</span>
         <Icon
           :size="16"
-          :icon="getMixSideFixed ? 'ri:pushpin-2-fill' : 'ri:pushpin-2-line'"
+          :icon="getMixSideFixed ? 'i-ri:pushpin-2-fill' : 'i-ri:pushpin-2-line'"
           class="pushpin"
           @click="handleFixedMenu"
         />
@@ -66,7 +66,7 @@
           :items="childrenMenus"
           :theme="getMenuTheme"
           mixSider
-          @menuClick="handleMenuClick"
+          @menu-click="handleMenuClick"
         />
       </ScrollContainer>
       <div
@@ -97,6 +97,7 @@
   import { getChildrenMenus, getCurrentParentPath, getShallowMenus } from '/@/router/menus';
   import { listenerRouteChange } from '/@/logics/mitt/routeChange';
   import LayoutTrigger from '../trigger/index.vue';
+  import { omit } from 'lodash-es';
 
   export default defineComponent({
     name: 'LayoutMixSider',
@@ -209,7 +210,7 @@
       }
 
       // Process module menu click
-      async function handleModuleClick(path: string, hover = false) {
+      async function handleModuleClick(path: string, item: any, hover = false) {
         const children = await getChildrenMenus(path);
         if (unref(activePath) === path) {
           if (!hover) {
@@ -232,7 +233,7 @@
         }
 
         if (!children || children.length === 0) {
-          if (!hover) go(path);
+          if (!hover) handleMenuClick(path, item);
           childrenMenus.value = [];
           closeMenu();
           return;
@@ -267,8 +268,12 @@
         }
       }
 
-      function handleMenuClick(path: string) {
-        go(path);
+      function handleMenuClick(path: string, item: any) {
+        if (item.target === '_blank') {
+          window.open(path);
+        } else {
+          go(path);
+        }
       }
 
       function handleClickOutside() {
@@ -277,17 +282,19 @@
       }
 
       function getItemEvents(item: Menu) {
+        const getItem = omit(item, 'children', 'icon', 'title', 'color', 'extend');
         if (unref(getMixSideTrigger) === 'hover') {
           return {
-            onMouseenter: () => handleModuleClick(item.path, true),
+            onMouseenter: () => handleModuleClick(item.path, getItem, true),
             onClick: async () => {
               const children = await getChildrenMenus(item.path);
-              if (item.path && (!children || children.length === 0)) go(item.path);
+              if (item.path && (!children || children.length === 0))
+                handleMenuClick(item.path, getItem);
             },
           };
         }
         return {
-          onClick: () => handleModuleClick(item.path),
+          onClick: () => handleModuleClick(item.path, getItem),
         };
       }
 
@@ -343,7 +350,7 @@
     overflow: hidden;
     background-color: @sider-dark-bg-color;
     transition: all 0.2s ease 0s;
-    padding: 0 5px 5px 5px; // 2
+    padding: 0 5px 5px; // 2
 
     &-dom {
       height: 100%;
@@ -366,7 +373,7 @@
 
     &.light {
       .@{prefix-cls}-logo {
-        border-bottom: 1px solid rgb(238, 238, 238);
+        border-bottom: 1px solid rgb(238 238 238);
       }
 
       // &.open {
@@ -378,7 +385,7 @@
       .@{prefix-cls}-module {
         &__item {
           font-weight: normal;
-          color: rgba(0, 0, 0, 0.65);
+          color: rgb(0 0 0 / 65%);
 
           &--active {
             color: @primary-color;
@@ -388,15 +395,15 @@
       }
       .@{prefix-cls}-menu-list {
         &__content {
-          box-shadow: -1px 1px 2px 0 rgba(0, 0, 0, 0.05);
+          box-shadow: -1px 1px 2px 0 rgb(0 0 0 / 5%);
         }
 
         &__title {
           .pushpin {
-            color: rgba(0, 0, 0, 0.35);
+            color: rgb(0 0 0 / 35%);
 
             &:hover {
-              color: rgba(0, 0, 0, 0.85);
+              color: rgb(0 0 0 / 85%);
             }
           }
         }
@@ -446,7 +453,7 @@
       &__item {
         position: relative;
         padding: 12px 0;
-        color: rgba(255, 255, 255, 0.65);
+        color: rgb(255 255 255 / 65%);
         text-align: center;
         cursor: pointer;
         transition: all 0.3s ease;
@@ -493,7 +500,7 @@
       left: 0;
       width: 100%;
       font-size: 14px;
-      color: rgba(255, 255, 255, 0.65);
+      color: rgb(255 255 255 / 65%);
       text-align: center;
       cursor: pointer;
       background-color: @trigger-dark-bg-color;
@@ -502,7 +509,7 @@
     }
 
     &.light &-trigger {
-      color: rgba(0, 0, 0, 0.65);
+      color: rgb(0 0 0 / 65%);
       background-color: #fff;
       border-top: 1px solid #eee;
     }
@@ -521,7 +528,7 @@
         // margin-left: -6px;
         font-size: 18px;
         color: @primary-color;
-        border-bottom: 1px solid rgb(238, 238, 238);
+        border-bottom: 1px solid rgb(238 238 238);
         opacity: 0;
         transition: unset;
         align-items: center;
@@ -535,7 +542,7 @@
 
         .pushpin {
           margin-right: 6px;
-          color: rgba(255, 255, 255, 0.65);
+          color: rgb(255 255 255 / 65%);
           cursor: pointer;
 
           &:hover {
@@ -578,7 +585,7 @@
       background-color: #f8f8f9;
       border-top: none;
       border-bottom: none;
-      box-shadow: 0 0 4px 0 rgba(28, 36, 56, 0.15);
+      box-shadow: 0 0 4px 0 rgb(28 36 56 / 15%);
     }
   }
 </style>

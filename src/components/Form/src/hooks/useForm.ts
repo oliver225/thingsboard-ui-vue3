@@ -49,10 +49,6 @@ export function useForm(props?: Props): UseFormReturnType {
   }
 
   const methods: FormActionType = {
-    scrollToField: async (name: NamePath, options?: ScrollOptions | undefined) => {
-      const form = await getForm();
-      form.scrollToField(name, options);
-    },
     setProps: async (formProps: Partial<FormProps>) => {
       const form = await getForm();
       form.setProps(formProps);
@@ -68,37 +64,31 @@ export function useForm(props?: Props): UseFormReturnType {
       form.resetSchema(data);
     },
 
-    clearValidate: async (name?: string | string[]) => {
-      const form = await getForm();
-      form.clearValidate(name);
+    getFieldsValue: <T>() => {
+      return unref(formRef)?.getFieldsValue() as T;
     },
 
-    resetFields: async () => {
+    setFieldsValue: async <T extends Recordable<any>>(values: T) => {
       const form = await getForm();
-      await form.resetFields();
+      form.setFieldsValue(values);
+    },
+
+    appendSchemaByField: async (
+      schema: FormSchema,
+      prefixField: string | undefined,
+      first?: boolean,
+    ) => {
+      const form = await getForm();
+      form.appendSchemaByField(schema, prefixField, first);
     },
 
     removeSchemaByFiled: async (field: string | string[]) => {
       unref(formRef)?.removeSchemaByFiled(field);
     },
 
-    // TODO promisify
-    getFieldsValue: <T>() => {
-      return unref(formRef)?.getFieldsValue() as T;
-    },
-
-    setFieldsValue: async <T>(values: T) => {
+    resetFields: async () => {
       const form = await getForm();
-      form.setFieldsValue<T>(values);
-    },
-
-    appendSchemaByField: async (
-      schema: FormSchema,
-      prefixField: string | undefined,
-      first: boolean,
-    ) => {
-      const form = await getForm();
-      form.appendSchemaByField(schema, prefixField, first);
+      await form.resetFields();
     },
 
     submit: async (): Promise<any> => {
@@ -114,6 +104,16 @@ export function useForm(props?: Props): UseFormReturnType {
     validateFields: async (nameList?: NamePath[]): Promise<Recordable> => {
       const form = await getForm();
       return form.validateFields(nameList);
+    },
+
+    clearValidate: async (name?: string | string[]) => {
+      const form = await getForm();
+      form.clearValidate(name);
+    },
+
+    scrollToField: async (name: NamePath, options?: ScrollOptions | undefined) => {
+      const form = await getForm();
+      form.scrollToField(name, options);
     },
   };
 

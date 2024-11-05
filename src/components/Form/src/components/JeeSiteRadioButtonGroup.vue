@@ -13,8 +13,8 @@
     </template>
   </RadioGroup>
 </template>
-<script lang="ts">
-  import { defineComponent, PropType, computed, ref, unref, watch } from 'vue';
+<script lang="ts" setup name="JeeSiteRadioButtonGroup">
+  import { PropType, computed, ref, unref, watch } from 'vue';
   import { Radio } from 'ant-design-vue';
   import { isEmpty, isString } from '/@/utils/is';
   import { propTypes } from '/@/utils/propTypes';
@@ -25,47 +25,43 @@
   type OptionsItem = { label: string; value: string | number | boolean; disabled?: boolean };
   type RadioItem = string | OptionsItem;
 
-  export default defineComponent({
-    name: 'JeeSiteRadioButtonGroup',
-    components: { RadioGroup: Radio.Group, RadioButton: Radio.Button },
-    inheritAttrs: false,
-    props: {
-      value: {
-        type: [String, Number, Boolean, Object] as PropType<string | number | boolean | Object>,
-      },
-      options: {
-        type: Array as PropType<RadioItem[]>,
-        default: () => [],
-      },
-      dictType: propTypes.string,
+  const RadioGroup = Radio.Group;
+  const RadioButton = Radio.Button;
+
+  const props = defineProps({
+    value: {
+      type: [String, Number, Boolean, Object] as PropType<string | number | boolean | object>,
     },
-    emits: ['change'],
-    setup(props) {
-      const attrs = useAttrs();
-      const [state] = useRuleFormItem(props);
-      const optionsRef = ref<RadioItem[]>(props.options);
-
-      if (!isEmpty(props.dictType)) {
-        const { initSelectOptions } = useDict();
-        initSelectOptions(optionsRef, props.dictType);
-      }
-
-      watch(
-        () => props.options,
-        () => {
-          optionsRef.value = props.options;
-        },
-      );
-
-      const getOptions = computed((): OptionsItem[] => {
-        const options = unref(optionsRef);
-        if (!options || options?.length === 0) return [];
-        const isStringArr = options.some((item) => isString(item));
-        if (!isStringArr) return options as OptionsItem[];
-        return options.map((item) => ({ label: item, value: item })) as OptionsItem[];
-      });
-
-      return { attrs, state, getOptions };
+    options: {
+      type: Array as PropType<RadioItem[]>,
+      default: () => [],
     },
+    dictType: propTypes.string,
+  });
+
+  const emit = defineEmits(['change', 'update:value']);
+
+  const attrs = useAttrs();
+  const [state] = useRuleFormItem(props);
+  const optionsRef = ref<RadioItem[]>(props.options);
+
+  if (!isEmpty(props.dictType)) {
+    const { initSelectOptions } = useDict();
+    initSelectOptions(optionsRef, props.dictType);
+  }
+
+  watch(
+    () => props.options,
+    () => {
+      optionsRef.value = props.options;
+    },
+  );
+
+  const getOptions = computed((): OptionsItem[] => {
+    const options = unref(optionsRef);
+    if (!options || options?.length === 0) return [];
+    const isStringArr = options.some((item) => isString(item));
+    if (!isStringArr) return options as OptionsItem[];
+    return options.map((item) => ({ label: item, value: item })) as OptionsItem[];
   });
 </script>

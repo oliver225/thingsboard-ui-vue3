@@ -23,7 +23,7 @@
   import type { MenuState } from './types';
   import type { Menu as MenuType } from '/@/router/types';
   import type { RouteLocationNormalizedLoaded } from 'vue-router';
-  import { defineComponent, computed, ref, unref, reactive, toRefs, watch } from 'vue';
+  import { defineComponent, computed, ref, Ref, unref, reactive, toRefs, watch } from 'vue';
   import { useDesign } from '/@/hooks/web/useDesign';
   import Menu from './components/Menu.vue';
   import SimpleSubMenu from './SimpleSubMenu.vue';
@@ -35,6 +35,23 @@
   import { openWindow } from '/@/utils';
 
   import { useOpenKeys } from './useOpenKeys';
+
+  const props = {
+    items: {
+      type: Array as PropType<MenuType[]>,
+      default: () => [],
+    },
+    collapse: propTypes.bool,
+    mixSider: propTypes.bool,
+    theme: propTypes.string,
+    accordion: propTypes.bool.def(true),
+    collapsedShowTitle: propTypes.bool,
+    beforeClickFn: {
+      type: Function as PropType<(key: string) => Promise<boolean>>,
+    },
+    isSplitMenu: propTypes.bool,
+  };
+
   export default defineComponent({
     name: 'SimpleMenu',
     components: {
@@ -42,21 +59,7 @@
       SimpleSubMenu,
     },
     inheritAttrs: false,
-    props: {
-      items: {
-        type: Array as PropType<MenuType[]>,
-        default: () => [],
-      },
-      collapse: propTypes.bool,
-      mixSider: propTypes.bool,
-      theme: propTypes.string,
-      accordion: propTypes.bool.def(true),
-      collapsedShowTitle: propTypes.bool,
-      beforeClickFn: {
-        type: Function as PropType<(key: string) => Promise<boolean>>,
-      },
-      isSplitMenu: propTypes.bool,
-    },
+    props,
     emits: ['menuClick'],
     setup(props, { attrs, emit }) {
       // const currentActiveMenu = ref('');
@@ -70,7 +73,12 @@
 
       const { currentRoute } = useRouter();
       const { prefixCls } = useDesign('simple-menu');
-      const { items, accordion, mixSider, collapse } = toRefs(props);
+      const { items, accordion, mixSider, collapse } = toRefs(props) as {
+        items: Ref<MenuType[]>;
+        accordion: Ref<boolean>;
+        mixSider: Ref<boolean>;
+        collapse: Ref<boolean>;
+      };
 
       const { setOpenKeys, getOpenKeys } = useOpenKeys(
         menuState,
@@ -133,7 +141,7 @@
         setOpenKeys(path);
       }
 
-      async function handleSelect(key: string) {
+      async function handleSelect(key: string, item: any) {
         if (isUrl(key)) {
           openWindow(key);
           return;
@@ -143,8 +151,7 @@
           const flag = await beforeClickFn(key);
           if (!flag) return;
         }
-
-        emit('menuClick', key);
+        emit('menuClick', key, item);
 
         isClickGo.value = true;
         setOpenKeys(key);

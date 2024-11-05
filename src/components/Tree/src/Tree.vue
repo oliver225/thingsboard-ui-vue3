@@ -44,8 +44,9 @@
     selectedKeys: Keys;
     checkedKeys: CheckKeys;
     halfCheckedKeys: Keys;
-    checkStrictly: boolean;
+    checkStrictly?: boolean;
   }
+
   export default defineComponent({
     name: 'BasicTree',
     inheritAttrs: false,
@@ -248,7 +249,7 @@
         },
       );
 
-      const isFirstLoaded = ref<Boolean>(false);
+      const isFirstLoaded = ref<boolean>(false);
       const loading = ref(false);
 
       watch(
@@ -355,13 +356,14 @@
           (node) => {
             const result = filterFn
               ? filterFn(searchValue, node, unref(getFieldNames))
-              : node[titleField]?.includes(searchValue) ?? false;
+              : (node[titleField]?.includes(searchValue) ?? false);
             if (result) {
               matchedKeys.push(node[keyField]);
             }
             return result;
           },
           unref(getFieldNames),
+          props.onlySearchLevel,
         );
 
         if (expandOnSearch) {
@@ -534,8 +536,8 @@
             ? item.isParent != undefined
               ? !item.isParent
               : item.isLeaf != undefined
-              ? item.isLeaf
-              : false
+                ? item.isLeaf
+                : false
             : !(item.children && item.children.length > 0);
 
           item[titleField] = (
@@ -567,7 +569,7 @@
         if (!el || el.clientHeight <= 0) return;
         if (!el.parentElement?.classList.contains('sidebar-content')) return;
         let height = el.clientHeight;
-        const header = el.querySelector('.basic-tree-header');
+        const header = el.querySelector('.jeesite-basic-tree-header');
         if (header) height -= header.clientHeight;
         treeHeight.value = height - 5;
       };
@@ -593,15 +595,18 @@
                 search={search}
                 toolbar={toolbar}
                 helpMessage={helpMessage}
-                onStrictlyChange={onStrictlyChange}
+                onStrictly-change={onStrictlyChange}
                 onSearch={handleSearch}
                 searchText={searchState.searchText}
-              >
-                {extendSlots(slots)}
-              </TreeHeader>
+                v-slots={extendSlots(slots)}
+              />
             )}
             <ScrollContainer style={scrollStyle} v-show={!unref(getNotFound)}>
-              <TreeComp {...unref(getBindValues)} treeData={unref(treeData.value)} />
+              <TreeComp
+                {...unref(getBindValues)}
+                treeData={unref(treeData.value)}
+                v-slots={extendSlots(slots, ['default'])}
+              />
             </ScrollContainer>
             <Spin spinning={unref(loading)}>
               <Empty
@@ -653,6 +658,7 @@
         .ant-tree-treenode:hover::before {
           background-color: transparent;
         }
+
         .ant-tree-treenode {
           .ant-tree-switcher {
             color: fade(@text-color-base, 70);
@@ -665,20 +671,24 @@
 
           .ant-tree-node-content-wrapper {
             transition: none;
+
             .ant-tree-title {
               left: auto;
             }
             .@{prefix-cls}-title {
               padding-left: 3px;
             }
+
             .ant-tree-iconEle {
               color: fade(@text-color-base, 70);
               width: 20px;
             }
+
             &:hover {
               background-color: fade(@primary-color, 5);
               border-radius: 3px;
             }
+
             &.ant-tree-node-selected {
               color: @text-color-base;
               background-color: fade(@primary-color, 15);
@@ -686,12 +696,15 @@
             }
           }
         }
+
         .ant-tree-treenode-selected {
           color: @text-color-base;
+
           .ant-tree-switcher,
           .ant-tree-iconEle {
             color: fade(@text-color-base, 70);
           }
+
           &:hover::before,
           &::before {
             background-color: transparent !important;
@@ -728,10 +741,6 @@
     &__action {
       margin-left: 4px;
       visibility: hidden;
-    }
-
-    &-header {
-      border-bottom: 1px solid @border-color-base;
     }
   }
 

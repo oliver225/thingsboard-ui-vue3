@@ -24,16 +24,23 @@
   import { useMenuItem } from './useMenu';
   import { Tooltip } from 'ant-design-vue';
   import { useSimpleRootMenuContext } from './useSimpleMenuContext';
+
+  const props = {
+    name: {
+      type: [String, Number] as PropType<string | number>,
+      required: true,
+    },
+    item: {
+      type: Object,
+      default: {},
+    },
+    disabled: propTypes.bool,
+  };
+
   export default defineComponent({
     name: 'MenuItem',
     components: { Tooltip },
-    props: {
-      name: {
-        type: [String, Number] as PropType<string | number>,
-        required: true,
-      },
-      disabled: propTypes.bool,
-    },
+    props,
     setup(props, { slots }) {
       const instance = getCurrentInstance();
 
@@ -69,7 +76,7 @@
           return;
         }
 
-        rootMenuEmitter.emit('on-menu-item-select', props.name);
+        rootMenuEmitter.emit('on-menu-item-select', { name: props.name, item: props.item });
         if (unref(getCollapse)) {
           return;
         }
@@ -83,7 +90,7 @@
       }
       watch(
         () => activeName.value,
-        (name: string) => {
+        (name: string | number) => {
           if (name === props.name) {
             const { list, uidList } = getParentList();
             active.value = true;

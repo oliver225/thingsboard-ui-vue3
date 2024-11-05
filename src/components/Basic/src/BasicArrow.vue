@@ -37,6 +37,10 @@
      */
     leaf: { type: Boolean },
     /**
+     * 是否双箭头图标
+     */
+    double: { type: Boolean },
+    /**
      * 是否加载状态
      */
     loading: { type: Boolean, defaultValue: false },
@@ -45,8 +49,12 @@
   const { prefixCls } = useDesign('basic-arrow');
 
   const getIcon = computed(() => {
-    const { leaf } = props;
-    return leaf ? 'radix-icons:dot' : 'ion:chevron-forward';
+    const { leaf, double } = props;
+    return leaf
+      ? 'i-radix-icons:dot'
+      : double
+        ? 'i-ant-design:double-right-outlined'
+        : 'i-ion:chevron-forward';
   });
 
   // get component class
@@ -63,7 +71,7 @@
     ];
   });
 </script>
-<style lang="less" scoped>
+<style lang="less">
   @prefix-cls: ~'jeesite-basic-arrow';
 
   .@{prefix-cls} {
@@ -78,7 +86,7 @@
     }
 
     &.inset {
-      line-height: 0px;
+      line-height: 0;
     }
 
     &.up {

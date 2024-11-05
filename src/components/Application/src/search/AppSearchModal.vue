@@ -12,7 +12,7 @@
               @change="handleSearch"
             >
               <template #prefix>
-                <SearchOutlined />
+                <Icon icon="i-ant-design:search-outlined" class="text-gray-500" />
               </template>
             </a-input>
             <span :class="`${prefixCls}-cancel`" @click="handleClose">
@@ -46,7 +46,7 @@
                 {{ item.name }}
               </div>
               <div :class="`${prefixCls}-list__item-enter`">
-                <Icon icon="ant-design:enter-outlined" :size="20" />
+                <Icon icon="i-ant-design:enter-outlined" :size="20" />
               </div>
             </li>
           </ul>
@@ -59,9 +59,8 @@
 
 <script lang="ts" setup>
   import { computed, unref, ref, watch, nextTick } from 'vue';
-  import { SearchOutlined } from '@ant-design/icons-vue';
   import AppSearchFooter from './AppSearchFooter.vue';
-  import Icon from '/@/components/Icon';
+  import { Icon } from '/@/components/Icon';
   // @ts-ignore
   import vClickOutside from '/@/directives/clickOutside';
   import { useDesign } from '/@/hooks/web/useDesign';
@@ -81,7 +80,7 @@
 
   const { t } = useI18n();
   const { prefixCls } = useDesign('app-search-modal');
-  const [refs, setRefs] = useRefs();
+  const { refs, setRefs } = useRefs();
   const { getIsMobile } = useAppInject();
 
   const { handleSearch, searchResult, keyword, activeIndex, handleEnter, handleMouseenter } =
@@ -113,7 +112,7 @@
     emit('close');
   }
 </script>
-<style lang="less" scoped>
+<style lang="less">
   @prefix-cls: ~'jeesite-app-search-modal';
   @footer-prefix-cls: ~'jeesite-app-search-footer';
   .@{prefix-cls} {
@@ -125,7 +124,7 @@
     width: 100%;
     height: 100%;
     padding-top: 50px;
-    background-color: rgba(0, 0, 0, 0.25);
+    background-color: rgb(0 0 0 / 25%);
     justify-content: center;
 
     &--mobile {
@@ -168,16 +167,16 @@
     &-content {
       position: relative;
       width: 632px;
-      margin: 0 auto auto auto;
+      margin: 0 auto auto;
       background-color: @component-background;
       border-radius: 16px;
-      box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+      box-shadow: 0 25px 50px -12px rgb(0 0 0 / 25%);
       flex-direction: column;
     }
 
     &-input__wrapper {
       display: flex;
-      padding: 14px 14px 0 14px;
+      padding: 14px 14px 0;
       justify-content: space-between;
       align-items: center;
     }

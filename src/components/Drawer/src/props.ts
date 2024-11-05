@@ -22,6 +22,7 @@ export const footerProps = {
     default: 60,
   },
 };
+
 export const basicProps = {
   isDetail: { type: Boolean },
   title: { type: String, default: '' },
@@ -39,5 +40,7 @@ export const basicProps = {
   },
   destroyOnClose: { type: Boolean },
   wrapClassName: { type: String },
+  // 是否允许拖拽调整抽屉宽度
+  widthResize: { type: Boolean, default: true },
   ...footerProps,
 };

@@ -2,6 +2,7 @@ export enum Scope {
   SERVER_SCOPE = 'SERVER_SCOPE',
   CLIENT_SCOPE = 'CLIENT_SCOPE',
   SHARED_SCOPE = 'SHARED_SCOPE',
+  // LATEST_TELEMETRY = 'LATEST_TELEMETRY',
 }
 
 export enum OrderBy {

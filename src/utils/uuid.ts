@@ -26,12 +26,3 @@ export function buildShortUUID(prefix = ''): string {
   unique++;
   return prefix + '_' + random + unique + String(time);
 }
-
-export function randomSecret(length: number) {
-  let str = '';
-  let chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
-  for (let i = 0; i < length; i++) {
-    str += chars.charAt(Math.floor(Math.random() * chars.length));
-  }
-  return str;
-}

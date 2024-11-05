@@ -1,7 +1,7 @@
 import type { PropType } from 'vue';
 import type {
   FieldNames,
-  ActionItem,
+  TreeActionItem,
   Keys,
   CheckKeys,
   ContextMenuOptions,
@@ -56,7 +56,7 @@ export const basicProps = {
   dictType: propTypes.string,
 
   actionList: {
-    type: Array as PropType<ActionItem[]>,
+    type: Array as PropType<TreeActionItem[]>,
     default: () => [],
   },
 
@@ -92,7 +92,7 @@ export const basicProps = {
   },
   // 高亮搜索值，仅高亮具体匹配值（通过title）值为true时使用默认色值，值为#xxx时使用此值替代且高亮开启
   highlight: {
-    type: [Boolean, String] as PropType<Boolean | String>,
+    type: [Boolean, String] as PropType<boolean | string>,
     default: false,
   },
   // 搜索完成时自动展开结果
@@ -101,11 +101,13 @@ export const basicProps = {
   checkOnSearch: propTypes.bool.def(false),
   // 搜索完成自动select所有结果
   selectedOnSearch: propTypes.bool.def(false),
+  // 只搜索树表指定的层级，获得该层级下所有结果
+  onlySearchLevel: propTypes.number,
 };
 
 export const treeNodeProps = {
   actionList: {
-    type: Array as PropType<ActionItem[]>,
+    type: Array as PropType<TreeActionItem[]>,
     default: () => [],
   },
   fieldNames: {

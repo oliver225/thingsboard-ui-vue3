@@ -25,33 +25,33 @@ export interface RenderCallbackParams {
   field: string;
 }
 
-export interface ButtonProps extends AntdButtonProps {
+export interface FormButtonProps extends AntdButtonProps {
   text?: string;
 }
 
 export interface FormActionType {
-  submit: () => Promise<void>;
-  setFieldsValue: <T>(values: T) => Promise<void>;
-  resetFields: () => Promise<void>;
-  getFieldsValue: () => Recordable;
-  clearValidate: (name?: string | string[]) => Promise<void>;
+  setProps: (formProps: Partial<FormProps>) => Promise<void>;
   updateSchema: (data: Partial<FormSchema> | Partial<FormSchema>[]) => Promise<void>;
   resetSchema: (data: Partial<FormSchema> | Partial<FormSchema>[]) => Promise<void>;
-  setProps: (formProps: Partial<FormProps>) => Promise<void>;
-  removeSchemaByFiled: (field: string | string[]) => Promise<void>;
+  getFieldsValue: () => Recordable;
+  setFieldsValue: (values: Recordable) => Promise<void>;
   appendSchemaByField: (
     schema: FormSchema,
     prefixField: string | undefined,
     first?: boolean | undefined,
   ) => Promise<void>;
-  validateFields: (nameList?: NamePath[]) => Promise<any>;
+  removeSchemaByFiled: (field: string | string[]) => Promise<void>;
+  resetFields: () => Promise<void>;
+  submit: () => Promise<void>;
   validate: (nameList?: NamePath[]) => Promise<any>;
+  validateFields: (nameList?: NamePath[]) => Promise<any>;
+  clearValidate: (name?: string | string[]) => Promise<void>;
   scrollToField: (name: NamePath, options?: ScrollOptions) => Promise<void>;
 }
 
-export type RegisterFn = (formInstance: FormActionType) => void;
+export type FormRegisterFn = (formInstance: FormActionType, uuid: string) => void;
 
-export type UseFormReturnType = [RegisterFn, FormActionType];
+export type UseFormReturnType = [FormRegisterFn, FormActionType];
 
 export interface FormProps {
   layout?: 'vertical' | 'inline' | 'horizontal';
@@ -110,10 +110,10 @@ export interface FormProps {
   showActionButtonGroup?: boolean;
 
   // Reset button configuration
-  resetButtonOptions?: Partial<ButtonProps>;
+  resetButtonOptions?: Partial<FormButtonProps>;
 
   // Confirm button configuration
-  submitButtonOptions?: Partial<ButtonProps>;
+  submitButtonOptions?: Partial<FormButtonProps>;
 
   // Operation column configuration
   actionColOptions?: Partial<ColEx>;
@@ -168,7 +168,13 @@ export interface FormSchema {
   // Required
   required?: boolean | ((renderCallbackParams: RenderCallbackParams) => boolean);
 
-  suffix?: string | number | ((values: RenderCallbackParams) => string | number) | VNode | VNode[];
+  // 组件后缀
+  suffix?:
+    | string
+    | number
+    | VNode
+    | VNode[]
+    | ((values: RenderCallbackParams) => string | number | VNode | VNode[]);
 
   // Validation rules
   rules?: Rule[];

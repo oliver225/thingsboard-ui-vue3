@@ -56,6 +56,7 @@ export interface UserInfo {
   phone: string;
   authority: Authority;
   additionalInfo: any;
+  createdTime: number;
 }
 
 export interface BeforeMiniState {

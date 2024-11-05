@@ -27,15 +27,18 @@ export function useLockPage() {
       return;
     }
     const lockTime = appStore.getProjectConfig.lockTime;
-    if (!lockTime || lockTime < 1) {
+    if (!lockTime || lockTime < 1 || lockTime > 99999) {
       clear();
       return;
     }
     clear();
 
-    timeId = setTimeout(() => {
-      lockPage();
-    }, lockTime * 60 * 1000);
+    timeId = setTimeout(
+      () => {
+        lockPage();
+      },
+      lockTime * 60 * 1000,
+    );
   }
 
   function lockPage(): void {

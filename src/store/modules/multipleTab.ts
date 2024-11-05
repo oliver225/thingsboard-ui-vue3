@@ -184,7 +184,7 @@ export const useMultipleTabStore = defineStore({
         // There is only one tab, then jump to the homepage, otherwise jump to the right tab
         if (this.tabList.length === 1) {
           const userStore = useUserStore();
-          toTarget = userStore.getUserInfo.additionalInfo?.homePath || PageEnum.BASE_HOME;
+          toTarget = userStore.getUserInfo.homePath || PageEnum.BASE_HOME;
         } else {
           //  Jump to the right tab
           const page = this.tabList[index + 1];

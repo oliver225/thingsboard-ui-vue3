@@ -1,7 +1,7 @@
 <template>
   <PageWrapper title="关于">
     <template #headerContent>
-      <div class="flex justify-between items-center">
+      <div class="flex items-center justify-between">
         <span class="flex-1">
           <a href="https://jeesite.com" target="_blank">JeeSite</a>
           快速开发平台，不仅仅是一个后台开发框架，它是一个企业级快速开发解决方案，有平台来封装技术细节，
@@ -17,7 +17,7 @@
       </div>
     </template>
     <Description @register="infoRegister" class="enter-y" />
-    <Description @register="register" class="my-4 enter-y" />
+    <Description @register="register" class="enter-y my-4" />
     <Description @register="registerDev" class="enter-y" />
   </PageWrapper>
 </template>
@@ -25,8 +25,7 @@
   import { h } from 'vue';
   import { Tag } from 'ant-design-vue';
   import { PageWrapper } from '/@/components/Page';
-  import { Description, DescItem, useDescription } from '/@/components/Description/index';
-  import { GITHUB_URL, SITE_URL, DOC_URL } from '/@/settings/siteSetting';
+  import { Description, DescItem, useDescription } from '/@/components/Description';
 
   const { pkg, lastBuildTime } = __APP_INFO__;
 
@@ -51,22 +50,22 @@
     },
     {
       label: '文档地址',
-      field: 'doc',
-      render: commonLinkRender(DOC_URL),
+      field: 'docs',
+      render: commonLinkRender('http://docs.jeesite.com'),
     },
     {
       label: '官方网站',
-      field: 'preview',
-      render: commonLinkRender(SITE_URL),
+      field: 'website',
+      render: commonLinkRender('https://jeesite.com'),
     },
     {
-      label: 'Gitee',
-      field: 'github',
+      label: '下载地址',
+      field: 'download',
       render: commonLinkRender('https://gitee.com/thinkgem'),
     },
     {
       label: '联系我',
-      field: 'linker',
+      field: 'linkers',
       render: commonLinkRender('http://s.jeesite.com'),
     },
   ];
@@ -74,32 +73,11 @@
   const infoData = {
     version,
     lastBuildTime,
-    doc: DOC_URL,
-    preview: SITE_URL,
-    github: GITHUB_URL,
+    docs: 'http://docs.jeesite.com',
+    website: 'https://jeesite.com',
+    download: 'https://gitee.com/thinkgem',
+    linkers: 'http://s.jeesite.com',
   };
-
-  Object.keys(dependencies).forEach((key) => {
-    schema.push({ field: key, label: key });
-  });
-
-  Object.keys(devDependencies).forEach((key) => {
-    devSchema.push({ field: key, label: key });
-  });
-
-  const [register] = useDescription({
-    title: '生产环境依赖',
-    data: dependencies,
-    schema: schema,
-    column: 3,
-  });
-
-  const [registerDev] = useDescription({
-    title: '开发环境依赖',
-    data: devDependencies,
-    schema: devSchema,
-    column: 3,
-  });
 
   const [infoRegister] = useDescription({
     title: '项目信息',
@@ -107,4 +85,30 @@
     schema: infoSchema,
     column: 2,
   });
+
+  let register: any;
+  if (dependencies) {
+    Object.keys(dependencies).forEach((key) => {
+      schema.push({ field: key, label: key });
+    });
+    register = useDescription({
+      title: '生产环境依赖',
+      data: dependencies,
+      schema: schema,
+      column: 3,
+    });
+  }
+
+  let registerDev: any;
+  if (devDependencies) {
+    Object.keys(devDependencies).forEach((key) => {
+      devSchema.push({ field: key, label: key });
+    });
+    registerDev = useDescription({
+      title: '开发环境依赖',
+      data: devDependencies,
+      schema: devSchema,
+      column: 3,
+    });
+  }
 </script>

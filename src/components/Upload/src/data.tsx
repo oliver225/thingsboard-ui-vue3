@@ -2,11 +2,11 @@ import type { BasicColumn, ActionItem } from '/@/components/Table';
 import { FileItem, UploadResultStatus } from './typing';
 import { formatSize, isImgTypeByName } from './helper';
 import { Avatar, Progress, Tag } from 'ant-design-vue';
-import { FileOutlined } from '@ant-design/icons-vue';
+import { Icon } from '/@/components/Icon';
 import TableAction from '/@/components/Table/src/components/TableAction.vue';
 import ThumbUrl from './ThumbUrl.vue';
 import { useI18n } from '/@/hooks/web/useI18n';
-import { FileUpload } from '../../../api/sys/upload';
+import { FileUpload } from '/@/api/sys/upload';
 import { useGlobSetting } from '/@/hooks/setting';
 
 const { t } = useI18n();
@@ -28,7 +28,7 @@ export function createTableColumns(): BasicColumn[] {
         if (isImgTypeByName(url)) {
           return <ThumbUrl fileUrl={url} />;
         }
-        const ext = type || fileEntity?.fileExtension || <FileOutlined />;
+        const ext = type || fileEntity?.fileExtension || <Icon icon="i-ant-design:file-outlined" />;
         const color = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae'][index % 4];
         return <Avatar style={{ backgroundColor: color, verticalAlign: 'middle' }}>{ext}</Avatar>;
       },
@@ -49,7 +49,7 @@ export function createTableColumns(): BasicColumn[] {
         }
         return (
           <span>
-            <p class="truncate mb-1" title={text}>
+            <p class="mb-1 truncate" title={text}>
               {text}
             </p>
             <Progress percent={percent} size="small" status={status} />
@@ -140,7 +140,7 @@ export function createPreviewColumns(props: any): BasicColumn[] {
         if (isImgTypeByName(url)) {
           return <ThumbUrl fileUrl={url} previewUrl={previewUrl} />;
         }
-        const ext = type || fileEntity?.fileExtension || <FileOutlined />;
+        const ext = type || fileEntity?.fileExtension || <Icon icon="i-ant-design:file-outlined" />;
         const color = ['#f56a00', '#7265e6', '#ffbf00', '#00a2ae'][index % 4];
         return <Avatar style={{ backgroundColor: color, verticalAlign: 'middle' }}>{ext}</Avatar>;
       },

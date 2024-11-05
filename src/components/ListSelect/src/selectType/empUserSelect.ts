@@ -1,7 +1,7 @@
 import { useI18n } from '/@/hooks/web/useI18n';
 import { BasicColumn, BasicTableProps, FormProps } from '/@/components/Table';
 import { officeTreeData } from '/@/api/sys/office';
-// import { companyTreeData } from '/@/api/sys/company';
+import { companyTreeData } from '/@/api/sys/company';
 import { empUserListData } from '/@/api/sys/empUser';
 
 const { t } = useI18n('sys.empUser');
@@ -11,7 +11,7 @@ const modalProps = {
 };
 
 const searchForm: FormProps = {
-  baseColProps: { lg: 6, md: 8 },
+  baseColProps: { md: 8, lg: 6 },
   labelWidth: 60,
   schemas: [
     {
@@ -48,7 +48,7 @@ const searchForm: FormProps = {
       field: 'employee.company.companyCode',
       component: 'TreeSelect',
       componentProps: {
-        // api: companyTreeData,
+        api: companyTreeData,
         allowClear: true,
       },
     },
@@ -174,6 +174,7 @@ export default {
   tableProps,
   itemCode: 'userCode',
   itemName: 'userName',
+  isShowCode: true,
   treeProps,
   treeTableFieldName,
 };

@@ -16,11 +16,12 @@ import { router, resetRouter } from '/@/router';
 
 import projectSetting from '/@/settings/projectSetting';
 import { PermissionModeEnum } from '/@/enums/appEnum';
+import { RoleEnum } from '/@/enums/roleEnum';
 
 import { intersection } from 'lodash-es';
+import { isArray } from '/@/utils/is';
 import { useMultipleTabStore } from '/@/store/modules/multipleTab';
 import { Authority } from '/@/enums/authorityEnum';
-import { isArray } from '/@/utils/is';
 
 // User permissions related operations
 export function usePermission() {
@@ -36,8 +37,8 @@ export function usePermission() {
     appStore.setProjectConfig({
       permissionMode:
         projectSetting.permissionMode === PermissionModeEnum.BACK
-          ? PermissionModeEnum.BACK
-          : PermissionModeEnum.ROUTE_MAPPING,
+          ? PermissionModeEnum.ROUTE_MAPPING
+          : PermissionModeEnum.BACK,
     });
     location.reload();
   }
@@ -61,62 +62,43 @@ export function usePermission() {
   /**
    * Determine whether there is permission
    */
-  // function hasPermission(value?: RoleEnum | RoleEnum[] | string | string[], def = true): boolean {
-  //   // Open by default
-  //   if (!value) {
-  //     return def;
-  //   }
-
-  //   const permMode = projectSetting.permissionMode;
-
-  //   if ([PermissionModeEnum.ROUTE_MAPPING, PermissionModeEnum.ROLE].includes(permMode)) {
-  //     if (!isArray(value)) {
-  //       return userStore.getRoleList?.includes(value as RoleEnum);
-  //     }
-  //     return (intersection(value, userStore.getRoleList) as RoleEnum[]).length > 0;
-  //   }
-
-  //   if (PermissionModeEnum.BACK === permMode) {
-  //     const permiCodeList = permissionStore.getPermCodeList;
-
-  //     // if (!isArray(value)) {
-  //     //   return permiCodeList.includes(value);
-  //     // }
-  //     // return (intersection(value, permiCodeList) as string[]).length > 0;
-
-  //     if (value) {
-  //       const values = !isArray(value) ? [value] : value;
-  //       for (const val of values) {
-  //         if (val && val !== '') {
-  //           const currPermi = val.split(':');
-  //           for (const permi of permiCodeList) {
-  //             if (isPermitted(permi, currPermi)) {
-  //               return true;
-  //             }
-  //           }
-  //         }
-  //       }
-  //     }
-
-  //     return false;
-  //   }
-  //   return true;
-  // }
-
-
-  function hasAuthority(value?: Authority | Authority[] | string | string[], def = true): boolean {
-    // Visible by default
+  function hasPermission(value?: Authority | Authority[] | string | string[], def = true): boolean {
+    // Open by default
     if (!value) {
       return def;
     }
+
     const permMode = projectSetting.permissionMode;
 
     if ([PermissionModeEnum.ROUTE_MAPPING, PermissionModeEnum.ROLE].includes(permMode)) {
-      if (isArray(value)) {
-        return value.includes(userStore.getAuthority)
-      } else {
-        return value === userStore.getAuthority;
+      if (!isArray(value)) {
+        // return userStore.getRoleList?.includes(value as Authority);
+        return userStore.getAuthority== value as Authority
       }
+      return (intersection(value, userStore.getAuthority) as Authority[]).length > 0;
+    }
+
+    if (PermissionModeEnum.BACK === permMode) {
+      const authority = permissionStore.getAuthority;
+
+      if (value) {
+        const values = !isArray(value) ? [value] : value;
+        for (const val of values) {
+          if (val && val !== '') {
+            const currPermi = val.split(':');
+            if (isPermitted([authority as string], currPermi)) {
+              return true;
+            }
+            // for (const permi of permiCodeList) {
+            //   if (isPermitted(permi, currPermi)) {
+            //     return true;
+            //   }
+            // }
+          }
+        }
+      }
+
+      return false;
     }
     return true;
   }
@@ -131,22 +113,20 @@ export function usePermission() {
   }
 
   /**
-   * Change roles
-   * @param roles
+   * Change authority
+   * @param authority
    */
-  // async function changeRole(roles: RoleEnum | RoleEnum[]): Promise<void> {
-  //   if (projectSetting.permissionMode !== PermissionModeEnum.ROUTE_MAPPING) {
-  //     throw new Error(
-  //       'Please switch PermissionModeEnum to ROUTE_MAPPING mode in the configuration to operate!',
-  //     );
-  //   }
+  async function changeAuthority(authority: Authority ): Promise<void> {
+    if (projectSetting.permissionMode !== PermissionModeEnum.ROUTE_MAPPING) {
+      throw new Error(
+        'Please switch PermissionModeEnum to ROUTE_MAPPING mode in the configuration to operate!',
+      );
+    }
 
-  //   if (!isArray(roles)) {
-  //     roles = [roles];
-  //   }
-  //   userStore.setRoleList(roles);
-  //   await resume();
-  // }
+    
+    userStore.setAuthority(authority);
+    await resume();
+  }
 
   /**
    * refresh menu data
@@ -155,5 +135,5 @@ export function usePermission() {
     resume();
   }
 
-  return { hasAuthority, togglePermissionMode, refreshMenu };
+  return { changeAuthority, hasPermission, togglePermissionMode, refreshMenu };
 }

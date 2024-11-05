@@ -3,10 +3,11 @@ import type { BasicTableProps } from '../types/table';
 import { unref } from 'vue';
 import { ROW_KEY } from '../const';
 import { isString, isFunction } from '/@/utils/is';
+import { clone } from 'lodash-es';
 
 interface Options {
-  setSelectedRowKeys: (keys: string[]) => void;
-  getSelectRowKeys: () => string[];
+  setSelectedRowKeys: (keys: string[] | number[]) => void;
+  getSelectRowKeys: () => string[] | number[];
   clearSelectedRowKeys: () => void;
   emit: EmitType;
   getAutoCreateKey: ComputedRef<boolean | undefined>;
@@ -14,7 +15,7 @@ interface Options {
 
 function getKey(
   record: Recordable,
-  rowKey: string | ((record: Record<string, any>) => string) | undefined,
+  rowKey: string | ((record: Recordable, defaultValue?: any) => string) | undefined,
   autoCreateKey?: boolean,
 ) {
   if (!rowKey || autoCreateKey) {
@@ -37,36 +38,32 @@ export function useCustomRow(
     return {
       onClick: (e: Event) => {
         e?.stopPropagation();
-        function handleClick() {
+        function handleRowClick() {
           const { rowSelection, rowKey, clickToRowSelect } = unref(propsRef);
           if (!rowSelection || !clickToRowSelect) return;
-          const keys = getSelectRowKeys();
+          const keys = clone(getSelectRowKeys());
           const key = getKey(record, rowKey, unref(getAutoCreateKey));
           if (!key) return;
-
-          const isCheckbox = rowSelection.type === 'checkbox';
-          if (isCheckbox) {
+          if (rowSelection.type === 'checkbox') {
             // 找到tr
             const tr: HTMLElement = (e as MouseEvent)
               .composedPath?.()
-              .find((dom: HTMLElement) => dom.tagName === 'TR') as HTMLElement;
+              .find((dom) => (dom as HTMLElement).tagName === 'TR') as HTMLElement;
             if (!tr) return;
             // 找到Checkbox，检查是否为disabled
             const checkBox = tr.querySelector('input[type=checkbox]');
             if (!checkBox || checkBox.hasAttribute('disabled')) return;
-            if (!keys.includes(key)) {
-              setSelectedRowKeys([...keys, key]);
-              return;
+            // toggle checkbox
+            if (!keys.includes(key as never)) {
+              keys.push(key as never);
+            } else {
+              const keyIndex = keys.findIndex((item) => item === key);
+              keys.splice(keyIndex, 1);
             }
-            const keyIndex = keys.findIndex((item) => item === key);
-            keys.splice(keyIndex, 1);
             setSelectedRowKeys(keys);
             return;
-          }
-
-          const isRadio = rowSelection.type === 'radio';
-          if (isRadio) {
-            if (!keys.includes(key)) {
+          } else if (rowSelection.type === 'radio') {
+            if (!keys.includes(key as never)) {
               if (keys.length) {
                 clearSelectedRowKeys();
               }
@@ -76,7 +73,7 @@ export function useCustomRow(
             //clearSelectedRowKeys(); // 双击不进行清空选择
           }
         }
-        handleClick();
+        handleRowClick();
         emit('row-click', record, index, e);
       },
       onDblclick: (event: Event) => {

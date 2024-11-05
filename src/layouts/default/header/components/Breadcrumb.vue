@@ -21,7 +21,7 @@
   import { defineComponent, ref, watchEffect } from 'vue';
 
   import { Breadcrumb } from 'ant-design-vue';
-  import Icon from '/@/components/Icon';
+  import { Icon } from '/@/components/Icon';
 
   import { useDesign } from '/@/hooks/web/useDesign';
   import { useRootSetting } from '/@/hooks/setting/useRootSetting';
@@ -38,7 +38,7 @@
 
   export default defineComponent({
     name: 'LayoutBreadcrumb',
-    components: { Icon, [Breadcrumb.name]: Breadcrumb },
+    components: { Icon, [Breadcrumb.name as string]: Breadcrumb },
     props: {
       theme: propTypes.oneOf(['dark', 'light']),
     },
@@ -147,7 +147,7 @@
 
       return { routes, t, prefixCls, getIcon, getShowBreadCrumbIcon, handleClick, hasRedirect };
     },
-  });
+  } as any);
 </script>
 <style lang="less">
   @prefix-cls: ~'jeesite-layout-breadcrumb';
@@ -173,7 +173,7 @@
         }
 
         a {
-          color: rgba(0, 0, 0, 0.65);
+          color: rgb(0 0 0 / 65%);
 
           &:hover {
             color: @primary-color;
@@ -186,20 +186,20 @@
       }
 
       .ant-breadcrumb-link span {
-        color: rgba(0, 0, 0, 0.65);
+        color: rgb(0 0 0 / 65%);
       }
     }
 
     &--dark .ant-breadcrumb {
       .ant-breadcrumb-overlay-link {
-        color: rgba(255, 255, 255, 0.6);
+        color: rgb(255 255 255 / 60%);
 
         &:hover a {
           color: @white;
         }
 
         a {
-          color: rgba(255, 255, 255, 0.8);
+          color: rgb(255 255 255 / 80%);
 
           &:hover {
             color: @white;
@@ -209,11 +209,11 @@
 
       .ant-breadcrumb-separator,
       .anticon {
-        color: rgba(255, 255, 255, 0.8);
+        color: rgb(255 255 255 / 80%);
       }
 
       .ant-breadcrumb-link span {
-        color: rgba(255, 255, 255, 0.8);
+        color: rgb(255 255 255 / 80%);
       }
     }
   }

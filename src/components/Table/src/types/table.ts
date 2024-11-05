@@ -6,9 +6,9 @@ import type { ColumnProps } from 'ant-design-vue/lib/table';
 
 import { ComponentType } from './componentType';
 import { VueNode } from '/@/utils/propTypes';
+import { RoleEnum } from '/@/enums/roleEnum';
 import { ActionItem } from './tableAction';
 import { EditRecordRow } from '../components/editable';
-import { Authority } from '/@/enums/authorityEnum';
 
 export declare type SortOrder = 'ascend' | 'descend';
 
@@ -21,13 +21,13 @@ export interface TableRowSelection<T = any> extends ITableRowSelection {
    * Callback executed when selected rows change
    * @type Function
    */
-  onChange?: (selectedRowKeys: string[] | number[], selectedRows: T[]) => any;
+  onChange?: (selectedRowKeys: string[] | number[] | any, selectedRows: T[]) => any;
 
   /**
    * Callback executed when select/deselect one row
    * @type Function
    */
-  onSelect?: (record: T, selected: boolean, selectedRows: Object[], nativeEvent: Event) => any;
+  onSelect?: (record: T, selected: boolean, selectedRows: object[], nativeEvent: Event) => any;
 
   /**
    * Callback executed when select/deselect all rows
@@ -39,7 +39,7 @@ export interface TableRowSelection<T = any> extends ITableRowSelection {
    * Callback executed when row selection is inverted
    * @type Function
    */
-  onSelectInvert?: (selectedRows: string[] | number[]) => any;
+  onSelectInvert?: (selectedRows: string[] | number[] | any) => any;
 }
 
 export interface TableCustomRecord<T> {
@@ -51,6 +51,7 @@ export interface ExpandedRowRenderRecord<T> extends TableCustomRecord<T> {
   indent?: number;
   expanded?: boolean;
 }
+
 export interface ColumnFilterItem {
   text?: string;
   value?: string;
@@ -75,6 +76,7 @@ export interface FetchParams {
   sortInfo?: Recordable;
   filterInfo?: Recordable;
   parentCode?: string;
+  record?: Recordable;
 }
 
 export interface GetColumnsParams {
@@ -94,7 +96,7 @@ export interface TableActionType {
   collapseAll: () => void;
   expandCollapse: (record: Recordable) => void;
   scrollTo: (pos: string) => void; // pos: id | "top" | "bottom"
-  getSelectRowKeys: () => string[];
+  getSelectRowKeys: () => string[] | number[];
   deleteSelectRowByKey: (key: string) => void;
   setPagination: (info: Partial<PaginationProps>) => void;
   setTableData: <T = Recordable>(values: T[]) => void;
@@ -115,12 +117,13 @@ export interface TableActionType {
   getPaginationRef: () => PaginationProps | boolean;
   getSize: () => SizeType;
   getRowSelection: () => TableRowSelection<Recordable>;
+  getDefaultRowSelection?: () => TableRowSelection<Recordable>;
   getCacheColumns: () => BasicColumn[];
   emit?: EmitType;
   updateTableData: (index: number, key: string, value: any) => Recordable;
   setShowPagination: (show: boolean) => Promise<void>;
   getShowPagination: () => boolean;
-  setCacheColumnsByField?: (dataIndex: string | undefined, value: BasicColumn) => void;
+  // setCacheColumnsByField?: (dataIndex: string | undefined, value: BasicColumn) => void;
 }
 
 export interface FetchSetting {
@@ -154,6 +157,8 @@ export interface BasicTableProps<T = any> {
   inset?: boolean;
   // 显示表格设置
   showTableSetting?: boolean;
+  tableSettingStore?: boolean;
+  tableSettingStoreKey?: string;
   tableSetting?: TableSetting;
   // 斑马纹
   striped?: boolean;
@@ -206,10 +211,8 @@ export interface BasicTableProps<T = any> {
   canResize?: boolean;
   // 自适应高度偏移， 计算结果-偏移量
   resizeHeightOffset?: number;
-  // 在分页改变的时候清空选项
-  clearSelectOnPageChange?: boolean;
   // 主键名称
-  rowKey?: string | ((record: Recordable, defaultValue: any) => string);
+  rowKey?: string | ((record: Recordable, defaultValue?: any) => string);
   // 数据
   dataSource?: Recordable[];
   // 标题右侧提示
@@ -313,6 +316,15 @@ export interface BasicTableProps<T = any> {
    */
   rowSelection?: TableRowSelection;
 
+  // 默认不展示复选框，但是通过右上角给表格设置复选框的时候加载默认参数
+  defaultRowSelection?: TableRowSelection;
+
+  // 重载表格数据的时候清空已选择选项
+  clearSelectedOnReload?: boolean;
+
+  // 是否在表格上方显示多选状态栏
+  showSelectionBar?: boolean;
+
   /**
    * Set horizontal or vertical scrolling, can also be used to specify the width and height of the scroll area.
    * It is recommended to set a number for x, if you want to set it to true,
@@ -405,7 +417,7 @@ export interface BasicTableProps<T = any> {
    * @param expanded
    * @param record
    */
-  onExpand?: (expande: boolean, record: T) => void;
+  onExpand?: (expanded: boolean, record: T) => void;
 
   /**
    * Callback executed when the expanded rows change
@@ -431,8 +443,8 @@ export interface BasicColumn extends ColumnProps<Recordable> {
     text: string;
     value: string;
     children?:
-    | unknown[]
-    | (((props: Record<string, unknown>) => unknown[]) & (() => unknown[]) & (() => unknown[]));
+      | unknown[]
+      | (((props: Record<string, unknown>) => unknown[]) & (() => unknown[]) & (() => unknown[]));
   }[];
 
   //
@@ -457,13 +469,13 @@ export interface BasicColumn extends ColumnProps<Recordable> {
   editAutoCancel?: boolean;
   editComponent?: ComponentType;
   editComponentProps?:
-  | ((opt: {
-    text: any;
-    record: EditRecordRow;
-    column: BasicColumn;
-    index: number;
-  }) => Recordable)
-  | Recordable;
+    | ((opt: {
+        text: any;
+        record: EditRecordRow;
+        column: BasicColumn;
+        index: number;
+      }) => Recordable)
+    | Recordable;
   editRule?: boolean | ((text: any, record: Recordable) => Promise<void>);
   // editValueMap?: (value: any) => string;
   onEditRow?: () => void;
@@ -473,7 +485,7 @@ export interface BasicColumn extends ColumnProps<Recordable> {
   editDefaultLabel?: any;
 
   // 权限编码控制是否显示
-  auth?: Authority | Authority[] | string | string[];
+  auth?: RoleEnum | RoleEnum[] | string | string[];
   // 业务控制是否显示
   ifShow?: boolean | ((column: BasicColumn) => boolean);
 
@@ -503,11 +515,17 @@ export interface BasicColumn extends ColumnProps<Recordable> {
 }
 
 export type ColumnChangeParam = {
-  dataIndex: string;
+  dataIndex?: string;
+  dataIndex_?: string;
   fixed: boolean | 'left' | 'right' | undefined;
   open: boolean;
 };
 
 export interface InnerHandlers {
   onColumnsChange: (data: ColumnChangeParam[]) => void;
+}
+
+export interface InnerMethods {
+  clearSelectedRowKeys: TableActionType['clearSelectedRowKeys'];
+  getSelectRowKeys: TableActionType['getSelectRowKeys'];
 }

@@ -24,7 +24,7 @@
     },
   });
 </script>
-<style lang="less" scoped>
+<style lang="less">
   @prefix-cls: ~'jeesite-page-footer';
 
   .@{prefix-cls} {
@@ -36,11 +36,13 @@
     width: 100%;
     align-items: center;
     padding: 0 24px;
-    line-height: 44px;
+    line-height: 35.5px;
     background-color: @component-background;
-    border-top: 1px solid @border-color-base;
-    box-shadow: 0 -6px 16px -8px rgba(0, 0, 0, 0.08), 0 -9px 28px 0 rgba(0, 0, 0, 0.05),
-      0 -12px 48px 16px rgba(0, 0, 0, 0.03);
+    border-top: 1px solid @header-light-bottom-border-color;
+    //box-shadow:
+    //  0 -6px 16px -8px rgb(0 0 0 / 8%),
+    //  0 -9px 28px 0 rgb(0 0 0 / 5%),
+    //  0 -12px 48px 16px rgb(0 0 0 / 3%);
     transition: width 0.2s;
 
     &__left {

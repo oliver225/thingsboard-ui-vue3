@@ -13,6 +13,7 @@ const stp = projectSetting.sessionTimeoutProcessing;
 
 export function checkStatus(
   status: number,
+  errorCode: number,
   msg: string,
   errorMessageMode: ErrorMessageMode = 'message',
 ): void {
