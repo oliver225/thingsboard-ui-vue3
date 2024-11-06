@@ -4,7 +4,10 @@
       <img :class="`${prefixCls}__header`" :src="getUserInfo.avatarUrl" />
       <span :class="`${prefixCls}__info`">
         <span :class="`${prefixCls}__name`" class="truncate">
-          {{ getUserInfo.userName }}
+          {{ getUserInfo.name }}
+        </span>
+        <span :class="`${prefixCls}__authority`" class="block">
+          {{ authorityLabel }}
         </span>
         <span :class="`${prefixCls}__btns`" class="block">
           <a class="online"><Icon icon="i-fa:circle" /> {{ t('layout.header.sidebarOnline') }}</a>
@@ -19,9 +22,12 @@
     <span :class="[prefixCls, `${prefixCls}--${props.theme}`]" class="flex">
       <img :class="`${prefixCls}__header`" :src="getUserInfo.avatarUrl" />
       <span :class="`${prefixCls}__info hidden md:block`">
-        <span :class="`${prefixCls}__name`" class="truncate">
-          {{ getUserInfo.userName }}
-        </span>
+        <div :class="`${prefixCls}__name`" class="truncate">
+          {{ getUserInfo.name }}
+        </div>
+        <div :class="`${prefixCls}__authority`">
+          {{ authorityLabel }}
+        </div>
       </span>
     </span>
     <template #overlay>
@@ -51,42 +57,6 @@
           :text="t('layout.header.dropdownItemLoginOut')"
           icon="i-ion:power-outline"
         />
-        <MenuDivider v-if="sysListRef.length > 0" />
-        <MenuItem
-          v-if="sysListRef.length > 0"
-          :class="`${prefixCls}-menu-subtitle`"
-          :text="t('系统切换：')"
-        />
-        <MenuItem
-          v-for="item in sysListRef"
-          :key="item.value"
-          :value="'sysCode-' + item.value"
-          :text="item.name"
-          :icon="sysCodeRef == item.value ? 'i-ant-design:check-outlined' : 'i-radix-icons:dot'"
-        />
-        <MenuDivider v-if="getUserInfo.roleList.length > 0" />
-        <MenuItem
-          v-if="getUserInfo.roleList.length > 0"
-          :class="`${prefixCls}-menu-subtitle`"
-          :text="t('选择身份：')"
-        >
-          <template #menuItemAfter>
-            <Icon
-              v-if="roleCodeRef"
-              icon="i-ant-design:close-circle-outlined"
-              class="ml-1"
-              @click="handleMenuClick({ key: 'roleCode-' })"
-              :title="t('取消设置')"
-            />
-          </template>
-        </MenuItem>
-        <MenuItem
-          v-for="item in getUserInfo.roleList"
-          :key="item.roleCode"
-          :value="'roleCode-' + item.roleCode"
-          :text="item.roleName"
-          :icon="roleCodeRef == item.roleCode ? 'i-ant-design:check-outlined' : 'i-radix-icons:dot'"
-        />
       </Menu>
     </template>
   </Dropdown>
@@ -104,12 +74,12 @@
   import { useGo } from '/@/hooks/web/usePage';
   import { propTypes } from '/@/utils/propTypes';
   import { openWindow } from '/@/utils';
-  import { useDict } from '/@/components/Dict';
-  import { switchSys, switchRole } from '/@/api/sys/login';
+  import { Authority, AUTHORITY_OPTIONS } from '/@/enums/authorityEnum';
   import { PageEnum } from '/@/enums/pageEnum';
   import { Icon } from '/@/components/Icon';
   import MenuItem from './DropMenuItem.vue';
   import LockAction from '../lock/LockModal.vue';
+  import { NULL_UUID } from '/@/enums/constant';
 
   type MenuEvent = 'accountCenter' | 'modifyPwd' | 'logout' | 'doc' | 'lock' | 'roleCode-';
 
@@ -136,37 +106,40 @@
       const userStore = useUserStore();
       const go = useGo();
 
-      const sysCodeRef = ref<string>('default');
-      const sysListRef = ref<Recordable[]>([]);
-      const roleCodeRef = ref<string>('');
+      const authorityRef = ref<Authority | undefined>();
+      const tenantIdRef = ref<string>('');
+      const customerIdRef = ref<string>('');
 
       const getUserInfo = computed(() => {
-        const { userName = '', avatarUrl, remarks, roleList } = userStore.getUserInfo || {};
+        const {
+          name = '',
+          email,
+          firstName,
+          lastName,
+          phone,
+          authority,
+          additionalInfo,
+        } = userStore.getUserInfo || {};
         return {
-          userName,
-          avatarUrl,
-          remarks,
-          roleList: (roleList || []).filter((e) => e.isShow == '1'),
+          name,
+          email,
+          firstName,
+          lastName,
+          phone,
+          authority,
+          avatarUrl: additionalInfo.avatarUrl,
         };
+      });
+
+      const authorityLabel = computed(() => {
+        return AUTHORITY_OPTIONS.find((item) => item.value == getUserInfo.value.authority)?.label;
       });
 
       if (!props.sidebar) {
         onMounted(async () => {
-          sysCodeRef.value = userStore.getPageCacheByKey('sysCode', 'default');
-          roleCodeRef.value = userStore.getPageCacheByKey('roleCode', '');
-          const sysList = await useDict().initGetDictList('sys_menu_sys_code');
-          if (sysList.length > 1) {
-            var sysCodes: string[] = [];
-            for (let role of getUserInfo.value.roleList) {
-              if (role.sysCodes) {
-                for (let code of role.sysCodes.split(',')) {
-                  if (code != '') sysCodes.push(code);
-                }
-              }
-            }
-            sysListRef.value =
-              sysCodes.length === 0 ? sysList : sysList.filter((e) => sysCodes.includes(e.value));
-          }
+          authorityRef.value = userStore.getPageCacheByKey('authority', Authority.CUSTOMER_USER);
+          tenantIdRef.value = userStore.getPageCacheByKey('tenantId', NULL_UUID);
+          customerIdRef.value = userStore.getPageCacheByKey('customerId', NULL_UUID);
         });
       }
 
@@ -210,20 +183,6 @@
             handleLock();
             break;
           default:
-            const sysCodePrefix = 'sysCode-';
-            if (String(e.key).startsWith(sysCodePrefix)) {
-              go(userStore.getUserInfo.homePath || PageEnum.BASE_HOME);
-              const sysCode = String(e.key).substring(sysCodePrefix.length);
-              await switchSys(sysCode);
-              location.reload();
-            }
-            const roleCodePrefix = 'roleCode-';
-            if (String(e.key).startsWith(roleCodePrefix)) {
-              go(userStore.getUserInfo.homePath || PageEnum.BASE_HOME);
-              const roleCode = String(e.key).substring(roleCodePrefix.length);
-              await switchRole(roleCode);
-              location.reload();
-            }
             break;
         }
       }
@@ -232,14 +191,12 @@
         prefixCls,
         t,
         getUserInfo,
+        authorityLabel,
         handleMenuClick,
         getShowDoc,
         registerModal,
         getUseLockPage,
         handleLoginOut,
-        sysCodeRef,
-        sysListRef,
-        roleCodeRef,
         props,
       };
     },
@@ -271,6 +228,12 @@
 
     &__name {
       font-size: 14px;
+      line-height: 20px;
+    }
+
+    &__authority {
+      font-size: 12px;
+      line-height: 24px;
     }
 
     &--dark {
@@ -333,6 +296,10 @@
         }
 
         &__name {
+          font-weight: bold;
+        }
+
+        &__authority {
           font-weight: bold;
         }
 

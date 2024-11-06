@@ -40,6 +40,7 @@ export function usePermission() {
           ? PermissionModeEnum.ROUTE_MAPPING
           : PermissionModeEnum.BACK,
     });
+    console.log('asda');
     location.reload();
   }
 

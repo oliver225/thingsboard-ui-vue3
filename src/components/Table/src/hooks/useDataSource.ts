@@ -292,6 +292,8 @@ export function useDataSource(
         pageParams[sizeField] = pageSize;
       }
 
+      pageParams[pageField] = pageParams[pageField] > 0 ? pageParams[pageField] - 1 : 0;
+
       const { sortInfo = {}, filterInfo } = searchState;
 
       let params: Recordable = merge(
@@ -312,8 +314,8 @@ export function useDataSource(
         params = (await beforeFetch(params)) || params;
       }
 
-      const { initDict } = useDict();
-      await initDict(propsRef.value.dictTypes);
+      // const { initDict } = useDict();
+      // await initDict(propsRef.value.dictTypes);
 
       const res = await api(params);
       rawDataSourceRef.value = res;

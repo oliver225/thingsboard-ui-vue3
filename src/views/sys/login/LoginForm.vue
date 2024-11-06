@@ -204,7 +204,7 @@ import { type } from 'os';
       if (res) {
         notification.success({
           message: t('sys.login.loginSuccessTitle'),
-          description: `${t('sys.login.loginSuccessDesc')}: ${res.firstName}`,
+          description: `${t('sys.login.loginSuccessDesc')}: ${res.email}`,
           duration: 1,
         });
       }

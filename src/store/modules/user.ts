@@ -151,10 +151,10 @@ export const useUserStore = defineStore({
         this.setToken(jwtPair);
         const userInfo = await this.getUserInfoAction();
         this.initPageCache(userInfo);
+        await this.afterLoginAction(userInfo, goHome);
         return userInfo;
       }
-      // await this.afterLoginAction(userInfo, goHome);
-      // return res;
+      throw new Error('登录失败');
     },
     // async afterLoginAction(goHome?: boolean): Promise<GetUserInfoModel | null> {
     async afterLoginAction(res: UserInfo, goHome?: boolean) {

@@ -158,9 +158,9 @@
             {...menuProps}
             isSplitMenu={unref(getSplit)}
             items={menus}
-            v-slots={{
+            /*{ v-slots={{
               menuBefore: () => renderUserInfo(),
-            }}
+            }} }*/
           />
         ) : (
           <BasicMenu

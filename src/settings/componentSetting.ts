@@ -28,7 +28,8 @@ export default {
       const { order, columnKey } = sortInfo;
       if (order && columnKey) {
         return {
-          orderBy: columnKey + ' ' + order.replace('end', ''),
+          sortProperty: columnKey,
+          sortOrder: order.replace('end', '').toUpperCase(),
         };
       }
     },

@@ -131,7 +131,7 @@ const tb: AppRouteModule = {
         {
           path: '/profile/index',
           name: 'ProfileIndex',
-          component: () => import('/@/views/tb/profileIndex.vue'),
+          component: () => import('/@/views/tb/profile/index.vue'),
           meta: {
             icon: 'ant-design:project-outlined',
             tabIcon: 'ant-design:project-outlined',
@@ -267,7 +267,7 @@ const tb: AppRouteModule = {
         {
           path: '/resource/index',
           name: 'ResourceIndex',
-          component: () => import('/@/views/tb/resourceIndex.vue'),
+          component: () => import('/@/views/tb/resource/index.vue'),
           meta: {
             icon: 'ant-design:gold-outlined',
             tabIcon: 'ant-design:gold-outlined',

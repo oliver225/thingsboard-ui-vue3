@@ -26,7 +26,7 @@ export function getAppEnvConfig() {
     );
   }
   return {
-    VITE_PROXY: env.DEV ? JSON.parse(env.VITE_PROXY):[],
+    VITE_PROXY: env.DEV ? env.VITE_PROXY:[],
     ...ENV
   };
 }
