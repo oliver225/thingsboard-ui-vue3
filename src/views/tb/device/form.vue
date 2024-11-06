@@ -81,7 +81,7 @@ const inputFormSchemas: FormSchema[] = [
     component: 'Select',
     componentProps: {
       immediate: true,
-      resultField: 'list',
+      resultField: 'data',
       params: { pageSize: 50, page: 0, sortProperty: 'name', sortOrder: 'ASC' },
       mapFn: (item) => { return { label: item.name, value: item.id.id } },
       api: deviceProfileList,
@@ -95,7 +95,7 @@ const inputFormSchemas: FormSchema[] = [
     componentProps: {
       immediate: true,
       allowClear: true,
-      resultField: 'list',
+      resultField: 'data',
       params: { pageSize: 50, page: 0, sortProperty: 'title', sortOrder: 'ASC' },
       mapFn: (item) => { return { label: item.title, value: item.id.id } },
       api: customerList,

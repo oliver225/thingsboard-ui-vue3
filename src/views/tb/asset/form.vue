@@ -67,15 +67,14 @@ const inputFormSchemas: FormSchema[] = [
       placeholder: '资产标签'
     },
   },
-
   {
     label: t('资产配置'),
     field: 'assetProfileId.id',
     component: 'Select',
     componentProps: {
       immediate: true,
-      resultField: 'list',
-      params: { pageSize: 50, pageNo: 1, sortProperty: 'name', sortOrder: 'ASC' },
+      resultField: 'data',
+      params: { pageSize: 50, page: 0, sortProperty: 'name', sortOrder: 'ASC' },
       mapFn: (item) => { return { label: item.name, value: item.id.id } },
       api: assetProfileList,
     },
@@ -88,8 +87,8 @@ const inputFormSchemas: FormSchema[] = [
     componentProps: {
       immediate: false,
       allowClear: true,
-      resultField: 'list',
-      params: { pageSize: 50, pageNo: 1, sortProperty: 'title', sortOrder: 'ASC' },
+      resultField: 'data',
+      params: { pageSize: 50, page: 0, sortProperty: 'title', sortOrder: 'ASC' },
       mapFn: (item) => { return { label: item.title, value: item.id.id } },
       api: customerList,
     },

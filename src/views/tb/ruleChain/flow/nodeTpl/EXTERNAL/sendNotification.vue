@@ -83,14 +83,14 @@ async function getConfiguration() {
 }
 
 async function fetchTemplateList() {
-    const templateListResult = await notificationTemplateList({ pageSize: 50, pageNo: 1, sortProperty: 'name', sortOrder: 'ASC' }, NotificationType.RULE_NODE);
-    templateOptions.value = templateListResult.list.map(item => { return { value: item.id.id, label: item.name, deliveryMethods: Object.keys(item.configuration.deliveryMethodsTemplates as any) } })
+    const templateListResult = await notificationTemplateList({ pageSize: 50,  page: 0, sortProperty: 'name', sortOrder: 'ASC' }, NotificationType.RULE_NODE);
+    templateOptions.value = templateListResult.data.map(item => { return { value: item.id.id, label: item.name, deliveryMethods: Object.keys(item.configuration.deliveryMethodsTemplates as any) } })
 
 }
 
 async function fetchTargetList() {
-    const targetListResult = await notificationTargetList({ pageSize: 50, pageNo: 1, sortProperty: 'name', sortOrder: 'ASC' }, NotificationType.RULE_NODE);
-    targetOptions.value = targetListResult.list.map(item => ({ value: item.id.id, label: item.name }))
+    const targetListResult = await notificationTargetList({ pageSize: 50,  page: 0, sortProperty: 'name', sortOrder: 'ASC' }, NotificationType.RULE_NODE);
+    targetOptions.value = targetListResult.data.map(item => ({ value: item.id.id, label: item.name }))
 
 }
 

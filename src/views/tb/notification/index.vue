@@ -47,7 +47,7 @@ const tabActiveKey = ref<string>();
 
 function initNotificationMenu() {
 
-  const routerList = router.getRoutes().filter(routerItem => routerItem.path.startsWith('/tb/notification/') && routerItem.path !== '/tb/notification/index');
+  const routerList = router.getRoutes().filter(routerItem => routerItem.path.startsWith('/notification/') && routerItem.path !== '/notification/index');
   tabPanes.value = routerList.map(routerItem => {
     return {
       key: routerItem.name,

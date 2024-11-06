@@ -52,6 +52,10 @@
       type: Function as PropType<(arg?: Recordable) => Promise<Recordable[] | OptionsItem[]>>,
       default: null,
     },
+    mapFn: {
+      type: Function as PropType<(arg?: Recordable) => Recordable[] | OptionsItem[]>,
+      default: null,
+    },
     params: {
       type: Object as PropType<Recordable>,
       default: () => ({}),
@@ -137,6 +141,9 @@
         res = get(res, props.resultField) || [];
       }
       if (Array.isArray(res)) {
+        if (props.mapFn) {
+          res = res.map((item) => props.mapFn(item));
+        }
         optionsRef.value = res;
       }
       emit('options-change', unref(optionsRef));

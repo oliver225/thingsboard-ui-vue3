@@ -44,34 +44,25 @@
         <template #tab><span>
             <Icon :icon="'ant-design:line-chart-outlined'" /> 数据
           </span> </template>
-        <div class="telemetry-card">
-          <Telemetry :entityType="EntityType.TENANT" :entityId="record?.id?.id" />
-        </div>
+        <Telemetry :entityType="EntityType.TENANT" :entityId="record?.id?.id" />
       </TabPane>
       <TabPane key="ALARM">
         <template #tab><span>
             <Icon :icon="'ant-design:alert-outlined'" /> 报警
           </span> </template>
-        <div class="detail-info-card">
-          <Alarm :entityType="EntityType.TENANT" :entityId="record?.id?.id" />
-        </div>
+        <Alarm :entityType="EntityType.TENANT" :entityId="record?.id?.id" />
       </TabPane>
       <TabPane key="EVENT">
         <template #tab><span>
             <Icon :icon="'ant-design:info-circle-outlined'" /> 事件
           </span> </template>
-        <div class="event-card">
-          <Event :entityType="EntityType.TENANT" :entityId="record?.id?.id" />
-        </div>
+        <Event :entityType="EntityType.TENANT" :entityId="record?.id?.id" />
       </TabPane>
       <TabPane key="RELATION">
         <template #tab><span>
             <Icon :icon="'ant-design:radar-chart-outlined'" /> 关联
           </span> </template>
-        <div class="detail-info-card">
-          <Relation :entityType="EntityType.TENANT" :entityId="record?.id?.id" v-if="tabActiveKey.includes('RELATION')" />
-        </div>
-
+        <Relation :entityType="EntityType.TENANT" :entityId="record?.id?.id" />
       </TabPane>
     </Tabs>
   </BasicDrawer>
@@ -212,23 +203,5 @@ function handleTenantAdmin() {
 
 </script>
 <style lang="less">
-.telemetry-card {
-  .jeesite-basic-table {
-    padding: 0;
 
-    .jeesite-basic-table-header__header-top {
-      margin-top: 0;
-    }
-  }
-}
-
-.detail-info-card {
-  .jeesite-basic-table {
-    padding: 0;
-
-    .jeesite-basic-table-header__header-top {
-      display: none;
-    }
-  }
-}
 </style>

@@ -165,9 +165,9 @@ const inputFormSchemas: FormSchema[] = [
     componentProps: {
       mode: 'multiple',
       immediate: true,
-      resultField: 'list',
+      resultField: 'data',
       placeholder: '请选择通知接收组',
-      params: { pageSize: 50, pageNo: 1, sortProperty: 'name', sortOrder: 'ASC' },
+      params: { pageSize: 50, page: 0, sortProperty: 'name', sortOrder: 'ASC' },
       mapFn: (item) => { return { label: item.name, value: item.id.id } },
       api: (arg: any) => notificationTargetList(arg, NotificationType.GENERAL)
     },

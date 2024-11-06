@@ -12,7 +12,7 @@ import { PageEnum } from '/@/enums/pageEnum';
 import { TOKEN_KEY, REFRESHTOKEN_KEY, ROLES_KEY, USER_INFO_KEY, SESSION_TIMEOUT_KEY } from '/@/enums/cacheEnum';
 import { getAuthCache, setAuthCache } from '/@/utils/auth';
 import { loginApi, logoutApi, userInfoApi, LoginParams, LoginResult } from '/@/api/tb/login';
-// import { useI18n } from '/@/hooks/web/useI18n';
+import { useI18n } from '/@/hooks/web/useI18n';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { router } from '/@/router';
 import { usePermissionStore } from '/@/store/modules/permission';
@@ -22,6 +22,7 @@ import { useGlobSetting } from '/@/hooks/setting';
 import logoImg from '/@/assets/images/logo.png';
 import { mitt, Emitter } from '/@/utils/mitt';
 import { Authority } from '/@/enums/authorityEnum';
+import { h } from 'vue';
 
 const { showMessage, createConfirm } = useMessage();
 
@@ -239,16 +240,16 @@ export const useUserStore = defineStore({
      * @description: Confirm before logging out
      */
     async confirmLoginOut() {
-      // const { createConfirm } = useMessage();
-      // const { t } = useI18n();
-      // createConfirm({
-      //   iconType: 'warning',
-      //   title: () => h('span', t('sys.app.logoutTip')),
-      //   content: () => h('span', t('sys.app.logoutMessage')),
-      //   onOk: async () => {
-      await this.logout(true);
-      //   },
-      // });
+      const { createConfirm } = useMessage();
+      const { t } = useI18n();
+      createConfirm({
+        iconType: 'warning',
+        title: () => h('span', t('sys.app.logoutTip')),
+        content: () => h('span', t('sys.app.logoutMessage')),
+        onOk: async () => {
+            await this.logout(true);
+        },
+      });
     },
   },
 });

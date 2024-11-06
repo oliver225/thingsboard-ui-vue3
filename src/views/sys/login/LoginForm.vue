@@ -116,7 +116,6 @@
   import { openWindow } from '/@/utils';
   import weixinUrl from '/@/assets/images/weixin.jpg';
   import { onKeyStroke } from '@vueuse/core';
-import { type } from 'os';
 
   const ACol = Col;
   const ARow = Row;

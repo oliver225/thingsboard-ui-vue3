@@ -65,8 +65,8 @@ import { useUserStore } from '/@/store/modules/user';
 import { ENTITY_TYPE_OPTIONS, EntityType } from '/@/enums/entityTypeEnum';
 import { tenantById } from '/@/api/tb/tenant';
 import { customerList } from '/@/api/tb/customer';
-import { userList } from '/@/api/tb/rawUser';
-// import { currentTenantDashboardList } from '/@/api/tb/dashboard';
+import { userList } from '/@/api/tb/user';
+import { currentTenantDashboardList } from '/@/api/tb/dashboard';
 import { getTenantAssetList } from '/@/api/tb/asset';
 import { getTenantEntityViews } from '/@/api/tb/entityView';
 import { getTenantDeviceList } from '/@/api/tb/device';
@@ -156,33 +156,32 @@ async function handleEntityTypeChange(entityType) {
     formState.entityId = undefined;
     switch (entityType) {
         case EntityType.TENANT:
-            const tenant = await tenantById(userStore.getExtend?.tbUser?.tenantId.id);
+            const tenant = await tenantById(userStore.getUserInfo.tenantId.id);
             entityIdOptions.value = [{ value: tenant.id.id, label: tenant.title }]
             break;
         case EntityType.CUSTOMER:
-            const customerResult = await customerList({ pageSize: 1000, pageNo: 1, sortProperty: 'title', sortOrder: 'ASC' });
-            entityIdOptions.value = customerResult.list.map(item => ({ value: item.id.id, label: item.title }))
+            const customerResult = await customerList({ pageSize: 1000,  page: 0, sortProperty: 'title', sortOrder: 'ASC' });
+            entityIdOptions.value = customerResult.data.map(item => ({ value: item.id.id, label: item.title }))
             break;
         case EntityType.USER:
-            const userResultList = await userList({ pageSize: 1000, pageNo: 1, sortProperty: 'email', sortOrder: 'ASC' });
-            entityIdOptions.value = userResultList.list.map(item => ({ value: item.id.id, label: item.name }))
+            const userResultList = await userList({ pageSize: 1000,  page: 0, sortProperty: 'email', sortOrder: 'ASC' });
+            entityIdOptions.value = userResultList.data.map(item => ({ value: item.id.id, label: item.name }))
             break;
         case EntityType.DASHBOARD:
-            // const dashboardList = await currentTenantDashboardList({ pageSize: 1000, pageNo: 1, sortProperty: 'title', sortOrder: 'ASC' });
-            const dashboardList = [];
-            entityIdOptions.value = dashboardList.list.map(item => ({ value: item.id.id, label: item.title }))
+            const dashboardList = await currentTenantDashboardList({ pageSize: 1000,  page: 0, sortProperty: 'title', sortOrder: 'ASC' });
+            entityIdOptions.value = dashboardList.data.map(item => ({ value: item.id.id, label: item.title }))
             break;
         case EntityType.ASSET:
-            const assetResultList = await getTenantAssetList({ pageSize: 1000, pageNo: 1, sortProperty: 'name', sortOrder: 'ASC' });
-            entityIdOptions.value = assetResultList.list.map(item => ({ value: item.id.id, label: item.name }))
+            const assetResultList = await getTenantAssetList({ pageSize: 1000,  page: 0, sortProperty: 'name', sortOrder: 'ASC' });
+            entityIdOptions.value = assetResultList.data.map(item => ({ value: item.id.id, label: item.name }))
             break;
         case EntityType.ENTITY_VIEW:
-            const entityViewList = await getTenantEntityViews({ pageSize: 1000, pageNo: 1, sortProperty: 'name', sortOrder: 'ASC' });
-            entityIdOptions.value = entityViewList.list.map(item => ({ value: item.id.id, label: item.name }))
+            const entityViewList = await getTenantEntityViews({ pageSize: 1000,  page: 0, sortProperty: 'name', sortOrder: 'ASC' });
+            entityIdOptions.value = entityViewList.data.map(item => ({ value: item.id.id, label: item.name }))
             break;
         case EntityType.DEVICE:
-            const deviceList = await getTenantDeviceList({ pageSize: 1000, pageNo: 1, sortProperty: 'name', sortOrder: 'ASC' });
-            entityIdOptions.value = deviceList.list.map(item => ({ value: item.id.id, label: item.name }))
+            const deviceList = await getTenantDeviceList({ pageSize: 1000,  page: 0, sortProperty: 'name', sortOrder: 'ASC' });
+            entityIdOptions.value = deviceList.data.map(item => ({ value: item.id.id, label: item.name }))
             break;
     }
     //TODO edge;

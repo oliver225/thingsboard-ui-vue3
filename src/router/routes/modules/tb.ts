@@ -49,7 +49,6 @@ const tb: AppRouteModule = {
             tabIcon: 'ant-design:user-outlined',
             title: t('tb.tenantAdmin'),
             authorities: [Authority.SYS_ADMIN]
-
           },
         },
       ]

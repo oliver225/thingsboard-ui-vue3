@@ -59,8 +59,8 @@ const inputFormSchemas: FormSchema[] = [
     component: 'Select',
     componentProps: {
       immediate: true,
-      resultField: 'list',
-      params: { pageSize: 50, pageNo: 1, sortProperty: 'name', sortOrder: 'ASC' },
+      resultField: 'data',
+      params: { pageSize: 50, page: 0, sortProperty: 'name', sortOrder: 'ASC' },
       mapFn: (item) => { return { label: item.name, value: item.id.id } },
       api: tenantProfileInfoList,
     },
