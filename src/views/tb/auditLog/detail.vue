@@ -21,7 +21,7 @@ import { AuditLog } from '/@/api/tb/auditLog';
 
 const emit = defineEmits(['success', 'register']);
 
-const { t } = useI18n('things');
+const { t } = useI18n('tb');
 const { meta } = unref(router.currentRoute);
 const record = ref<AuditLog>({} as AuditLog);
 const getTitle = computed(() => ({

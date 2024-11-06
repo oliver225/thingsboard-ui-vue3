@@ -12,6 +12,15 @@
             <Form.Item label="如果用户帐户锁定，请发送通知到电子邮件" name="userLockoutNotificationEmail">
               <Input v-model:value="formState.userLockoutNotificationEmail" />
             </Form.Item>
+            <Form.Item label="User activation link TTL in hours" name="userActivationTokenTtl"  :rules="[{ required: true }]">
+              <InputNumber v-model:value="formState.userActivationTokenTtl" :min="1" :max="24" style="width: calc(50% )" />
+            </Form.Item>
+            <Form.Item label="Password reset link TTL in hours" name="passwordResetTokenTtl"  :rules="[{ required: true }]">
+              <InputNumber v-model:value="formState.passwordResetTokenTtl" :min="1" :max="24" style="width: calc(50% )" />
+            </Form.Item>
+            <Form.Item label="Mobile secret key length" name="mobileSecretKeyLength"  :rules="[{ required: true }]">
+              <InputNumber v-model:value="formState.mobileSecretKeyLength" :min="1" style="width: calc(50% )" />
+            </Form.Item>
           </div>
         </CollapseContainer>
         <CollapseContainer title="密码策略" :canExpan="false" class="border border-solid border-neutral-300 mb-4 ">
@@ -101,8 +110,10 @@ const dataLoading = ref(false);
 
 const formState = reactive<SecuritySettings>({
   maxFailedLoginAttempts: undefined,
-  mobileSecretKeyLength: 64,
   userLockoutNotificationEmail: '',
+  userActivationTokenTtl: 24,
+  passwordResetTokenTtl: 24,
+  mobileSecretKeyLength: 64,
   passwordPolicy: {
     allowWhitespaces: true,
     forceUserToResetPasswordIfNotValid: false,
@@ -144,8 +155,10 @@ async function fetchData() {
 
 function clear() {
   formState.maxFailedLoginAttempts = undefined;
-  formState.mobileSecretKeyLength = 64;
   formState.userLockoutNotificationEmail = '';
+  formState.userActivationTokenTtl= 24;
+  formState.passwordResetTokenTtl= 24;
+  formState.mobileSecretKeyLength= 64;
   formState.passwordPolicy = {
     allowWhitespaces: true,
     forceUserToResetPasswordIfNotValid: false,

@@ -91,7 +91,7 @@ import { isEmpty } from 'lodash';
 
 dayjs.extend(duration);
 const emit = defineEmits(['update:value']);
-const { t } = useI18n('things');
+const { t } = useI18n('tb');
 const { showMessage } = useMessage();
 
 

@@ -19,12 +19,12 @@
             <Row :gutter="24">
               <Col :span="12">
               <Form.Item label="主机地址" :name="['jsonValue', 'http', 'host']">
-                <Input v-model:value="formState.jsonValue.http.host" placeholder="主机" />
+                <Input v-model:value="formState.jsonValue.http.host" placeholder="主机" :disabled="!formState.jsonValue.http.enabled" />
               </Form.Item>
               </Col>
               <Col :span="12">
               <Form.Item label="端口号" :name="['jsonValue', 'http', 'port']">
-                <Input v-model:value="formState.jsonValue.http.port" placeholder="端口" />
+                <Input v-model:value="formState.jsonValue.http.port" placeholder="端口" :disabled="!formState.jsonValue.http.enabled" />
               </Form.Item>
               </Col>
             </Row>
@@ -37,12 +37,12 @@
             <Row :gutter="24">
               <Col :span="12">
               <Form.Item label="主机地址" :name="['jsonValue', 'https', 'host']">
-                <Input v-model:value="formState.jsonValue.https.host" placeholder="主机" />
+                <Input v-model:value="formState.jsonValue.https.host" placeholder="主机" :disabled="!formState.jsonValue.https.enabled" />
               </Form.Item>
               </Col>
               <Col :span="12">
               <Form.Item label="端口号" :name="['jsonValue', 'https', 'port']">
-                <Input v-model:value="formState.jsonValue.https.port" placeholder="端口" />
+                <Input v-model:value="formState.jsonValue.https.port" placeholder="端口" :disabled="!formState.jsonValue.https.enabled" />
               </Form.Item>
               </Col>
             </Row>
@@ -57,30 +57,30 @@
             <Row :gutter="24">
               <Col :span="12">
               <Form.Item label="主机地址" :name="['jsonValue', 'mqtt', 'host']">
-                <Input v-model:value="formState.jsonValue.mqtt.host" placeholder="主机" />
+                <Input v-model:value="formState.jsonValue.mqtt.host" placeholder="主机" :disabled="!formState.jsonValue.mqtt.enabled" />
               </Form.Item>
               </Col>
               <Col :span="12">
               <Form.Item label="端口号" :name="['jsonValue', 'mqtt', 'port']">
-                <Input v-model:value="formState.jsonValue.mqtt.port" placeholder="端口" />
+                <Input v-model:value="formState.jsonValue.mqtt.port" placeholder="端口" :disabled="!formState.jsonValue.mqtt.enabled" />
               </Form.Item>
               </Col>
             </Row>
           </div>
           <div class="border border-solid border-neutral-300 rounded-md px-4 py-3">
             <Form.Item :name="['jsonValue', 'mqtts', 'enabled']">
-              <Switch size="small" v-model:checked="formState.jsonValue.mqtts.enabled" />
+              <Switch size="small" v-model:checked="formState.jsonValue.mqtts.enabled"  />
               <span class="ml-2  text-base font-bold"> MQTTs </span>
             </Form.Item>
             <Row :gutter="24">
               <Col :span="12">
               <Form.Item label="主机地址" :name="['jsonValue', 'mqtts', 'host']">
-                <Input v-model:value="formState.jsonValue.mqtts.host" placeholder="主机" />
+                <Input v-model:value="formState.jsonValue.mqtts.host" placeholder="主机" :disabled="!formState.jsonValue.mqtts.enabled" />
               </Form.Item>
               </Col>
               <Col :span="12">
               <Form.Item label="端口号" :name="['jsonValue', 'mqtts', 'port']">
-                <Input v-model:value="formState.jsonValue.mqtts.port" placeholder="端口" />
+                <Input v-model:value="formState.jsonValue.mqtts.port" placeholder="端口" :disabled="!formState.jsonValue.mqtts.enabled" />
               </Form.Item>
               </Col>
             </Row>
@@ -95,12 +95,12 @@
             <Row :gutter="24">
               <Col :span="12">
               <Form.Item label="主机地址" :name="['jsonValue', 'coap', 'host']">
-                <Input v-model:value="formState.jsonValue.coap.host" placeholder="主机" />
+                <Input v-model:value="formState.jsonValue.coap.host" placeholder="主机" :disabled="!formState.jsonValue.coap.enabled" />
               </Form.Item>
               </Col>
               <Col :span="12">
               <Form.Item label="端口号" :name="['jsonValue', 'coap', 'port']">
-                <Input v-model:value="formState.jsonValue.coap.port" placeholder="端口" />
+                <Input v-model:value="formState.jsonValue.coap.port" placeholder="端口" :disabled="!formState.jsonValue.coap.enabled" />
               </Form.Item>
               </Col>
             </Row>
@@ -113,12 +113,12 @@
             <Row :gutter="24">
               <Col :span="12">
               <Form.Item label="主机地址" :name="['jsonValue', 'coaps', 'host']">
-                <Input v-model:value="formState.jsonValue.coaps.host" placeholder="主机" />
+                <Input v-model:value="formState.jsonValue.coaps.host" placeholder="主机" :disabled="!formState.jsonValue.coaps.enabled" />
               </Form.Item>
               </Col>
               <Col :span="12">
               <Form.Item label="端口号" :name="['jsonValue', 'coaps', 'port']">
-                <Input v-model:value="formState.jsonValue.coaps.port" placeholder="端口" />
+                <Input v-model:value="formState.jsonValue.coaps.port" placeholder="端口" :disabled="!formState.jsonValue.coaps.enabled" />
               </Form.Item>
               </Col>
             </Row>

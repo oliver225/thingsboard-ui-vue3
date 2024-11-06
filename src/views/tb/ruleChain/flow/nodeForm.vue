@@ -82,7 +82,7 @@ Object.keys(nodeTemplates).forEach(fileName => {
 
 const emit = defineEmits(['success', 'cancel', 'register']);
 
-const { t } = useI18n('things');
+const { t } = useI18n('tb');
 const { showMessage } = useMessage();
 const { meta } = unref(router.currentRoute);
 

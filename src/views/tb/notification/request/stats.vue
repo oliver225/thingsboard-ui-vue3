@@ -55,7 +55,7 @@ import { List, ListItem, ListItemMeta, Tag } from 'ant-design-vue';
 
 const emit = defineEmits(['success', 'register']);
 
-const { t } = useI18n('things');
+const { t } = useI18n('tb');
 
 
 const stats = ref<{ error: string, errors: Recordable, sent: Recordable }>();

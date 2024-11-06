@@ -126,7 +126,7 @@ Graph.registerEdge('rule-edge', {
   }
 
 }, true)
-const { t } = useI18n('things');
+const { t } = useI18n('tb');
 const { showMessage, createConfirm } = useMessage();
 
 const TeleportContainer = getTeleport()

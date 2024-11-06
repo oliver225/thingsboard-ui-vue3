@@ -54,7 +54,7 @@ import { usePermission } from '/@/hooks/web/usePermission';
 const emit = defineEmits(['success', 'register']);
 
 const { hasPermission } = usePermission();
-const { t } = useI18n('things');
+const { t } = useI18n('tb');
 const userStore = useUserStore();
 const { showMessage } = useMessage();
 const { meta } = unref(router.currentRoute);

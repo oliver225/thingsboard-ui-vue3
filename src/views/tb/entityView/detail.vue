@@ -30,10 +30,10 @@
             <Icon :icon="'ant-design:rollback-outlined'" />取消分配客户
           </a-button>
 
-          <a-button type="primary success" @click="handleEditEntityView" v-if="hasRole(Authority.TENANT_ADMIN)">
+          <a-button type="primary success" @click="handleEditEntityView" v-if="hasPermission(Authority.TENANT_ADMIN)">
             <Icon :icon="'clarity:note-edit-line'" />编辑实体视图
           </a-button>
-          <a-button type="primary" danger @click="handleDeleteEntityView" v-if="hasRole(Authority.TENANT_ADMIN)">
+          <a-button type="primary" danger @click="handleDeleteEntityView" v-if="hasPermission(Authority.TENANT_ADMIN)">
             <Icon :icon="'ant-design:delete-outlined'" />删除实体视图
           </a-button>
         </div>
@@ -140,7 +140,7 @@
           </span> </template>
         <Relation :entityType="EntityType.ENTITY_VIEW" :entityId="record?.id?.id" />
       </TabPane>
-      <TabPane key="AUDIT_LOG" v-if="hasRole(Authority.TENANT_ADMIN)">
+      <TabPane key="AUDIT_LOG" v-if="hasPermission(Authority.TENANT_ADMIN)">
         <template #tab><span>
             <Icon :icon="'ant-design:bars-outlined'" /> 审计日志
           </span> </template>

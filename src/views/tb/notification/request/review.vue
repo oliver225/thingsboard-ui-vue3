@@ -98,7 +98,7 @@ import { NotificationRequestPreview } from '/@/api/tb/notification';
 import { Icon } from '/@/components/Icon';
 import { useI18n } from '/@/hooks/web/useI18n';
 
-const { t } = useI18n('things');
+const { t } = useI18n('tb');
 
 const record = ref<NotificationRequestPreview>({} as NotificationRequestPreview);
 

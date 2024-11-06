@@ -80,7 +80,7 @@ const userStore = useUserStore();
 
 const { getAndIncrementCmdId, send: websocketSend, unsubscribe: websocketUnsubscribe } = useWebsocketStore();
 
-const { t } = useI18n('things');
+const { t } = useI18n('tb');
 const { createConfirm, showMessage } = useMessage();
 
 

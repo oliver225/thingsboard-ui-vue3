@@ -75,7 +75,7 @@
           <ProvisionForm class="pointer-events-none" ref="provisionFrom" />
         </div>
       </TabPane>
-      <TabPane key="AUDIT_LOG" v-if="hasRole(Authority.TENANT_ADMIN)">
+      <TabPane key="AUDIT_LOG" v-if="hasPermission(Authority.TENANT_ADMIN)">
         <template #tab><span>
             <Icon :icon="'ant-design:bars-outlined'" /> 审计日志
           </span> </template>
@@ -111,7 +111,7 @@ import { ProvisionType, TransportType } from '/@/enums/deviceEnum';
 const userStore = useUserStore();
 
 const emit = defineEmits(['edit', 'delete', 'default', 'register',]);
-const { hasRole } = usePermission();
+const { hasPermission } = usePermission();
 
 const { t } = useI18n('tb');
 const { showMessage } = useMessage();

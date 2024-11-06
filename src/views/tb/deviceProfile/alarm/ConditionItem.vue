@@ -45,7 +45,7 @@ import dayjs from 'dayjs';
 
 const emit = defineEmits(['success', 'register']);
 
-const { t } = useI18n('things');
+const { t } = useI18n('tb');
 const { showMessage } = useMessage();
 
 const getTitle = computed(() => ({

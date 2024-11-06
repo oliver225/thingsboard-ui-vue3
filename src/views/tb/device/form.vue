@@ -1,6 +1,6 @@
 <template>
   <BasicModal v-bind="$attrs" :showFooter="true" @register="registerModal" @ok="handleSubmit" width="40%"
-    :show-ok-btn="hasRole(Authority.TENANT_ADMIN)">
+    :show-ok-btn="hasPermission(Authority.TENANT_ADMIN)">
     <template #title>
       <Icon :icon="getTitle.icon" class="pr-1 m-1" />
       <span> {{ getTitle.value }} </span>

@@ -31,7 +31,7 @@
   
   const emit = defineEmits(['success', 'register']);
   
-  const { t } = useI18n('things');
+  const { t } = useI18n('tb');
   const { createConfirm, showMessage } = useMessage();
   const { meta } = unref(router.currentRoute);
   const record = ref<UserInfo>({} as UserInfo);

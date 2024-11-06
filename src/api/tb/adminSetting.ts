@@ -40,6 +40,8 @@ export interface SecuritySettings {
   maxFailedLoginAttempts?: number;
   mobileSecretKeyLength?: number;
   userLockoutNotificationEmail?: string;
+  userActivationTokenTtl?: number;
+  passwordResetTokenTtl?: number;
 }
 
 export interface SystemInfo {
