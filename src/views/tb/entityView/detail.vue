@@ -31,7 +31,7 @@
           </a-button>
 
           <a-button type="primary success" @click="handleEditEntityView" v-if="hasPermission(Authority.TENANT_ADMIN)">
-            <Icon :icon="'clarity:note-edit-line'" />编辑实体视图
+            <Icon :icon="'i-clarity:note-edit-line'" />编辑实体视图
           </a-button>
           <a-button type="primary" danger @click="handleDeleteEntityView" v-if="hasPermission(Authority.TENANT_ADMIN)">
             <Icon :icon="'ant-design:delete-outlined'" />删除实体视图

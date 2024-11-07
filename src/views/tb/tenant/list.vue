@@ -7,7 +7,7 @@
       <template #tableTitle>
         <div class="space-x-2">
           <a-button type="primary" @click="handleForm({})">
-            <Icon icon="fluent:add-12-filled" /> 新增租户
+            <Icon icon="i-fluent:add-12-filled" /> 新增租户
           </a-button>
           <a-input
             v-model:value="searchParam.textSearch"

@@ -23,7 +23,7 @@
             <Icon :icon="'ant-design:flag-outlined'" />设为默认设备配置
           </a-button>
           <a-button type="primary success" @click="handleEditDeviceProfile">
-            <Icon :icon="'clarity:note-edit-line'" />编辑设备配置
+            <Icon :icon="'i-clarity:note-edit-line'" />编辑设备配置
           </a-button>
           <a-button type="primary" danger @click="handleDeleteDeviceProfile"
             v-if="!(record.name == 'TbServiceQueue' || record.default == true)">

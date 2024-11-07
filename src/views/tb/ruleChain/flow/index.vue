@@ -606,7 +606,7 @@ function onNodeContextMenu({ e, node }) {
     event: e,
     items: [
       { label: '详情', icon: 'ant-design:align-right-outlined', divider: true, handler: () => openNodeDetailDrawer(true, { ...node.data }) },
-      { label: '编辑', icon: 'clarity:note-edit-line', divider: true, handler: () => openNodeModal(true, { ...node.data, ruleChainId: record.value.id, nodeId: node.id }) },
+      { label: '编辑', icon: 'i-clarity:note-edit-line', divider: true, handler: () => openNodeModal(true, { ...node.data, ruleChainId: record.value.id, nodeId: node.id }) },
       { label: '复制', icon: 'ant-design:copy-outlined', divider: true, handler: () => graphRef.value?.copy([node]) },
       { label: '删除', icon: 'ant-design:delete-outlined', divider: true, handler: () => graphRef.value?.removeNode(node.id) }
     ]
@@ -630,7 +630,7 @@ function onEdgeContextMenu({ e, edge }) {
   createContextMenu({
     event: e,
     items: [
-      { label: '编辑', icon: 'clarity:note-edit-line', divider: true, handler: () => openConnectModal(true, { ...data, edgeId: edge.id }) },
+      { label: '编辑', icon: 'i-clarity:note-edit-line', divider: true, handler: () => openConnectModal(true, { ...data, edgeId: edge.id }) },
       { label: '复制', icon: 'ant-design:copy-outlined', divider: true, handler: () => graphRef.value?.copy([edge]) },
       { label: '删除', icon: 'ant-design:delete-outlined', divider: true, handler: () => graphRef.value?.removeEdge(edge.id) }
     ]

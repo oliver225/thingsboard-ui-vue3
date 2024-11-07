@@ -170,11 +170,6 @@ const [registerTable, { reload }] = useTable({
 
 function wrapFetchParams(param: any) {
   const actionTypes = param.actionTypes ? param.actionTypes.join(',') : null;
-  if (param.orderBy) {
-        const orders = param.orderBy.split(' ');
-        param.sortProperty = orders[0];
-        param.sortOrder = orders[1] == 'asc' ? 'ASC' : 'DESC';
-    }
   return {
     ...param,
     actionTypes: actionTypes,

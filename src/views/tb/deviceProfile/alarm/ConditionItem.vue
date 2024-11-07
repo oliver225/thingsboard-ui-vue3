@@ -24,7 +24,7 @@
     <CollapseContainer v-show="showPredicate" title="筛选器" class="border border-solid border-neutral-300 mt-4">
       <BasicTable @register="registerTable" :dataSource="record.predicate" size="small" style="padding: 0;" />
       <a-button type="primary" @click="handleAddPredicate()" size="small">
-        <Icon icon="fluent:add-12-filled" />添加
+        <Icon icon="i-fluent:add-12-filled" />添加
       </a-button>
     </CollapseContainer>
   </BasicModal>

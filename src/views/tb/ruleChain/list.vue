@@ -9,7 +9,7 @@
       <template #tableTitle>
         <div class="space-x-2">
           <a-button type="primary" @click="handleForm({})">
-            <Icon icon="fluent:add-12-filled" /> 新增规则链
+            <Icon icon="i-fluent:add-12-filled" /> 新增规则链
           </a-button>
           <a-input v-model:value="searchParam.textSearch" placeholder="输入搜索内容" allow-clear @change="reload"
             style="width: 240px;">
@@ -124,7 +124,7 @@ const actionColumn: BasicColumn = {
       onClick: handleSetRuleChainRoot.bind(this, { ...record }),
     },
     {
-      icon: 'clarity:note-edit-line',
+      icon: 'i-clarity:note-edit-line',
       color: 'success',
       title: t('编辑规则链'),
       onClick: handleForm.bind(this, { ...record }),

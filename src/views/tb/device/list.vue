@@ -9,7 +9,7 @@
       <template #tableTitle>
         <div class="space-x-2">
           <a-button type="primary" @click="handleForm({})" v-show="hasPermission(Authority.TENANT_ADMIN)">
-            <Icon icon="fluent:add-12-filled" /> 新增设备
+            <Icon icon="i-fluent:add-12-filled" /> 新增设备
           </a-button>
           <a-input v-model:value="searchParam.textSearch" placeholder="输入搜索内容" allow-clear @change="reload"
             style="width: 240px;">
@@ -210,11 +210,6 @@ const [registerTable, { reload, updateColumn }] = useTable({
 });
 
 function wrapFetchParams(param: any) {
-  if (param.orderBy) {
-    const orders = param.orderBy.split(' ');
-    param.sortProperty = orders[0];
-    param.sortOrder = orders[1] == 'asc' ? 'ASC' : 'DESC';
-  }
   const active = param.active ? param.active[0] : null;
   const deviceProfileId = param.deviceProfileId ? param.deviceProfileId[0] : null;
   return { ...param, textSearch: searchParam.textSearch, active: active, deviceProfileId: deviceProfileId };

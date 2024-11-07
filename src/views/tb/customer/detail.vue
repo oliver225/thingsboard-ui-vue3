@@ -20,7 +20,7 @@
             <Icon :icon="'ant-design:team-outlined'" />客户用户
           </a-button>
           <a-button type="primary success" @click="handleEditCustomer" v-if="record.title != 'Public'">
-            <Icon :icon="'clarity:note-edit-line'" />编辑客户
+            <Icon :icon="'i-clarity:note-edit-line'" />编辑客户
           </a-button>
           <a-button type="primary" danger @click="handleDeleteCustomer" v-if="record.title != 'Public'">
             <Icon :icon="'ant-design:delete-outlined'" />删除客户

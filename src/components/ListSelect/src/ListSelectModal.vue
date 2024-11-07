@@ -22,7 +22,7 @@
           v-auth="item.props.buttonAuth"
           @click="item.handleOpenModal(item.props.buttonComp)"
         >
-          <Icon icon="i-fluent:add-12-filled" /> {{ t(item.props.buttonText) }}
+          <Icon icon="i-i-fluent:add-12-filled" /> {{ t(item.props.buttonText) }}
         </a-button>
         <component
           :is="item.modalComponent"

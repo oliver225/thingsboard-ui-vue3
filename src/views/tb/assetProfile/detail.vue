@@ -23,7 +23,7 @@
             <Icon :icon="'ant-design:flag-outlined'" />设为默认资产配置
           </a-button>
           <a-button type="primary success" @click="handleEditAssetProfile">
-            <Icon :icon="'clarity:note-edit-line'" />编辑资产配置
+            <Icon :icon="'i-clarity:note-edit-line'" />编辑资产配置
           </a-button>
           <a-button type="primary" danger @click="handleDeleteAssetProfile"
             v-if="!(record.name == 'TbServiceQueue' || record.default == true)">

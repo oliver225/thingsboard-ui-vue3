@@ -144,7 +144,7 @@ const actionColumn: BasicColumn = {
   width: 100,
   actions: (record: Recordable) => [
     {
-      icon: 'clarity:note-edit-line',
+      icon: 'i-clarity:note-edit-line',
       title: t('编辑'),
       onClick: handledAttributeForm.bind(this, { ...record }),
       ifShow: selectedScope.value == Scope.SERVER_SCOPE || selectedScope.value == Scope.SHARED_SCOPE,

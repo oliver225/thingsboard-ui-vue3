@@ -256,7 +256,7 @@ const tb: AppRouteModule = {
       component: LAYOUT,
       meta: {
         orderNo: 140,
-        single: true,
+        single: false,
         icon: 'ant-design:gold-outlined',
         tabIcon: 'ant-design:gold-outlined',
         title: t('tb.resource'),
@@ -264,22 +264,12 @@ const tb: AppRouteModule = {
       },
       children: [
         {
-          path: '/resource/index',
-          name: 'ResourceIndex',
-          component: () => import('/@/views/tb/resource/index.vue'),
-          meta: {
-            icon: 'ant-design:gold-outlined',
-            tabIcon: 'ant-design:gold-outlined',
-            title: t('tb.resource'),
-            authorities: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN]
-          }
-        }, {
           path: '/widgets-bundle/list',
           name: 'widgetsBundleList',
           component: () => import('/@/views/tb/widgetsBundle/list.vue'),
           meta: {
-            icon: 'ant-design:right-circle-outlined',
-            tabIcon: 'ant-design:right-circle-outlined',
+            icon: 'i-ant-design:appstore-filled',
+            tabIcon: 'i-ant-design:appstore-filled',
             title: t('tb.widgetsBundle'),
             authorities: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN]
           },
@@ -289,9 +279,31 @@ const tb: AppRouteModule = {
           name: 'widgetTypeList',
           component: () => import('/@/views/tb/widgetType/list.vue'),
           meta: {
-            icon: 'ant-design:right-circle-outlined',
-            tabIcon: 'ant-design:right-circle-outlined',
+            icon: 'i-ant-design:appstore-add-outlined',
+            tabIcon: 'i-ant-design:appstore-add-outlined',
             title: t('tb.widgetType'),
+            authorities: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN]
+          },
+        },
+        {
+          path: '/image/list',
+          name: 'imageList',
+          component: () => import('/@/views/tb/images/list.vue'),
+          meta: {
+            icon: 'i-ant-design:file-image-outlined',
+            tabIcon: 'i-ant-design:file-image-outlined',
+            title: t('tb.images'),
+            authorities: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN]
+          },
+        },
+        {
+          path: '/scada-symbol/list',
+          name: 'scadaSymbolList',
+          component: () => import('/@/views/tb/scadaSymbol/list.vue'),
+          meta: {
+            icon: 'i-ant-design:codepen-outlined',
+            tabIcon: 'i-ant-design:codepen-outlined',
+            title: t('tb.scadaSymbols'),
             authorities: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN]
           },
         },
@@ -300,8 +312,8 @@ const tb: AppRouteModule = {
           name: 'ResourceLibraryList',
           component: () => import('/@/views/tb/resourceLibrary/list.vue'),
           meta: {
-            icon: 'ant-design:right-circle-outlined',
-            tabIcon: 'ant-design:right-circle-outlined',
+            icon: 'i-ant-design:build-outlined',
+            tabIcon: 'i-ant-design:build-outlined',
             title: t('tb.resourceLibrary'),
             authorities: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN]
           },

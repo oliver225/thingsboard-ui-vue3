@@ -12,7 +12,7 @@
     <div>
       <div class="space-x-4">
         <a-button type="primary success" @click="handleEditQueue">
-          <Icon :icon="'clarity:note-edit-line'" />编辑队列
+          <Icon :icon="'i-clarity:note-edit-line'" />编辑队列
         </a-button>
         <a-button type="primary" danger @click="handleDeleteQueue" v-if="record.name != 'Main'">
           <Icon :icon="'ant-design:delete-outlined'" />删除队列

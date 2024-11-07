@@ -9,7 +9,7 @@
       <template #tableTitle>
         <div class="space-x-2">
           <a-button type="primary" @click="handleForm({})" v-show="hasPermission(Authority.TENANT_ADMIN)">
-            <Icon icon="fluent:add-12-filled" /> 新增资产
+            <Icon icon="i-fluent:add-12-filled" /> 新增资产
           </a-button>
           <a-input v-model:value="searchParam.textSearch" placeholder="输入搜索内容" allow-clear @change="reload"
             style="width: 240px;">

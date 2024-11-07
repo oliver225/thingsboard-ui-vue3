@@ -22,7 +22,7 @@
             <Icon :icon="'ant-design:flag-outlined'" />设为默认租户配置
           </a-button>
           <a-button type="primary success" @click="handleEditTenantProfile">
-            <Icon :icon="'clarity:note-edit-line'" />编辑租户配置
+            <Icon :icon="'i-clarity:note-edit-line'" />编辑租户配置
           </a-button>
           <a-button type="primary" danger @click="handleDeleteTenantProfile">
             <Icon :icon="'ant-design:delete-outlined'" />租删租户配置

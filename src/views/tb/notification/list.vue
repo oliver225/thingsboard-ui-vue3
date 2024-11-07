@@ -143,11 +143,6 @@ const [registerTable, { reload }] = useTable({
 });
 
 function wrapFetchParams(param: any) {
-  if (param.orderBy) {
-    const orders = param.orderBy.split(' ');
-    param.sortProperty = orders[0];
-    param.sortOrder = orders[1] == 'asc' ? 'ASC' : 'DESC';
-  }
   return { ...param, textSearch: searchParam.textSearch }
 }
 

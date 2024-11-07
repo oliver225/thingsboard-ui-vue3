@@ -9,7 +9,7 @@
       <template #tableTitle>
         <div class="space-x-2">
           <a-button type="primary" @click="handleForm({})">
-            <Icon icon="fluent:add-12-filled" /> 新增模板
+            <Icon icon="i-fluent:add-12-filled" /> 新增模板
           </a-button>
           <a-input v-model:value="searchParam.textSearch" placeholder="输入搜索内容" allow-clear @change="reload()"
             style="width: 240px;">
@@ -107,7 +107,7 @@ const actionColumn: BasicColumn = {
   width: 160,
   actions: (record: Recordable) => [
     {
-      icon: 'clarity:note-edit-line',
+      icon: 'i-clarity:note-edit-line',
       title: t('编辑通知模板'),
       color: 'success',
       onClick: handleForm.bind(this, { ...record }),
@@ -135,11 +135,6 @@ const [registerTable, { reload }] = useTable({
 });
 
 function wrapFetchParams(param: any) {
-  if (param.orderBy) {
-    const orders = param.orderBy.split(' ');
-    param.sortProperty = orders[0];
-    param.sortOrder = orders[1] == 'asc' ? 'ASC' : 'DESC';
-  }
   return { ...param, textSearch: searchParam.textSearch }
 }
 

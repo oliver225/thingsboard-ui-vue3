@@ -20,7 +20,7 @@
             <Icon :icon="'ant-design:team-outlined'" />租户管理员
           </a-button>
           <a-button type="primary success" @click="handleEditTenant">
-            <Icon :icon="'clarity:note-edit-line'" />编辑租户
+            <Icon :icon="'i-clarity:note-edit-line'" />编辑租户
           </a-button>
           <a-button type="primary" danger @click="handleDeleteTenant">
             <Icon :icon="'ant-design:delete-outlined'" />租删租户

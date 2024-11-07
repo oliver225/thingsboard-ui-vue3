@@ -27,7 +27,7 @@
             <Icon :icon="'ant-design:login-outlined'" />重新发送激活邮件
           </a-button>
           <a-button type="primary success" @click="handleEditUser">
-            <Icon :icon="'clarity:note-edit-line'" />编辑用户
+            <Icon :icon="'i-clarity:note-edit-line'" />编辑用户
           </a-button>
           <a-button type="primary" danger @click="handleDeleteUser">
             <Icon :icon="'ant-design:delete-outlined'" />删除用户

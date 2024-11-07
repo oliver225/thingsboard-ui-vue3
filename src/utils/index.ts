@@ -7,6 +7,8 @@ import { useMessage } from '../hooks/web/useMessage';
 
 export const noop = () => {};
 
+export const REGULAR_HTML_ENCODE = /"|&|'|<|>|[\x00-\x20]|[\x7F-\xFF]|[\u0100-\u2700]/g;
+
 /**
  * @description:  Set ui mount node
  */
@@ -147,4 +149,17 @@ export function convertBytesToSize(bytes: number) {
   if (bytes === 0) { return '0 b' };
   const i = parseInt(Math.floor(Math.log(bytes) / Math.log(1024)));
   return Number(bytes / Math.pow(1024, i)).toFixed(2) + ' ' + sizes[i];
+}
+
+
+export function encodeHtml(s:any) {
+  return (typeof s != "string") ? s :
+    s.replace(REGULAR_HTML_ENCODE,
+      function ($0) {
+        var c = $0.charCodeAt(0), r = ["&#"];
+        c = (c == 0x20) ? 0xA0 : c;
+        r.push(c); 
+        r.push(";");
+        return r.join("");
+      });
 }

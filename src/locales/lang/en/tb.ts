@@ -29,4 +29,6 @@ export default {
   asset: 'Asset',
   entityView: 'Entity View',
   ota: 'OTA Update',
+  images: 'Image Library',
+  scadaSymbols:'SCADA Symbols'
 }

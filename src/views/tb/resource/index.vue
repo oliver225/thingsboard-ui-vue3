@@ -1,3 +1,0 @@
-<template>
-    sdf
-</template>

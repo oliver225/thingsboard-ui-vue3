@@ -31,7 +31,7 @@
           </div>
         </div>
         <a-button type="primary" @click="handleAddRateItem">
-          <Icon icon="fluent:add-12-filled" />添加限制
+          <Icon icon="i-fluent:add-12-filled" />添加限制
         </a-button>
         <div class="h-8"></div>
 

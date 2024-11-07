@@ -29,4 +29,6 @@ export default {
   asset: '资产',
   entityView: '实体视图',
   ota: 'OTA升级',
+  images: '图像库',
+  scadaSymbols:'SCADA 符号集'
 }

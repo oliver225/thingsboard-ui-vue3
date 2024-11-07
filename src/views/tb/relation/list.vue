@@ -158,7 +158,7 @@ const actionColumn: BasicColumn = {
   ifShow: hasPermission(Authority.TENANT_ADMIN),
   actions: (record: Recordable) => [
     {
-      icon: 'clarity:note-edit-line',
+      icon: 'i-clarity:note-edit-line',
       title: t('编辑关联'),
       ifShow: hasPermission(Authority.TENANT_ADMIN),
       color: 'success',

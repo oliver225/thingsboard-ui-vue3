@@ -125,7 +125,7 @@
     </CollapseContainer>
 
     <a-button type="primary" size="small" @click="handleAddAlarm">
-      <Icon icon="fluent:add-12-filled" />添加报警规则
+      <Icon icon="i-fluent:add-12-filled" />添加报警规则
     </a-button>
   </div>
 </template>

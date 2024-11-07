@@ -32,7 +32,7 @@
           </a-button>
 
           <a-button type="primary success" @click="handleEditAsset" v-if="hasPermission(Authority.TENANT_ADMIN)">
-            <Icon :icon="'clarity:note-edit-line'" />编辑资产
+            <Icon :icon="'i-clarity:note-edit-line'" />编辑资产
           </a-button>
           <a-button type="primary" danger @click="handleDeleteAsset" v-if="hasPermission(Authority.TENANT_ADMIN)">
             <Icon :icon="'ant-design:delete-outlined'" />删除资产

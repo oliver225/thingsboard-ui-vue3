@@ -32,7 +32,7 @@
         <CollapseContainer title="键名筛选器" class="border border-solid border-neutral-300 mb-2 ">
           <BasicTable @register="registerTable" size="small" :dataSource="record.condition" style="padding: 0;" />
           <a-button type="primary" v-if="edit == true" @click="handleConditionItemForm({})" size="small">
-            <Icon icon="fluent:add-12-filled" />添加键名筛选器
+            <Icon icon="i-fluent:add-12-filled" />添加键名筛选器
           </a-button>
         </CollapseContainer>
         <CollapseContainer title="筛选器预览" class="border border-solid border-neutral-300 mb-2 ">
@@ -170,7 +170,7 @@ const actionColumn: BasicColumn = {
   ifShow: props.edit == true,
   actions: (record: Recordable) => [
     {
-      icon: 'clarity:note-edit-line',
+      icon: 'i-clarity:note-edit-line',
       title: '编辑键名筛选器',
       onClick: handleConditionItemForm.bind(this, { ...record }),
     },

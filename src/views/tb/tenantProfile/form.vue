@@ -156,7 +156,7 @@
           </Form.Item>
         </CollapseContainer>
         <a-button type="primary" @click="handleAddQueue" size="small">
-          <Icon icon="fluent:add-12-filled" />添加队列
+          <Icon icon="i-fluent:add-12-filled" />添加队列
         </a-button>
       </CollapseContainer>
       <div class="h-4" v-if="formState.isolatedTbRuleEngine == true" />

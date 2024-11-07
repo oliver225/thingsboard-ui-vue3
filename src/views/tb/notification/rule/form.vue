@@ -40,7 +40,7 @@
                 </Tooltip>
               </InputGroup>
               <a-button type="primary" size="small" @click="handleAddEscalation">
-                <Icon icon="fluent:add-12-filled" /> 增加阶段
+                <Icon icon="i-fluent:add-12-filled" /> 增加阶段
               </a-button>
             </div>
           </div>

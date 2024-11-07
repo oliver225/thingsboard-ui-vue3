@@ -180,11 +180,6 @@ function wrapFetchParams(param: any) {
   const statusList = param.statusList ? param.statusList.join(',') : null;
   const typeList = ''; //报警类型
   const assigneeId = ''; //委托人
-  if (param.orderBy) {
-    const orders = param.orderBy.split(' ');
-    param.sortProperty = orders[0];
-    param.sortOrder = orders[1] == 'asc' ? 'ASC' : 'DESC';
-  }
   return { ...param, textSearch: searchParam.textSearch, startTime: startTime, endTime: endTime, severityList: severityList, statusList: statusList }
 }
 

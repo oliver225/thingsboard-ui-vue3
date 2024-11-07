@@ -32,7 +32,7 @@
             <Icon :icon="'ant-design:safety-outlined'" />管理凭证
           </a-button>
           <a-button type="primary success" @click="handleEditDevice" v-if="hasPermission(Authority.TENANT_ADMIN)">
-            <Icon :icon="'clarity:note-edit-line'" />编辑设备
+            <Icon :icon="'i-clarity:note-edit-line'" />编辑设备
           </a-button>
           <a-button type="primary" danger @click="handleDeleteDevice" v-if="hasPermission(Authority.TENANT_ADMIN)">
             <Icon :icon="'ant-design:delete-outlined'" />删除设备

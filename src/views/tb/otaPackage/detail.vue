@@ -12,7 +12,7 @@
         </template>
         <div class="space-x-4">
             <!-- <a-button type="primary success" @click="handleEditOtaPackage">
-                <Icon :icon="'clarity:note-edit-line'" />编辑包
+                <Icon :icon="'i-clarity:note-edit-line'" />编辑包
             </a-button> -->
             <a-button type="primary" @click="handleDownload" :disabled="!record.dataSize">
                 <Icon :icon="'ant-design:download-outlined'" />下载包

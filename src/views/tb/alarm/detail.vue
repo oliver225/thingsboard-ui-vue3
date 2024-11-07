@@ -67,7 +67,7 @@
             </List.Item.Meta>
             <template #actions v-if="item.type == 'OTHER'">
               <Tooltip :title="'修改评论'" v-if="userStore.getUserInfo?.email == item.email">
-                <Icon class="cursor-pointer" :icon="'clarity:note-edit-line'" color="green" :size="20"
+                <Icon class="cursor-pointer" :icon="'i-clarity:note-edit-line'" color="green" :size="20"
                   @click="handleEditComment(item)" />
               </Tooltip>
               <Tooltip :title="'删除评论'" v-if="userStore.getUserInfo?.email == item.email">
