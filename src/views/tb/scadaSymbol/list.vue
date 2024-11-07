@@ -163,7 +163,7 @@
 
   const [registerTable, { reload }] = useTable({
     rowKey: (record) => record.id.id,
-    api: imageList,
+    api: (param) => imageList(param, searchParam.includeSystemImages),
     beforeFetch: wrapFetchParams,
     afterFetch: handlePreviewImage,
     defSort: { sortProperty: 'createdTime', sortOrder: 'DESC' },
@@ -179,7 +179,6 @@
       ...param,
       imageSubType: 'SCADA_SYMBOL',
       textSearch: searchParam.textSearch,
-      includeSystemImages: searchParam.includeSystemImages,
     };
   }
 
