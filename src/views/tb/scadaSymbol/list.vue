@@ -56,7 +56,6 @@
         <Checkbox :checked="record.link.indexOf('system') > -1" />
       </template>
     </BasicTable>
-
   </div>
 </template>
 <script lang="ts">
@@ -176,7 +175,12 @@
   });
 
   function wrapFetchParams(param: any) {
-    return { ...param, imageSubType: 'SCADA_SYMBOL', textSearch: searchParam.textSearch };
+    return {
+      ...param,
+      imageSubType: 'SCADA_SYMBOL',
+      textSearch: searchParam.textSearch,
+      includeSystemImages: searchParam.includeSystemImages,
+    };
   }
 
   async function handlePreviewImage(data: any[]) {

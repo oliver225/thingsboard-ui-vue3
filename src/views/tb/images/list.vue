@@ -195,7 +195,12 @@
   });
 
   function wrapFetchParams(param: any) {
-    return { ...param, imageSubType: 'IMAGE', textSearch: searchParam.textSearch };
+    return {
+      ...param,
+      imageSubType: 'IMAGE',
+      textSearch: searchParam.textSearch,
+      includeSystemImages: searchParam.includeSystemImages,
+    };
   }
 
   async function handlePreviewImage(data: any[]) {
