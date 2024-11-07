@@ -32,9 +32,9 @@
   import { BasicForm, FormSchema, useForm } from '/@/components/Form';
   import { CollapseContainer } from '/@/components/Container';
   import { CropperAvatar } from '/@/components/Cropper';
-  import headerImg from '/@/assets/images/header.jpg';
+  import headerImg from '/@/assets/images/header.png';
   import { useUserStore } from '/@/store/modules/user';
-  import { userInfo, infoSaveBase } from '/@/api/sys/user';
+  import { userInfo, infoSaveBase } from '/@/api/tb/user';
   // import { uploadApi } from '/@/api/sys/upload';
 
   const { t } = useI18n();
@@ -90,7 +90,7 @@
   });
 
   const avatar = computed(() => {
-    const { avatarUrl } = userStore.getUserInfo;
+    const { avatarUrl } = userStore.getUserInfo.additionalInfo;
     return avatarUrl || headerImg;
   });
 
