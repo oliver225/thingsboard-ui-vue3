@@ -246,7 +246,7 @@ const [registerTable, { reload, updateColumn }] = useTable({
 function wrapFetchParams(fetchParam: any) {
   const startTime = searchParam.timeRange && searchParam.timeRange[0] ? searchParam.timeRange[0].valueOf() : null;
   const endTime = searchParam.timeRange && searchParam.timeRange[1] ? searchParam.timeRange[1].valueOf() : null;
-  const tenantId = userStore.getUserInfo?.tenantId.id;
+  const tenantId = userStore.getUserInfo.tenantId.id;
   return { ...fetchParam, textSearch: searchParam.textSearch, startTime: startTime, endTime: endTime, tenantId: tenantId }
 
 }

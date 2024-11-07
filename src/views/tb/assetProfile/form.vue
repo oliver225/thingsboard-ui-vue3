@@ -65,7 +65,7 @@ const queueOptions = ref<any[]>([]);
 
 
 const inputFormSchemas: FormSchema[] = [
-  { field: 'tenantId', component: 'Input', defaultValue: userStore.getUserInfo?.tenantId.id, show: false },
+  { field: 'tenantId', component: 'Input', defaultValue: userStore.getUserInfo?.tenantId, show: false },
   { field: 'default', component: 'Checkbox', defaultValue: false, show: false },
   {
     label: t('资产配置名称'),

@@ -53,7 +53,7 @@ const getTitle = computed(() => ({
 
 
 const inputFormSchemas: FormSchema[] = [
-  { field: 'tenantId', component: 'Input', defaultValue: userStore.getUserInfo.tenantId.id, show: false },
+  { field: 'tenantId', component: 'Input', defaultValue: userStore.getUserInfo.tenantId, show: false },
   { field: 'deviceProfileId.entityType', component: 'Input', defaultValue: EntityType.DEVICE_PROFILE, show: false },
   {
     label: t('设备名称'),

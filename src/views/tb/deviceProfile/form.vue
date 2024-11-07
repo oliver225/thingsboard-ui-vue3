@@ -101,7 +101,7 @@ const provisionFrom = ref<any>(null);
 
 
 const inputFormSchemas: FormSchema[] = [
-  { field: 'tenantId', component: 'Input', defaultValue: userStore.getUserInfo?.tenantId.id, show: false },
+  { field: 'tenantId', component: 'Input', defaultValue: userStore.getUserInfo?.tenantId, show: false },
   { field: 'default', component: 'Checkbox', defaultValue: false, show: false },
   { field: 'type', component: 'Input', defaultValue: 'DEFAULT', show: false },
   {
