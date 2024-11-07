@@ -1,22 +1,18 @@
-import { BasicQuery, Page } from "../model/baseModel";
-import { ResourceInfo } from "./resourceLibrary";
-import { ContentTypeEnum } from "/@/enums/httpEnum";
-import { defHttp } from "/@/utils/http/axios";
+import { url } from 'inspector';
+import { BasicQuery, Page } from '../model/baseModel';
+import { ResourceInfo } from './resourceLibrary';
+import { ContentTypeEnum } from '/@/enums/httpEnum';
+import { defHttp } from '/@/utils/http/axios';
 import { AxiosProgressEvent } from 'axios';
-
-
-
-
 
 export function imageList(params: BasicQuery, includeSystemImages = false) {
   return defHttp.get<Page<ResourceInfo>>({
     url: '/api/images',
-    params: { ...params, includeSystemImages: includeSystemImages }
+    params: { ...params, includeSystemImages: includeSystemImages },
   });
 }
 
-
-export function getImageInfo(type: string, key: string) {
+export function getImageInfo(type: 'system' | 'tenant', key: string) {
   return defHttp.get<ResourceInfo>({
     url: `/api/images/${type}/${key}/info`,
   });
@@ -25,30 +21,42 @@ export function getImageInfo(type: string, key: string) {
 export function updateImageInfo(data: ResourceInfo | any) {
   return defHttp.put<ResourceInfo>({
     url: `${data.link}/info`,
-    data
+    data,
   });
 }
 
 export function deleteImage(link: string, force = false) {
-  return defHttp.delete<{ success: boolean, references: Recordable }>({
-    url: `${link}?force=${force}`,
-  }, { errorMessageMode: 'none' });
+  return defHttp.delete<{ success: boolean; references: Recordable }>(
+    {
+      url: `${link}?force=${force}`,
+    },
+    { errorMessageMode: 'none' },
+  );
 }
 
 export function imagePreview(link: string, etag?: string) {
   return defHttp.get({
     url: `${link}/preview`,
     headers: { 'If-None-Match': etag },
-    responseType: 'blob'
+    responseType: 'blob',
   });
 }
 
 export function downloadImage(link: string, etag?: string) {
-  return defHttp.get({
-    url: `${link}`,
-    headers: { 'If-None-Match': etag },
-    responseType: 'blob'
-  }, { isReturnNativeResponse: true, joinPrefix: false });
+  return defHttp.get(
+    {
+      url: `${link}`,
+      headers: { 'If-None-Match': etag },
+      responseType: 'blob',
+    },
+    { isReturnNativeResponse: true, joinPrefix: false },
+  );
+}
+
+export function getSvg(type: string, key: string) {
+  return defHttp.get<any>({
+    url: `/api/images/${type}/${key}`,
+  });
 }
 
 export function downloadPublicImage(publicResourceKey: string, etag?: string) {
@@ -57,8 +65,7 @@ export function downloadPublicImage(publicResourceKey: string, etag?: string) {
   });
 }
 
-
-export function exportImage(type: string, key: string,) {
+export function exportImage(type: string, key: string) {
   return defHttp.get<any>({
     url: `/api/images/${type}/${key}/export`,
   });
@@ -76,11 +83,15 @@ export function updateImagePublicStatus(link: string, isPublic: boolean) {
   });
 }
 
-export function uploadImage(file: File | Blob, title: string, onUploadProgress?: (progressEvent: AxiosProgressEvent) => void) {
+export function uploadImage(
+  file: File | Blob,
+  title: string,
+  onUploadProgress?: (progressEvent: AxiosProgressEvent) => void,
+) {
   return defHttp.post<ResourceInfo>({
     url: `/api/image`,
     data: { file: file, title: title },
-    headers: { 'Content-type': ContentTypeEnum.FORM_DATA, },
-    onUploadProgress
+    headers: { 'Content-type': ContentTypeEnum.FORM_DATA },
+    onUploadProgress,
   });
 }

@@ -1,8 +1,7 @@
 import { LAYOUT } from '/@/router/constant';
-import { AppRouteModule } from "/@/router/types";
+import { AppRouteModule } from '/@/router/types';
 import { t } from '/@/hooks/web/useI18n';
-import { Authority } from "/@/enums/authorityEnum";
-
+import { Authority } from '/@/enums/authorityEnum';
 
 const tb: AppRouteModule = {
   path: '/',
@@ -26,7 +25,7 @@ const tb: AppRouteModule = {
         tabIcon: 'ant-design:team-outlined',
         title: t('tb.tenant'),
         single: true,
-        authorities: [Authority.SYS_ADMIN]
+        authorities: [Authority.SYS_ADMIN],
       },
       children: [
         {
@@ -37,7 +36,7 @@ const tb: AppRouteModule = {
             icon: 'ant-design:team-outlined',
             tabIcon: 'ant-design:team-outlined',
             title: t('tb.tenant'),
-            authorities: [Authority.SYS_ADMIN]
+            authorities: [Authority.SYS_ADMIN],
           },
         },
         {
@@ -48,10 +47,10 @@ const tb: AppRouteModule = {
             icon: 'ant-design:user-outlined',
             tabIcon: 'ant-design:user-outlined',
             title: t('tb.tenantAdmin'),
-            authorities: [Authority.SYS_ADMIN]
+            authorities: [Authority.SYS_ADMIN],
           },
         },
-      ]
+      ],
     },
     {
       path: '/tenant-profile/list',
@@ -62,7 +61,7 @@ const tb: AppRouteModule = {
         icon: 'ant-design:project-outlined',
         tabIcon: 'ant-design:project-outlined',
         title: t('tb.tenantProfile'),
-        authorities: [Authority.SYS_ADMIN]
+        authorities: [Authority.SYS_ADMIN],
       },
     },
     {
@@ -74,7 +73,7 @@ const tb: AppRouteModule = {
         icon: 'ant-design:alert-outlined',
         tabIcon: 'ant-design:alert-outlined',
         title: t('tb.alarm'),
-        authorities: [Authority.TENANT_ADMIN, Authority.CUSTOMER_USER]
+        authorities: [Authority.TENANT_ADMIN, Authority.CUSTOMER_USER],
       },
     },
     {
@@ -86,7 +85,7 @@ const tb: AppRouteModule = {
         icon: 'ant-design:database-outlined',
         tabIcon: 'ant-design:database-outlined',
         title: t('tb.device'),
-        authorities: [Authority.TENANT_ADMIN, Authority.CUSTOMER_USER]
+        authorities: [Authority.TENANT_ADMIN, Authority.CUSTOMER_USER],
       },
     },
     {
@@ -98,7 +97,7 @@ const tb: AppRouteModule = {
         icon: 'ant-design:desktop-outlined',
         tabIcon: 'ant-design:desktop-outlined',
         title: t('tb.asset'),
-        authorities: [Authority.TENANT_ADMIN, Authority.CUSTOMER_USER]
+        authorities: [Authority.TENANT_ADMIN, Authority.CUSTOMER_USER],
       },
     },
     {
@@ -110,7 +109,7 @@ const tb: AppRouteModule = {
         icon: 'ant-design:windows-outlined',
         tabIcon: 'ant-design:windows-outlined',
         title: t('tb.entityView'),
-        authorities: [Authority.TENANT_ADMIN, Authority.CUSTOMER_USER]
+        authorities: [Authority.TENANT_ADMIN, Authority.CUSTOMER_USER],
       },
     },
     {
@@ -124,7 +123,7 @@ const tb: AppRouteModule = {
         icon: 'ant-design:project-outlined',
         tabIcon: 'ant-design:project-outlined',
         title: t('tb.profile'),
-        authorities: [Authority.TENANT_ADMIN]
+        authorities: [Authority.TENANT_ADMIN],
       },
       children: [
         {
@@ -135,9 +134,10 @@ const tb: AppRouteModule = {
             icon: 'ant-design:project-outlined',
             tabIcon: 'ant-design:project-outlined',
             title: t('tb.profile'),
-            authorities: [Authority.TENANT_ADMIN]
-          }
-        }, {
+            authorities: [Authority.TENANT_ADMIN],
+          },
+        },
+        {
           path: '/asset-profile/list',
           name: 'AssetProfileList',
           component: () => import('/@/views/tb/assetProfile/list.vue'),
@@ -145,7 +145,7 @@ const tb: AppRouteModule = {
             icon: 'ant-design:profile-outlined',
             tabIcon: 'ant-design:profile-outlined',
             title: t('tb.assetProfile'),
-            authorities: [Authority.TENANT_ADMIN]
+            authorities: [Authority.TENANT_ADMIN],
           },
         },
         {
@@ -156,9 +156,10 @@ const tb: AppRouteModule = {
             icon: 'ant-design:right-circle-outlined',
             tabIcon: 'ant-design:right-circle-outlined',
             title: t('tb.deviceProfile'),
-            authorities: [Authority.TENANT_ADMIN]
+            authorities: [Authority.TENANT_ADMIN],
           },
-        }]
+        },
+      ],
     },
     {
       path: '/customer',
@@ -171,7 +172,7 @@ const tb: AppRouteModule = {
         tabIcon: 'ant-design:team-outlined',
         title: t('tb.customer'),
         single: true,
-        authorities: [Authority.TENANT_ADMIN]
+        authorities: [Authority.TENANT_ADMIN],
       },
       children: [
         {
@@ -182,7 +183,7 @@ const tb: AppRouteModule = {
             icon: 'ant-design:team-outlined',
             tabIcon: 'ant-design:team-outlined',
             title: t('tb.customer'),
-            authorities: [Authority.TENANT_ADMIN]
+            authorities: [Authority.TENANT_ADMIN],
           },
         },
         {
@@ -193,11 +194,10 @@ const tb: AppRouteModule = {
             icon: 'ant-design:user-outlined',
             tabIcon: 'ant-design:user-outlined',
             title: t('tb.customerUser'),
-            authorities: [Authority.TENANT_ADMIN]
-
+            authorities: [Authority.TENANT_ADMIN],
           },
         },
-      ]
+      ],
     },
     {
       path: '/rule-chain',
@@ -210,7 +210,7 @@ const tb: AppRouteModule = {
         tabIcon: 'ant-design:subnode-outlined',
         title: t('tb.ruleChain'),
         single: true,
-        authorities: [Authority.TENANT_ADMIN]
+        authorities: [Authority.TENANT_ADMIN],
       },
       children: [
         {
@@ -221,7 +221,7 @@ const tb: AppRouteModule = {
             icon: 'ant-design:subnode-outlined',
             tabIcon: 'ant-design:subnode-outlined',
             title: t('tb.ruleChain'),
-            authorities: [Authority.TENANT_ADMIN]
+            authorities: [Authority.TENANT_ADMIN],
           },
         },
         {
@@ -233,10 +233,10 @@ const tb: AppRouteModule = {
             icon: 'ant-design:subnode-outlined',
             tabIcon: 'ant-design:subnode-outlined',
             title: t('tb.ruleChainDetail'),
-            authorities: [Authority.TENANT_ADMIN]
+            authorities: [Authority.TENANT_ADMIN],
           },
         },
-      ]
+      ],
     },
     {
       path: '/otaPackage/list',
@@ -247,7 +247,7 @@ const tb: AppRouteModule = {
         icon: 'ant-design:paper-clip-outlined',
         tabIcon: 'ant-design:paper-clip-outlined',
         title: t('tb.ota'),
-        authorities: [Authority.TENANT_ADMIN]
+        authorities: [Authority.TENANT_ADMIN],
       },
     },
     {
@@ -260,7 +260,7 @@ const tb: AppRouteModule = {
         icon: 'ant-design:gold-outlined',
         tabIcon: 'ant-design:gold-outlined',
         title: t('tb.resource'),
-        authorities: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN]
+        authorities: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN],
       },
       children: [
         {
@@ -271,7 +271,7 @@ const tb: AppRouteModule = {
             icon: 'i-ant-design:appstore-filled',
             tabIcon: 'i-ant-design:appstore-filled',
             title: t('tb.widgetsBundle'),
-            authorities: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN]
+            authorities: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN],
           },
         },
         {
@@ -282,7 +282,7 @@ const tb: AppRouteModule = {
             icon: 'i-ant-design:appstore-add-outlined',
             tabIcon: 'i-ant-design:appstore-add-outlined',
             title: t('tb.widgetType'),
-            authorities: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN]
+            authorities: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN],
           },
         },
         {
@@ -293,7 +293,7 @@ const tb: AppRouteModule = {
             icon: 'i-ant-design:file-image-outlined',
             tabIcon: 'i-ant-design:file-image-outlined',
             title: t('tb.images'),
-            authorities: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN]
+            authorities: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN],
           },
         },
         {
@@ -304,7 +304,19 @@ const tb: AppRouteModule = {
             icon: 'i-ant-design:codepen-outlined',
             tabIcon: 'i-ant-design:codepen-outlined',
             title: t('tb.scadaSymbols'),
-            authorities: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN]
+            authorities: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN],
+          },
+        },
+        {
+          path: '/scada-symbol/:type/:key',
+          name: 'scadaSymbolDetail',
+          component: () => import('/@/views/tb/scadaSymbol/detail.vue'),
+          meta: {
+            hideMenu: true,
+            icon: 'i-ant-design:codepen-outlined',
+            tabIcon: 'i-ant-design:codepen-outlined',
+            title: t('tb.scadaSymbols'),
+            authorities: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN],
           },
         },
         {
@@ -315,9 +327,10 @@ const tb: AppRouteModule = {
             icon: 'i-ant-design:build-outlined',
             tabIcon: 'i-ant-design:build-outlined',
             title: t('tb.resourceLibrary'),
-            authorities: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN]
+            authorities: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN],
           },
-        }]
+        },
+      ],
     },
     {
       path: '/notification',
@@ -329,74 +342,76 @@ const tb: AppRouteModule = {
         single: true,
         icon: 'ant-design:comment-outlined',
         title: t('tb.notification_center'),
-        authorities: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN, Authority.CUSTOMER_USER]
+        authorities: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN, Authority.CUSTOMER_USER],
       },
-      children: [{
-        path: '/notification/index',
-        name: 'NotificationIndex',
-        component: () => import('/@/views/tb/notification/index.vue'),
-        meta: {
-          orderNo: 10,
-          icon: 'ant-design:comment-outlined',
-          title: t('tb.notification_center'),
-          authorities: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN, Authority.CUSTOMER_USER]
-        }
-      }, {
-        path: '/notification/list',
-        name: 'NotificationList',
-        component: () => import('/@/views/tb/notification/list.vue'),
-        meta: {
-          orderNo: 20,
-          icon: 'ant-design:bell-outlined',
-          title: t('tb.notification_list'),
-          authorities: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN, Authority.CUSTOMER_USER]
-        }
-
-      }, {
-        path: '/notification/request/list',
-        name: 'NotificationRequestList',
-        component: () => import('/@/views/tb/notification/request/list.vue'),
-        meta: {
-          orderNo: 30,
-          icon: 'ant-design:bars-outlined',
-          title: t('tb.notification_request_list'),
-          authorities: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN]
-        }
-
-      }, {
-        path: '/notification/recipient/list',
-        name: 'NotificationRecipientList',
-        component: () => import('/@/views/tb/notification/recipient/list.vue'),
-        meta: {
-          orderNo: 40,
-          icon: 'ant-design:team-outlined',
-          title: t('tb.notification_recipient_list'),
-          authorities: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN]
-        }
-
-      }, {
-        path: '/notification/template/list',
-        name: 'NotificationTemplateList',
-        component: () => import('/@/views/tb/notification/template/list.vue'),
-        meta: {
-          orderNo: 50,
-          icon: 'ant-design:solution-outlined',
-          title: t('tb.notification_template_list'),
-          authorities: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN]
-        }
-
-      }, {
-        path: '/notification/rule/list',
-        name: 'NotificationRuleList',
-        component: () => import('/@/views/tb/notification/rule/list.vue'),
-        meta: {
-          orderNo: 60,
-          icon: 'ant-design:ungroup-outlined',
-          title: t('tb.notification_rule_list'),
-          authorities: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN]
-        }
-
-      }]
+      children: [
+        {
+          path: '/notification/index',
+          name: 'NotificationIndex',
+          component: () => import('/@/views/tb/notification/index.vue'),
+          meta: {
+            orderNo: 10,
+            icon: 'ant-design:comment-outlined',
+            title: t('tb.notification_center'),
+            authorities: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN, Authority.CUSTOMER_USER],
+          },
+        },
+        {
+          path: '/notification/list',
+          name: 'NotificationList',
+          component: () => import('/@/views/tb/notification/list.vue'),
+          meta: {
+            orderNo: 20,
+            icon: 'ant-design:bell-outlined',
+            title: t('tb.notification_list'),
+            authorities: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN, Authority.CUSTOMER_USER],
+          },
+        },
+        {
+          path: '/notification/request/list',
+          name: 'NotificationRequestList',
+          component: () => import('/@/views/tb/notification/request/list.vue'),
+          meta: {
+            orderNo: 30,
+            icon: 'ant-design:bars-outlined',
+            title: t('tb.notification_request_list'),
+            authorities: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN],
+          },
+        },
+        {
+          path: '/notification/recipient/list',
+          name: 'NotificationRecipientList',
+          component: () => import('/@/views/tb/notification/recipient/list.vue'),
+          meta: {
+            orderNo: 40,
+            icon: 'ant-design:team-outlined',
+            title: t('tb.notification_recipient_list'),
+            authorities: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN],
+          },
+        },
+        {
+          path: '/notification/template/list',
+          name: 'NotificationTemplateList',
+          component: () => import('/@/views/tb/notification/template/list.vue'),
+          meta: {
+            orderNo: 50,
+            icon: 'ant-design:solution-outlined',
+            title: t('tb.notification_template_list'),
+            authorities: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN],
+          },
+        },
+        {
+          path: '/notification/rule/list',
+          name: 'NotificationRuleList',
+          component: () => import('/@/views/tb/notification/rule/list.vue'),
+          meta: {
+            orderNo: 60,
+            icon: 'ant-design:ungroup-outlined',
+            title: t('tb.notification_rule_list'),
+            authorities: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN],
+          },
+        },
+      ],
     },
     {
       path: 'admin-setting',
@@ -408,7 +423,7 @@ const tb: AppRouteModule = {
         icon: 'ant-design:setting-outlined',
         tabIcon: 'ant-design:setting-outlined',
         title: t('tb.adminSetting'),
-        authorities: [Authority.SYS_ADMIN]
+        authorities: [Authority.SYS_ADMIN],
       },
       children: [
         {
@@ -419,9 +434,10 @@ const tb: AppRouteModule = {
             icon: 'ant-design:setting-outlined',
             tabIcon: 'ant-design:setting-outlined',
             title: t('tb.adminSetting'),
-            authorities: [Authority.SYS_ADMIN]
-          }
-        },]
+            authorities: [Authority.SYS_ADMIN],
+          },
+        },
+      ],
     },
     {
       path: '/audit-log',
@@ -432,11 +448,10 @@ const tb: AppRouteModule = {
         icon: 'ant-design:bars-outlined',
         tabIcon: 'ant-design:bars-outlined',
         title: t('tb.auditLog'),
-        authorities: [Authority.TENANT_ADMIN]
+        authorities: [Authority.TENANT_ADMIN],
       },
     },
-
-  ]
-}
+  ],
+};
 
 export default tb;

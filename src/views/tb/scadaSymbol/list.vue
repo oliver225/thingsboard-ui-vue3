@@ -56,6 +56,7 @@
         <Checkbox :checked="record.link.indexOf('system') > -1" />
       </template>
     </BasicTable>
+
   </div>
 </template>
 <script lang="ts">
@@ -270,7 +271,8 @@
   }
 
   function handleDetail(record: Recordable) {
-    // openDetailModal(true, record);
+    const path = record.link.replace('/api/images/', '');
+    router.push(`/scada-symbol/${path}`);
   }
 </script>
 
