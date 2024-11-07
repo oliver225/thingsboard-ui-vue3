@@ -192,7 +192,7 @@ function handleSuccess() {
 }
 
 function handleFLow(record: Recordable) {
-  router.push({ path: `/tb/ruleChain/${record.id.id}` });
+  router.push({ path: `/rule-chain/${record.id.id}` });
 }
 
 async function handleSetRuleChainRoot(record: Recordable) {

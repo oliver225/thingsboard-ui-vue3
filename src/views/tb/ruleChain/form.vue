@@ -40,7 +40,7 @@ const getTitle = computed(() => ({
 
 const inputFormSchemas: FormSchema[] = [
   { field: 'type', component: 'Input', defaultValue: 'CORE', show: false },
-  { field: 'tenantId', component: 'Input', defaultValue: userStore.getExtend?.tbUser?.tenantId, show: false },
+  { field: 'tenantId', component: 'Input', defaultValue: userStore.getUserInfo.tenantId, show: false },
   {
     label: t('规则链名称'),
     field: 'name',
