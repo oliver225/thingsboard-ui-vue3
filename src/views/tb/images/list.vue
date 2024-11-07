@@ -75,7 +75,6 @@
   import { useI18n } from '/@/hooks/web/useI18n';
   import { convertBytesToSize } from '/@/utils';
   import { useModal } from '/@/components/Modal';
-  import { useUserStore } from '/@/store/modules/user';
   import { BasicTable, BasicColumn, useTable } from '/@/components/Table';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { Icon } from '/@/components/Icon';
@@ -91,7 +90,6 @@
 
   const { t } = useI18n('tb');
   const { hasPermission } = usePermission();
-  const userStore = useUserStore();
   const { createConfirm, showMessage } = useMessage();
 
   const getTitle = {
@@ -143,7 +141,7 @@
       title: '系统',
       dataIndex: 'link',
       key: 'link',
-      ifShow: userStore.getAuthority == Authority.TENANT_ADMIN,
+      ifShow: hasPermission(Authority.TENANT_ADMIN),
       width: 80,
       align: 'center',
       slot: 'isSystem',
@@ -172,9 +170,7 @@
       {
         icon: 'ant-design:delete-outlined',
         color: 'error',
-        ifShow: !!!(
-          userStore.getAuthority == Authority.TENANT_ADMIN && record.link.indexOf('system') > -1
-        ),
+        ifShow: !!!(hasPermission(Authority.TENANT_ADMIN) && record.link.indexOf('system') > -1),
         title: t('删除图片'),
         onClick: handleDelete.bind(this, { ...record }),
       },
