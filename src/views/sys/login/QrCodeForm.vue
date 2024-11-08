@@ -22,8 +22,9 @@
   import { QrCode } from '/@/components/Qrcode';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { useLoginState, LoginStateEnum } from './useLogin';
+  import { LINK_URL } from '/@/settings/siteSetting';
 
-  const qrCodeUrl = 'https://jeesite.com';
+  const qrCodeUrl = LINK_URL;
 
   const { t } = useI18n();
   const { handleBackLogin, getLoginState } = useLoginState();
