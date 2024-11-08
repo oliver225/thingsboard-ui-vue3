@@ -116,6 +116,7 @@
   import { openWindow } from '/@/utils';
   import weixinUrl from '/@/assets/images/weixin.jpg';
   import { onKeyStroke } from '@vueuse/core';
+  import { GITHUB_URL, SITE_URL } from '/@/settings/siteSetting';
 
   const ACol = Col;
   const ARow = Row;
@@ -225,11 +226,13 @@
   }
 
   function handle2Gitee() {
-  openWindow("https://gitee.com/oliver225/thingsboard-ui-vue3")
+    
+  openWindow(GITHUB_URL)
 
 }
 function handle2Github() {
-  openWindow("https://github.com/oliver225/thingsboard-ui-vue3")
+
+  openWindow(SITE_URL)
 }
 
 function handle2Wechat() {
