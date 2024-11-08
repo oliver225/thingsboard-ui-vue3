@@ -28,7 +28,7 @@ ThingsBoard凭借其优秀的性能和高效的性能得到了广大开发者的
 
 ## Thingsbaord
  
-   thingsboard：V3.7，持续跟进更新中
+   thingsboard：V3.8.1，持续跟进更新中
 
 
 ## 使用技术
