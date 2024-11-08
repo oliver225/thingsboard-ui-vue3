@@ -1,12 +1,16 @@
-import { BasicModel, BasicQuery, Page } from "../model/baseModel";
-import { NotificationTemplate } from "./notificationTemplate";
-import { EntityId } from "/#/store";
-import { EntityType } from "/@/enums/entityTypeEnum";
-import { NotificationRequestStatus, NotificationStatus, NotificationType } from "/@/enums/notificationEnum";
-import { defHttp } from "/@/utils/http/axios";
+import { BasicModel, BasicQuery, Page } from '../model/baseModel';
+import { NotificationTemplate } from './notificationTemplate';
+import { EntityId } from '/#/store';
+import { EntityType } from '/@/enums/entityTypeEnum';
+import {
+  NotificationRequestStatus,
+  NotificationStatus,
+  NotificationType,
+} from '/@/enums/notificationEnum';
+import { defHttp } from '/@/utils/http/axios';
 
 export interface Notification extends BasicModel<EntityType.NOTIFICATION> {
-  requestId?: EntityId<EntityType.NOTIFICATION_REQUEST>;  //  entityType: "NOTIFICATION_REQUEST"
+  requestId?: EntityId<EntityType.NOTIFICATION_REQUEST>; //  entityType: "NOTIFICATION_REQUEST"
   recipientId?: EntityId<EntityType.USER>; //  entityType : "USER"
   subject?: string;
   type?: NotificationType;
@@ -16,17 +20,15 @@ export interface Notification extends BasicModel<EntityType.NOTIFICATION> {
   additionalConfig?: NotificationConfig;
 }
 
-
-
 export interface NotificationConfig {
   actionButtonConfig: { enabled: boolean; text?: string; linkType?: string; link?: string };
-  icon: { enabled?: boolean; icon?: string; color?: string }
-  [key: string]: any,
+  icon: { enabled?: boolean; icon?: string; color?: string };
+  [key: string]: any;
 }
 export interface NotificationInfo {
   stateEntityId: EntityId<any>;
   templateData: Recordable;
-  [key: string]: any,
+  [key: string]: any;
 }
 
 export interface NotificationRequest extends BasicModel<EntityType.NOTIFICATION_REQUEST> {
@@ -35,9 +37,9 @@ export interface NotificationRequest extends BasicModel<EntityType.NOTIFICATION_
   templateId?: EntityId<EntityType.NOTIFICATION_TEMPLATE>;
   template?: NotificationTemplate;
   info?: NotificationInfo;
-  additionalConfig?: { sendingDelayInSec: number;[key: string]: any };
+  additionalConfig?: { sendingDelayInSec: number; [key: string]: any };
   originatorEntityId: EntityId<any>;
-  ruleId?: EntityId<EntityType.NOTIFICATION_RULE>;  // entityType: NOTIFICATION_RULE
+  ruleId?: EntityId<EntityType.NOTIFICATION_RULE>; // entityType: NOTIFICATION_RULE
   status?: NotificationRequestStatus;
   stats?: {
     sent?: Map<string, number>;
@@ -57,13 +59,18 @@ export interface NotificationRequestPreview {
   recipientsPreview: string[];
 }
 export interface NotificationSettings {
-  deliveryMethodsConfigs: Recordable;
+  prefs: Map<NotificationType, NotificationPref>;
 }
 
-export function notificationList(params: BasicQuery, unreadOnly = true,) {
+export interface NotificationPref {
+  enabled: boolean;
+  enabledDeliveryMethods: Map<string, boolean>;
+}
+
+export function notificationList(params: BasicQuery, unreadOnly = true) {
   return defHttp.get<Page<Notification>>({
     url: `/api/notifications`,
-    params: { ...params, unreadOnly: unreadOnly }
+    params: { ...params, unreadOnly: unreadOnly },
   });
 }
 export function markNotificationAsRead(notificationId: string) {
@@ -95,14 +102,14 @@ export function getDeliveryMethods() {
 export function notificationRequestList(params: BasicQuery) {
   return defHttp.get<Page<NotificationRequestInfo>>({
     url: `/api/notification/requests`,
-    params
+    params,
   });
 }
 
 export function createNotificationRequest(data: NotificationRequest | any) {
   return defHttp.postJson<NotificationRequest>({
     url: `/api/notification/request`,
-    data
+    data,
   });
 }
 
@@ -118,11 +125,14 @@ export function deleteNotificationRequest(notificationRequestId: string) {
   });
 }
 
-export function getNotificationRequestPreview(data: NotificationRequest | any, recipientsPreviewSize = 20,) {
+export function getNotificationRequestPreview(
+  data: NotificationRequest | any,
+  recipientsPreviewSize = 20,
+) {
   return defHttp.postJson<NotificationRequestPreview>({
     url: `/api/notification/request/preview`,
     params: { recipientsPreviewSize: recipientsPreviewSize },
-    data
+    data,
   });
 }
 
@@ -135,6 +145,19 @@ export function getNotificationSettings() {
 export function saveNotificationSettings(data: NotificationSettings | any) {
   return defHttp.postJson<NotificationSettings>({
     url: `/api/notification/settings`,
-    data
+    data,
+  });
+}
+
+export function getUserNotificationSettings() {
+  return defHttp.get<NotificationSettings>({
+    url: `/api/notification/settings/user`,
+  });
+}
+
+export function saveUserNotificationSettings(data: NotificationSettings | any) {
+  return defHttp.postJson<NotificationSettings>({
+    url: `/api/notification/settings/user`,
+    data,
   });
 }

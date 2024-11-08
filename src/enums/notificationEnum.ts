@@ -1,30 +1,36 @@
 export enum NotificationType {
   GENERAL = 'GENERAL',
   ALARM = 'ALARM',
-  ALARM_ASSIGNMENT = 'ALARM_ASSIGNMENT',
-  ALARM_COMMENT = 'ALARM_COMMENT',
   DEVICE_ACTIVITY = 'DEVICE_ACTIVITY',
   ENTITY_ACTION = 'ENTITY_ACTION',
+  ALARM_COMMENT = 'ALARM_COMMENT',
+  RULE_ENGINE_COMPONENT_LIFECYCLE_EVENT = 'RULE_ENGINE_COMPONENT_LIFECYCLE_EVENT',
+  ALARM_ASSIGNMENT = 'ALARM_ASSIGNMENT',
+  NEW_PLATFORM_VERSION = 'NEW_PLATFORM_VERSION',
   ENTITIES_LIMIT = 'ENTITIES_LIMIT',
   API_USAGE_LIMIT = 'API_USAGE_LIMIT',
   RULE_NODE = 'RULE_NODE',
-  RULE_ENGINE_COMPONENT_LIFECYCLE_EVENT = 'RULE_ENGINE_COMPONENT_LIFECYCLE_EVENT',
-  NEW_PLATFORM_VERSION = 'NEW_PLATFORM_VERSION',
-
+  RATE_LIMITS = 'RATE_LIMITS',
+  EDGE_CONNECTION = 'EDGE_CONNECTION',
+  EDGE_COMMUNICATION_FAILURE = 'EDGE_COMMUNICATION_FAILURE',
+  TASK_PROCESSING_FAILURE = 'TASK_PROCESSING_FAILURE',
 }
 export const NOTIFICATION_TYPE_OPTIONS = [
   { value: NotificationType.GENERAL, label: '通用' },
   { value: NotificationType.ALARM, label: '告警' },
-  { value: NotificationType.ALARM_ASSIGNMENT, label: '告警分配' },
+  { value: NotificationType.DEVICE_ACTIVITY, label: '设备活动' },
+  { value: NotificationType.ENTITY_ACTION, label: '实体操作' },
   { value: NotificationType.ALARM_COMMENT, label: '告警评论' },
-  { value: NotificationType.DEVICE_ACTIVITY, label: '设备状态' },
-  { value: NotificationType.ENTITY_ACTION, label: '实体事件' },
-  { value: NotificationType.ENTITIES_LIMIT, label: '实体限流' },
-  { value: NotificationType.API_USAGE_LIMIT, label: 'API限流' },
-  { value: NotificationType.RULE_NODE, label: '规则引擎' },
-  { value: NotificationType.RULE_ENGINE_COMPONENT_LIFECYCLE_EVENT, label: '规则引擎生命周期' },
-  { value: NotificationType.NEW_PLATFORM_VERSION, label: '平台新版本' }
-
+  { value: NotificationType.RULE_ENGINE_COMPONENT_LIFECYCLE_EVENT, label: '规则引擎生命周期事件' },
+  { value: NotificationType.ALARM_ASSIGNMENT, label: '告警分配' },
+  { value: NotificationType.NEW_PLATFORM_VERSION, label: '平台新版本' },
+  { value: NotificationType.ENTITIES_LIMIT, label: '实体限制' },
+  { value: NotificationType.API_USAGE_LIMIT, label: 'API限制' },
+  { value: NotificationType.RULE_NODE, label: '规则节点' },
+  { value: NotificationType.RATE_LIMITS, label: '超过速率限制' },
+  { value: NotificationType.EDGE_CONNECTION, label: 'Edge 连接' },
+  { value: NotificationType.EDGE_COMMUNICATION_FAILURE, label: 'Edge 连接失败' },
+  { value: NotificationType.TASK_PROCESSING_FAILURE, label: '任务处理失败' },
 ];
 
 export enum NotificationStatus {
@@ -71,9 +77,9 @@ export const NOTIFICATION_RECIPIENT_USER_FILTER_OPTIONS = [
   { value: NotificationRecipientUsersFilter.TENANT_ADMINISTRATORS, label: '租户管理员' },
   { value: NotificationRecipientUsersFilter.SYSTEM_ADMINISTRATORS, label: '系统管理员' },
   { value: NotificationRecipientUsersFilter.AFFECTED_USER, label: '受影响的用户' },
-  { value: NotificationRecipientUsersFilter.AFFECTED_TENANT_ADMINISTRATORS, label: '受影响的租户管理员' },
+  {
+    value: NotificationRecipientUsersFilter.AFFECTED_TENANT_ADMINISTRATORS,
+    label: '受影响的租户管理员',
+  },
   { value: NotificationRecipientUsersFilter.ORIGINATOR_ENTITY_OWNER_USERS, label: '实体所属用户' },
-
 ];
-
-

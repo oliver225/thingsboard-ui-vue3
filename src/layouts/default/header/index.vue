@@ -35,7 +35,7 @@
     <div :class="`${prefixCls}-action`">
       <AppSearch v-if="getShowSearch" :class="`${prefixCls}-action__item `" />
 
-      <OnlineCount :class="`${prefixCls}-action__item online-count`" />
+      <!-- <OnlineCount :class="`${prefixCls}-action__item online-count`" /> -->
 
       <Notify v-if="getShowNotice" :class="`${prefixCls}-action__item notify-item`" />
 

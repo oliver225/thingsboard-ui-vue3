@@ -23,7 +23,7 @@
       <img :class="`${prefixCls}__header`" :src="getUserInfo.avatarUrl" />
       <span :class="`${prefixCls}__info hidden md:block`">
         <div :class="`${prefixCls}__name`" class="truncate">
-          {{ getUserInfo.name }}
+          {{ getUserInfo.firstName || getUserInfo.name }}
         </div>
         <div :class="`${prefixCls}__authority`">
           {{ authorityLabel }}

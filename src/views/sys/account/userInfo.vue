@@ -1,5 +1,11 @@
 <template>
   <CollapseContainer :title="t('sys.account.basicTab')" :canExpan="false" class="overflow-x-hidden">
+    <template #action>
+      <span v-if="record.additionalInfo?.lastLoginTs">
+        <span>最后登录：</span>
+        {{ dayjs(record.additionalInfo.lastLoginTs).format('YYYY-MM-DD HH:mm:ss') }}
+      </span>
+    </template>
     <ARow :gutter="24" class="mt-3">
       <ACol :span="14">
         <BasicForm @register="register" />
@@ -38,6 +44,7 @@
   import { useUserStore } from '/@/store/modules/user';
   import { saveUser, userInfoApi } from '/@/api/tb/user';
   import { uploadImage } from '/@/api/tb/images';
+  import dayjs from 'dayjs';
   import { localeSetting } from '/@/settings/localeSetting';
 
   const { t } = useI18n();
