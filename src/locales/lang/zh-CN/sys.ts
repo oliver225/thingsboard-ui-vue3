@@ -74,9 +74,9 @@ export default {
     signUpFormTitle: '注册',
     forgetFormTitle: '重置密码',
 
-    signInTitle: 'JeeSite 是当前最好用的快速开发平台',
-    signInDesc: 'JeeSite 是一个专业的平台，是一个让你使用放心的平台。',
-    policy: '我同意 JeeSite 隐私政策',
+    signInTitle: ' 是当前最好用的快速开发平台',
+    signInDesc: ' 是一个专业的平台，是一个让你使用放心的平台。',
+    policy: '我同意 相关 隐私政策',
     scanSign: `扫码后点击"确认"，即可完成登录`,
 
     loginButton: '登录',
