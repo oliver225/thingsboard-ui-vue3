@@ -154,7 +154,7 @@
       }
 
       function handleModifyPwd() {
-        go('/account/modPwd');
+        go('/account/center');
       }
 
       function handleOpenDoc() {
