@@ -116,8 +116,8 @@
   import { Space, Upload, Avatar, Tooltip } from 'ant-design-vue';
   import { useDesign } from '/@/hooks/web/useDesign';
   import { BasicModal, useModalInner } from '/@/components/Modal';
-  // import { dataURLtoBlob } from '/@/utils/file/base64Conver';
-  // import { isFunction } from '/@/utils/is';
+  import { dataURLtoBlob } from '/@/utils/file/base64Conver';
+  import { isFunction } from '/@/utils/is';
   import { useI18n } from '/@/hooks/web/useI18n';
 
   import type { CropendResult, Cropper } from './typing';
@@ -180,13 +180,14 @@
       async function handleOk() {
         try {
           setModalProps({ confirmLoading: true });
-          // const uploadApi = props.uploadApi;
-          // if (uploadApi && isFunction(uploadApi)) {
-          //   const blob = dataURLtoBlob(previewSource.value);
-          //   const result = await uploadApi({ name: 'file', file: blob, filename });
-          //   emit('upload-success', { source: previewSource.value, data: result.data });
-          // }
-          emit('upload-success', { source: previewSource.value, filename });
+          const uploadApi = props.uploadApi;
+          if (uploadApi && isFunction(uploadApi)) {
+            const blob = dataURLtoBlob(previewSource.value);
+            const result = await uploadApi({ name: 'file', file: blob, filename });
+            emit('upload-success', { source: previewSource.value, data: result });
+          } else {
+            emit('upload-success', { source: previewSource.value, filename });
+          }
           closeModal();
         } finally {
           setModalProps({ confirmLoading: false });

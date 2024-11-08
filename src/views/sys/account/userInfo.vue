@@ -11,6 +11,7 @@
             :btnText="t('sys.account.changeAvatar')"
             :btnProps="{ preIcon: 'i-ant-design:cloud-upload-outlined' }"
             @change="updateAvatar"
+            :uploadApi="({ file, filename }) => uploadImage(file, filename)"
             width="150"
           />
         </div>
@@ -32,47 +33,67 @@
   import { BasicForm, FormSchema, useForm } from '/@/components/Form';
   import { CollapseContainer } from '/@/components/Container';
   import { CropperAvatar } from '/@/components/Cropper';
+  import { UserInfo } from '/#/store';
   import headerImg from '/@/assets/images/header.png';
   import { useUserStore } from '/@/store/modules/user';
-  import { userInfo, infoSaveBase } from '/@/api/tb/user';
-  // import { uploadApi } from '/@/api/sys/upload';
+  import { saveUser, userInfoApi } from '/@/api/tb/user';
+  import { uploadImage } from '/@/api/tb/images';
+  import { localeSetting } from '/@/settings/localeSetting';
 
   const { t } = useI18n();
   const { showMessage } = useMessage();
   const avatarBase64 = ref<string>('');
   const userStore = useUserStore();
+  const record = ref<UserInfo>({} as UserInfo);
   const ARow = Row;
   const ACol = Col;
 
   const userInfoSchemas: FormSchema[] = [
     {
-      field: 'userName',
-      component: 'Input',
-      label: t('sys.account.userName'),
-      colProps: { span: 18 },
-    },
-    {
       field: 'email',
       component: 'Input',
       label: t('sys.account.email'),
+      required: true,
       colProps: { span: 18 },
+      rules: [
+        { required: true, message: t('邮箱地址必须输入') },
+        { type: 'email', message: t('请填写正确的邮箱地址') },
+      ],
     },
     {
-      field: 'mobile',
+      label: t('用户姓名'),
+      field: 'firstName',
       component: 'Input',
-      label: t('sys.account.mobile'),
+      componentProps: {
+        maxlength: 100,
+      },
+      required: true,
       colProps: { span: 18 },
     },
     {
+      label: t('用户职务'),
+      field: 'lastName',
+      component: 'Input',
+      componentProps: {
+        maxlength: 100,
+      },
+      colProps: { span: 18 },
+    },
+    {
+      label: t('sys.account.mobile'),
       field: 'phone',
       component: 'Input',
-      label: t('sys.account.phone'),
+      required: true,
+      rules: [
+        { required: true, message: t('手机号码必须输入') },
+        { pattern: /^1[3-9]\d{9}$/, message: t('请填写正确的手机号码') },
+      ],
       colProps: { span: 18 },
     },
     {
-      field: 'sign',
+      label: t('描述信息'),
+      field: 'additionalInfo.description',
       component: 'InputTextArea',
-      label: t('sys.account.sign'),
       colProps: { span: 18 },
     },
   ];
@@ -84,9 +105,8 @@
   });
 
   onMounted(async () => {
-    const data = userStore.getUserInfo;
-    // console.log(data);
-    setFieldsValue(data);
+    record.value = await userInfoApi();
+    setFieldsValue(record.value);
   });
 
   const avatar = computed(() => {
@@ -94,25 +114,26 @@
     return avatarUrl || headerImg;
   });
 
-  function updateAvatar(source: string) {
+  function updateAvatar(source: string, data: any) {
+    record.value.additionalInfo.avatarUrl = data.publicLink;
     avatarBase64.value = source;
   }
 
   async function handleSubmit() {
     try {
       const data = await validate();
-      if (avatarBase64.value != '') {
-        data.avatarBase64 = avatarBase64.value;
-      }
+      record.value.email = data.email;
+      record.value.firstName = data.firstName;
+      record.value.lastName = data.lastName;
+      record.value.phone = data.phone;
+      record.value.additionalInfo.description = data.additionalInfo.description;
+      record.value.additionalInfo.lang = localeSetting.locale;
       // console.log('submit', data);
-      const res = await infoSaveBase(data);
-      const userInfoRes = await userInfo();
-      const user = userInfoRes.user;
-      if (avatarBase64.value != '') {
-        user.avatarUrl = avatarBase64.value;
-      }
+      const res = await saveUser(record.value);
+      const userInfoRes = await userInfoApi();
+
       userStore.setUserInfo(userInfoRes);
-      showMessage(res.message);
+      showMessage('更新用户信息成功');
     } catch (error: any) {
       if (error && error.errorFields) {
         showMessage(error.message || t('common.validateError'));
