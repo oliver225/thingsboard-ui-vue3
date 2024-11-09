@@ -29,7 +29,7 @@
                         <Radio :value=false>假</Radio>
                     </Radio.Group>
                     <CodeEditor v-if="formState.type == 'JSON'" v-model:value="formState.value"
-                        class="border border-gray-400" />
+                        class="border border-solid border-gray-400" />
                 </Form.Item>
                 </Col>
 
