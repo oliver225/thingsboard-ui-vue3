@@ -52,7 +52,7 @@
 </template>
 <script lang="ts">
 export default defineComponent({
-  name: "Telemetry",
+  name: "ViewsTbTelemetryIndex",
 });
 </script>
 <script lang="ts" setup>
@@ -67,7 +67,7 @@ import { useUserStore } from '/@/store/modules/user';
 import { useWebsocketStore } from '/@/store/modules/websocket';
 import { useModal } from '/@/components/Modal';
 import { Space, Divider, Tooltip, Segmented, List } from 'ant-design-vue';
-import { BasicTable, BasicColumn, useTable } from '/@/components/Table';
+import { BasicTable, BasicColumn, useTable, TableHeader } from '/@/components/Table';
 import { getAttributesByScope, deleteEntityAttributes, getLatestTimeseries } from '/@/api/tb/telemetry';
 import TimeseriesChart from './timeseriesChart.vue';
 import TimeseriesModal from './timeseriesModal.vue';
@@ -333,8 +333,6 @@ function handledAttributeForm(data: any) {
 
 <style lang="less">
 .telemetry-index {
-  .jeesite-basic-table-header__header-top {
-    margin-top: 0;
-  }
+  
 }
 </style>
