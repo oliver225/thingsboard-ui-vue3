@@ -27,10 +27,19 @@
 <script lang="ts" setup name="ViewsTbDeviceApi">
   import { BasicTable, BasicColumn, useTable } from '/@/components/Table';
   import { EntityType } from '/@/enums/entityTypeEnum';
+  import { useMessage } from '/@/hooks/web/useMessage';
   import { Segmented, Button } from 'ant-design-vue';
   import { BasicModal } from '/@/components/Modal';
   import { CodeEditor, MODE } from '/@/components/CodeEditor';
   import { computed, ref, reactive } from 'vue';
+  import {
+    DeviceInfo,
+    getDeviceInfoById,
+    DeviceCredentials,
+    getDeviceCredentialsByDeviceId,
+  } from '/@/api/tb/device';
+  import { onMounted } from 'vue';
+  import { CredentialsType } from '/@/enums/deviceEnum';
 
   const props = defineProps({
     entityType: {
@@ -42,6 +51,12 @@
       required: true,
     },
   });
+
+  const { showMessage } = useMessage();
+
+  const deviceInfo = ref<DeviceInfo>({} as DeviceInfo);
+  const credentials = ref<DeviceCredentials>({} as DeviceCredentials);
+
   const apiTypeList = reactive([
     { value: 'MQTT_DEVICE', label: 'MQTT 设备', className: 'segment-tab' },
     { value: 'MQTT_GATEWAY', label: 'MQTT 网关', className: 'segment-tab' },
@@ -64,12 +79,34 @@
       case 'MQTT_GATEWAY':
         return mqttColumns;
       case 'HTTP':
-        return mqttColumns;
+        return httpColumns;
       case 'COAP':
         return mqttColumns;
     }
   });
 
+  onMounted(async () => {
+    await fetchDeviceInfo();
+  });
+
+  async function fetchDeviceInfo() {
+    try {
+      deviceInfo.value = await getDeviceInfoById(props.entityId);
+      credentials.value = await getDeviceCredentialsByDeviceId(props.entityId);
+    } catch (error: any) {
+      if (error.message) {
+        showMessage(error.message, 'error');
+      }
+      console.log('error', error);
+    }
+  }
+
+  function getAccessToken() {
+    if (credentials.value && credentials.value.credentialsType == CredentialsType.ACCESS_TOKEN) {
+      return credentials.value.credentialsId;
+    }
+    return '$ACCESS_TOKEN';
+  }
   async function fetchDatasource() {
     switch (apiType.value) {
       case 'MQTT_DEVICE':
@@ -77,11 +114,63 @@
       case 'MQTT_GATEWAY':
         return mqttDataSource.filter((item) => item.gateway == true);
       case 'HTTP':
-        return [];
+        return httpDataSource.value;
       case 'COAP':
         return [];
     }
   }
+
+  const httpDataSource = computed(() => {
+    return [
+      {
+        function: '遥测上传',
+        url: `${location.protocol}//${location.host}/api/v1/${getAccessToken()}/telemetry`,
+        operate: 'POST',
+        description: '遥测数据 上传到 服务端',
+        case: '{"key1":"value1", "key2":"value2"}\n[{"key1":"value1"}, {"key2":"value2"}]\n{"ts":1451649600512, "values":{"key1":"value1", "key2":"value2"}}',
+      },
+      {
+        rowSpan: 3,
+        function: '属性',
+        url: `${location.protocol}//${location.host}/api/v1/${getAccessToken()}/attributes`,
+        operate: 'POST',
+        description: '设备属性 上传到 服务端',
+        case: '{"attribute1": "value1", "attribute2": true}',
+      },
+      {
+        rowSpan: 0,
+        function: '属性',
+        url: `${location.protocol}//${location.host}/api/v1/${getAccessToken()}/attributes?clientKeys=attribute1,attribute2&sharedKeys=shared1,shared2`,
+        operate: 'GET',
+        description: '从 服务端 请求 客户端或共享设备属性',
+        case: '{"client":{"attribute1":"value1","attribute2":true}}',
+      },
+      {
+        rowSpan: 0,
+        function: '属性',
+        url: `${location.protocol}//${location.host}/api/v1/${getAccessToken()}/attributes/updates?timeout=20000`,
+        operate: 'GET',
+        description: '订阅来自服务器的属性更新',
+        case: '{"client":{"attribute1":"value1","attribute2":true}}',
+      },
+      {
+        rowSpan: 2,
+        function: 'RPC',
+        url: `${location.protocol}//${location.host}/api/v1/${getAccessToken()}/rpc?timeout=20000`,
+        operate: 'GET',
+        description: '订阅 服务端 下发的命令',
+        case: '{"id": "$id", "method": "setGpio", "params": {"pin":1,"value":1}}',
+      },
+      {
+        rowSpan: 0,
+        function: 'RPC',
+        url: `${location.protocol}//${location.host}/api/v1/${getAccessToken()}/rpc/$id`,
+        operate: 'POST',
+        description: '响应 服务端 下发的命令',
+        case: '{"success": true}',
+      },
+    ];
+  });
 
   const mqttDataSource = [
     {
@@ -223,7 +312,7 @@
       title: '功能',
       dataIndex: 'function',
       width: 120,
-      key: 'name',
+      key: 'function',
       align: 'center',
       customCell: (record, index) => {
         if (record.rowSpan != undefined) {
@@ -261,6 +350,49 @@
     },
   ];
 
+  const httpColumns: BasicColumn[] = [
+    {
+      title: '功能',
+      dataIndex: 'function',
+      width: 120,
+      key: 'function',
+      align: 'center',
+      customCell: (record, index) => {
+        if (record.rowSpan != undefined) {
+          return { rowSpan: record.rowSpan };
+        }
+        return {};
+      },
+    },
+    {
+      title: 'URL',
+      dataIndex: 'url',
+      key: 'url',
+      align: 'left',
+      ellipsis: false,
+    },
+    {
+      title: '操作',
+      dataIndex: 'operate',
+      width: 60,
+      key: 'operate',
+      align: 'center',
+    },
+    {
+      title: '描述',
+      dataIndex: 'description',
+      key: 'description',
+      align: 'left',
+    },
+    {
+      title: '示例',
+      dataIndex: 'case',
+      key: 'case',
+      width: 100,
+      align: 'center',
+      slot: 'caseSlot',
+    },
+  ];
   const [registerTable, { reload }] = useTable({
     showIndexColumn: false,
     api: fetchDatasource,
