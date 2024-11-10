@@ -127,7 +127,7 @@
           lastName,
           phone,
           authority,
-          avatarUrl: additionalInfo.avatarUrl,
+          avatarUrl: additionalInfo?.avatarUrl,
         };
       });
 

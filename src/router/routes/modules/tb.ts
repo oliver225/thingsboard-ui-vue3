@@ -87,6 +87,23 @@ const tb: AppRouteModule = {
         title: t('tb.device'),
         authorities: [Authority.TENANT_ADMIN, Authority.CUSTOMER_USER],
       },
+      children: [
+        {
+          path: '/devices/:deviceId',
+          name: 'DeviceDetail',
+          redirect: (to) => {
+            return { path: '/device/list', query: { deviceId: to.params.deviceId } };
+          },
+          meta: {
+            hideMenu: true,
+            orderNo: 40,
+            icon: 'ant-design:database-outlined',
+            tabIcon: 'ant-design:database-outlined',
+            title: t('tb.device'),
+            authorities: [Authority.TENANT_ADMIN, Authority.CUSTOMER_USER],
+          },
+        },
+      ],
     },
     {
       path: '/asset/list',
