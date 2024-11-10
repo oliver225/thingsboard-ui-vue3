@@ -25,7 +25,6 @@
   import { useWebsocketStore } from '/@/store/modules/websocket';
   import NotificationList from './NotificationList.vue';
   import { getToken } from '/@/utils/auth';
-  import { height } from '@antv/x6-common/lib/dom/position';
 
   export default defineComponent({
     components: { Popover, BellOutlined, Tabs, TabPane: Tabs.TabPane, Badge, NotificationList },
