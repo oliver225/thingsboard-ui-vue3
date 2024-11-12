@@ -1,10 +1,10 @@
-import { BasicModel, BasicQuery, Page, } from "../model/baseModel";
-import { EntityId } from "/#/store";
-import { AlarmSeverity } from "/@/enums/alarmEnum";
-import { ProvisionType, TransportType } from "/@/enums/deviceEnum";
-import { EntityType } from "/@/enums/entityTypeEnum";
-import { defHttp } from "/@/utils/http/axios";
-
+import { BasicModel, BasicQuery, Page } from '../model/baseModel';
+import { EntityId } from '/#/store';
+import { AlarmSeverity } from '/@/enums/alarmEnum';
+import { ProvisionType, TransportType } from '/@/enums/deviceEnum';
+import { EntityType } from '/@/enums/entityTypeEnum';
+import { DataType } from '/@/enums/thingsModelEnum';
+import { defHttp } from '/@/utils/http/axios';
 
 export interface DynamicValue {
   sourceType: 'CURRENT_TENANT' | 'CURRENT_CUSTOMER' | 'CURRENT_USER' | 'CURRENT_DEVICE';
@@ -12,19 +12,25 @@ export interface DynamicValue {
   inherit: boolean;
 }
 
-
-
 export interface EntityKey {
-  type: 'ATTRIBUTE' | 'TIME_SERIES' | 'ENTITY_FIELD' | 'CONSTANT',
+  type: 'ATTRIBUTE' | 'TIME_SERIES' | 'ENTITY_FIELD' | 'CONSTANT';
   key?: string;
 }
 
 export interface Predicate {
-  type: 'STRING' | 'NUMERIC' | 'BOOLEAN' | 'COMPLEX'
+  type: 'STRING' | 'NUMERIC' | 'BOOLEAN' | 'COMPLEX';
   //STRING
-  operation: 'EQUAL' | 'NOT_EQUAL' | 'STARTS_WITH' | 'ENDS_WITH' | 'CONTAINS' | 'NOT_CONTAINS' | 'IN' | 'NOT_IN';
+  operation:
+    | 'EQUAL'
+    | 'NOT_EQUAL'
+    | 'STARTS_WITH'
+    | 'ENDS_WITH'
+    | 'CONTAINS'
+    | 'NOT_CONTAINS'
+    | 'IN'
+    | 'NOT_IN';
   ignoreCase: boolean;
-  value: { defaultValue: any, userValue: Object, dynamicValue: DynamicValue };
+  value: { defaultValue: any; userValue: Object; dynamicValue: DynamicValue };
   //NUMERIC
   //operation: 'EQUAL' | 'NOT_EQUAL' | 'GREATER' | 'LESS' | 'GREATER_OR_EQUAL' | 'LESS_OR_EQUAL';
   //BOOLEAN
@@ -46,7 +52,6 @@ export interface ConditionItem {
   predicate: Predicate;
 }
 
-
 export interface Condition {
   condition: Array<ConditionItem>;
   spec: Spec;
@@ -60,18 +65,20 @@ export interface Schedule {
   startsOn?: any;
   endsOn?: any;
   //CUSTOM
-  items: Array<{ enabled: boolean, dayOfWeek: 1 | 2 | 3 | 4 | 5 | 6 | 7, startsOn: any, endsOn: any }>
+  items: Array<{
+    enabled: boolean;
+    dayOfWeek: 1 | 2 | 3 | 4 | 5 | 6 | 7;
+    startsOn: any;
+    endsOn: any;
+  }>;
 }
 
 export interface AlarmRule {
-  condition: Condition,
-  schedule: Schedule,
+  condition: Condition;
+  schedule: Schedule;
   alarmDetails?: string;
   dashboardId?: EntityId<EntityType.DASHBOARD>;
 }
-
-
-
 
 export interface Alarm {
   id: string;
@@ -84,10 +91,6 @@ export interface Alarm {
   propagateToTenant?: boolean;
   propagateRelationTypes?: [string];
 }
-
-
-
-
 
 export interface DeviceProfile extends BasicModel<EntityType.DEVICE_PROFILE> {
   tenantId?: EntityId<EntityType.TENANT>;
@@ -103,18 +106,18 @@ export interface DeviceProfile extends BasicModel<EntityType.DEVICE_PROFILE> {
 
   transportType?: TransportType;
   provisionDeviceKey?: string;
-  provisionType?: ProvisionType
+  provisionType?: ProvisionType;
   firmwareId?: EntityId<EntityType.OTA_PACKAGE>;
   softwareId?: EntityId<EntityType.OTA_PACKAGE>;
   externalId?: EntityId<EntityType.DEVICE_PROFILE>;
   profileData?: {
-    configuration?: { type: 'DEFAULT' },
-    transportConfiguration?: { type: TransportType },
-    provisionConfiguration?: { type: ProvisionType },
-    alarms: [Alarm] | undefined,
+    configuration?: { type: 'DEFAULT' };
+    transportConfiguration?: { type: TransportType };
+    thingModelDefine: { properties?: []; services?: []; events?: [] };
+    provisionConfiguration?: { type: ProvisionType };
+    alarms: [Alarm] | undefined;
   };
   searchText?: string;
-
 }
 export interface DeviceProfileInfo {
   tenantId?: EntityId<EntityType.TENANT>;
@@ -124,6 +127,29 @@ export interface DeviceProfileInfo {
   image?: string;
   transportType?: TransportType;
   defaultDashboardId?: EntityId<EntityType.DASHBOARD>;
+}
+
+export interface Function {
+  type?: 'property' | 'service' | 'event';
+  name?: string;
+  identifier?: string;
+  accessMode?: 'r' | 'rw';
+  dataType?: {
+    type?: DataType;
+    specs?: {
+      min?: number;
+      max: number;
+      step?: number;
+      unit?: string;
+      unitName?: string;
+      length?: number;
+      size?: number;
+    };
+  };
+  desc?: '';
+  outputData?: Array<Function>;
+  inputData?: Array<Function>;
+  callType: 'async' | 'sync';
 }
 
 export function getDeviceProfileById(deviceProfileId: string) {
@@ -150,14 +176,12 @@ export function setDefaultDeviceProfile(deviceProfileId?: string) {
   });
 }
 
-
 export function deviceProfileList(params: BasicQuery) {
   return defHttp.get<Page<DeviceProfile>>({
     url: '/api/deviceProfiles',
     params,
   });
 }
-
 
 export function getDeviceProfileInfoList(params: BasicQuery, transportType?: TransportType) {
   return defHttp.get<Page<DeviceProfileInfo>>({
@@ -169,7 +193,7 @@ export function getDeviceProfileInfoList(params: BasicQuery, transportType?: Tra
 export function saveDeviceProfile(data: DeviceProfile | any) {
   return defHttp.postJson<DeviceProfile>({
     url: '/api/deviceProfile',
-    data
+    data,
   });
 }
 
@@ -178,8 +202,6 @@ export function deleteDeviceProfile(deviceProfileId?: string) {
     url: `/api/deviceProfile/${deviceProfileId}`,
   });
 }
-
-
 
 export function getTimeseriesKeys(deviceProfileId?: string) {
   return defHttp.get<[string]>({

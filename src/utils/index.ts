@@ -163,3 +163,12 @@ export function encodeHtml(s:any) {
         return r.join("");
       });
 }
+
+export function randomSecret(length: number) {
+  let str = '';
+  let chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
+  for (let i = 0; i < length; i++) {
+    str += chars.charAt(Math.floor(Math.random() * chars.length));
+  }
+  return str;
+}

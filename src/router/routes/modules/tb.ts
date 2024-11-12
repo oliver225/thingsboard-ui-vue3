@@ -77,34 +77,45 @@ const tb: AppRouteModule = {
       },
     },
     {
-      path: '/device/list',
-      name: 'DeviceList',
-      component: () => import('/@/views/tb/device/list.vue'),
+      path: '/device',
+      name: 'Device',
+      component: LAYOUT,
+      redirect: '/device/list',
       meta: {
         orderNo: 40,
         icon: 'ant-design:database-outlined',
-        tabIcon: 'ant-design:database-outlined',
-        title: t('tb.device'),
+        tabIcon: 'ant-design:team-outlined',
+        title: t('设备管理'),
+        single: false,
         authorities: [Authority.TENANT_ADMIN, Authority.CUSTOMER_USER],
       },
       children: [
         {
-          path: '/devices/:deviceId',
-          name: 'DeviceDetail',
-          redirect: (to) => {
-            return { path: '/device/list', query: { deviceId: to.params.deviceId } };
-          },
+          path: '/device/list',
+          name: 'DeviceList',
+          component: () => import('/@/views/tb/device/list.vue'),
           meta: {
-            hideMenu: true,
-            orderNo: 40,
+            orderNo: 10,
             icon: 'ant-design:database-outlined',
             tabIcon: 'ant-design:database-outlined',
             title: t('tb.device'),
             authorities: [Authority.TENANT_ADMIN, Authority.CUSTOMER_USER],
           },
         },
+        {
+          path: '/product/list',
+          name: 'ProductList',
+          component: () => import('/@/views/tb/product/list.vue'),
+          meta: {
+            icon: 'ant-design:right-circle-outlined',
+            tabIcon: 'ant-design:right-circle-outlined',
+            title: t('产品'),
+            authorities: [Authority.TENANT_ADMIN],
+          },
+        },
       ],
     },
+
     {
       path: '/asset/list',
       name: 'AssetList',

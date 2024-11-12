@@ -221,6 +221,7 @@ const transform: AxiosTransform = {
         const refreshToken = userStore.getRefreshToken;
         if (refreshToken && !isExpired(refreshToken)) {
           return refreshTokenApi(refreshToken)
+          // TODO refreshTokenApi 也报TOKEN到期的时候，要处理到 避免递归调用
             .then(jwtToken => {
               userStore.setToken(jwtToken);
               return instance.request(config)

@@ -2,6 +2,7 @@ export enum TransportType {
   DEFAULT = 'DEFAULT',
   MQTT = 'MQTT',
   COAP = 'COAP',
+  TCP = 'TCP',
   LWM2M = 'LWM2M',
   SNMP = 'SNMP',
 }
@@ -23,7 +24,8 @@ export enum ProvisionType {
 export const TRANSPORT_TYPE_OPTIONS = [
   { value: TransportType.DEFAULT, label: '默认' },
   { value: TransportType.MQTT, label: 'MQTT' },
-  { value: TransportType.COAP, label: 'COAP' },
+  { value: TransportType.COAP, label: 'CoAP' },
+  { value: TransportType.TCP, label: 'TCP' },
   { value: TransportType.LWM2M, label: 'LWM2M' },
   { value: TransportType.SNMP, label: 'SNMP' },
 
