@@ -63,9 +63,7 @@
         <template #tab><span>
             <Icon :icon="'ant-design:cloud-upload-outlined'" /> 物模型
           </span> </template>
-        <div class="border border-solid border-neutral-300 p-4">
-          <ThingModelForm class="pointer-events-none" ref="thingsModelFrom" />
-        </div>
+          <ThingModelForm  ref="thingsModelFrom" :readOnly="true" />
       </TabPane>
       <TabPane key="ALARM">
         <template #tab><span>

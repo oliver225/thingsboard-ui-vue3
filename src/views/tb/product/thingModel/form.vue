@@ -39,7 +39,7 @@
 
   const getTitle = computed(() => ({
     icon: meta.icon || 'ant-design:book-outlined',
-    value: record.value.id?.id ? t('编辑功能') : t('新增功能'),
+    value: record.value.identifier ? t('编辑功能') : t('新增功能'),
   }));
 
   const inputFormSchemas: FormSchema[] = [
@@ -94,7 +94,7 @@
     },
     {
       label: t('取值范围（最小值）'),
-      field: 'specs.min',
+      field: 'dataType.specs.min',
       component: 'InputNumber',
       componentProps: {
         maxlength: 24,
@@ -112,7 +112,7 @@
     },
     {
       label: t('取值范围（最大值）'),
-      field: 'specs.max',
+      field: 'dataType.specs.max',
       component: 'InputNumber',
       componentProps: {
         maxlength: 24,
@@ -129,7 +129,7 @@
     },
     {
       label: t('步长'),
-      field: 'specs.step',
+      field: 'dataType.specs.step',
       component: 'InputNumber',
       componentProps: {
         min: 0,
@@ -146,7 +146,7 @@
     },
     {
       label: t('单位'),
-      field: 'specs.unit',
+      field: 'dataType.specs.unit',
       component: 'Input',
       componentProps: {
         maxlength: 24,
@@ -164,7 +164,7 @@
     },
     {
       label: t('单位表述'),
-      field: 'specs.unitName',
+      field: 'dataType.specs.unitName',
       component: 'Input',
       componentProps: {
         maxlength: 24,
@@ -181,7 +181,7 @@
     },
     {
       label: t('数据长度'),
-      field: 'specs.length',
+      field: 'dataType.specs.length',
       component: 'InputNumber',
       componentProps: {
         min: 1,
@@ -195,7 +195,7 @@
     },
     {
       label: t('元素个数'),
-      field: 'specs.size',
+      field: 'dataType.specs.size',
       component: 'InputNumber',
       componentProps: {
         min: 1,
@@ -209,7 +209,7 @@
     },
     {
       label: t('布尔值(true)'),
-      field: 'specs.trueValue',
+      field: 'dataType.specs.trueValue',
       component: 'Input',
       componentProps: {
         placeholder: '如: 开',
@@ -223,7 +223,7 @@
     },
     {
       label: t('布尔值(false)'),
-      field: 'specs.falseValue',
+      field: 'dataType.specs.falseValue',
       component: 'Input',
       componentProps: {
         placeholder: '如: 关',

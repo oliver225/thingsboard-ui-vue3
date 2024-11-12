@@ -8,7 +8,7 @@
       </template> -->
       <template #tableTitle>
         <div class="space-x-2">
-          <a-button type="primary" @click="handleForm({})">
+          <a-button type="primary" @click="handleForm({})" v-if="readOnly == false">
             <Icon icon="i-fluent:add-12-filled" /> 新增功能
           </a-button>
           <a-input
@@ -24,7 +24,6 @@
           </a-input>
         </div>
       </template>
-      <template #dateSpecsSlot="{ record }"> ccc </template>
       <template #dataTypeSlot="{ record }">
         <span v-if="record.dataType?.type">
           {{
@@ -32,6 +31,30 @@
             record.dataType.type
           }}
         </span>
+      </template>
+      <template #dateSpecsSlot="{ record }">
+        <div
+          v-if="
+            record.dataType?.type == DataType.int ||
+            record.dataType?.type == DataType.float ||
+            record.dataType?.type == DataType.double
+          "
+        >
+          取值范围: {{ record.dataType?.specs?.min }} ~ {{ record.dataType?.specs?.max }}
+        </div>
+        <div v-if="record.dataType?.type == DataType.bool">
+          <div> true: {{ record.dataType?.specs?.trueValue }} </div>
+          <div> false:{{ record.dataType?.specs?.falseValue }} </div>
+        </div>
+        <div v-if="record.dataType?.type == DataType.text">
+          数据长度: {{ record.dataType?.specs?.length }}
+        </div>
+        <div v-if="record.dataType?.type == DataType.array">
+          数组长度: {{ record.dataType?.specs?.size }}
+        </div>
+        <div v-if="record.callType">
+          调用方式: {{ record.callType == 'asnyc' ? '异步调用' : '同步调用' }}
+        </div>
       </template>
     </BasicTable>
     <InputForm @register="registerModal" @success="handleSuccess" />
@@ -46,7 +69,9 @@
   import { Icon } from '/@/components/Icon';
   import InputForm from './form.vue';
   import { Function } from '/@/api/tb/deviceProfile';
-  import { FUNCTION_TYPE_OPTIONS, DATA_TYPE_OPTIONS } from '/@/enums/thingsModelEnum';
+  import { FUNCTION_TYPE_OPTIONS, DATA_TYPE_OPTIONS, DataType } from '/@/enums/thingsModelEnum';
+  import { watch } from 'vue';
+  import { isEmpty } from '/@/utils/is';
 
   const { t } = useI18n('tb');
   const { createConfirm, showMessage } = useMessage();
@@ -54,6 +79,15 @@
   const getTitle = {
     value: '物模型',
   };
+
+  const props = defineProps({
+    readOnly: {
+      type: Boolean,
+      default: false,
+    },
+  });
+
+  const record = ref();
 
   const searchParam = reactive({
     textSearch: '',
@@ -95,7 +129,6 @@
       title: t('数据规格'),
       dataIndex: 'dataType.specs',
       key: 'dataType.specs',
-      width: 80,
       align: 'center',
       slot: 'dateSpecsSlot',
     },
@@ -103,7 +136,14 @@
 
   const actionColumn: BasicColumn = {
     width: 160,
+    ifShow: props.readOnly == false,
     actions: (record: Recordable) => [
+      {
+        icon: 'i-clarity:note-edit-line',
+        color: 'success',
+        title: t('编辑功能'),
+        onClick: handleForm.bind(this, { ...record }),
+      },
       {
         icon: 'ant-design:delete-outlined',
         color: 'error',
@@ -150,13 +190,34 @@
 
   function handleSuccess(data: Function) {
     if (data) {
+      const index = dataSource.value?.findIndex((item) => item.identifier == data.identifier);
+      if (index !== undefined && index !== -1) {
+        dataSource.value?.splice(index, 1);
+      }
       dataSource.value = [...(dataSource.value || []), data];
     }
   }
 
+  watch(
+    () => searchParam.textSearch,
+    () => {
+      if (isEmpty(searchParam.textSearch)) {
+        setFieldsValue(record.value);
+      } else {
+        dataSource.value = dataSource.value?.filter(
+          (item) =>
+            item.name?.includes(searchParam.textSearch) ||
+            item.identifier?.includes(searchParam.textSearch),
+        );
+      }
+    },
+  );
+
   defineExpose({ getFieldsValue, validate, resetFields, setFieldsValue });
 
   async function setFieldsValue(values: any) {
+    searchParam.textSearch = '';
+    record.value = values;
     dataSource.value = [];
     if (values.properties) {
       values.properties.forEach((item: any) => {
