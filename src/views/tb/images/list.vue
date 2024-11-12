@@ -192,6 +192,8 @@
     showTableSetting: true,
     useSearchForm: false,
     canResize: true,
+    imageFiled: 'preview',
+    tableSetting: { card: true },
   });
 
   function wrapFetchParams(param: any) {

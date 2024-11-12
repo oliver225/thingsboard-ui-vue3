@@ -230,6 +230,8 @@ export interface BasicTableProps<T = any> {
   loading?: boolean;
   // 卡片展示
   cardList?: boolean;
+  // 图片地址
+  imageFiled?: string,
 
   /**
    * The column contains children to display

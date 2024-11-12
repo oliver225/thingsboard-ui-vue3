@@ -139,6 +139,7 @@ export const basicProps = {
   },
   loading: propTypes.bool,
   cardList: propTypes.bool.def(false),
+  imageFiled: propTypes.string,
   rowClassName: {
     type: Function as PropType<(record: TableCustomRecord<any>, index: number) => string>,
   },

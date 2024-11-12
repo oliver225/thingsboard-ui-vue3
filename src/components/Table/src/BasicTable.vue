@@ -54,7 +54,7 @@
         :rowClassName="getRowClassName"
         v-show="getEmptyDataIsShowTable"
         @change="handleTableChange"
-        v-if="$props.cardList"
+        v-if="getProps.cardList == false"
       >
         <template #[item]="data" v-for="item in Object.keys($slots)" :key="item">
           <slot :name="item" v-bind="data || {}"></slot>
@@ -86,6 +86,7 @@
           <slot v-else name="bodyCell" v-bind="getSlotData(data)"></slot>
         </template>
       </ATable>
+      <CardList v-bind="getBindValues" v-if="getProps.cardList == true"> </CardList>
     </FormItemRest>
   </div>
 </template>
@@ -125,6 +126,7 @@
   import { useTableForm } from './hooks/useTableForm';
   import { useDesign } from '/@/hooks/web/useDesign';
 
+  import CardList from '/@/components/Table/src/components/CardList.vue';
   import { omit } from 'lodash-es';
   import { basicProps } from './props';
   import { isFunction, isArray, isString } from '/@/utils/is';
