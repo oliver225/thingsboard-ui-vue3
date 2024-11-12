@@ -139,6 +139,7 @@ export interface FetchSetting {
 
 export interface TableSetting {
   redo?: boolean;
+  card?: boolean;
   size?: boolean;
   setting?: boolean;
   fullScreen?: boolean;
@@ -227,6 +228,8 @@ export interface BasicTableProps<T = any> {
   pagination?: PaginationProps | boolean;
   // loading加载
   loading?: boolean;
+  // 卡片展示
+  cardList?: boolean;
 
   /**
    * The column contains children to display

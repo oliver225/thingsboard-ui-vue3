@@ -149,6 +149,7 @@ const [registerTable, { reload }] = useTable({
   showTableSetting: true,
   useSearchForm: false,
   canResize: true,
+  tableSetting: { card: true },
 });
 
 function wrapFetchParams(param: any) {

@@ -54,6 +54,7 @@
         :rowClassName="getRowClassName"
         v-show="getEmptyDataIsShowTable"
         @change="handleTableChange"
+        v-if="$props.cardList"
       >
         <template #[item]="data" v-for="item in Object.keys($slots)" :key="item">
           <slot :name="item" v-bind="data || {}"></slot>
