@@ -206,6 +206,7 @@
       if (isEmpty(searchParam.textSearch)) {
         setFieldsValue(record.value);
       } else {
+        record.value = getFieldsValue();
         dataSource.value = dataSource.value?.filter(
           (item) =>
             item.name?.includes(searchParam.textSearch) ||
@@ -217,6 +218,7 @@
 
   function handleFilter(filters) {
     if (filters.type) {
+      record.value = getFieldsValue();
       dataSource.value = dataSource.value?.filter((item) => filters.type.includes(item.type));
     } else {
       setFieldsValue(record.value);

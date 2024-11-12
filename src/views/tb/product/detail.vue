@@ -61,7 +61,7 @@
       </TabPane>
       <TabPane key="TGINGMODEL">
         <template #tab><span>
-            <Icon :icon="'ant-design:cloud-upload-outlined'" /> 物模型
+            <Icon :icon="'ant-design:project-outlined'" /> 物模型
           </span> </template>
           <ThingModelForm  ref="thingsModelFrom" :readOnly="true" />
       </TabPane>

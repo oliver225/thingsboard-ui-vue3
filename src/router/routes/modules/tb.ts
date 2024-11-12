@@ -107,8 +107,8 @@ const tb: AppRouteModule = {
           name: 'ProductList',
           component: () => import('/@/views/tb/product/list.vue'),
           meta: {
-            icon: 'ant-design:right-circle-outlined',
-            tabIcon: 'ant-design:right-circle-outlined',
+            icon: 'ant-design:project-outlined',
+            tabIcon: 'ant-design:project-outlined',
             title: t('产品'),
             authorities: [Authority.TENANT_ADMIN],
           },
