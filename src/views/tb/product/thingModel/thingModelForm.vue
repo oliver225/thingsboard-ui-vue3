@@ -100,8 +100,9 @@
       title: t('功能类型'),
       dataIndex: 'type',
       key: 'type',
-      width: 80,
+      width: 100,
       align: 'center',
+      filters: FUNCTION_TYPE_OPTIONS.map((item) => ({ text: item.label, value: item.value })),
       format: (text: any) =>
         text ? FUNCTION_TYPE_OPTIONS.find((item) => item.value === text)?.label || text : '',
     },
@@ -158,6 +159,7 @@
     rowKey: (record) => record.identifier,
     columns: tableColumns,
     actionColumn: actionColumn,
+    filterFn: handleFilter,
     showTableSetting: true,
     useSearchForm: false,
     canResize: true,
@@ -212,6 +214,14 @@
       }
     },
   );
+
+  function handleFilter(filters) {
+    if (filters.type) {
+      dataSource.value = dataSource.value?.filter((item) => filters.type.includes(item.type));
+    } else {
+      setFieldsValue(record.value);
+    }
+  }
 
   defineExpose({ getFieldsValue, validate, resetFields, setFieldsValue });
 
