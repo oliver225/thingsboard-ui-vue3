@@ -31,6 +31,7 @@
             v-model:value="currentVale"
             placeholder="请输入图片链接"
             style="width: calc(100% - 100px)"
+            :disabled="disabled"
           />
           <Button type="primary" @click="handleClear" v-if="disabled == false">
             <Icon icon="ant-design:close-outlined" :size="24" />
