@@ -86,7 +86,11 @@
           <slot v-else name="bodyCell" v-bind="getSlotData(data)"></slot>
         </template>
       </ATable>
-      <CardList v-bind="getBindValues" v-if="getProps.cardList == true"> </CardList>
+      <CardList v-bind="getBindValues" v-if="getProps.cardList == true">
+        <template v-if="$slots.itemContainer" #itemContainer ="{ record }"  >
+          <slot name="itemContainer" :record="record"></slot>
+        </template>
+      </CardList>
     </FormItemRest>
   </div>
 </template>

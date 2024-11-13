@@ -33,9 +33,9 @@
         <Space>
           <div class="h-10 w-10 bg-white flex justify-center">
             <img
-              :src="record.preview"
+              :src="record.publicLink"
               :alt="record.name"
-              class="cursor-pointer h-full"
+              class="cursor-pointer w-full"
               @click="handleDetail(record)"
             />
           </div>
@@ -53,6 +53,30 @@
       </template>
       <template #isSystem="{ record }">
         <Checkbox :checked="record.link.indexOf('system') > -1" />
+      </template>
+      <template #itemContainer="{ record }">
+        <div class="w-52 h-68 p-2 bg-slate-100">
+          <div class="cursor-pointer h-50 w-full content-center">
+            <img
+              :src="record.publicLink"
+              :alt="record.name"
+              class="cursor-pointer w-full"
+              @click="handleDetail(record)"
+            />
+          </div>
+          <div class="px-1">
+            <div class="h-9 font-bold text-ellipsis overflow-hidden whitespace-nowrap">
+              {{ record.title }}
+            </div>
+            <Space :size="1">
+              <template #split>
+                <Divider type="vertical" />
+              </template>
+              <div>{{ record.descriptor?.width }}×{{ record.descriptor?.height }}</div>
+              <div> {{ convertBytesToSize(record.descriptor?.size) }}</div>
+            </Space>
+          </div>
+        </div>
       </template>
     </BasicTable>
     <EmbedImage @register="registerEmbedModal" />
@@ -79,8 +103,8 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import { Icon } from '/@/components/Icon';
   import { router } from '/@/router';
-  import { imageList, imagePreview, deleteImage, downloadImage } from '/@/api/tb/images';
-  import { Space, Checkbox } from 'ant-design-vue';
+  import { imageList, deleteImage, downloadImage } from '/@/api/tb/images';
+  import { Space, Checkbox, Divider } from 'ant-design-vue';
   import EmbedImage from './embedImage.vue';
   import Detail from './detail.vue';
   import ImageUpload from './upload.vue';
@@ -185,14 +209,13 @@
     rowKey: (record) => record.id.id,
     api: (param) => imageList(param, searchParam.includeSystemImages),
     beforeFetch: wrapFetchParams,
-    afterFetch: handlePreviewImage,
     defSort: { sortProperty: 'createdTime', sortOrder: 'DESC' },
     columns: tableColumns,
     actionColumn: actionColumn,
     showTableSetting: true,
     useSearchForm: false,
     canResize: true,
-    imageFiled: 'preview',
+    imageFiled: 'publicLink',
     tableSetting: { card: true },
   });
 
@@ -202,12 +225,6 @@
       imageSubType: 'IMAGE',
       textSearch: searchParam.textSearch,
     };
-  }
-
-  async function handlePreviewImage(data: any[]) {
-    for (let i = 0; i < data.length; i++) {
-      await fetchPreviewImage(data[i]).then((base64) => (data[i].preview = base64));
-    }
   }
 
   async function handleDelete(record: Recordable) {
@@ -264,18 +281,6 @@
           handleSuccess();
         }
       },
-    });
-  }
-
-  async function fetchPreviewImage(record: Recordable) {
-    return new Promise((resolve) => {
-      imagePreview(record.link).then((file) => {
-        let fileReader = new FileReader();
-        fileReader.onloadend = (e) => {
-          resolve(e.target?.result);
-        };
-        fileReader.readAsDataURL(file);
-      });
     });
   }
 

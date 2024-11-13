@@ -1,8 +1,8 @@
 <template>
   <!-- <ScrollContainer :style="{ maxHeight: '600px' }"> -->
-  <div class="bg-white p-2 overflow-scroll">
+  <div class="bg-white pt-2">
     <List
-      :grid="{ gutter: 1, xs: 1, sm: 2, md: 4, lg: 4, xl: 6, xxl: 6 }"
+      :grid="{ gutter: 5, xs: 1, sm: 2, md: 4, lg: 4, xl: 4, xxl: 6 }"
       :data-source="props.dataSource"
       :loading="props.loading"
       :bordered="false"
@@ -10,15 +10,13 @@
     >
       <template #renderItem="{ item }">
         <ListItem>
-          <Card>
+          <slot name="itemContainer" :record="item"></slot>
+          <Card v-if="!$slots.itemContainer">
             <template #title></template>
             <template #cover>
               <div :class="height">
                 <Image :src="item[imageFiled]" />
               </div>
-              <span>
-                {{ item[table.getColumns()[1].dataIndex] }}
-              </span>
             </template>
             <template #actions>
               <EditOutlined />
