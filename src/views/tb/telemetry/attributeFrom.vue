@@ -44,11 +44,12 @@ import { useMessage } from '/@/hooks/web/useMessage';
 import { Form, Input, Radio, InputNumber, Row, Col, Select } from 'ant-design-vue';
 import { FormInstance } from 'ant-design-vue/lib/form';
 import { BasicModal, useModalInner } from '/@/components/Modal';
-import { saveEntityAttributesV1 } from '/@/api/tb/telemetry';
+import { saveEntityAttributesV1, saveEntityTelemetry } from '/@/api/tb/telemetry';
 import { Scope, SCOPE_OPTIONS } from '/@/enums/telemetryEnum';
 import { CodeEditor } from '/@/components/CodeEditor';
 import { EntityId } from '/#/store';
 import { isBoolean, isEmpty, isNumber, isString } from 'lodash';
+const LATEST_TELEMETRY = "LATEST_TELEMETRY";
 
 const emit = defineEmits(['success', 'register']);
 
@@ -126,7 +127,11 @@ async function handleSubmit() {
             let result = {};
             result[data.key] = data.value
             setModalProps({ confirmLoading: true });
-            const res = await saveEntityAttributesV1(entityId.value, scope.value, result);
+            if((scope.value+'')==LATEST_TELEMETRY){
+                const res = await saveEntityTelemetry(entityId.value, result);
+            } else {
+                const res = await saveEntityAttributesV1(entityId.value, scope.value, result);
+            }
             showMessage(`添加属性成功！`);
             setTimeout(closeModal);
             emit('success', data);
