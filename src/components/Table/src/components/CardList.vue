@@ -1,5 +1,6 @@
 <template>
-  <div class="bg-white p-2">
+  <!-- <ScrollContainer :style="{ maxHeight: '600px' }"> -->
+  <div class="bg-white p-2 overflow-scroll">
     <List
       :grid="{ gutter: 1, xs: 1, sm: 2, md: 4, lg: 4, xl: 6, xxl: 6 }"
       :data-source="props.dataSource"
@@ -15,6 +16,9 @@
               <div :class="height">
                 <Image :src="item[imageFiled]" />
               </div>
+              <span>
+                {{ item[table.getColumns()[1].dataIndex] }}
+              </span>
             </template>
             <template #actions>
               <EditOutlined />
@@ -40,6 +44,7 @@
       </template>
     </List>
   </div>
+  <!-- </ScrollContainer> -->
 </template>
 <script lang="ts" setup>
   import { computed, onMounted, ref } from 'vue';
@@ -49,6 +54,7 @@
   import { useTableContext } from '../hooks/useTableContext';
   import { watch } from 'vue';
   import { basicProps } from '../props';
+  import { ScrollContainer } from '/@/components/Container/index';
 
   const table = useTableContext();
 
