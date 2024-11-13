@@ -32,12 +32,9 @@
       <template #firstColumn="{ record }">
         <Space>
           <div class="h-10 w-10 bg-white flex justify-center">
-            <img
-              :src="record.publicLink"
-              :alt="record.name"
-              class="cursor-pointer w-full"
-              @click="handleDetail(record)"
-            />
+            <div class="cursor-pointer h-10 w-full content-center" @click="handleDetail(record)">
+              <img :src="record.publicLink" :alt="record.name" class="w-full" />
+            </div>
           </div>
           {{ record.title }}
         </Space>
@@ -103,7 +100,7 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import { Icon } from '/@/components/Icon';
   import { router } from '/@/router';
-  import { imageList, deleteImage, downloadImage } from '/@/api/tb/images';
+  import { imageList, deleteImage, downloadImage, imagePreview } from '/@/api/tb/images';
   import { Space, Checkbox, Divider } from 'ant-design-vue';
   import EmbedImage from './embedImage.vue';
   import Detail from './detail.vue';
@@ -212,6 +209,7 @@
     defSort: { sortProperty: 'createdTime', sortOrder: 'DESC' },
     columns: tableColumns,
     actionColumn: actionColumn,
+    // afterFetch: handlePreviewImage,
     showTableSetting: true,
     useSearchForm: false,
     canResize: true,
@@ -225,6 +223,12 @@
       imageSubType: 'IMAGE',
       textSearch: searchParam.textSearch,
     };
+  }
+
+  async function handlePreviewImage(data: any[]) {
+    for (let i = 0; i < data.length; i++) {
+      await fetchPreviewImage(data[i]).then((base64) => (data[i].preview = base64));
+    }
   }
 
   async function handleDelete(record: Recordable) {
@@ -281,6 +285,18 @@
           handleSuccess();
         }
       },
+    });
+  }
+
+  async function fetchPreviewImage(record: Recordable) {
+    return new Promise((resolve) => {
+      imagePreview(record.link).then((file) => {
+        let fileReader = new FileReader();
+        fileReader.onloadend = (e) => {
+          resolve(e.target?.result);
+        };
+        fileReader.readAsDataURL(file);
+      });
     });
   }
 

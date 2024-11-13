@@ -5,6 +5,8 @@ import { ContentTypeEnum } from '/@/enums/httpEnum';
 import { defHttp } from '/@/utils/http/axios';
 import { AxiosProgressEvent } from 'axios';
 
+export const tbImagePrefix = 'tb-image;';
+
 export function imageList(params: BasicQuery, includeSystemImages = false) {
   return defHttp.get<Page<ResourceInfo>>({
     url: '/api/images',
@@ -15,6 +17,12 @@ export function imageList(params: BasicQuery, includeSystemImages = false) {
 export function getImageInfo(type: 'system' | 'tenant', key: string) {
   return defHttp.get<ResourceInfo>({
     url: `/api/images/${type}/${key}/info`,
+  });
+}
+
+export function getImageInfo2(link: string) {
+  return defHttp.get<ResourceInfo>({
+    url: `${link}/info`,
   });
 }
 

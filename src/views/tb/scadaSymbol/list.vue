@@ -33,12 +33,9 @@
       <template #firstColumn="{ record }">
         <Space size="middle">
           <div class="h-10 w-10 flex justify-center">
-            <img
-              :src="record.preview"
-              :alt="record.name"
-              class="cursor-pointer w-full"
-              @click="handleDetail(record)"
-            />
+            <div class="cursor-pointer h-10 w-full content-center" @click="handleDetail(record)">
+              <img :src="record.preview" :alt="record.name" class="w-full" />
+            </div>
           </div>
           {{ record.title }}
         </Space>
@@ -72,7 +69,7 @@
   import { Icon } from '/@/components/Icon';
   import { router } from '/@/router';
   import { imageList, imagePreview, deleteImage, downloadImage } from '/@/api/tb/images';
-  import { Space, Checkbox } from 'ant-design-vue';
+  import { Space, Checkbox, Image } from 'ant-design-vue';
   import { usePermission } from '/@/hooks/web/usePermission';
   import { Authority } from '/@/enums/authorityEnum';
   import { downloadByData } from '/@/utils/file/download';

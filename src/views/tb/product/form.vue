@@ -87,11 +87,11 @@
             />
           </Form.Item>
           <Form.Item
-            label="图片"
+            label="选择图片"
             name="image"
             :rules="[{ required: true, message: '请输入产品图片!' }]"
           >
-            <Input v-model:value="formState.image" placeholder="请输入产品图片" />
+            <ImageUrlInput v-model:value="formState.image" />
           </Form.Item>
           <Form.Item label="描述信息" name="description">
             <Input.TextArea v-model:value="formState.description" placeholder="请输入描述信息" />
@@ -157,6 +157,7 @@
   import { useWindowSizeFn } from '/@/hooks/event/useWindowSizeFn';
   import { isEmpty } from '/@/utils/is';
   import { EntityType } from '/@/enums/entityTypeEnum';
+  import ImageUrlInput from '/@/views/tb/images/ImageUrlInput.vue';
 
   const emit = defineEmits(['success', 'register']);
 
@@ -380,5 +381,40 @@
   .profile-container {
     min-height: 400px;
     overflow-y: auto;
+  }
+  .resource-image-select {
+    border: 1px solid @border-color-light;
+    border-radius: @border-radius-base;
+    padding: 2px 4px;
+    height: 90px;
+    display: flex;
+    .resource-image {
+      width: 90px;
+      height: 100%;
+      border: 1px solid @border-color-light;
+      justify-items: center;
+      align-content: center;
+      image {
+        width: 90px;
+      }
+    }
+    .resource-info {
+      flex: 1;
+      display: flex;
+      .resource-image-btn {
+        border: 1px solid @border-color-light;
+        margin: 6px;
+        padding: 8px;
+        justify-items: center;
+        align-self: center;
+        color: @primary-color;
+        cursor: pointer;
+        flex: 1;
+      }
+      .resource-image-btn:hover {
+        background-color: fade(@primary-color, 10);
+        border-color: @primary-color;
+      }
+    }
   }
 </style>
