@@ -415,7 +415,7 @@
   function getSlotData(rawData: Recordable) {
     let data = rawData || {};
     if (!data.record) data.record = {};
-    if (!data.record.dataMap) data.record.dataMap = {};
+    // if (!data.record.dataMap) data.record.dataMap = {};
     return data;
   }
 

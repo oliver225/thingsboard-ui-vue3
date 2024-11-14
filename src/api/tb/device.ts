@@ -16,7 +16,8 @@ export interface Device extends BasicModel<EntityType.DEVICE> {
   softwareId?: EntityId<EntityType.OTA_PACKAGE>;
   deviceData?: {
     configuration?: { type: 'DEFAULT' },
-    transportConfiguration?: { type: TransportType }
+    transportConfiguration?: { type: TransportType },
+    thingModelDefine: { properties?: []; services?: []; events?: [] },
   }
   additionalInfo: { description?: string, gateway: boolean, overwriteActivityTime?: boolean }
 
