@@ -45,13 +45,11 @@
       v-if="showChartView"
       :loading="loading"
       :dataSource="dataSource"
-      :grid="{ gutter: 5, xs: 1, sm: 1, md: 2, lg: 2, xl: 3, xxl: 3 }"
+      :grid="{ gutter: 5, xs: 1, sm: 1, md: 1, lg: 2, xl: 2, xxl: 2 }"
     >
       <template #renderItem="{ item }">
-        {{ item }}
         <List.Item v-bind:style="{ padding: '6px' }">
           <TimeseriesChart
-            :keyStr="item.key"
             :entityType="props.entityType"
             :entityId="props.entityId"
             :kvEntity="item"
@@ -88,6 +86,7 @@
   import AttributeModal from './attributeFrom.vue';
   import DeleteModal from './delete.vue';
   import { DataType } from '/@/enums/thingsModelEnum';
+  import { isNull } from '/@/utils/is';
   const LATEST_TELEMETRY = 'LATEST_TELEMETRY';
 
   const props = defineProps({
@@ -327,12 +326,17 @@
   }
 
   function onWebsocketMessage(data: any) {
-    dataSource.value = Object.keys(data.data).map((key) => ({
-      key: key,
-      value: data.data[key][0][1],
-      lastUpdateTs: data.data[key][0][0],
-      property: data.properties[key],
-    }));
+    dataSource.value = Object.keys(data.data).map((key) => 
+      {
+        console.log(data )
+        console.log(data.properties);
+        return {
+          key: key,
+          value: data.data[key][0][1],
+          lastUpdateTs: data.data[key][0][0],
+          property: isNull(data.properties)? null: data.properties[key]
+        }
+    });
   }
 
   function handleDelete(data: any) {
