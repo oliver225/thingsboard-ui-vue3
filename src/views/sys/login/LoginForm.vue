@@ -137,7 +137,7 @@
   const isValidCodeLogin = ref(false);
 
   const formData = reactive({
-    account: 'system',
+    account: '1069035666@qq.com',
     password: '',
     validCode: '',
   });
