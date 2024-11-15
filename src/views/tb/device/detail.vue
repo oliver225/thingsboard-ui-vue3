@@ -93,6 +93,12 @@
         </template>
         <Telemetry :entityType="EntityType.DEVICE" :entityId="record?.id?.id" />
       </TabPane>
+      <TabPane key="TGINGMODEL">
+        <template #tab>
+          <span> <Icon :icon="'ant-design:project-outlined'" /> 物模型 </span>
+        </template>
+        <ThingModelForm ref="thingsModelFrom" :readOnly="true" />
+      </TabPane>
       <TabPane key="TOPIC">
         <template #tab
           ><span> <Icon :icon="'ant-design:api-outlined'" /> 连接API </span>
@@ -127,7 +133,7 @@
   </BasicDrawer>
 </template>
 <script lang="ts" setup name="ViewsTbDeviceDetail">
-  import { ref, unref, computed } from 'vue';
+  import { ref, unref, computed, watch, nextTick } from 'vue';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { router } from '/@/router';
@@ -152,6 +158,7 @@
   import Relation from '/@/views/tb/relation/list.vue';
   import Event from '/@/views/tb/event/index.vue';
   import DeviceAPI from '/@/views/tb/device/deviceApi.vue';
+  import ThingModelForm from '/@/views/tb/product/thingModel/thingModelForm.vue';
 
   import { EntityType } from '/@/enums/entityTypeEnum';
 
@@ -171,6 +178,7 @@
   const { t } = useI18n('tb');
   const { showMessage } = useMessage();
   const { meta } = unref(router.currentRoute);
+  const thingsModelFrom = ref<any>(null);
   const record = ref<DeviceInfo>({} as DeviceInfo);
   const credentials = ref<DeviceCredentials>({} as DeviceCredentials);
 
@@ -243,6 +251,18 @@
     credentials.value = {} as DeviceCredentials;
     setDescProps({ data: {} });
   }
+
+  watch(
+    () => tabActiveKey.value,
+    () => {
+      if (tabActiveKey.value == 'TGINGMODEL') {
+      nextTick(() => {
+        if (thingsModelFrom.value != null) {
+          thingsModelFrom.value.setFieldsValue(record.value?.deviceData?.thingModelDefine || {});
+        }
+      });
+    }}
+  );
 
   function handleCopyDeviceId() {
     copyToClipboard(record.value.id.id, '复制设备ID成功！');

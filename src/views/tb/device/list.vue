@@ -117,7 +117,7 @@
       ellipsis: false,
     },
     {
-      title: '设备配置',
+      title: '产品',
       dataIndex: 'deviceProfileName',
       key: 'deviceProfileId',
       align: 'left',
@@ -253,7 +253,7 @@
     }).then((result) => {
       deviceProfileList.value = result.data;
       updateColumn({
-        title: '设备配置',
+        title: '产品',
         dataIndex: 'deviceProfileName',
         key: 'deviceProfileId',
         align: 'left',
