@@ -46,7 +46,7 @@
           :dataSource="series"
           :pagination="false"
           size="small"
-          :bordered = "false"
+          :bordered="false"
           :scroll="{ y: 200 }"
           :showIndexColumn="false"
           v-if="!showChart"
@@ -405,7 +405,10 @@
           lineStyle: { width: 1, color: '#019680' },
         },
         formatter: (arg: any) => {
-          return `${dayjs(Number.parseInt(arg[0].name)).format('YYYY-MM-DD HH:mm:ss')}<br/>${arg[0].value}(单位)`;
+          if (property.value?.dataType?.specs?.unit) {
+            return `${dayjs(Number.parseInt(arg[0].name)).format('YYYY-MM-DD HH:mm:ss')}<br/>${arg[0].value}(${property.value?.dataType?.specs?.unit})`;
+          }
+          return `${dayjs(Number.parseInt(arg[0].name)).format('YYYY-MM-DD HH:mm:ss')}<br/>${arg[0].value}`;
         },
       },
       xAxis: {
@@ -481,7 +484,12 @@
   });
 
   function handleOpenModal() {
-    openModal(true, { entityType: props.entityType, entityId: props.entityId, keys: keyStr.value });
+    openModal(true, { 
+      entityType: props.entityType,
+      entityId: props.entityId,
+      keys: keyStr.value,
+      property: props.kvEntity.property
+     });
   }
 </script>
 

@@ -4,23 +4,61 @@
       <template #headerTop>
         <div class="flex">
           <div class="flex-1">
-            <Segmented v-model:value="selectedScope" :options="typeTabList" @change="handleScopeChange" />
+            <Segmented
+              v-model:value="selectedScope"
+              :options="typeTabList"
+              @change="handleScopeChange"
+            />
           </div>
           <Space :size="1" class="mx-4">
             <Tooltip title="添加属性" v-if="selectedScope != Scope.CLIENT_SCOPE">
-              <Icon  icon="ant-design:plus-outlined" :size="20" class="cursor-pointer" @click="handledAttributeForm({})" />
+              <Icon
+                icon="ant-design:plus-outlined"
+                :size="20"
+                class="cursor-pointer"
+                @click="handledAttributeForm({})"
+              />
             </Tooltip>
             <Tooltip title="刷新数据" v-if="selectedScope != LATEST_TELEMETRY">
-              <Icon icon="ant-design:redo-outlined" :size="20"  class="cursor-pointer" @click="fetchAttributes" />
+              <Icon
+                icon="ant-design:redo-outlined"
+                :size="20"
+                class="cursor-pointer"
+                @click="fetchAttributes"
+              />
             </Tooltip>
             <Tooltip title="查询名称">
               <Icon icon="ant-design:search-outlined" :size="20" class="cursor-pointer" />
             </Tooltip>
-            <Tooltip  title="查看图表" v-if="selectedScope == LATEST_TELEMETRY && showChartView == false" >
-              <Icon icon="ant-design:line-chart-outlined" :size="20" class="cursor-pointer" @click="() => { showChartView = true } "/>
+            <Tooltip
+              title="查看图表"
+              v-if="selectedScope == LATEST_TELEMETRY && showChartView == false"
+            >
+              <Icon
+                icon="ant-design:line-chart-outlined"
+                :size="20"
+                class="cursor-pointer"
+                @click="
+                  () => {
+                    showChartView = true;
+                  }
+                "
+              />
             </Tooltip>
-            <Tooltip title="查看表格" v-if="selectedScope == LATEST_TELEMETRY && showChartView == true">
-              <Icon  icon="ant-design:insert-row-below-outlined" :size="20" class="cursor-pointer" @click=" () => {showChartView = false}"/>
+            <Tooltip
+              title="查看表格"
+              v-if="selectedScope == LATEST_TELEMETRY && showChartView == true"
+            >
+              <Icon
+                icon="ant-design:insert-row-below-outlined"
+                :size="20"
+                class="cursor-pointer"
+                @click="
+                  () => {
+                    showChartView = false;
+                  }
+                "
+              />
             </Tooltip>
             <template #split>
               <Divider type="vertical" />
@@ -29,7 +67,12 @@
         </div>
       </template>
     </TableHeader>
-    <BasicTable @register="registerTable" :loading="loading" :dataSource="dataSource" v-show="!showChartView">
+    <BasicTable
+      @register="registerTable"
+      :loading="loading"
+      :dataSource="dataSource"
+      v-show="!showChartView"
+    >
       <template #valueColumn="{ record }">
         {{ formatValue(record) }}
         {{ record.property?.dataType?.specs?.unit || '' }}
@@ -68,7 +111,16 @@
   });
 </script>
 <script lang="ts" setup>
-  import { PropType, defineComponent, ref, onMounted,computed,  reactive, watch, onBeforeUnmount } from 'vue';
+  import {
+    PropType,
+    defineComponent,
+    ref,
+    onMounted,
+    computed,
+    reactive,
+    watch,
+    onBeforeUnmount,
+  } from 'vue';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { Icon } from '/@/components/Icon';
@@ -80,7 +132,11 @@
   import { useModal } from '/@/components/Modal';
   import { Space, Divider, Tooltip, Segmented, List } from 'ant-design-vue';
   import { BasicTable, BasicColumn, useTable, TableHeader } from '/@/components/Table';
-  import { getAttributesByScope, deleteEntityAttributes, getLatestTimeseries} from '/@/api/tb/telemetry';
+  import {
+    getAttributesByScope,
+    deleteEntityAttributes,
+    getLatestTimeseries,
+  } from '/@/api/tb/telemetry';
   import TimeseriesChart from './timeseriesChart.vue';
   import TimeseriesModal from './timeseriesModal.vue';
   import AttributeModal from './attributeFrom.vue';
@@ -106,7 +162,11 @@
   });
   const userStore = useUserStore();
 
-  const { getAndIncrementCmdId, send: websocketSend, unsubscribe: websocketUnsubscribe } = useWebsocketStore();
+  const {
+    getAndIncrementCmdId,
+    send: websocketSend,
+    unsubscribe: websocketUnsubscribe,
+  } = useWebsocketStore();
 
   const { t } = useI18n('tb');
   const { createConfirm, showMessage } = useMessage();
@@ -198,13 +258,14 @@
 
   watch(
     () => showChartView.value,
-    ()=> {
-      if( showChartView.value ) {
+    () => {
+      if (showChartView.value) {
         unsubscribe();
       } else {
-        handleScopeChange(selectedScope.value)
+        handleScopeChange(selectedScope.value);
       }
-  })
+    },
+  );
 
   async function handleScopeChange(scope: string) {
     unsubscribe();
@@ -312,35 +373,35 @@
   });
   function unsubscribe() {
     websocketUnsubscribe([LATEST_TELEMETRY_CMD_ID.value, ATTRIBUTE_CMD_ID.value], {
-      cmds:[
-        { 
+      cmds: [
+        {
           type: WsCmdType.TIMESERIES,
           cmdId: LATEST_TELEMETRY_CMD_ID.value,
           entityId: props.entityId,
           entityType: props.entityType,
           scope: 'LATEST_TELEMETRY',
-          unsubscribe: true
-        }, {
+          unsubscribe: true,
+        },
+        {
           type: WsCmdType.ATTRIBUTES,
           cmdId: ATTRIBUTE_CMD_ID.value,
           entityId: props.entityId,
           entityType: props.entityType,
           scope: 'CLIENT_SCOPE',
           unsubscribe: true,
-        }
-      ]
+        },
+      ],
     });
   }
 
   function onWebsocketMessage(data: any) {
-    dataSource.value = Object.keys(data.data).map((key) => 
-      {
-        return {
-          key: key,
-          value: data.data[key][0][1],
-          lastUpdateTs: data.data[key][0][0],
-          property: isNull(data.properties)? null: data.properties[key]
-        }
+    dataSource.value = Object.keys(data.data).map((key) => {
+      return {
+        key: key,
+        value: data.data[key][0][1],
+        lastUpdateTs: data.data[key][0][0],
+        property: isNull(data.properties) ? null : data.properties[key],
+      };
     });
   }
 
@@ -385,6 +446,7 @@
       entityType: props.entityType,
       entityId: props.entityId,
       keys: data.key,
+      property: data.property,
     });
   }
 
