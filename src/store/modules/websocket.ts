@@ -74,7 +74,7 @@ export const useWebsocketStore = defineStore({
       const userStore = useUserStore();
       const { wsPath } = useGlobSetting();
       const useWebSocketReturn = useWebSocket(
-        `${wsPath}/telemetry?token=${userStore.getToken}`,
+        `${wsPath}`,
         { autoReconnect: false, autoClose: false, onMessage: this.onMessage }
       )
       this.websocket = useWebSocketReturn;

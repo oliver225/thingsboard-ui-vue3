@@ -22,6 +22,7 @@ import logoImg from '/@/assets/images/logo.png';
 import { mitt, Emitter } from '/@/utils/mitt';
 import { Authority } from '/@/enums/authorityEnum';
 import { h } from 'vue';
+import { useWebsocketStore } from './websocket';
 
 const { showMessage, createConfirm } = useMessage();
 
@@ -157,6 +158,8 @@ export const useUserStore = defineStore({
     },
     // async afterLoginAction(goHome?: boolean): Promise<GetUserInfoModel | null> {
     async afterLoginAction(res: UserInfo, goHome?: boolean) {
+      const { close } = useWebsocketStore();
+      close();
       this.setUserInfo(res);
       this.initPageCache(res);
       this.setSessionTimeout(false);
@@ -221,6 +224,8 @@ export const useUserStore = defineStore({
      * @description: logout
      */
     async logout(goLogin = false) {
+      const { close } = useWebsocketStore();
+
       if (this.getToken) {
         try {
           await logoutApi();
@@ -228,6 +233,7 @@ export const useUserStore = defineStore({
           console.log('注销Token失败');
         }
       }
+      close();
       this.setToken(undefined);
       this.setSessionTimeout(true);
       this.setUserInfo(null);
