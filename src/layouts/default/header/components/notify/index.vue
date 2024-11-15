@@ -16,33 +16,29 @@
   </div>
 </template>
 <script lang="ts">
-  import { onMounted, onBeforeUnmount, watchEffect, defineComponent, ref } from 'vue';
+  import { onMounted, defineComponent, ref } from 'vue';
   import { Popover, Tabs, Badge } from 'ant-design-vue';
   import { BellOutlined } from '@ant-design/icons-vue';
-  import { useGlobSetting } from '/@/hooks/setting';
+  import { Notification } from '/@/api/tb/notification';
   import { useDesign } from '/@/hooks/web/useDesign';
-  import { useWebSocket } from '@vueuse/core';
   import { useWebsocketStore } from '/@/store/modules/websocket';
   import NotificationList from './NotificationList.vue';
   import { getToken } from '/@/utils/auth';
+  import { WsCmdType } from '/@/enums/WsCmdEnum';
 
   export default defineComponent({
     components: { Popover, BellOutlined, Tabs, TabPane: Tabs.TabPane, Badge, NotificationList },
     setup() {
       const { prefixCls } = useDesign('header-notify');
-      const { wsPath } = useGlobSetting();
-      const { getAndIncrementCmdId } = useWebsocketStore();
 
-      const UN_READ_COUNT_CMD_ID = ref(0);
-      const UN_READ_DATA_CMD_ID = ref(0);
+      const { getAndIncrementCmdId, send: websocketSend } = useWebsocketStore();
+
+      const AUTH_CMD_ID = ref(0);
+      const NOTIFICATIONS_COUNT_CMD_ID = ref(0);
+      const NOTIFICATIONS_CMD_ID = ref(0);
 
       const notificationListData = ref<Notification[]>([]);
       const count = ref(0);
-
-      const { send, data, close } = useWebSocket(`${wsPath}/notifications?token=${getToken()}`, {
-        autoReconnect: true,
-        autoClose: false,
-      });
 
       // function onNoticeClick(record: ListItem) {
       //   createMessage.success('你点击了通知，ID=' + record.id);
@@ -51,59 +47,70 @@
       // }
 
       function handleMarkAllAsRead() {
-        send(JSON.stringify({ markAllAsReadCmd: { cmdId: getAndIncrementCmdId() } }));
-        sendQueryUnRead();
+        const cmdId = getAndIncrementCmdId();
+        websocketSend(
+          cmdId,
+          {
+            cmds: [{ cmdId: cmdId, type: WsCmdType.MARK_ALL_NOTIFICATIONS_AS_READ }],
+          },
+          onWebsocketMessage,
+        );
       }
 
       function handlePopoverClick() {
-        sendQueryUnRead();
+        sendQueryNotifictionList();
       }
 
-      watchEffect(() => {
-        if (data.value) {
-          try {
-            const dataObj = JSON.parse(data.value);
-            if (dataObj.hasOwnProperty('cmdUpdateType')) {
-              if (dataObj.cmdUpdateType == 'NOTIFICATIONS_COUNT') {
-                count.value = dataObj.totalUnreadCount;
-              } else if (dataObj.cmdUpdateType == 'NOTIFICATIONS') {
-                count.value = dataObj.totalUnreadCount;
-                notificationListData.value = dataObj.notifications;
-                sendCountPacket();
-              }
-            }
-          } catch (error: any) {
-            console.log(error);
-          }
-        }
-      });
-
       onMounted(() => {
+        AUTH_CMD_ID.value = getAndIncrementCmdId();
+        NOTIFICATIONS_COUNT_CMD_ID.value = getAndIncrementCmdId();
+        NOTIFICATIONS_CMD_ID.value = getAndIncrementCmdId();
         sendCountPacket();
-      });
-      onBeforeUnmount(() => {
-        close();
       });
 
       function sendCountPacket() {
-        if (UN_READ_DATA_CMD_ID.value > 0) {
-          send(JSON.stringify({ unsubCmd: { cmdId: UN_READ_DATA_CMD_ID.value } }));
-        }
-        UN_READ_COUNT_CMD_ID.value = getAndIncrementCmdId();
-        send(JSON.stringify({ unreadCountSubCmd: { cmdId: UN_READ_COUNT_CMD_ID.value } }));
+        websocketSend(
+          AUTH_CMD_ID.value,
+          {
+            authCmd: { cmdId: AUTH_CMD_ID.value, token: getToken() },
+          },
+          onWebsocketMessage,
+        );
+
+        websocketSend(
+          NOTIFICATIONS_COUNT_CMD_ID.value,
+          {
+            cmds: [
+              { cmdId: NOTIFICATIONS_COUNT_CMD_ID.value, type: WsCmdType.NOTIFICATIONS_COUNT },
+            ],
+          },
+          onWebsocketMessage,
+        );
       }
 
-      function sendQueryUnRead() {
-        if (count.value > 0) {
-          if (UN_READ_COUNT_CMD_ID.value > 0) {
-            send(JSON.stringify({ unsubCmd: { cmdId: UN_READ_COUNT_CMD_ID.value } }));
-          }
-          UN_READ_DATA_CMD_ID.value = getAndIncrementCmdId();
-          send(
-            JSON.stringify({
-              unreadSubCmd: { cmdId: UN_READ_DATA_CMD_ID.value, limit: count.value },
-            }),
-          );
+      function sendQueryNotifictionList() {
+        websocketSend(
+          NOTIFICATIONS_CMD_ID.value,
+          {
+            cmds: [
+              {
+                cmdId: NOTIFICATIONS_CMD_ID.value,
+                type: WsCmdType.NOTIFICATIONS,
+                types: [],
+                limit: 100,
+              },
+            ],
+          },
+          onWebsocketMessage,
+        );
+      }
+
+      function onWebsocketMessage(data: any) {
+        if (data.cmdUpdateType == WsCmdType.NOTIFICATIONS_COUNT) {
+          count.value = data.totalUnreadCount || 0;
+        }
+        if (data.cmdUpdateType == WsCmdType.NOTIFICATIONS) {
+          notificationListData.value = data.notifications || [];
         }
       }
 

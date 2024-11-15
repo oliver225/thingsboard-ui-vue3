@@ -61,6 +61,7 @@
   import { isArray } from 'lodash';
   import { AGGREGATION_OPTIONS, Aggregation } from '/@/enums/telemetryEnum';
   import { getTimeseries, TelemetryQuery } from '/@/api/tb/telemetry';
+import { Function } from '/@/api/tb/deviceProfile';
 
   const { t } = useI18n('tb');
   const { showMessage } = useMessage();
@@ -88,15 +89,18 @@
     },
   });
 
-  const keyStr = computed(() => props.kvEntity.key);
-  const property = computed(() => props.kvEntity.property);
   const LATEST_CMD_ID = ref(0);
   const filterPopoverVisible = ref(false);
   const chartRef = ref<HTMLDivElement | null>(null);
   const loading = ref(false);
   const series = ref<Array<TsData>>([]);
+    
+  const property = ref<Function>(props.kvEntity.property);
+  const keyStr = computed(() => props.kvEntity.key);
 
   const { getAndIncrementCmdId, send: websocketSend, unsubscribe: websocketUnsubscribe } = useWebsocketStore();
+  
+  const { setOptions } = useECharts(chartRef as Ref<HTMLDivElement>);
 
   const rangePresets = ref([
     { label: '今天', value: [dayjs().startOf('D'), dayjs()] },
@@ -106,18 +110,6 @@
     { label: '最近3天', value: [dayjs().subtract(2, 'day').startOf('D'), dayjs()] },
     { label: '最近7天', value: [dayjs().subtract(6, 'day').startOf('D'), dayjs()] },
   ]);
-
-  const query = reactive({
-    entityType: props.entityType,
-    entityId: props.entityId,
-    keys: props.kvEntity.key,
-    timeRange: [dayjs().subtract(2, 'hour'), dayjs()],
-    interval: 100,
-    limit: 100,
-    agg: 'NONE',
-    orderBy: 'ASC',
-    useStrictDataTypes: false,
-  })
 
   const inputFormSchemas: FormSchema[] = [
     { field: 'entityType', component: 'Input', defaultValue: props.entityType, show: false },
@@ -183,8 +175,20 @@
     schemas: inputFormSchemas,
     baseColProps: { lg: 24, md: 24 },
   });
-  const { setOptions } = useECharts(chartRef as Ref<HTMLDivElement>);
 
+
+
+  const query = reactive({
+    entityType: props.entityType,
+    entityId: props.entityId,
+    keys: props.kvEntity.key,
+    timeRange: [dayjs().subtract(2, 'hour'), dayjs()],
+    interval: 100,
+    limit: 100,
+    agg: 'NONE',
+    orderBy: 'ASC',
+    useStrictDataTypes: false,
+  })
 
   async function fetchTimeseries(init: boolean) {
     try {
@@ -199,9 +203,10 @@
         filterPopoverVisible.value = false;
         result = await getTimeseries({ ...data, startTs: dayjs(data.timeRange[0]).valueOf(), endTs: dayjs(data.timeRange[1]).valueOf(), timeRange: null } as TelemetryQuery);
       }
-      console.log(result)
-
-      // series.value = result[props.kvEntity.key] || [];
+      
+      property.value = result[keyStr.value].property || {} as Function
+      
+      series.value =  result[keyStr.value].data || [];
       renderChart();
 
     } catch (error: any) {
@@ -247,6 +252,7 @@
   }
 
   async function sendQuery() {
+    LATEST_CMD_ID.value = getAndIncrementCmdId();
     let data: any = {};
     try {
       data = await validate();
@@ -267,7 +273,7 @@
           {
             cmdId: LATEST_CMD_ID.value,
             historyCmd: {
-              keys: [keyStr.value],
+              keys: keyStr.value,
               agg: queryData.agg,
               startTs: dayjs(queryData.timeRange[0]).valueOf(),
               endTs: dayjs(queryData.timeRange[1]).valueOf(),
@@ -275,7 +281,7 @@
               limit: queryData.limit,
             },
             // tsCmd: {
-            //   keys: [props.keyStr],
+            //   keys: [keyStr.value],
             //   agg: queryData.agg,
             //   startTs: dayjs(queryData.timeRange[1]).valueOf(),
             //   interval: queryData.interval,
@@ -358,7 +364,7 @@
   }
 
   onMounted(async () => {
-    await fetchTimeseries(true);
+    // await fetchTimeseries(true);
     sendInitQuery();
   });
 

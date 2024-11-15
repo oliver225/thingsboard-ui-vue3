@@ -8,7 +8,12 @@ import type { ErrorMessageMode } from '/#/axios';
 import { defineStore } from 'pinia';
 import { store } from '/@/store';
 import { PageEnum } from '/@/enums/pageEnum';
-import { TOKEN_KEY, REFRESHTOKEN_KEY, USER_INFO_KEY, SESSION_TIMEOUT_KEY } from '/@/enums/cacheEnum';
+import {
+  TOKEN_KEY,
+  REFRESHTOKEN_KEY,
+  USER_INFO_KEY,
+  SESSION_TIMEOUT_KEY,
+} from '/@/enums/cacheEnum';
 import { getAuthCache, setAuthCache } from '/@/utils/auth';
 import { loginApi, logoutApi, userInfoApi, LoginParams } from '/@/api/tb/login';
 import { useI18n } from '/@/hooks/web/useI18n';
@@ -22,6 +27,7 @@ import logoImg from '/@/assets/images/logo.png';
 import { mitt, Emitter } from '/@/utils/mitt';
 import { Authority } from '/@/enums/authorityEnum';
 import { h } from 'vue';
+import { useWebsocketStore } from './websocket';
 
 const { showMessage, createConfirm } = useMessage();
 
@@ -157,6 +163,8 @@ export const useUserStore = defineStore({
     },
     // async afterLoginAction(goHome?: boolean): Promise<GetUserInfoModel | null> {
     async afterLoginAction(res: UserInfo, goHome?: boolean) {
+      const { close } = useWebsocketStore();
+      close();
       this.setUserInfo(res);
       this.initPageCache(res);
       this.setSessionTimeout(false);
@@ -221,6 +229,7 @@ export const useUserStore = defineStore({
      * @description: logout
      */
     async logout(goLogin = false) {
+      const { close } = useWebsocketStore();
       if (this.getToken) {
         try {
           await logoutApi();
@@ -228,6 +237,7 @@ export const useUserStore = defineStore({
           console.log('注销Token失败');
         }
       }
+      close();
       this.setToken(undefined);
       this.setSessionTimeout(true);
       this.setUserInfo(null);
@@ -245,7 +255,7 @@ export const useUserStore = defineStore({
         title: () => h('span', t('sys.app.logoutTip')),
         content: () => h('span', t('sys.app.logoutMessage')),
         onOk: async () => {
-            await this.logout(true);
+          await this.logout(true);
         },
       });
     },

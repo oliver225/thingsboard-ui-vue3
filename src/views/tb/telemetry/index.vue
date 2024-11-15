@@ -328,8 +328,6 @@
   function onWebsocketMessage(data: any) {
     dataSource.value = Object.keys(data.data).map((key) => 
       {
-        console.log(data )
-        console.log(data.properties);
         return {
           key: key,
           value: data.data[key][0][1],

@@ -37,7 +37,7 @@ export const useWebsocketStore = defineStore({
       return this.cmdId;
     },
     async send(cmdId: number | Array<number>, data: any, callback?: (data: any) => void): Promise<boolean> {
-      if (!this.websocket!= null) {
+      if (this.websocket == null) {
         this.initWebsocket();
       }
       if (this.websocket!= null) {
@@ -74,7 +74,7 @@ export const useWebsocketStore = defineStore({
       const userStore = useUserStore();
       const { wsPath } = useGlobSetting();
       const useWebSocketReturn = useWebSocket(
-        `${wsPath}/telemetry?token=${userStore.getToken}`,
+        `${wsPath}`,
         { autoReconnect: false, autoClose: false, onMessage: this.onMessage }
       )
       this.websocket = useWebSocketReturn;
