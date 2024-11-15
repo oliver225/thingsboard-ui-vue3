@@ -42,6 +42,30 @@
       <template #default="{ record }">
         <Checkbox :checked="record.default" />
       </template>
+      <template #itemContainer="{ record }">
+        <div class="w-52 h-70 p-2 bg-slate-100">
+          <div class="cursor-pointer h-50 w-full content-center">
+            <img
+              :src="getImageUrl(record.image)"
+              :alt="record.name"
+              class="cursor-pointer w-full"
+              @click="handleDetail(record)"
+            />
+          </div>
+          <div class="px-1">
+            <div class="h-6 font-bold text-ellipsis overflow-hidden whitespace-nowrap">
+              {{ record.name }}
+            </div>
+            <Space :size="1">
+              <template #split>
+                <Divider type="vertical" />
+              </template>
+              <div> 配置类型 {{ record.type }}</div>
+              <div> 传输方式 {{ record.transportType }}</div>
+            </Space>
+          </div>
+        </div>
+      </template>
     </BasicTable>
     <InputForm @register="registerModal" @success="handleSuccess" />
     <DetailDrawer
