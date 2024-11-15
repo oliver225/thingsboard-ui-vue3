@@ -37,7 +37,7 @@ export const useWebsocketStore = defineStore({
       return this.cmdId;
     },
     async send(cmdId: number | Array<number>, data: any, callback?: (data: any) => void): Promise<boolean> {
-      if (!this.websocket!= null) {
+      if (this.websocket == null) {
         this.initWebsocket();
       }
       if (this.websocket!= null) {
