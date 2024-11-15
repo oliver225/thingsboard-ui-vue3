@@ -1,6 +1,6 @@
 <template>
   <!-- <ScrollContainer :style="{ maxHeight: '600px' }"> -->
-  <div class="bg-white py-2 pr-2 ">
+  <div class="bg-white py-2 pr-4 ">
     <List
       :grid="{ gutter: 5, xs: 1, sm: 2, md: 4, lg: 4, xl: 4, xxl: 6 }"
       :data-source="props.dataSource"

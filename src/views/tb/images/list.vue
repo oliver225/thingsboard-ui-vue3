@@ -213,8 +213,8 @@
     showTableSetting: true,
     useSearchForm: false,
     canResize: true,
-    imageFiled: 'publicLink',
     tableSetting: { card: true },
+    cardList: true,
   });
 
   function wrapFetchParams(param: any) {

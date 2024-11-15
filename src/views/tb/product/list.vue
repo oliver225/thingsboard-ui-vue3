@@ -197,6 +197,7 @@
     useSearchForm: false,
     canResize: true,
     tableSetting: { card: true },
+    cardList: true,
   });
 
   function wrapFetchParams(param: any) {
