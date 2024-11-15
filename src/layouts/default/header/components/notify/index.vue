@@ -24,7 +24,7 @@
   import { useWebsocketStore } from '/@/store/modules/websocket';
   import NotificationList from './NotificationList.vue';
   import { getToken } from '/@/utils/auth';
-  import { WsCmdType } from '/@/enums/WsCmdEnum';
+  import { WsCmdType } from '/@/enums/wsCmdEnum';
 
   export default defineComponent({
     components: { Popover, BellOutlined, Tabs, TabPane: Tabs.TabPane, Badge, NotificationList },

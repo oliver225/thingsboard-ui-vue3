@@ -5,6 +5,7 @@
         <span class="font-bold">
           <template v-if="property?.name"> {{ property.name }} ({{ kvEntity.key }}) </template>
           <template v-else>{{ kvEntity.key }} </template>
+          {{ property?.dataType?.specs?.unit }}
         </span>
       </template>
       <template #extra>
@@ -26,7 +27,7 @@
                   <div class="flex-1"> </div>
                   <Space>
                     <a-button @click="filterPopoverVisible = false">取消</a-button>
-                    <a-button type="primary" @click="sendQuery()">更新</a-button>
+                    <a-button type="primary" @click="subscribeHistoryData()">更新</a-button>
                   </Space>
                 </div>
               </div>
@@ -38,8 +39,19 @@
           </Popover>
         </Space>
       </template>
-
-      <div ref="chartRef" :style="{ width, height }"></div>
+      <div>
+        <div ref="chartRef" :style="{ width, height }" v-if="showChart" />
+        <BasicTable
+          :columns="tableColumns"
+          :dataSource="series"
+          :pagination="false"
+          size="small"
+          :bordered = "false"
+          :scroll="{ y: 200 }"
+          :showIndexColumn="false"
+          v-if="!showChart"
+        />
+      </div>
     </Card>
     <TimeseriesModal @register="registerModal" />
   </div>
@@ -61,7 +73,10 @@
   import { isArray } from 'lodash';
   import { AGGREGATION_OPTIONS, Aggregation } from '/@/enums/telemetryEnum';
   import { getTimeseries, TelemetryQuery } from '/@/api/tb/telemetry';
-import { Function } from '/@/api/tb/deviceProfile';
+  import { Function } from '/@/api/tb/deviceProfile';
+  import { WsCmdType } from '/@/enums/wsCmdEnum';
+  import { BasicColumn, BasicTable } from '/@/components/Table';
+  import { DataType } from '/@/enums/thingsModelEnum';
 
   const { t } = useI18n('tb');
   const { showMessage } = useMessage();
@@ -94,12 +109,16 @@ import { Function } from '/@/api/tb/deviceProfile';
   const chartRef = ref<HTMLDivElement | null>(null);
   const loading = ref(false);
   const series = ref<Array<TsData>>([]);
-    
+
   const property = ref<Function>(props.kvEntity.property);
   const keyStr = computed(() => props.kvEntity.key);
 
-  const { getAndIncrementCmdId, send: websocketSend, unsubscribe: websocketUnsubscribe } = useWebsocketStore();
-  
+  const {
+    getAndIncrementCmdId,
+    send: websocketSend,
+    unsubscribe: websocketUnsubscribe,
+  } = useWebsocketStore();
+
   const { setOptions } = useECharts(chartRef as Ref<HTMLDivElement>);
 
   const rangePresets = ref([
@@ -169,14 +188,37 @@ import { Function } from '/@/api/tb/deviceProfile';
       },
     },
   ];
+
+  const tableColumns: BasicColumn[] = [
+    {
+      title: '时间',
+      dataIndex: 'ts',
+      format: 'date|YYYY-MM-DD HH:mm:ss',
+      width: 150,
+    },
+    {
+      title: '数值',
+      dataIndex: 'value',
+    },
+  ];
+  const showChart = computed(() => {
+    if (
+      property.value &&
+      property.value.dataType &&
+      (property.value.dataType.type == DataType.int ||
+        property.value.dataType.type == DataType.float ||
+        property.value.dataType.type == DataType.double)
+    ) {
+      return true;
+    }
+    return false;
+  });
   const [registerModal, { openModal }] = useModal();
   const [registerForm, { validate }] = useForm({
     labelWidth: 80,
     schemas: inputFormSchemas,
     baseColProps: { lg: 24, md: 24 },
   });
-
-
 
   const query = reactive({
     entityType: props.entityType,
@@ -188,27 +230,35 @@ import { Function } from '/@/api/tb/deviceProfile';
     agg: 'NONE',
     orderBy: 'ASC',
     useStrictDataTypes: false,
-  })
+  });
 
   async function fetchTimeseries(init: boolean) {
     try {
       let result = {} as TsKvEntity;
       if (init == true) {
         loading.value = true;
-        result = await getTimeseries({ ...query, startTs: query.timeRange[0].valueOf(), endTs: query.timeRange[1].valueOf(), timeRange: null } as TelemetryQuery);
-
+        result = await getTimeseries({
+          ...query,
+          startTs: query.timeRange[0].valueOf(),
+          endTs: query.timeRange[1].valueOf(),
+          timeRange: null,
+        } as TelemetryQuery);
       } else {
         const data = await validate();
         loading.value = true;
         filterPopoverVisible.value = false;
-        result = await getTimeseries({ ...data, startTs: dayjs(data.timeRange[0]).valueOf(), endTs: dayjs(data.timeRange[1]).valueOf(), timeRange: null } as TelemetryQuery);
+        result = await getTimeseries({
+          ...data,
+          startTs: dayjs(data.timeRange[0]).valueOf(),
+          endTs: dayjs(data.timeRange[1]).valueOf(),
+          timeRange: null,
+        } as TelemetryQuery);
       }
-      
-      property.value = result[keyStr.value].property || {} as Function
-      
-      series.value =  result[keyStr.value].data || [];
-      renderChart();
 
+      property.value = result[keyStr.value].property || ({} as Function);
+
+      series.value = result[keyStr.value].data || [];
+      renderChart();
     } catch (error: any) {
       if (error && error.errorFields) {
         showMessage(t('common.validateError'));
@@ -217,17 +267,16 @@ import { Function } from '/@/api/tb/deviceProfile';
     } finally {
       loading.value = false;
     }
-
   }
 
   function sendInitQuery() {
-    LATEST_CMD_ID.value = getAndIncrementCmdId();
     websocketSend(
       LATEST_CMD_ID.value,
       {
-        entityDataCmds: [
+        cmds: [
           {
             cmdId: LATEST_CMD_ID.value,
+            type: WsCmdType.ENTITY_DATA,
             query: {
               entityFilter: {
                 type: 'singleEntity',
@@ -251,14 +300,15 @@ import { Function } from '/@/api/tb/deviceProfile';
     );
   }
 
-  async function sendQuery() {
-    LATEST_CMD_ID.value = getAndIncrementCmdId();
+  async function subscribeTsData() {
     let data: any = {};
+
     try {
       data = await validate();
     } catch (error: any) {
       console.log(error);
     }
+
     const queryData = {
       timeRange: [dayjs().subtract(2, 'hour'), dayjs()],
       interval: 60000,
@@ -269,25 +319,60 @@ import { Function } from '/@/api/tb/deviceProfile';
     websocketSend(
       LATEST_CMD_ID.value,
       {
-        entityDataCmds: [
+        cmds: [
           {
             cmdId: LATEST_CMD_ID.value,
-            historyCmd: {
-              keys: keyStr.value,
+            type: WsCmdType.ENTITY_DATA,
+            tsCmd: {
               agg: queryData.agg,
+              interval: queryData.interval,
+              intervalType: 'MILLISECONDS',
+              keys: [keyStr.value],
+              limit: queryData.limit,
+              startTs: dayjs(queryData.timeRange[0]).valueOf(),
+              timeWindow: 60000,
+              timeZoneId: 'Asia/Shanghai',
+            },
+          },
+        ],
+      },
+      onWebsocketMessage,
+    );
+  }
+
+  async function subscribeHistoryData() {
+    let data: any = {};
+
+    try {
+      data = await validate();
+    } catch (error: any) {
+      console.log(error);
+    }
+
+    const queryData = {
+      timeRange: [dayjs().subtract(2, 'hour'), dayjs()],
+      interval: 60000,
+      limit: 1000,
+      agg: Aggregation.NONE,
+      ...data,
+    };
+    websocketSend(
+      LATEST_CMD_ID.value,
+      {
+        cmds: [
+          {
+            cmdId: LATEST_CMD_ID.value,
+            type: WsCmdType.ENTITY_DATA,
+            historyCmd: {
+              agg: queryData.agg,
+              interval: queryData.interval,
+              intervalType: 'MILLISECONDS',
+              keys: [keyStr.value],
+              limit: queryData.limit,
               startTs: dayjs(queryData.timeRange[0]).valueOf(),
               endTs: dayjs(queryData.timeRange[1]).valueOf(),
-              interval: queryData.interval,
-              limit: queryData.limit,
+              timeZoneId: 'Asia/Shanghai',
             },
-            // tsCmd: {
-            //   keys: [keyStr.value],
-            //   agg: queryData.agg,
-            //   startTs: dayjs(queryData.timeRange[1]).valueOf(),
-            //   interval: queryData.interval,
-            //   limit: queryData.limit,
-            //   timewindow: 61000,
-            // }
           },
         ],
       },
@@ -300,21 +385,24 @@ import { Function } from '/@/api/tb/deviceProfile';
       const arrayData = data.update[0].timeseries[keyStr.value] || [];
       series.value = arrayData.map((item) => ({
         ts: item.ts,
-        value: Number.parseFloat(item.value),
+        value: item.value,
       }));
       series.value.sort((a, b) => a.ts - b.ts);
       renderChart();
     } else {
-      sendQuery();
+      subscribeHistoryData();
     }
   }
 
   function renderChart() {
+    if (!showChart) {
+      return;
+    }
     setOptions({
       tooltip: {
         trigger: 'axis',
         axisPointer: {
-          lineStyle: { width: 1,color: '#019680' },
+          lineStyle: { width: 1, color: '#019680' },
         },
         formatter: (arg: any) => {
           return `${dayjs(Number.parseInt(arg[0].name)).format('YYYY-MM-DD HH:mm:ss')}<br/>${arg[0].value}(单位)`;
@@ -326,7 +414,7 @@ import { Function } from '/@/api/tb/deviceProfile';
         data: series.value.map((item) => item.ts) || [],
         splitLine: {
           show: true,
-          lineStyle: { width: 1, type: 'solid',color: 'rgba(226,226,226,0.5)' },
+          lineStyle: { width: 1, type: 'solid', color: 'rgba(226,226,226,0.5)' },
         },
         axisTick: {
           show: false,
@@ -364,6 +452,7 @@ import { Function } from '/@/api/tb/deviceProfile';
   }
 
   onMounted(async () => {
+    LATEST_CMD_ID.value = getAndIncrementCmdId();
     // await fetchTimeseries(true);
     sendInitQuery();
   });
@@ -371,7 +460,8 @@ import { Function } from '/@/api/tb/deviceProfile';
   onUnmounted(() => {
     if (LATEST_CMD_ID.value > 0) {
       websocketUnsubscribe(LATEST_CMD_ID.value, {
-        entityDataUnsubscribeCmds: [{ cmdId: LATEST_CMD_ID.value }],
+        cmdId: LATEST_CMD_ID.value,
+        type: WsCmdType.ENTITY_DATA_UNSUBSCRIBE,
       });
     }
   });

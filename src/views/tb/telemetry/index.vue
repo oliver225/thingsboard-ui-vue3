@@ -68,7 +68,7 @@
   });
 </script>
 <script lang="ts" setup>
-  import { PropType, defineComponent, ref, onMounted,computed,  reactive, onBeforeUnmount } from 'vue';
+  import { PropType, defineComponent, ref, onMounted,computed,  reactive, watch, onBeforeUnmount } from 'vue';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { Icon } from '/@/components/Icon';
@@ -87,6 +87,7 @@
   import DeleteModal from './delete.vue';
   import { DataType } from '/@/enums/thingsModelEnum';
   import { isNull } from '/@/utils/is';
+  import { WsCmdType } from '/@/enums/wsCmdEnum';
   const LATEST_TELEMETRY = 'LATEST_TELEMETRY';
 
   const props = defineProps({
@@ -132,7 +133,7 @@
       dataIndex: 'key',
       key: 'key',
       sorter: true,
-      align: 'right',
+      align: 'center',
       slot: 'nameSlot',
     },
     {
@@ -195,7 +196,18 @@
     await handleScopeChange(selectedScope.value);
   });
 
+  watch(
+    () => showChartView.value,
+    ()=> {
+      if( showChartView.value ) {
+        unsubscribe();
+      } else {
+        handleScopeChange(selectedScope.value)
+      }
+  })
+
   async function handleScopeChange(scope: string) {
+    unsubscribe();
     showChartView.value = false;
     setSelectedRowKeys([]);
     if (LATEST_TELEMETRY == scope) {
@@ -243,8 +255,9 @@
     const sendResult = await websocketSend(
       ATTRIBUTE_CMD_ID.value,
       {
-        attrSubCmds: [
+        cmds: [
           {
+            type: WsCmdType.ATTRIBUTES,
             cmdId: ATTRIBUTE_CMD_ID.value,
             entityId: props.entityId,
             entityType: props.entityType,
@@ -264,8 +277,9 @@
     const sendResult = await websocketSend(
       LATEST_TELEMETRY_CMD_ID.value,
       {
-        tsSubCmds: [
+        cmds: [
           {
+            type: WsCmdType.TIMESERIES,
             cmdId: LATEST_TELEMETRY_CMD_ID.value,
             entityId: props.entityId,
             entityType: props.entityType,
@@ -298,30 +312,23 @@
   });
   function unsubscribe() {
     websocketUnsubscribe([LATEST_TELEMETRY_CMD_ID.value, ATTRIBUTE_CMD_ID.value], {
-      tsSubCmds:
-        LATEST_TELEMETRY_CMD_ID.value > 0
-          ? [
-              {
-                cmdId: LATEST_TELEMETRY_CMD_ID.value,
-                entityId: props.entityId,
-                entityType: props.entityType,
-                scope: 'LATEST_TELEMETRY',
-                unsubscribe: true,
-              },
-            ]
-          : [],
-      attrSubCmds:
-        ATTRIBUTE_CMD_ID.value > 0
-          ? [
-              {
-                cmdId: ATTRIBUTE_CMD_ID.value,
-                entityId: props.entityId,
-                entityType: props.entityType,
-                scope: 'CLIENT_SCOPE',
-                unsubscribe: true,
-              },
-            ]
-          : [],
+      cmds:[
+        { 
+          type: WsCmdType.TIMESERIES,
+          cmdId: LATEST_TELEMETRY_CMD_ID.value,
+          entityId: props.entityId,
+          entityType: props.entityType,
+          scope: 'LATEST_TELEMETRY',
+          unsubscribe: true
+        }, {
+          type: WsCmdType.ATTRIBUTES,
+          cmdId: ATTRIBUTE_CMD_ID.value,
+          entityId: props.entityId,
+          entityType: props.entityType,
+          scope: 'CLIENT_SCOPE',
+          unsubscribe: true,
+        }
+      ]
     });
   }
 
