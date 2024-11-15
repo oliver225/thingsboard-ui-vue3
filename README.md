@@ -5,6 +5,8 @@ ThingsBoard凭借其优秀的性能和高效的性能得到了广大开发者的
 
 📌 规则链代码已全部开放
 
+📌 物模型已完成
+
 📌 web组态 开发中...
 
 📌 大屏组态 开发中...
@@ -62,13 +64,15 @@ ThingsBoard凭借其优秀的性能和高效的性能得到了广大开发者的
 - [AntV x6](https://x6.antv.antgroup.com/)
   
 
-![规则引擎](images/rule_chain_20240305160850.png)
+![规则引擎](images/rule_chain.png)
 
 ## 预览图片
 
 ![租户仪表盘](images/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240219165338.png)
-![租户仪表盘](images/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240219164906.png)
-![租户仪表盘](images/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240219164934.png)
+![产品](images/product_list.png)
+![物模型](images/thing_model.png)
+![数据](images/device_data_card.png)
+![设备topic](images/device_api.png)
 ![租户仪表盘](images/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240219165036.png)
 ![租户仪表盘](images/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240219165220.png)
 ![租户仪表盘](images/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240219165220.png)
