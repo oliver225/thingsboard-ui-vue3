@@ -227,12 +227,12 @@
 
   function handle2Gitee() {
     
-  openWindow(GITHUB_URL)
+  openWindow(SITE_URL)
 
 }
 function handle2Github() {
 
-  openWindow(SITE_URL)
+  openWindow(GITHUB_URL)
 }
 
 function handle2Wechat() {
