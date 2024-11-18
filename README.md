@@ -73,6 +73,7 @@ ThingsBoard凭借其优秀的性能和高效的性能得到了广大开发者的
 ![物模型](images/thing_model.png)
 ![数据](images/device_data_card.png)
 ![设备topic](images/device_api.png)
+![阿里云短信](images/thing_sms_ali.png)
 ![租户仪表盘](images/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240219165036.png)
 ![租户仪表盘](images/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240219165220.png)
 ![租户仪表盘](images/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240219165220.png)
