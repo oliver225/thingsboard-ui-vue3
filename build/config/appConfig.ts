@@ -74,10 +74,10 @@ async function getConfigContent(env: ViteEnv) {
     var _hmt = _hmt || [];
     (function() {
       var hm = document.createElement("script");
-      hm.src = "https://hm.baidu.com/hm.js?65b88e88a94e0118de2962f328f17622";
+      hm.src = "https://hm.baidu.com/hm.js?64558f46af0ec9d346450518290991cd";
       var s = document.getElementsByTagName("script")[0]; 
       s.parentNode.insertBefore(hm, s);
     })();
-  `.replace(/\s/g, '');
+  `;
   return source;
 }

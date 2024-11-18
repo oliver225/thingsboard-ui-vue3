@@ -116,7 +116,7 @@
   import { openWindow } from '/@/utils';
   import weixinUrl from '/@/assets/images/weixin.jpg';
   import { onKeyStroke } from '@vueuse/core';
-  import { GITHUB_URL, SITE_URL } from '/@/settings/siteSetting';
+  import { GITHUB_URL, LINK_URL } from '/@/settings/siteSetting';
 
   const ACol = Col;
   const ARow = Row;
@@ -137,8 +137,8 @@
   const isValidCodeLogin = ref(false);
 
   const formData = reactive({
-    account: 'system',
-    password: '',
+    account: 'sysadmin@thingsboard.org',
+    password: 'sysadmin',
     validCode: '',
   });
 
@@ -227,12 +227,12 @@
 
   function handle2Gitee() {
     
-  openWindow(GITHUB_URL)
+  openWindow(LINK_URL)
 
 }
 function handle2Github() {
 
-  openWindow(SITE_URL)
+  openWindow(GITHUB_URL)
 }
 
 function handle2Wechat() {
