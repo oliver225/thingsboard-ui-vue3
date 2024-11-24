@@ -11,6 +11,9 @@ export const APP_DARK_MODE_KEY = 'APP_DARK_MODE__';
 export const APP_LOCAL_CACHE_KEY = 'COMMON_LOCAL__';
 export const APP_SESSION_CACHE_KEY = 'COMMON_SESSION__';
 
+export const THINGSBOARD_SHARE_TOKEN = 'THINGSBOARD_SHARE_TOKEN__';
+
+
 export enum CacheTypeEnum {
   SESSION,
   LOCAL,

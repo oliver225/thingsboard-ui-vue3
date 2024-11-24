@@ -1,6 +1,6 @@
 <template>
   <div>
-    <GrowCard class="enter-y" />
+    <!-- <GrowCard class="enter-y" /> -->
     <SiteAnalysis class="enter-y !my-4" />
     <div class="enter-y md:flex">
       <VisitRadar class="w-full md:w-1/3" />

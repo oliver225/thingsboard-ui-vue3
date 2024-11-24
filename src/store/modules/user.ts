@@ -14,7 +14,7 @@ import {
   USER_INFO_KEY,
   SESSION_TIMEOUT_KEY,
 } from '/@/enums/cacheEnum';
-import { getAuthCache, setAuthCache } from '/@/utils/auth';
+import { getAuthCache, setAuthCache, setJwtPairToken } from '/@/utils/auth';
 import { loginApi, logoutApi, userInfoApi, LoginParams } from '/@/api/tb/login';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { useMessage } from '/@/hooks/web/useMessage';
@@ -102,8 +102,9 @@ export const useUserStore = defineStore({
       this.token = jwtPair ? jwtPair.token : ''; // for null or undefined value
       this.refreshToken = jwtPair ? jwtPair.refreshToken : '';
       this.lastUpdateTime = new Date().getTime();
-      setAuthCache(TOKEN_KEY, jwtPair ? jwtPair.token : '');
-      setAuthCache(REFRESHTOKEN_KEY, jwtPair ? jwtPair.refreshToken : '');
+      // setAuthCache(TOKEN_KEY, jwtPair ? jwtPair.token : '');
+      // setAuthCache(REFRESHTOKEN_KEY, jwtPair ? jwtPair.refreshToken : '');
+      setJwtPairToken(jwtPair);
     },
     setSessionTimeout(flag: boolean) {
       this.sessionTimeout = flag;
