@@ -9,6 +9,7 @@ import { VueNode } from '/@/utils/propTypes';
 import { RoleEnum } from '/@/enums/roleEnum';
 import { ActionItem } from './tableAction';
 import { EditRecordRow } from '../components/editable';
+import { ListGridType } from 'ant-design-vue/es/list';
 
 export declare type SortOrder = 'ascend' | 'descend';
 
@@ -232,6 +233,8 @@ export interface BasicTableProps<T = any> {
   cardList?: boolean;
   // 图片地址
   imageFiled?: string,
+  // 卡片 Grid
+  cardGrid?: ListGridType
 
   /**
    * The column contains children to display

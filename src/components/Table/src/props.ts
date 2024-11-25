@@ -13,6 +13,7 @@ import type { FormProps } from '/@/components/Form';
 
 import { DEFAULT_FILTER_FN, DEFAULT_SORT_FN, FETCH_SETTING, DEFAULT_SIZE } from './const';
 import { propTypes } from '/@/utils/propTypes';
+import { ListGridType } from 'ant-design-vue/es/list';
 
 export const basicProps = {
   isTreeTable: propTypes.bool.def(false),
@@ -140,6 +141,7 @@ export const basicProps = {
   loading: propTypes.bool,
   cardList: propTypes.bool.def(false),
   imageFiled: propTypes.string,
+  cardGrid:  Object as PropType<ListGridType>,
   rowClassName: {
     type: Function as PropType<(record: TableCustomRecord<any>, index: number) => string>,
   },

@@ -2,7 +2,7 @@
   <!-- <ScrollContainer :style="{ maxHeight: '600px' }"> -->
   <div class="bg-white py-2 pr-4 ">
     <List
-      :grid="{ gutter: 5, xs: 1, sm: 2, md: 4, lg: 4, xl: 4, xxl: 6 }"
+      :grid="showGrid"
       :data-source="props.dataSource"
       :loading="props.loading"
       :bordered="false"
@@ -73,6 +73,13 @@
   const height = computed(() => {
     return `h-${120 - 12 * 6}`;
   });
+
+  const showGrid = computed(()=>{
+    if(props.cardGrid){
+      return props.cardGrid
+    }
+    return { gutter: 5, xs: 1, sm: 2, md: 4, lg: 4, xl: 4, xxl: 6 }
+  })
 
   watch(
     () => props.dataSource,

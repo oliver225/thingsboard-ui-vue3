@@ -2,12 +2,18 @@ import { LAYOUT } from '/@/router/constant';
 import { AppRouteModule } from '/@/router/types';
 import { t } from '/@/hooks/web/useI18n';
 import { Authority } from '/@/enums/authorityEnum';
+import { usePermission } from '/@/hooks/web/usePermission';
 
 const tb: AppRouteModule = {
-  path: '/',
-  name: 'Basic',
+  path: '/tb',
+  name: 'Thingdboard',
   component: LAYOUT,
-  redirect: '/tenant/list',
+  redirect: ()=>{
+    const { hasPermission } = usePermission();
+    return {
+      path: hasPermission(Authority.SYS_ADMIN) ? '/tenant/list' : '/device/list',
+    }
+  },
   meta: {
     icon: 'ant-design:windows-outlined',
     title: t('tb.deviceIn'),
