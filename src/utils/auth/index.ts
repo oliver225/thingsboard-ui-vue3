@@ -3,7 +3,7 @@ import { CacheTypeEnum, THINGSBOARD_SHARE_TOKEN } from '/@/enums/cacheEnum';
 import projectSetting from '/@/settings/projectSetting';
 import { TOKEN_KEY, REFRESHTOKEN_KEY } from '/@/enums/cacheEnum';
 import { JwtPair } from '/#/store';
-import { setSessionStorage } from '../cache';
+import { setLocalStorage } from '../cache';
 
 const { permissionCacheType } = projectSetting;
 const isLocal = permissionCacheType === CacheTypeEnum.LOCAL;
@@ -19,7 +19,7 @@ export function getRefreshToken() {
 export function setJwtPairToken(jwtPair: JwtPair | null | undefined) {
   setAuthCache(TOKEN_KEY, jwtPair ? jwtPair.token : '');
   setAuthCache(REFRESHTOKEN_KEY, jwtPair ? jwtPair.refreshToken : '');
-  setSessionStorage(THINGSBOARD_SHARE_TOKEN, jwtPair);
+  setLocalStorage(THINGSBOARD_SHARE_TOKEN, jwtPair);
 }
 
 export function getAuthCache<T>(key: BasicKeys) {

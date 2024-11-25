@@ -29,16 +29,17 @@ export const createLocalStorage = (options: Options = {}) => {
   return createStorage(localStorage, { ...options, timeout: DEFAULT_CACHE_TIME });
 };
 
-export const setSessionStorage = <T>(k: string, v: T) => {
+
+export const setLocalStorage = <T>(k: string, v: T) => {
   try {
-    window.sessionStorage.setItem(k, JSON.stringify(v))
+    window.localStorage.setItem(k, JSON.stringify(v))
   } catch (error) {
     return false
   }
 }
 
-export const getSessionStorage: (k: string) => any = (k: string) => {
-  const item = window.sessionStorage.getItem(k)
+export const getLocalStorage: (k: string) => any = (k: string) => {
+  const item = window.localStorage.getItem(k)
   try {
     return item ? JSON.parse(item) : item
   } catch (err) {
@@ -46,8 +47,8 @@ export const getSessionStorage: (k: string) => any = (k: string) => {
   }
 }
 
-export const clearSessioStorage = (name: string) => {
-  window.sessionStorage.removeItem(name)
+export const clearLocalStorage = (name: string) => {
+  window.localStorage.removeItem(name)
 }
 
 
