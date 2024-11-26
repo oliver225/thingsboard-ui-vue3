@@ -3,6 +3,7 @@ export enum EntityType {
   CUSTOMER = 'CUSTOMER',
   USER = 'USER',
   DASHBOARD = 'DASHBOARD',
+  TB_VISUAL = 'TB_VISUAL',
   ASSET = 'ASSET',
   DEVICE = 'DEVICE',
   ALARM = 'ALARM',
