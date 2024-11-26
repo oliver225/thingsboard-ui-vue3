@@ -31,7 +31,25 @@ export function getTbVisualById(tbVisualId: string) {
   });
 }
 
+export function createTbVisual(data: TbVisual | any) {
+  return defHttp.postJson<TbVisual>({
+    url: `/api/visual/create`,
+    data,
+  });
+}
 
+export function saveTbVisual(data: TbVisualInfo | any) {
+  return defHttp.postJson<TbVisualInfo>({
+    url: `/api/visual/info`,
+    data,
+  });
+}
+
+export function deleteTbVisual(tbVisualId: string) {
+  return defHttp.delete<TbVisualInfo>({
+    url: `/api/visual/${tbVisualId}`,
+  });
+}
 
 export function currentTenantVisualList(params: BasicQuery) {
   return defHttp.get<Page<TbVisual>>({
@@ -53,3 +71,48 @@ export function customerVisualList(params: BasicQuery, customerId: string) {
   });
 }
 
+export function assignTbVisualToCustomer(customerId: string, tbVisualId: string) {
+  return defHttp.post<TbVisual>({
+    url: `/api/customer/${customerId}/visual/${tbVisualId}`,
+  });
+}
+
+
+export function unAssignTbVisualFromCustomer(customerId: string,tbVisualId: string) {
+  return defHttp.delete<void>({
+    url: `/api/customer/${customerId}/visual/${tbVisualId}`,
+  });
+}
+
+export function updateTbVisualCustomers(tbVisualId: string, strCustomerIds?: [string],) {
+  return defHttp.postJson<TbVisual>({
+    url: `/api/visual/${tbVisualId}/customers`,
+    data: strCustomerIds,
+  });
+}
+
+export function addTbVisualCustomers(tbVisualId: string, strCustomerIds?: [string],) {
+  return defHttp.postJson<TbVisual>({
+    url: `/api/visual/${tbVisualId}/customers/add`,
+    data: strCustomerIds,
+  });
+}
+
+export function removeTbVisualCustomers(tbVisualId: string, strCustomerIds?: [string],) {
+  return defHttp.postJson<TbVisual>({
+    url: `/api/visual/${tbVisualId}/customers/remove`,
+    data: strCustomerIds,
+  });
+}
+
+export function assignTbVisualToPublicCustomer(tbVisualId: string) {
+  return defHttp.post<TbVisual>({
+    url: `/api/customer/public/visual/${tbVisualId}`,
+  });
+}
+
+export function unAssignTbVisualFromPublicCustomer(tbVisualId: string) {
+  return defHttp.delete<TbVisual>({
+    url: `/api/customer/public/visual/${tbVisualId}`,
+  });
+}

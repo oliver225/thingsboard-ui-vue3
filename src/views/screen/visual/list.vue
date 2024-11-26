@@ -7,6 +7,9 @@
           </div>
         </template>
         <template #tableTitle>
+          <a-button type="primary" @click="handleForm({})">
+              <Icon icon="i-fluent:add-12-filled" /> 新增数据大屏
+            </a-button>
           <div class="space-x-2">
             <a-input v-model:value="searchParam.textSearch" placeholder="输入搜索内容" allow-clear @change="reload"
               style="width: 240px;">
@@ -50,6 +53,7 @@
           </div>
           </template>
       </BasicTable>
+      <InputForm @register="registerModal" @success="handleSuccess" />
     </div>
   </template>
   <script lang="ts">
@@ -60,13 +64,16 @@
   <script lang="ts" setup>
   import { defineComponent, reactive } from 'vue';
   import { useI18n } from '/@/hooks/web/useI18n';
+  import { useModal } from '/@/components/Modal';
   import { BasicTable, BasicColumn, useTable } from '/@/components/Table';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { Icon } from '/@/components/Icon';
+  import InputForm from './form.vue';
   import { Space, Tag } from 'ant-design-vue';
   import { currentTenantVisualList, } from '/@/api/screen/visual';
   import { Authority } from '/@/enums/authorityEnum';
   import { usePermission } from '/@/hooks/web/usePermission';
+import { openWindow } from '/@/utils';
 
 
   
@@ -129,6 +136,7 @@
         color: 'success',
         title: t('编辑大屏'),
         ifShow: hasPermission(Authority.TENANT_ADMIN),
+        onClick: handleEdit.bind(this, { ...record }),
       },
       {
         icon: 'ant-design:delete-outlined',
@@ -138,6 +146,7 @@
     ],
   };
   
+  const [registerModal, { openModal }] = useModal();
   const [registerTable, { reload }] = useTable({
     rowKey: (record) => record.id.id,
     api: currentTenantVisualList,
@@ -156,8 +165,14 @@
   }
   
 
+  function handleForm(record: Recordable) {
+    openModal(true, record);
+  }
 
-
+  function handleEdit(record: Recordable) {
+    const url =`/_visual#/chart/home/${record.id.id}`
+    openWindow(url, { target:'_blank' } )
+  }
   
   function handleSuccess() {
     reload();
