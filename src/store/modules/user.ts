@@ -14,7 +14,7 @@ import {
   USER_INFO_KEY,
   SESSION_TIMEOUT_KEY,
 } from '/@/enums/cacheEnum';
-import { getAuthCache, setAuthCache, setJwtPairToken } from '/@/utils/auth';
+import { getAuthCache, setAuthCache, setGoViewStoreToken, setGoViewStoreUserInfo } from '/@/utils/auth';
 import { loginApi, logoutApi, userInfoApi, LoginParams } from '/@/api/tb/login';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { useMessage } from '/@/hooks/web/useMessage';
@@ -102,9 +102,9 @@ export const useUserStore = defineStore({
       this.token = jwtPair ? jwtPair.token : ''; // for null or undefined value
       this.refreshToken = jwtPair ? jwtPair.refreshToken : '';
       this.lastUpdateTime = new Date().getTime();
-      // setAuthCache(TOKEN_KEY, jwtPair ? jwtPair.token : '');
-      // setAuthCache(REFRESHTOKEN_KEY, jwtPair ? jwtPair.refreshToken : '');
-      setJwtPairToken(jwtPair);
+      setAuthCache(TOKEN_KEY, jwtPair ? jwtPair.token : '');
+      setAuthCache(REFRESHTOKEN_KEY, jwtPair ? jwtPair.refreshToken : '');
+      setGoViewStoreToken(jwtPair) 
     },
     setSessionTimeout(flag: boolean) {
       this.sessionTimeout = flag;
@@ -125,6 +125,7 @@ export const useUserStore = defineStore({
       this.authority = info?.authority || null;
       this.lastUpdateTime = new Date().getTime();
       setAuthCache(USER_INFO_KEY, info);
+      setGoViewStoreUserInfo(info) 
     },
     // setRoleList(roleList: RoleEnum[] | string[]) {
     //   this.roleList = roleList;
