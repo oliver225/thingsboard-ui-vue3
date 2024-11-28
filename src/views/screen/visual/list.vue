@@ -28,7 +28,7 @@
         <Space>
           <div class="h-10 w-10 bg-white flex justify-center">
             <div class="cursor-pointer h-10 w-full content-center" @click="handlePreview(record)">
-              <img :src="record.image" :alt="record.title" class="w-full" />
+              <img :src="record.image || defaultImage" :alt="record.title" class="w-full" />
             </div>
           </div>
           {{ record.title }}
@@ -79,6 +79,7 @@
   import { copyToClipboard, openWindow } from '/@/utils';
   import ImageCard from './imageCard.vue';
   import { isEmpty } from '/@/utils/is';
+  const defaultImage = '/resource/img/no-data.svg';
 
   const { t } = useI18n('tb');
   const { createConfirm, showMessage } = useMessage();
