@@ -86,6 +86,8 @@
   import { tbImagePrefix } from '/@/api/tb/images';
   import ImageCard from './imageCard.vue';
 
+  const defaultImage = '/resource/img/logo.png';
+
   const { t } = useI18n('tb');
   const { createConfirm, showMessage } = useMessage();
 
@@ -199,7 +201,7 @@
     if (image) {
       return image.replace(tbImagePrefix, '');
     } else {
-      return '';
+      return defaultImage;
     }
   }
 
