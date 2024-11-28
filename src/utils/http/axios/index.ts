@@ -19,7 +19,6 @@ import { useUserStoreWithOut } from '/@/store/modules/user';
 import { isExpired } from '/@/utils/jwt';
 import { refreshTokenApi } from '/@/api/tb/login';
 
-
 const globSetting = useGlobSetting();
 const urlPrefix = globSetting.urlPrefix;
 const { showMessageModal, showMessage } = useMessage();
@@ -216,18 +215,17 @@ const transform: AxiosTransform = {
       }
 
       if (status == 401 && errorCode == 11) {
-        console.log('Token 到期,刷新获取新的token')
+        console.log('Token 到期,刷新获取新的token');
         const userStore = useUserStoreWithOut();
         const refreshToken = userStore.getRefreshToken;
         if (refreshToken && !isExpired(refreshToken)) {
-          return refreshTokenApi(refreshToken)
-          // TODO refreshTokenApi 也报TOKEN到期的时候，要处理到 避免递归调用
-            .then(jwtToken => {
-              userStore.setToken(jwtToken);
-              return instance.request(config)
-            })
+          userStore.setToken(null);
+          return refreshTokenApi(refreshToken).then((jwtToken) => {
+            userStore.setToken(jwtToken);
+            return instance.request(config);
+          });
         } else {
-          errMessage = error?.response?.data?.message || '登录过期,请重新登陆。。。'
+          errMessage = error?.response?.data?.message || '登录过期,请重新登陆。。。';
         }
       }
 
