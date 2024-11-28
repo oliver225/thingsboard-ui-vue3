@@ -222,8 +222,12 @@
   }
 
   function handlePreview(record: Recordable) {
-    const url = `/_visual#/chart/preview/${record.id.id}`;
-    openWindow(url, { target: '_blank' });
+    if (!record.published) {
+      handleEdit(record);
+    } else {
+      const url = `/_visual#/chart/preview/${record.id.id}`;
+      openWindow(url, { target: '_blank' });
+    }
   }
 
   function handlePublish(record: Recordable) {
