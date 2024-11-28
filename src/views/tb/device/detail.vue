@@ -91,7 +91,7 @@
         <template #tab
           ><span> <Icon :icon="'ant-design:line-chart-outlined'" /> 数据 </span>
         </template>
-        <Telemetry :entityType="EntityType.DEVICE" :entityId="record?.id?.id" />
+        <Telemetry v-if="tabActiveKey == 'TELEMETRY'"  :entityType="EntityType.DEVICE" :entityId="record?.id?.id" />
       </TabPane>
       <TabPane key="TGINGMODEL">
         <template #tab>

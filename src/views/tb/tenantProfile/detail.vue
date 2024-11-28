@@ -471,7 +471,7 @@
             <Icon :icon="'ant-design:line-chart-outlined'" /> 数据
           </span> </template>
         <div class="telemetry-card">
-          <Telemetry :entityType="EntityType.TENANT_PROFILE" :entityId="record?.id?.id" />
+          <Telemetry v-if="tabActiveKey == 'TELEMETRY'"  :entityType="EntityType.TENANT_PROFILE" :entityId="record?.id?.id" />
         </div>
       </TabPane>
       <TabPane key="ALARM">

@@ -44,7 +44,7 @@
         <template #tab><span>
             <Icon :icon="'ant-design:line-chart-outlined'" /> 数据
           </span> </template>
-        <Telemetry :entityType="EntityType.CUSTOMER" :entityId="record?.id?.id" />
+        <Telemetry v-if="tabActiveKey == 'TELEMETRY'"  :entityType="EntityType.CUSTOMER" :entityId="record?.id?.id" />
       </TabPane>
       <TabPane key="ALARM">
         <template #tab><span>
