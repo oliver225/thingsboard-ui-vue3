@@ -5,21 +5,34 @@
       :style="{ height: contentHeight + 'px' }"
       v-loading="props.loading"
     >
-    <Row :gutter="[ showGrid.gutter, showGrid.gutter ]">
-       <Col v-for="item in props.dataSource" :key="item.id.id" :xl="showGrid.xl" :lg="showGrid.lg" :md="showGrid.md" :sm="showGrid.sm" :xs="showGrid.sm" :span="8" >
+      <Row :gutter="[showGrid.gutter, showGrid.gutter]" style="width: 100%">
+        <Col
+          v-for="item in props.dataSource"
+          :key="item.id.id"
+          :xl="showGrid.xl"
+          :lg="showGrid.lg"
+          :md="showGrid.md"
+          :sm="showGrid.sm"
+          :xs="showGrid.sm"
+          :span="8"
+        >
           <slot name="itemContainer" :record="item"></slot>
         </Col>
-    </Row>
-    </ScrollContainer >
-   <div class="flex flex-row-reverse mt-2">
-     <Pagination v-bind="getPaginationInfo" :pageSizeOptions="getPageSizeOptions" />
-   </div>
+      </Row>
+    </ScrollContainer>
+    <div class="flex flex-row-reverse mt-2">
+      <Pagination
+        v-bind="getPaginationInfo"
+        :showQuickJumper="showQuickJumper"
+        :pageSizeOptions="getPageSizeOptions"
+      />
+    </div>
   </div>
   <!-- </ScrollContainer> -->
 </template>
 <script lang="ts" setup>
   import { computed, onMounted, ref, unref } from 'vue';
-  import {  Pagination, Row, Col  } from 'ant-design-vue';
+  import { Pagination, Row, Col } from 'ant-design-vue';
   import { useTableContext } from '../hooks/useTableContext';
   import { basicProps } from '../props';
   import { ScrollContainer } from '/@/components/Container/index';
@@ -35,7 +48,7 @@
 
   const innerPropsRef = ref<Partial<BasicTableProps>>();
 
- const getProps = computed(() => {
+  const getProps = computed(() => {
     return { ...props, ...unref(innerPropsRef) } as BasicTableProps;
   });
 
@@ -44,8 +57,7 @@
   const { headerHeightRef } = useLayoutHeight();
 
   function calcContentHeight() {
-    contentHeight.value =
-        document.body.clientHeight - headerHeightRef.value  - 156;
+    contentHeight.value = document.body.clientHeight - headerHeightRef.value - 156;
   }
 
   useWindowSizeFn(
@@ -56,25 +68,25 @@
     { immediate: true },
   );
 
-
-  const showGrid = computed(()=>{
-    if(props.cardGrid){
-      return props.cardGrid
+  const showGrid = computed(() => {
+    if (props.cardGrid) {
+      return props.cardGrid;
     }
-    return { gutter: 4, xs: 24, sm: 12, md: 8, lg: 6, xl: 4 }
-  })
+    return { gutter: 4, xs: 24, sm: 12, md: 8, lg: 6, xl: 4 };
+  });
 
-  const getPageSizeOptions = computed(()=>{
-    return ['12','24','36','48']
-  })
-
+  const getPageSizeOptions = computed(() => {
+    return ['12', '24', '36', '48'];
+  });
+  const showQuickJumper = computed(() => {
+    const pageSize = getPaginationInfo.value.pageSize || getPaginationInfo.value.defaultPageSize;
+    return getPaginationInfo.value.total > pageSize;
+  });
 
   const { getPaginationInfo, getPagination, setPagination, setShowPagination, getShowPagination } =
     usePagination(getProps);
-
 </script>
 <style lang="less">
-
   .table-card-list {
     background-color: @component-background;
     border-end-end-radius: 4px;
