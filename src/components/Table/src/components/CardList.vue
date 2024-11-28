@@ -1,136 +1,84 @@
 <template>
-  <!-- <ScrollContainer :style="{ maxHeight: '600px' }"> -->
-  <div class="bg-white py-2 pr-4 ">
-    <List
-      :grid="showGrid"
-      :data-source="props.dataSource"
-      :loading="props.loading"
-      :bordered="false"
-      :pagination="paginationProp"
+  <div class="table-card-list">
+    <ScrollContainer
+      ref="contentRef"
+      :style="{ height: contentHeight + 'px' }"
+      v-loading="props.loading"
     >
-      <template #renderItem="{ item }">
-        <ListItem>
+    <Row :gutter="[ showGrid.gutter, showGrid.gutter ]">
+       <Col v-for="item in props.dataSource" :key="item.id.id" :xl="showGrid.xl" :lg="showGrid.lg" :md="showGrid.md" :sm="showGrid.sm" :xs="showGrid.sm" :span="8" >
           <slot name="itemContainer" :record="item"></slot>
-          <Card v-if="!$slots.itemContainer">
-            <template #title></template>
-            <template #cover>
-              <div :class="height">
-                <Image :src="item[imageFiled]" />
-              </div>
-            </template>
-            <template #actions>
-              <EditOutlined />
-              <Dropdown
-                :trigger="['hover']"
-                :dropMenuList="[
-                  {
-                    text: '删除',
-                    event: '1',
-                    popConfirm: {
-                      title: '是否确认删除',
-                      confirm: handleDelete.bind(null, item.id),
-                    },
-                  },
-                ]"
-                popconfirm
-              >
-                <EllipsisOutlined />
-              </Dropdown>
-            </template>
-          </Card>
-        </ListItem>
-      </template>
-    </List>
+        </Col>
+    </Row>
+    </ScrollContainer >
+   <div class="flex flex-row-reverse mt-2">
+     <Pagination v-bind="getPaginationInfo" :pageSizeOptions="getPageSizeOptions" />
+   </div>
   </div>
   <!-- </ScrollContainer> -->
 </template>
 <script lang="ts" setup>
-  import { computed, onMounted, ref } from 'vue';
-  import { EditOutlined, EllipsisOutlined } from '@ant-design/icons-vue';
-  import { List, Card, Image, Typography } from 'ant-design-vue';
-  import { Dropdown } from '/@/components/Dropdown';
+  import { computed, onMounted, ref, unref } from 'vue';
+  import {  Pagination, Row, Col  } from 'ant-design-vue';
   import { useTableContext } from '../hooks/useTableContext';
-  import { watch } from 'vue';
   import { basicProps } from '../props';
   import { ScrollContainer } from '/@/components/Container/index';
+  import { useLayoutHeight } from '/@/layouts/default/content/useContentViewHeight';
+  import { useWindowSizeFn } from '/@/hooks/event/useWindowSizeFn';
+  import { usePagination } from '../hooks/usePagination';
+  import { BasicTableProps } from '../types/table';
 
   const table = useTableContext();
-
-  const ListItem = List.Item;
+  //数据
   // 组件接收参数
   const props = defineProps(basicProps);
 
-  //暴露内部方法
-  const emit = defineEmits(['getMethod', 'delete']);
+  const innerPropsRef = ref<Partial<BasicTableProps>>();
 
-  //数据
-  const data = ref<Array<Recordable>>([]);
-
-  // 切换每行个数
-  // cover图片自适应高度
-  //修改pageSize并重新请求数据
-
-  const height = computed(() => {
-    return `h-${120 - 12 * 6}`;
+ const getProps = computed(() => {
+    return { ...props, ...unref(innerPropsRef) } as BasicTableProps;
   });
+
+  const contentRef = ref<ComponentRef>();
+  const contentHeight = ref<number>(200);
+  const { headerHeightRef } = useLayoutHeight();
+
+  function calcContentHeight() {
+    contentHeight.value =
+        document.body.clientHeight - headerHeightRef.value  - 156;
+  }
+
+  useWindowSizeFn(
+    () => {
+      calcContentHeight();
+    },
+    50,
+    { immediate: true },
+  );
+
 
   const showGrid = computed(()=>{
     if(props.cardGrid){
       return props.cardGrid
     }
-    return { gutter: 5, xs: 1, sm: 2, md: 4, lg: 4, xl: 4, xxl: 6 }
+    return { gutter: 4, xs: 24, sm: 12, md: 8, lg: 6, xl: 4 }
   })
 
-  watch(
-    () => props.dataSource,
-    (newVal) => {
-      data.value = newVal;
-    },
-  );
+  const getPageSizeOptions = computed(()=>{
+    return ['12','24','36','48']
+  })
 
-  watch(
-    () => props.pagination,
-    (newVal) => {
-      paginationProp.value = {
-        ...props.pagination,
-        onChange: pageChange,
-        onShowSizeChange: pageSizeChange,
-      };
-    },
-  );
 
-  // async function fetch(p = {}) {
-  //   const { api, params, dataSource } = props;
-  //   if (dataSource) {
+  const { getPaginationInfo, getPagination, setPagination, setShowPagination, getShowPagination } =
+    usePagination(getProps);
 
-  //     return;
-  //   }
-  //   if (api && isFunction(api)) {
-  //     const res = await api({ ...params, page: page.value, pageSize: pageSize.value, ...p });
-  //     data.value = res.items;
-  //     total.value = res.total;
-  //   }
-  // }
-  //分页相关
-  const page = ref(1);
-  const pageSize = ref(36);
-  const total = ref(0);
-  const paginationProp = ref({
-    ...props.pagination,
-    onChange: pageChange,
-    onShowSizeChange: pageSizeChange,
-  });
-
-  function pageChange(p: number, pz: number) {
-    table.setPagination({ current: p, pageSize: pz });
-    table.reload();
-  }
-  function pageSizeChange(_current, size: number) {
-    table.setPagination({ pageSize: size });
-    table.reload();
-  }
-
-  async function handleDelete(id: number) {
-    emit('delete', id);
-  }
 </script>
+<style lang="less">
+
+  .table-card-list {
+    background-color: @component-background;
+    border-end-end-radius: 4px;
+    border-end-start-radius: 4px;
+    padding: 4px;
+  }
+</style>

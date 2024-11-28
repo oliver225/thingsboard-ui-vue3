@@ -53,6 +53,7 @@
         table.setProps({
           cardList: key == 'card',
         });
+        table.reload();
       }
 
       return {

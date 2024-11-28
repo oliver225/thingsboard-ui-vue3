@@ -49,6 +49,7 @@ import { Checkbox } from 'ant-design-vue';
 import { deviceProfileList, deleteDeviceProfile, setDefaultDeviceProfile } from '/@/api/tb/deviceProfile';
 import InputForm from './form.vue';
 import DetailDrawer from './detail.vue';
+import ImageCard from './imageCard.vue';
 import { TRANSPORT_TYPE_OPTIONS } from '/@/enums/deviceEnum';
 
 
