@@ -61,7 +61,7 @@
   </div>
 </template>
 <script lang="ts" setup name="DeviceThingsModelList">
-  import { reactive, ref } from 'vue';
+  import { reactive, ref, watch } from 'vue';
   import { useModal } from '/@/components/Modal';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { useMessage } from '/@/hooks/web/useMessage';
@@ -176,6 +176,15 @@
   function handleForm(record: Recordable) {
     openModal(true, { ...record, deviceProfileId: { id: props.deviceProfileId } });
   }
+
+  watch(
+    () => props.deviceProfileId,
+    () => {
+      if (props.deviceProfileId) {
+        reload();
+      }
+    },
+  );
 
   async function handleDelete(record: Recordable) {
     createConfirm({
