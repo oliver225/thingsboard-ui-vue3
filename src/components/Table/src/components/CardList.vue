@@ -25,6 +25,7 @@
         v-bind="getPaginationInfo"
         :showQuickJumper="showQuickJumper"
         :pageSizeOptions="getPageSizeOptions"
+        @change="handlePageChange"
       />
     </div>
   </div>
@@ -40,6 +41,7 @@
   import { useWindowSizeFn } from '/@/hooks/event/useWindowSizeFn';
   import { usePagination } from '../hooks/usePagination';
   import { BasicTableProps } from '../types/table';
+  import { onUnmounted } from 'vue';
 
   const table = useTableContext();
   //数据
@@ -59,6 +61,13 @@
   function calcContentHeight() {
     contentHeight.value = document.body.clientHeight - headerHeightRef.value - 156;
   }
+  onMounted(() => {
+    handlePageChange(1, 12);
+  });
+  
+  onUnmounted(() => {
+    handlePageChange(1, 20);
+  });
 
   useWindowSizeFn(
     () => {
@@ -74,6 +83,11 @@
     }
     return { gutter: 4, xs: 24, sm: 12, md: 8, lg: 6, xl: 4 };
   });
+
+  function handlePageChange(page, pageSize) {
+    table.setPagination({ current: page, pageSize });
+    table.reload();
+  }
 
   const getPageSizeOptions = computed(() => {
     return ['12', '24', '36', '48'];
