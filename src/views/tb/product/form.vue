@@ -106,14 +106,14 @@
           <TransportForm ref="transportFrom" />
         </div>
       </Tabs.TabPane>
-      <Tabs.TabPane key="THINGMODEL" :forceRender="true">
+      <!-- <Tabs.TabPane key="THINGMODEL" :forceRender="true">
         <template #tab>
           <span> 物模型 </span>
         </template>
         <div class="profile-container" :style="{ maxHeight: maxHeight + 'px' }">
           <ThingModelForm ref="thingModelFrom" />
         </div>
-      </Tabs.TabPane>
+      </Tabs.TabPane> -->
       <Tabs.TabPane key="ALARM" :forceRender="true">
         <template #tab>
           <span> 报警规则 </span>
@@ -145,7 +145,6 @@
   import TransportForm from './transport/transportForm.vue';
   import AlarmForm from './alarm/alarmForm.vue';
   import ProvisionForm from './provisionForm.vue';
-  import ThingModelForm from './thingModel/thingModelForm.vue';
   import { FormInstance } from 'ant-design-vue/lib/form';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { currentTenantDashboardList } from '/@/api/tb/dashboard';
@@ -181,7 +180,6 @@
 
   const formRef = ref<FormInstance>();
   const transportFrom = ref<any>(null);
-  const thingModelFrom = ref<any>(null);
   const alarmFrom = ref<any>(null);
   const provisionFrom = ref<any>(null);
 
@@ -229,7 +227,6 @@
     transportFrom.value.setFieldsValue(
       record.value?.profileData?.transportConfiguration || { type: TransportType.DEFAULT },
     );
-    thingModelFrom.value.setFieldsValue(record.value?.profileData?.thingModelDefine || {});
     provisionFrom.value.setFieldsValue(
       {
         ...record.value?.profileData?.provisionConfiguration,
@@ -246,28 +243,21 @@
       configuration: { type: 'DEFAULT' },
       transportConfiguration: { type: TransportType.DEFAULT },
       provisionConfiguration: { type: ProvisionType.DISABLED, provisionDeviceKey: null },
-      thingModelDefine: {},
       alarms: null,
     };
     try {
       profileData.transportConfiguration = await transportFrom.value.validate();
       try {
-        profileData.thingModelDefine = await thingModelFrom.value.validate();
+        profileData.provisionConfiguration = await provisionFrom.value.validate();
         try {
-          profileData.provisionConfiguration = await provisionFrom.value.validate();
-          try {
-            profileData.alarms = await alarmFrom.value.validate();
-            return profileData;
-          } catch (error: any) {
-            tabActiveKey.value = 'ALARM';
-            showMessage(t('common.validateError'));
-          }
+          profileData.alarms = await alarmFrom.value.validate();
+          return profileData;
         } catch (error: any) {
-          tabActiveKey.value = 'PROVISION';
+          tabActiveKey.value = 'ALARM';
           showMessage(t('common.validateError'));
         }
       } catch (error: any) {
-        tabActiveKey.value = 'THINGMODEL';
+        tabActiveKey.value = 'PROVISION';
         showMessage(t('common.validateError'));
       }
     } catch (error: any) {

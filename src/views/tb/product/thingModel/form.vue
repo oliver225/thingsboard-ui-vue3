@@ -10,14 +10,19 @@
       <Icon :icon="getTitle.icon" class="pr-1 m-1" />
       <span> {{ getTitle.value }} </span>
     </template>
-    <BasicForm @register="registerForm" />
+    <BasicForm @register="registerForm">
+      <template #enumSpecs="{ model, field }">
+        <CodeEditor v-model:value="model[field]" class="border border-solid border-gray-400" />
+      </template>
+    </BasicForm>
   </BasicModal>
 </template>
 <script lang="ts" setup name="ViewsTbProductThingModelForm">
-  import {} from 'ant-design-vue';
   import { BasicModal, useModalInner } from '/@/components/Modal';
+  import { CodeEditor } from '/@/components/CodeEditor';
   import { ref, unref, computed } from 'vue';
   import { router } from '/@/router';
+  import { useUserStore } from '/@/store/modules/user';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { Icon } from '/@/components/Icon';
@@ -28,9 +33,12 @@
     FUNCTION_TYPE_OPTIONS,
     DataType,
   } from '/@/enums/thingsModelEnum';
+  import { saveFunction } from '/@/api/tb/thingsModel';
+  import { EntityType } from '/@/enums/entityTypeEnum';
 
   const emit = defineEmits(['success', 'register']);
 
+  const userStore = useUserStore();
   const { t } = useI18n('tb');
   const { showMessage } = useMessage();
   const { meta } = unref(router.currentRoute);
@@ -43,6 +51,23 @@
   }));
 
   const inputFormSchemas: FormSchema[] = [
+    {
+      field: 'tenantId',
+      component: 'Input',
+      defaultValue: userStore.getUserInfo.tenantId,
+      show: false,
+    },
+    {
+      field: 'deviceProfileId.entityType',
+      component: 'Input',
+      defaultValue: EntityType.DEVICE_PROFILE,
+      show: false,
+    },
+    {
+      field: 'deviceProfileId.id',
+      component: 'Input',
+      show: false,
+    },
     {
       label: t('功能类型'),
       field: 'type',
@@ -109,6 +134,14 @@
         );
       },
       colProps: { lg: 12, md: 12 },
+      dynamicRules: ({ values }) => {
+        return [
+          {
+            validator: (_, value) => validateSpecsMin(values, value),
+            trigger: ['change', 'blur'],
+          },
+        ];
+      },
     },
     {
       label: t('取值范围（最大值）'),
@@ -126,6 +159,14 @@
         );
       },
       colProps: { lg: 12, md: 12 },
+      dynamicRules: ({ values }) => {
+        return [
+          {
+            validator: (_, value) => validateSpecsMax(values, value),
+            trigger: ['change', 'blur'],
+          },
+        ];
+      },
     },
     {
       label: t('步长'),
@@ -194,20 +235,6 @@
       colProps: { lg: 24, md: 24 },
     },
     {
-      label: t('元素个数'),
-      field: 'dataType.specs.size',
-      component: 'InputNumber',
-      componentProps: {
-        min: 1,
-        defaultValue: '10',
-      },
-      ifShow: ({ values }) => {
-        return values.type === FunctionType.property && values['dataType.type'] == DataType.array;
-      },
-      required: true,
-      colProps: { lg: 24, md: 24 },
-    },
-    {
       label: t('布尔值(true)'),
       field: 'dataType.specs.trueValue',
       component: 'Input',
@@ -234,6 +261,26 @@
       },
       required: true,
       colProps: { lg: 12, md: 12 },
+    },
+    {
+      label: t('枚举项'),
+      subLabel: `{"Key1":label1, "key2":label2}`,
+      field: 'dataType.specs',
+      component: 'Input',
+      slot: 'enumSpecs',
+      ifShow: ({ values }) => {
+        return values.type === FunctionType.property && values['dataType.type'] == DataType.enum;
+      },
+      colProps: { lg: 24, md: 24 },
+      dynamicRules: ({ values }) => {
+        return [
+          { required: true, message: '请输入枚举值', trigger: 'blur' },
+          {
+            validator: (_, value) => validateEnumSpces(values, value),
+            trigger: ['change', 'blur'],
+          },
+        ];
+      },
     },
     {
       label: t('读写类型'),
@@ -285,7 +332,10 @@
   const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
     setModalProps({ loading: true });
     clear();
-    record.value = { type: 'property', ...data };
+    record.value = {
+      type: 'property',
+      ...data,
+    };
     setFieldsValue(record.value);
     setModalProps({ loading: false });
   });
@@ -294,12 +344,46 @@
     record.value = { type: 'property' };
   }
 
+  function validateSpecsMax(values: any, maxValue: number) {
+    const minValue = values[`dataType.specs.min`] as number;
+    if (maxValue && minValue) {
+      if (minValue >= maxValue) {
+        return Promise.reject(`最大值不能小于最小值`);
+      }
+    }
+
+    return Promise.resolve();
+  }
+
+  function validateSpecsMin(values: any, minValue: number) {
+    const maxValue = values[`dataType.specs.max`] as number;
+    if (minValue && maxValue) {
+      if (minValue >= maxValue) {
+        return Promise.reject(`最小值不能大于最大值`);
+      }
+    }
+
+    return Promise.resolve();
+  }
+
+  async function validateEnumSpces(values: any, specs: string) {
+    try {
+      const conf = JSON.parse(specs);
+      await setFieldsValue({ ...getFieldsValue(), 'dataType.specs': conf });
+      return Promise.resolve();
+    } catch (e) {
+      console.log(e);
+      return Promise.reject(`请输入JSON格式数据`);
+    }
+  }
+
   async function handleSubmit() {
     try {
       const data = await validate();
       console.log(data);
       setModalProps({ confirmLoading: true });
-      emit('success', data);
+      const res = await saveFunction(data);
+      emit('success', res);
       setTimeout(closeModal);
     } catch (error: any) {
       if (error && error.errorFields) {

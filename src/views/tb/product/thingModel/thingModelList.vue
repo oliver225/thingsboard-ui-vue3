@@ -1,6 +1,6 @@
 <template>
   <div class="device-thing-model">
-    <BasicTable @register="registerTable" :dataSource="dataSource">
+    <BasicTable @register="registerTable">
       <!-- <template #headerTop>
         <div class="text-lg font-bold my-2">
           {{ t(getTitle.value) }}
@@ -46,11 +46,11 @@
           <div> true: {{ record.dataType?.specs?.trueValue }} </div>
           <div> false:{{ record.dataType?.specs?.falseValue }} </div>
         </div>
+        <div v-if="record.dataType?.type == DataType.enum">
+          <span> {{ record.dataType?.specs }} </span>
+        </div>
         <div v-if="record.dataType?.type == DataType.text">
           数据长度: {{ record.dataType?.specs?.length }}
-        </div>
-        <div v-if="record.dataType?.type == DataType.array">
-          数组长度: {{ record.dataType?.specs?.size }}
         </div>
         <div v-if="record.callType">
           调用方式: {{ record.callType == 'asnyc' ? '异步调用' : '同步调用' }}
@@ -60,7 +60,7 @@
     <InputForm @register="registerModal" @success="handleSuccess" />
   </div>
 </template>
-<script lang="ts" setup name="DeviceThingsModelForm">
+<script lang="ts" setup name="DeviceThingsModelList">
   import { reactive, ref } from 'vue';
   import { useModal } from '/@/components/Modal';
   import { useI18n } from '/@/hooks/web/useI18n';
@@ -68,10 +68,8 @@
   import { BasicTable, BasicColumn, useTable } from '/@/components/Table';
   import { Icon } from '/@/components/Icon';
   import InputForm from './form.vue';
-  import { Function } from '/@/api/tb/deviceProfile';
   import { FUNCTION_TYPE_OPTIONS, DATA_TYPE_OPTIONS, DataType } from '/@/enums/thingsModelEnum';
-  import { watch } from 'vue';
-  import { isEmpty } from '/@/utils/is';
+  import { deleteFunction, functionList } from '/@/api/tb/thingsModel';
 
   const { t } = useI18n('tb');
   const { createConfirm, showMessage } = useMessage();
@@ -85,6 +83,10 @@
       type: Boolean,
       default: false,
     },
+    deviceProfileId: {
+      type: String,
+      required: true,
+    },
   });
 
   const record = ref();
@@ -93,8 +95,6 @@
     textSearch: '',
   });
 
-  const dataSource = ref<Array<Function>>();
-
   const tableColumns: BasicColumn[] = [
     {
       title: t('功能类型'),
@@ -102,6 +102,7 @@
       key: 'type',
       width: 100,
       align: 'center',
+      filterMultiple: false,
       filters: FUNCTION_TYPE_OPTIONS.map((item) => ({ text: item.label, value: item.value })),
       format: (text: any) =>
         text ? FUNCTION_TYPE_OPTIONS.find((item) => item.value === text)?.label || text : '',
@@ -111,12 +112,14 @@
       dataIndex: 'name',
       key: 'name',
       align: 'center',
+      sorter: true,
     },
     {
       title: t('标识符'),
       dataIndex: 'identifier',
       key: 'identifier',
       align: 'center',
+      sorter: true,
     },
     {
       title: t('数据类型'),
@@ -140,12 +143,6 @@
     ifShow: props.readOnly == false,
     actions: (record: Recordable) => [
       {
-        icon: 'i-clarity:note-edit-line',
-        color: 'success',
-        title: t('编辑功能'),
-        onClick: handleForm.bind(this, { ...record }),
-      },
-      {
         icon: 'ant-design:delete-outlined',
         color: 'error',
         title: t('删除功能'),
@@ -157,18 +154,27 @@
   const [registerModal, { openModal }] = useModal();
   const [registerTable, { reload }] = useTable({
     rowKey: (record) => record.identifier,
+    api: (params) => functionList(props.deviceProfileId, params),
+    beforeFetch: wrapFetchParams,
     columns: tableColumns,
     actionColumn: actionColumn,
-    filterFn: handleFilter,
     showTableSetting: true,
     useSearchForm: false,
     canResize: true,
-    pagination: false,
-    resizeHeightOffset: 200,
+    pagination: true,
+    immediate: true,
   });
 
+  function wrapFetchParams(param: any) {
+    return {
+      ...param,
+      textSearch: searchParam.textSearch,
+      type: param.type?.[0],
+    };
+  }
+
   function handleForm(record: Recordable) {
-    openModal(true, record);
+    openModal(true, { ...record, deviceProfileId: { id: props.deviceProfileId } });
   }
 
   async function handleDelete(record: Recordable) {
@@ -182,91 +188,20 @@
         danger: true,
       },
       onOk: async () => {
-        const index = dataSource.value?.findIndex((item) => item.identifier == record.identifier);
-        if (index !== undefined && index !== -1) {
-          dataSource.value?.splice(index, 1);
+        try {
+          await deleteFunction(props.deviceProfileId, record.identifier);
+          showMessage('删除功能成功！');
+        } catch (error: any) {
+          console.log(error);
+        } finally {
+          handleSuccess();
         }
       },
     });
   }
 
-  function handleSuccess(data: Function) {
-    if (data) {
-      const index = dataSource.value?.findIndex((item) => item.identifier == data.identifier);
-      if (index !== undefined && index !== -1) {
-        dataSource.value?.splice(index, 1);
-      }
-      dataSource.value = [...(dataSource.value || []), data];
-    }
-  }
-
-  watch(
-    () => searchParam.textSearch,
-    () => {
-      if (isEmpty(searchParam.textSearch)) {
-        setFieldsValue(record.value);
-      } else {
-        record.value = getFieldsValue();
-        dataSource.value = dataSource.value?.filter(
-          (item) =>
-            item.name?.includes(searchParam.textSearch) ||
-            item.identifier?.includes(searchParam.textSearch),
-        );
-      }
-    },
-  );
-
-  function handleFilter(filters) {
-    if (filters.type) {
-      record.value = getFieldsValue();
-      dataSource.value = dataSource.value?.filter((item) => filters.type.includes(item.type));
-    } else {
-      setFieldsValue(record.value);
-    }
-  }
-
-  defineExpose({ getFieldsValue, validate, resetFields, setFieldsValue });
-
-  async function setFieldsValue(values: any) {
-    searchParam.textSearch = '';
-    record.value = values;
-    dataSource.value = [];
-    if (values.properties) {
-      values.properties.forEach((item: any) => {
-        item.type = 'property';
-      });
-      dataSource.value.push(...values.properties);
-    }
-    if (values.services) {
-      values.services.forEach((item: any) => {
-        item.type = 'service';
-      });
-      dataSource.value.push(...values.services);
-    }
-    if (values.events) {
-      values.events.forEach((item: any) => {
-        item.type = 'event';
-      });
-      dataSource.value.push(...values.events);
-    }
-  }
-  async function resetFields() {
-    dataSource.value = [];
-  }
-  async function validate() {
-    const data = {
-      properties: dataSource.value?.filter((item) => item.type == 'property'),
-      services: dataSource.value?.filter((item) => item.type == 'service'),
-      events: dataSource.value?.filter((item) => item.type == 'event'),
-    };
-    return data;
-  }
-  async function getFieldsValue() {
-    return {
-      properties: dataSource.value?.filter((item) => item.type == 'property'),
-      services: dataSource.value?.filter((item) => item.type == 'service'),
-      events: dataSource.value?.filter((item) => item.type == 'event'),
-    };
+  function handleSuccess() {
+    reload();
   }
 </script>
 <style lang="less">

@@ -75,10 +75,10 @@
         </div>
       </TabPane>
       <TabPane key="TGINGMODEL">
-        <template #tab
-          ><span> <Icon :icon="'ant-design:project-outlined'" /> 物模型 </span>
+        <template #tab>
+          <span> <Icon :icon="'ant-design:project-outlined'" /> 物模型 </span>
         </template>
-        <ThingModelForm ref="thingsModelFrom" :readOnly="true" />
+        <ThingModelList ref="thingsModelList" :deviceProfileId="record?.id.id" />
       </TabPane>
       <TabPane key="ALARM">
         <template #tab
@@ -129,7 +129,7 @@
   import TransportForm from './transport/transportForm.vue';
   import AlarmForm from './alarm/alarmForm.vue';
   import ProvisionForm from './provisionForm.vue';
-  import ThingModelForm from './thingModel/thingModelForm.vue';
+  import ThingModelList from './thingModel/thingModelList.vue';
   import { ProvisionType, TransportType } from '/@/enums/deviceEnum';
   import ImageUrlInput from '/@/views/tb/images/ImageUrlInput.vue';
 
@@ -149,7 +149,7 @@
   const tabActiveKey = ref('DETAIL');
 
   const transportFrom = ref<any>(null);
-  const thingsModelFrom = ref<any>(null);
+  const thingsModelList = ref<any>(null);
   const alarmFrom = ref<any>(null);
   const provisionFrom = ref<any>(null);
 
@@ -234,12 +234,6 @@
         nextTick(() => {
           if (alarmFrom.value != null) {
             alarmFrom.value.setFieldsValue(record.value?.profileData?.alarms || []);
-          }
-        });
-      } else if (tabActiveKey.value == 'TGINGMODEL') {
-        nextTick(() => {
-          if (thingsModelFrom.value != null) {
-            thingsModelFrom.value.setFieldsValue(record.value?.profileData?.thingModelDefine || {});
           }
         });
       } else if (tabActiveKey.value == 'TRANSPORT') {

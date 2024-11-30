@@ -91,13 +91,21 @@
         <template #tab
           ><span> <Icon :icon="'ant-design:line-chart-outlined'" /> 数据 </span>
         </template>
-        <Telemetry v-if="tabActiveKey == 'TELEMETRY'"  :entityType="EntityType.DEVICE" :entityId="record?.id?.id" />
+        <Telemetry
+          v-if="tabActiveKey == 'TELEMETRY'"
+          :entityType="EntityType.DEVICE"
+          :entityId="record?.id?.id"
+        />
       </TabPane>
       <TabPane key="TGINGMODEL">
         <template #tab>
           <span> <Icon :icon="'ant-design:project-outlined'" /> 物模型 </span>
         </template>
-        <ThingModelForm ref="thingsModelFrom" :readOnly="true" />
+        <ThingModelList
+          ref="thingsModelFrom"
+          :deviceProfileId="record.deviceProfileId?.id"
+          :readOnly="true"
+        />
       </TabPane>
       <TabPane key="TOPIC">
         <template #tab
@@ -152,15 +160,15 @@
   import { useUserStore } from '/@/store/modules/user';
   import { Authority } from '/@/enums/authorityEnum';
   import { CredentialsType } from '/@/enums/deviceEnum';
+  import { EntityType } from '/@/enums/entityTypeEnum';
   import Alarm from '/@/views/tb/alarm/list.vue';
   import Telemetry from '/@/views/tb/telemetry/index.vue';
   import AuditLog from '/@/views/tb/auditLog/list.vue';
   import Relation from '/@/views/tb/relation/list.vue';
   import Event from '/@/views/tb/event/index.vue';
   import DeviceAPI from '/@/views/tb/device/deviceApi.vue';
-  import ThingModelForm from '/@/views/tb/product/thingModel/thingModelForm.vue';
+  import ThingModelList from '/@/views/tb/product/thingModel/thingModelList.vue';
 
-  import { EntityType } from '/@/enums/entityTypeEnum';
 
   const userStore = useUserStore();
   const { hasPermission } = usePermission();
@@ -251,18 +259,6 @@
     credentials.value = {} as DeviceCredentials;
     setDescProps({ data: {} });
   }
-
-  watch(
-    () => tabActiveKey.value,
-    () => {
-      if (tabActiveKey.value == 'TGINGMODEL') {
-      nextTick(() => {
-        if (thingsModelFrom.value != null) {
-          thingsModelFrom.value.setFieldsValue(record.value?.deviceData?.thingModelDefine || {});
-        }
-      });
-    }}
-  );
 
   function handleCopyDeviceId() {
     copyToClipboard(record.value.id.id, '复制设备ID成功！');
