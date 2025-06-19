@@ -1,9 +1,4 @@
 dist
 public
-node_modules
-
-*.sh
-*.md
-
-/bin
-/packages/dfm
+__tests__
+coverage
