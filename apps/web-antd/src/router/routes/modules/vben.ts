@@ -1,12 +1,6 @@
 import type { RouteRecordRaw } from 'vue-router';
 
-import {
-  TBV_GITHUB_URL,
-  VBEN_DOC_URL,
-  VBEN_ELE_PREVIEW_URL,
-  VBEN_LOGO_URL,
-  VBEN_NAIVE_PREVIEW_URL,
-} from '@vben/constants';
+import { TBV_GITHUB_URL, VBEN_DOC_URL } from '@vben/constants';
 
 import { IFrameView } from '#/layouts';
 import { $t } from '#/locales';
@@ -15,7 +9,7 @@ const routes: RouteRecordRaw[] = [
   {
     meta: {
       badgeType: 'dot',
-      icon: VBEN_LOGO_URL,
+      icon: 'static/logo.png',
       order: 9998,
       title: $t('demos.vben.title'),
     },
@@ -42,28 +36,28 @@ const routes: RouteRecordRaw[] = [
           title: 'Github',
         },
       },
-      {
-        name: 'VbenNaive',
-        path: '/vben-admin/naive',
-        component: IFrameView,
-        meta: {
-          badgeType: 'dot',
-          icon: 'logos:naiveui',
-          link: VBEN_NAIVE_PREVIEW_URL,
-          title: $t('demos.vben.naive-ui'),
-        },
-      },
-      {
-        name: 'VbenElementPlus',
-        path: '/vben-admin/ele',
-        component: IFrameView,
-        meta: {
-          badgeType: 'dot',
-          icon: 'logos:element',
-          link: VBEN_ELE_PREVIEW_URL,
-          title: $t('demos.vben.element-plus'),
-        },
-      },
+      // {
+      //   name: 'VbenNaive',
+      //   path: '/vben-admin/naive',
+      //   component: IFrameView,
+      //   meta: {
+      //     badgeType: 'dot',
+      //     icon: 'logos:naiveui',
+      //     link: VBEN_NAIVE_PREVIEW_URL,
+      //     title: $t('demos.vben.naive-ui'),
+      //   },
+      // },
+      // {
+      //   name: 'VbenElementPlus',
+      //   path: '/vben-admin/ele',
+      //   component: IFrameView,
+      //   meta: {
+      //     badgeType: 'dot',
+      //     icon: 'logos:element',
+      //     link: VBEN_ELE_PREVIEW_URL,
+      //     title: $t('demos.vben.element-plus'),
+      //   },
+      // },
     ],
   },
   {

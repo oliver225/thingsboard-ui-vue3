@@ -8,19 +8,33 @@ import { defineOverridesPreferences } from '@vben/preferences';
 export const overridesPreferences = defineOverridesPreferences({
   // overrides
   app: {
+    accessMode: 'frontend',
     name: import.meta.env.VITE_APP_TITLE,
     enableRefreshToken: true,
+    defaultHomePath: '/home',
   },
   logo: {
-    source: '/public/logo.png',
+    enable: true,
+    fit: 'contain',
+    source: '/static/logo.png',
   },
   copyright: {
     enable: false,
     companyName: 'oliver',
-    // companySiteLink: 'https://www.vben.pro',
     date: `2024-${new Date().getFullYear()}`,
     icp: '',
     icpLink: '',
     settingShow: true,
+  },
+  theme: {
+    builtinType: 'default',
+    colorDestructive: 'hsl(348 100% 61%)',
+    colorPrimary: 'hsl(212 100% 45%)',
+    colorSuccess: 'hsl(144 57% 58%)',
+    colorWarning: 'hsl(42 84% 61%)',
+    mode: 'light',
+    radius: '0.5',
+    semiDarkHeader: false,
+    semiDarkSidebar: false,
   },
 });

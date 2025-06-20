@@ -17,7 +17,7 @@ function handleClickWeChat() {
     title: '',
     content: () =>
       h('img', {
-        src: '/public/images/weixin.jpg',
+        src: '/static/images/weixin.jpg',
         alt: 'WeChat QR Code',
         class: 'w-82',
       }),

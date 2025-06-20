@@ -1,25 +1,53 @@
 import type { RouteRecordRaw } from 'vue-router';
 
+import { Authority } from '@vben/constants';
+
 import { $t } from '#/locales';
 
 const routes: RouteRecordRaw[] = [
+  // {
+  //   meta: {
+  //     icon: 'ic:baseline-view-in-ar',
+  //     keepAlive: true,
+  //     order: 1000,
+  //     title: $t('demos.title'),
+  //   },
+  //   name: 'Teannts',
+  //   path: '/tenants',
+  //   children: [
+
+  //   ],
+  // },
   {
     meta: {
       icon: 'ic:baseline-view-in-ar',
-      keepAlive: true,
-      order: 1000,
-      title: $t('demos.title'),
+      order: 1,
+      title: $t('租户'),
+      authority: [Authority.SYS_ADMIN],
+      hideChildrenInMenu: true, // 隐藏子菜单
     },
-    name: 'Demos',
-    path: '/demos',
+    name: 'Tenant',
+    path: '/teannts',
     children: [
       {
         meta: {
-          title: $t('demos.antd'),
+          icon: 'ic:baseline-view-in-ar',
+          title: $t('租户'),
+          authority: [Authority.SYS_ADMIN],
         },
-        name: 'AntDesignDemos',
-        path: '/demos/ant-design',
-        component: () => import('#/views/demos/antd/index.vue'),
+        name: 'TenantList',
+        path: '/tenants',
+        component: () => import('#/views/tenant/list.vue'),
+      },
+      {
+        meta: {
+          icon: 'ic:baseline-view-in-ar',
+          title: $t('租户详情'),
+          authority: [Authority.SYS_ADMIN],
+        },
+        name: 'TenantDetail',
+        path: '/tenants/:id',
+        component: () => import('#/views/tenant/detail.vue'),
       },
     ],
   },
