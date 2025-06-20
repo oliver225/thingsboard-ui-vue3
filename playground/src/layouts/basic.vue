@@ -4,7 +4,7 @@ import type { NotificationItem } from '@vben/layouts';
 import { computed, onBeforeMount, ref, watch } from 'vue';
 
 import { AuthenticationLoginExpiredModal } from '@vben/common-ui';
-import { VBEN_DOC_URL, VBEN_GITHUB_URL } from '@vben/constants';
+import { TBV_GITHUB_URL, VBEN_DOC_URL } from '@vben/constants';
 import { useWatermark } from '@vben/hooks';
 import { BookOpenText, CircleHelp, MdiGithub } from '@vben/icons';
 import {
@@ -85,7 +85,7 @@ const menus = computed(() => [
   },
   {
     handler: () => {
-      openWindow(VBEN_GITHUB_URL, {
+      openWindow(TBV_GITHUB_URL, {
         target: '_blank',
       });
     },
@@ -94,7 +94,7 @@ const menus = computed(() => [
   },
   {
     handler: () => {
-      openWindow(`${VBEN_GITHUB_URL}/issues`, {
+      openWindow(`${TBV_GITHUB_URL}/issues`, {
         target: '_blank',
       });
     },

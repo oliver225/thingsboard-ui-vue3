@@ -50,9 +50,14 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
    */
   async function doRefreshToken() {
     const accessStore = useAccessStore();
-    const resp = await refreshTokenApi();
-    const newToken = resp.data;
+    const resp = await refreshTokenApi(accessStore.refreshToken as string);
+    if (!resp || !resp.token) {
+      // 如果没有返回新的 token，直接抛出异常
+      throw new Error('Failed to refresh token');
+    }
+    const newToken = resp.token;
     accessStore.setAccessToken(newToken);
+    accessStore.setRefreshToken(resp.refreshToken);
     return newToken;
   }
 
@@ -63,10 +68,14 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
   // 请求头处理
   client.addRequestInterceptor({
     fulfilled: async (config) => {
-      const accessStore = useAccessStore();
-
-      config.headers.Authorization = formatToken(accessStore.accessToken);
       config.headers['Accept-Language'] = preferences.app.locale;
+
+      if (config.withCredentials !== false) {
+        const accessStore = useAccessStore();
+        config.headers['x-authorization'] = formatToken(
+          accessStore.accessToken,
+        );
+      }
       return config;
     },
   });
@@ -107,7 +116,7 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
 }
 
 export const requestClient = createRequestClient(apiURL, {
-  responseReturn: 'data',
+  responseReturn: 'body',
 });
 
 export const baseRequestClient = new RequestClient({ baseURL: apiURL });

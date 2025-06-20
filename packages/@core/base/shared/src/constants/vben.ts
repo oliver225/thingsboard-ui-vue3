@@ -1,7 +1,8 @@
 /**
  * @zh_CN GITHUB 仓库地址
  */
-export const VBEN_GITHUB_URL = 'https://github.com/vbenjs/vue-vben-admin';
+export const TBV_GITHUB_URL =
+  'https://github.com/oliver225/thingsboard-ui-vue3';
 
 /**
  * @zh_CN 文档地址

@@ -9,5 +9,18 @@ export const overridesPreferences = defineOverridesPreferences({
   // overrides
   app: {
     name: import.meta.env.VITE_APP_TITLE,
+    enableRefreshToken: true,
+  },
+  logo: {
+    source: '/public/logo.png',
+  },
+  copyright: {
+    enable: false,
+    companyName: 'oliver',
+    // companySiteLink: 'https://www.vben.pro',
+    date: `2024-${new Date().getFullYear()}`,
+    icp: '',
+    icpLink: '',
+    settingShow: true,
   },
 });

@@ -10,7 +10,7 @@ import { resetAllStores, useAccessStore, useUserStore } from '@vben/stores';
 import { notification } from 'ant-design-vue';
 import { defineStore } from 'pinia';
 
-import { getAccessCodesApi, getUserInfoApi, loginApi, logoutApi } from '#/api';
+import { getUserInfoApi, loginApi, logoutApi } from '#/api';
 import { $t } from '#/locales';
 
 export const useAuthStore = defineStore('auth', () => {
@@ -44,15 +44,11 @@ export const useAuthStore = defineStore('auth', () => {
         accessStore.setRefreshToken(refreshToken);
 
         // 获取用户信息并存储到 accessStore 中
-        const [fetchUserInfoResult, accessCodes] = await Promise.all([
-          fetchUserInfo(),
-          getAccessCodesApi(),
-        ]);
 
-        userInfo = fetchUserInfoResult;
+        userInfo = await fetchUserInfo();
 
         userStore.setUserInfo(userInfo);
-        accessStore.setAccessCodes(accessCodes);
+        accessStore.setAccessCodes([userInfo.authority]);
 
         if (accessStore.loginExpired) {
           accessStore.setLoginExpired(false);
@@ -60,13 +56,14 @@ export const useAuthStore = defineStore('auth', () => {
           onSuccess
             ? await onSuccess?.()
             : await router.push(
-                userInfo.homePath || preferences.app.defaultHomePath,
+                userInfo.additionalInfo?.homePath ||
+                  preferences.app.defaultHomePath,
               );
         }
 
-        if (userInfo?.realName) {
+        if (userInfo?.firstName || userInfo.lastName || userInfo?.email) {
           notification.success({
-            description: `${$t('authentication.loginSuccessDesc')}:${userInfo?.realName}`,
+            description: `${$t('authentication.loginSuccessDesc')}:${userInfo?.firstName ?? userInfo.email} `,
             duration: 3,
             message: $t('authentication.loginSuccess'),
           });

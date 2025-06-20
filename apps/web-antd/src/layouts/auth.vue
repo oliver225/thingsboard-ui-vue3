@@ -14,8 +14,8 @@ const logo = computed(() => preferences.logo.source);
   <AuthPageLayout
     :app-name="appName"
     :logo="logo"
-    :page-description="$t('authentication.pageDesc')"
-    :page-title="$t('authentication.pageTitle')"
+    :page-description="$t('基于 Vue3 的Thingsboard 前端应用')"
+    :page-title="$t('Thingsboard Iot Platform')"
   >
     <!-- 自定义工具栏 -->
     <!-- <template #toolbar></template> -->

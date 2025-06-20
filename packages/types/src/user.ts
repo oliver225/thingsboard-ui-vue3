@@ -1,20 +1,20 @@
 import type { BasicUserInfo } from '@vben-core/typings';
 
+import { Authority, EntityId, EntityType } from '@vben/constants';
+
 /** 用户信息 */
 interface UserInfo extends BasicUserInfo {
-  /**
-   * 用户描述
-   */
-  desc: string;
-  /**
-   * 首页地址
-   */
-  homePath: string;
-
-  /**
-   * accessToken
-   */
-  token: string;
+  id: EntityId<EntityType.USER>;
+  tenantId: EntityId<EntityType.TENANT>;
+  customerId: EntityId<EntityType.CUSTOMER>;
+  name: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  phone: string;
+  authority: Authority;
+  additionalInfo: any;
+  createdTime: number;
 }
 
 export type { UserInfo };

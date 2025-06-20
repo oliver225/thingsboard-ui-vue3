@@ -1,4 +1,6 @@
-import { baseRequestClient, requestClient } from '#/api/request';
+import type { UserInfo } from '@vben/types';
+
+import { requestClient } from '#/api/request';
 
 export namespace AuthApi {
   /** 登录接口参数 */
@@ -14,8 +16,8 @@ export namespace AuthApi {
   }
 
   export interface RefreshTokenResult {
-    data: string;
-    status: number;
+    refreshToken: string;
+    token: string;
   }
 }
 
@@ -24,32 +26,37 @@ export namespace AuthApi {
  */
 export async function loginApi(data: AuthApi.LoginParams) {
   return requestClient.post<AuthApi.LoginResult>('/auth/login', data, {
-    responseReturn: 'body',
     withCredentials: false,
   });
+}
+
+export async function getUserInfoApi() {
+  return requestClient.get<UserInfo>('/auth/user');
 }
 
 /**
  * 刷新accessToken
  */
-export async function refreshTokenApi() {
-  return baseRequestClient.post<AuthApi.RefreshTokenResult>('/auth/refresh', {
-    withCredentials: true,
-  });
+export async function refreshTokenApi(refreshToken: string) {
+  return requestClient.post<AuthApi.RefreshTokenResult>(
+    '/auth/token',
+    { refreshToken },
+    {
+      withCredentials: false,
+    },
+  );
 }
 
 /**
  * 退出登录
  */
 export async function logoutApi() {
-  return baseRequestClient.post('/auth/logout', {
-    withCredentials: true,
-  });
+  return requestClient.post('/auth/logout');
 }
 
 /**
  * 获取用户权限码
  */
-export async function getAccessCodesApi() {
-  return requestClient.get<string[]>('/auth/codes');
-}
+// export async function getAccessCodesApi() {
+//   return requestClient.get<string[]>('/auth/codes');
+// }

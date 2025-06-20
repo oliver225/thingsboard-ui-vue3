@@ -1,10 +1,15 @@
 <script lang="ts" setup>
 import type { NotificationItem } from '@vben/layouts';
+import type { UserInfo } from '@vben/types';
 
 import { computed, ref, watch } from 'vue';
 
 import { AuthenticationLoginExpiredModal } from '@vben/common-ui';
-import { VBEN_DOC_URL, VBEN_GITHUB_URL } from '@vben/constants';
+import {
+  AUTHORITY_OPTIONS,
+  TBV_GITHUB_URL,
+  VBEN_DOC_URL,
+} from '@vben/constants';
 import { useWatermark } from '@vben/hooks';
 import { BookOpenText, CircleHelp, MdiGithub } from '@vben/icons';
 import {
@@ -59,6 +64,7 @@ const { destroyWatermark, updateWatermark } = useWatermark();
 const showDot = computed(() =>
   notifications.value.some((item) => !item.isRead),
 );
+const currentUserInfo = userStore.userInfo as UserInfo;
 
 const menus = computed(() => [
   {
@@ -72,7 +78,7 @@ const menus = computed(() => [
   },
   {
     handler: () => {
-      openWindow(VBEN_GITHUB_URL, {
+      openWindow(TBV_GITHUB_URL, {
         target: '_blank',
       });
     },
@@ -81,7 +87,7 @@ const menus = computed(() => [
   },
   {
     handler: () => {
-      openWindow(`${VBEN_GITHUB_URL}/issues`, {
+      openWindow(`${TBV_GITHUB_URL}/issues`, {
         target: '_blank',
       });
     },
@@ -91,7 +97,9 @@ const menus = computed(() => [
 ]);
 
 const avatar = computed(() => {
-  return userStore.userInfo?.avatar ?? preferences.app.defaultAvatar;
+  return (
+    currentUserInfo?.additionalInfo?.avatar ?? preferences.app.defaultAvatar
+  );
 });
 
 async function handleLogout() {
@@ -110,7 +118,7 @@ watch(
   async (enable) => {
     if (enable) {
       await updateWatermark({
-        content: `${userStore.userInfo?.username} - ${userStore.userInfo?.realName}`,
+        content: `${currentUserInfo.firstName} - ${currentUserInfo.lastName} - ${currentUserInfo.email}`,
       });
     } else {
       destroyWatermark();
@@ -126,11 +134,15 @@ watch(
   <BasicLayout @clear-preferences-and-logout="handleLogout">
     <template #user-dropdown>
       <UserDropdown
-        :avatar
-        :menus
-        :text="userStore.userInfo?.realName"
-        description="ann.vben@gmail.com"
-        tag-text="Pro"
+        :avatar="avatar"
+        :menus="menus"
+        :text="currentUserInfo.firstName || '未命名'"
+        :description="currentUserInfo.email"
+        :tag-text="
+          AUTHORITY_OPTIONS.find(
+            (item) => item.value === currentUserInfo.authority,
+          )?.label || ''
+        "
         @logout="handleLogout"
       />
     </template>
