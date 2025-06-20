@@ -33,7 +33,7 @@ function notify(type: NotificationType) {
 </script>
 
 <template>
-  <Page description="支持多语言，主题功能集成切换等" title="租户列表">
+  <Page description="支持多语言，主题功能集成切换等" title="租户">
     <Card class="mb-5" title="按钮">
       <Space>
         <Button>Default</Button>
