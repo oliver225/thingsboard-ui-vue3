@@ -92,6 +92,7 @@ const formSchema = computed((): VbenFormSchema[] => {
 
 <template>
   <AuthenticationLogin
+    sub-title="请输入 Thingsboard 账户信息开始进入系统"
     :form-schema="formSchema"
     :loading="authStore.loginLoading"
     @submit="authStore.authLogin"

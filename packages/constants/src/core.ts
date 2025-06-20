@@ -24,6 +24,8 @@ export const SUPPORT_LANGUAGES: LanguageOption[] = [
   },
 ];
 
+export const TBV_GITEE_URL = 'https://gitee.com/oliver225/thingsboard-ui-vue3';
+
 export const NULL_UUID = '13814000-1dd2-11b2-8080-808080808080';
 
 export interface EntityId<T> {

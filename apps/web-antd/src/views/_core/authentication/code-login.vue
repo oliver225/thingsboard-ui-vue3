@@ -62,6 +62,7 @@ async function handleLogin(values: Recordable<any>) {
 
 <template>
   <AuthenticationCodeLogin
+    sub-title="业务逻辑有待实现"
     :form-schema="formSchema"
     :loading="loading"
     @submit="handleLogin"

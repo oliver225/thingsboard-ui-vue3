@@ -89,6 +89,7 @@ function handleSubmit(value: Recordable<any>) {
 
 <template>
   <AuthenticationRegister
+    sub-title="业务逻辑有待实现"
     :form-schema="formSchema"
     :loading="loading"
     @submit="handleSubmit"

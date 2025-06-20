@@ -6,5 +6,8 @@ defineOptions({ name: 'QrCodeLogin' });
 </script>
 
 <template>
-  <AuthenticationQrCodeLogin :login-path="LOGIN_PATH" />
+  <AuthenticationQrCodeLogin
+    sub-title="业务逻辑有待实现"
+    :login-path="LOGIN_PATH"
+  />
 </template>
