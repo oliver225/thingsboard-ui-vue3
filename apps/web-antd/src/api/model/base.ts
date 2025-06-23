@@ -10,6 +10,6 @@ export interface BasicQuery {
   page: number;
   textSearch?: string;
   sortProperty?: string;
-  sortOrder?: 'asc' | 'desc' | null;
+  sortOrder?: 'ASC' | 'DESC' | null;
   [key: string]: any;
 }

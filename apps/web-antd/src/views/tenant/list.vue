@@ -4,8 +4,9 @@ import type { EntityId, EntityType } from '@vben/constants';
 import type { VxeGridProps } from '#/adapter/vxe-table';
 
 import { Page } from '@vben/common-ui';
+import { MdiPlus } from '@vben/icons';
 
-import { Button } from 'ant-design-vue';
+import { Button, InputSearch } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { tenantInfoListApi } from '#/api';
@@ -67,18 +68,21 @@ const gridOptions: VxeGridProps<RowType> = {
     export: true,
     // import: true,
     refresh: { code: 'query' },
-    zoom: true,
   },
 };
 
 const [Grid, gridApi] = useVbenVxeGrid({
   gridOptions,
 });
+
+function handleTenantForm() {
+  alert('打开租户表单');
+}
 </script>
 
 <template>
   <Page auto-content-height>
-    <Grid table-title="租户">
+    <Grid>
       <template #table-top>
         <p class="text-lg font-semibold">租户</p>
         <p class="text-muted-foreground">
@@ -86,19 +90,21 @@ const [Grid, gridApi] = useVbenVxeGrid({
         </p>
       </template>
       <!-- <template #table-title>asd </template> -->
-      <!-- <template #toolbar-actions>
-        <Button class="mr-2" type="primary" @click="() => gridApi.query()">
-          刷新当前页面
+      <template #toolbar-actions>
+        <Button @click="() => handleTenantForm()" type="primary" class="mr-2">
+          <MdiPlus class="mb-1 size-5" />
+          <span class="font-semibold"> 新建租户 </span>
         </Button>
-      </template> -->
-      <template #toolbar-tools>
+        <InputSearch class="w-80" placeholder="请输入租户名称" />
+      </template>
+      <!-- <template #toolbar-tools>
         <Button class="mr-2" type="primary" @click="() => gridApi.query()">
           刷新当前页面
         </Button>
         <Button type="primary" @click="() => gridApi.reload()">
           刷新并返回第一页
         </Button>
-      </template>
+      </template> -->
     </Grid>
   </Page>
 </template>

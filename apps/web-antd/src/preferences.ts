@@ -12,6 +12,7 @@ export const overridesPreferences = defineOverridesPreferences({
     name: import.meta.env.VITE_APP_TITLE,
     enableRefreshToken: true,
     defaultHomePath: '/home',
+    layout: 'header-sidebar-nav',
   },
   logo: {
     enable: true,
