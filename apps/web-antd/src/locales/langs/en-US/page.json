@@ -10,5 +10,12 @@
     "title": "Dashboard",
     "analytics": "Analytics",
     "workspace": "Workspace"
+  },
+  "search": {
+    "placeholder": "please input search content"
+  },
+  "tenant": {
+    "title": "Tenant",
+    "addTenant": "add Tenant"
   }
 }

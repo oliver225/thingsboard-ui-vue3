@@ -10,5 +10,12 @@
     "title": "概览",
     "analytics": "分析页",
     "workspace": "工作台"
+  },
+  "search": {
+    "placeholder": "请输入搜索内容"
+  },
+  "tenant": {
+    "title": "租户",
+    "addTenant": "添加租户"
   }
 }
