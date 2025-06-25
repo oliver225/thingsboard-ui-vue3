@@ -1,3 +1,6 @@
+import type { EntityId } from '@vben/constants';
+import type { Recordable } from '@vben/types';
+
 export interface Page<T> {
   data: Array<T>;
   hasNext: boolean;
@@ -5,11 +8,15 @@ export interface Page<T> {
   totalPages: string;
 }
 
-export interface BasicQuery {
+export interface BasicQuery extends Recordable<any> {
   pageSize: number;
   page: number;
   textSearch?: string;
   sortProperty?: string;
   sortOrder?: 'ASC' | 'DESC' | null;
-  [key: string]: any;
+}
+
+export interface EntityInfo<T> extends Recordable<any> {
+  id: EntityId<T>;
+  name: string;
 }

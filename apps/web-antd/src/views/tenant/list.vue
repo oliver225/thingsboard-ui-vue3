@@ -5,7 +5,7 @@ import type { VxeGridProps } from '#/adapter/vxe-table';
 
 import { reactive, watch } from 'vue';
 
-import { Page } from '@vben/common-ui';
+import { Page, useVbenModal } from '@vben/common-ui';
 import { MdiPlus, MdiRefresh, MdiSearch } from '@vben/icons';
 import { $t } from '@vben/locales';
 
@@ -13,6 +13,8 @@ import { Button, Input } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { tenantInfoListApi } from '#/api';
+
+import Form from './form.vue';
 
 const searchParam = reactive({
   textSearch: '',
@@ -42,6 +44,14 @@ async function fetch({ page, sort }: any) {
     sortOrder: sort.order,
     ...searchParam,
   });
+}
+
+const [FormModal, formModalApi] = useVbenModal({
+  connectedComponent: Form,
+});
+
+function handleForm() {
+  formModalApi.setData({}).open();
 }
 
 interface RowType {
@@ -75,7 +85,6 @@ const gridOptions: VxeGridProps<RowType> = {
     },
   ],
 
-  exportConfig: {},
   height: 'auto',
   keepSource: true,
   border: true,
@@ -100,10 +109,6 @@ const gridOptions: VxeGridProps<RowType> = {
 const [Grid, gridApi] = useVbenVxeGrid({
   gridOptions,
 });
-
-function handleTenantForm() {
-  alert('打开租户表单');
-}
 </script>
 
 <template>
@@ -117,7 +122,7 @@ function handleTenantForm() {
       </template>
       <template #toolbar-actions>
         <Button
-          @click="() => handleTenantForm()"
+          @click="() => handleForm()"
           type="primary"
           class="mr-2 flex items-center"
         >
@@ -149,5 +154,6 @@ function handleTenantForm() {
         </div>
       </template>
     </Grid>
+    <FormModal />
   </Page>
 </template>
