@@ -3,6 +3,8 @@ import type { EntityId, EntityType } from '@vben/constants';
 
 import type { VxeGridProps } from '#/adapter/vxe-table';
 
+import { reactive, watch } from 'vue';
+
 import { Page } from '@vben/common-ui';
 import { MdiPlus, MdiRefresh, MdiSearch } from '@vben/icons';
 import { $t } from '@vben/locales';
@@ -11,6 +13,36 @@ import { Button, Input } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { tenantInfoListApi } from '#/api';
+
+const searchParam = reactive({
+  textSearch: '',
+});
+
+watch(
+  () => searchParam.textSearch,
+  () => {
+    if (gridApi) {
+      gridApi.query();
+    }
+  },
+);
+
+async function reload() {
+  searchParam.textSearch = '';
+  if (gridApi) {
+    await gridApi.query();
+  }
+}
+
+async function fetch({ page, sort }: any) {
+  return await tenantInfoListApi({
+    page: page.currentPage - 1,
+    pageSize: page.pageSize,
+    sortProperty: sort.field,
+    sortOrder: sort.order,
+    ...searchParam,
+  });
+}
 
 interface RowType {
   id: EntityId<EntityType.TENANT>;
@@ -24,10 +56,10 @@ interface RowType {
 }
 
 const gridOptions: VxeGridProps<RowType> = {
-  checkboxConfig: {
-    highlight: true,
-    labelField: 'name',
-  },
+  // checkboxConfig: {
+  //   highlight: true,
+  //   labelField: 'name',
+  // },
   columns: [
     { title: '序号', type: 'seq', width: 60 },
     { field: 'title', sortable: true, title: '标题' },
@@ -49,14 +81,7 @@ const gridOptions: VxeGridProps<RowType> = {
   border: true,
   proxyConfig: {
     ajax: {
-      query: async ({ page, sort }) => {
-        return await tenantInfoListApi({
-          page: page.currentPage - 1,
-          pageSize: page.pageSize,
-          sortProperty: sort.field,
-          sortOrder: sort.order,
-        });
-      },
+      query: fetch,
     },
     sort: true,
   },
@@ -99,7 +124,11 @@ function handleTenantForm() {
           <MdiPlus class="size-5" />
           <span class="font-semibold"> {{ $t('page.tenant.addTenant') }} </span>
         </Button>
-        <Input class="w-80" :placeholder="$t('page.search.placeholder')">
+        <Input
+          class="w-80"
+          v-model:value="searchParam.textSearch"
+          :placeholder="$t('page.search.placeholder')"
+        >
           <template #suffix>
             <MdiSearch class="size-5" />
           </template>
@@ -115,7 +144,7 @@ function handleTenantForm() {
               animation: 'shift-away',
             }"
           >
-            <MdiRefresh class="size-6" @click="() => gridApi.query()" />
+            <MdiRefresh class="size-6" @click="reload" />
           </VbenIconButton>
         </div>
       </template>
