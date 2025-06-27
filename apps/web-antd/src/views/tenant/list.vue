@@ -100,7 +100,7 @@ const gridOptions: VxeGridProps<RowType> = {
   },
   toolbarConfig: {
     custom: true,
-    export: true,
+    export: false,
     // // import: true,
     // refresh: { code: 'query' },
   },
