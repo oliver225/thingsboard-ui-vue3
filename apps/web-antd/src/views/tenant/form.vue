@@ -2,6 +2,7 @@
 import type { Recordable } from '@vben/types';
 
 import { useVbenModal } from '@vben/common-ui';
+import { EntityType } from '@vben/constants';
 import { $t } from '@vben/locales';
 
 import { useQuery } from '@tanstack/vue-query';
@@ -43,13 +44,15 @@ const [Form, formApi] = useVbenForm({
       rules: 'required',
       formItemClass: 'col-span-2',
     },
-    // {
-    //   fieldName: 'tenantProfileId.entityType',
-    //   component: 'Hidden',
-    //   componentProps: {
-    //     value: EntityType.TENANT_PROFILE,
-    //   },
-    // },
+    {
+      fieldName: 'tenantProfileId.entityType',
+      component: 'Input',
+      dependencies: {
+        show: false,
+        triggerFields: ['tenantProfileId.entityType'],
+      },
+      defaultValue: EntityType.TENANT_PROFILE,
+    },
     {
       label: $t('租户配置'),
       fieldName: 'tenantProfileId.id',
@@ -155,7 +158,7 @@ async function onSubmit(values: Record<string, any>) {
     const res = await tenantSaveApi(values);
     modalApi.close();
     message.success({
-      content: `提交成功：${JSON.stringify(values)}`,
+      content: `提交成功!`,
       duration: 2,
       key: 'is-form-submitting',
     });
