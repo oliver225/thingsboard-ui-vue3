@@ -43,6 +43,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
 
 function reset() {
   record.value = null;
+  tabActiveKey.value = 'DETAIL';
 }
 </script>
 <template>
