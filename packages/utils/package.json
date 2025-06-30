@@ -20,8 +20,10 @@
     }
   },
   "dependencies": {
+    "@types/lodash-es": "catalog:",
     "@vben-core/shared": "workspace:*",
     "@vben-core/typings": "workspace:*",
+    "lodash-es": "catalog:",
     "vue-router": "catalog:"
   }
 }

@@ -1,18 +1,17 @@
 <script lang="ts" setup>
-import type { EntityId, EntityType } from '@vben/constants';
-
 import type { VxeGridProps } from '#/adapter/vxe-table';
+import type { TenantApi } from '#/api';
 
 import { reactive, watch } from 'vue';
 
-import { Page, useVbenModal } from '@vben/common-ui';
+import { confirm, Page, useVbenModal } from '@vben/common-ui';
 import { MdiPlus, MdiRefresh, MdiSearch } from '@vben/icons';
 import { $t } from '@vben/locales';
 
-import { Button, Input } from 'ant-design-vue';
+import { Button, Input, message } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { tenantInfoListApi } from '#/api';
+import { tenantDeleteApi, tenantInfoListApi } from '#/api';
 
 import Form from './form.vue';
 
@@ -50,26 +49,47 @@ const [FormModal, formModalApi] = useVbenModal({
   connectedComponent: Form,
 });
 
-function handleForm() {
-  formModalApi.setData({}).open();
+async function handleSuccess() {
+  await reload();
+}
+function handleForm({ _column, _$table, row }: any) {
+  formModalApi.setData({ id: row?.id?.id }).open();
 }
 
-interface RowType {
-  id: EntityId<EntityType.TENANT>;
-  title: string;
-  tenantProfileName: string;
-  email: string;
-  phone: string;
-  city: string;
-  address: string;
-  createdTime: number;
+function handleDelete({ _column, _$table, row }: any) {
+  confirm({
+    title: `刪除租户[${row.title}]`,
+    content: '确认后，租户和所有相关数据将不可恢复!',
+    icon: 'error',
+    confirmText: '删除',
+    beforeClose({ isConfirm }) {
+      return isConfirm ? tenantDeleteApi(row.id.id) : true;
+    },
+  }).then(async () => {
+    message.success(`删除租户[${row.title}]成功！`);
+    await reload();
+  });
 }
 
-const gridOptions: VxeGridProps<RowType> = {
-  // checkboxConfig: {
-  //   highlight: true,
-  //   labelField: 'name',
-  // },
+const tableAction = {
+  actions: [
+    {
+      label: '编辑',
+      tooltip: '编辑',
+      icon: 'ant-design:edit-outlined',
+      onClick: handleForm,
+    },
+    {
+      label: '删除',
+      tooltip: '删除',
+      icon: 'ant-design:delete-outlined',
+      danger: true,
+      onClick: handleDelete,
+    },
+  ],
+};
+
+const gridOptions: VxeGridProps<TenantApi.TenantInfo> = {
   columns: [
     { title: '序号', type: 'seq', width: 60 },
     { field: 'title', sortable: true, title: '标题' },
@@ -83,26 +103,24 @@ const gridOptions: VxeGridProps<RowType> = {
       formatter: 'formatDateTime',
       title: '创建时间',
     },
+    {
+      title: '操作',
+      field: 'action',
+      align: 'center',
+      fixed: 'right',
+      cellRender: {
+        name: 'CellActions',
+        props: tableAction,
+      },
+      width: 120,
+    },
   ],
 
-  height: 'auto',
-  keepSource: true,
-  border: true,
   proxyConfig: {
     ajax: {
       query: fetch,
     },
     sort: true,
-  },
-  sortConfig: {
-    defaultSort: { field: 'createdTime', order: 'desc' },
-    remote: true,
-  },
-  toolbarConfig: {
-    custom: true,
-    export: false,
-    // // import: true,
-    // refresh: { code: 'query' },
   },
 };
 
@@ -122,7 +140,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
       </template>
       <template #toolbar-actions>
         <Button
-          @click="() => handleForm()"
+          @click="() => handleForm({})"
           type="primary"
           class="mr-2 flex items-center"
         >
@@ -154,6 +172,6 @@ const [Grid, gridApi] = useVbenVxeGrid({
         </div>
       </template>
     </Grid>
-    <FormModal />
+    <FormModal @success="handleSuccess" />
   </Page>
 </template>

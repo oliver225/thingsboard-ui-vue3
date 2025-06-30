@@ -16,6 +16,13 @@
   },
   "tenant": {
     "title": "Tenant",
-    "addTenant": "Add Tenant"
+    "addTenant": "Add Tenant",
+    "editTenant": "Edit Tenant"
+  },
+  "submit": {
+    "title": "Submit",
+    "success": "submit success!",
+    "loading": "submit loading...",
+    "error": "submit error, try again later"
   }
 }

@@ -6,6 +6,8 @@ import { setupVbenVxeTable, useVbenVxeGrid } from '@vben/plugins/vxe-table';
 
 import { Button, Image } from 'ant-design-vue';
 
+import { TableAction } from '#/components/Table';
+
 import { useVbenForm } from './form';
 
 setupVbenVxeTable({
@@ -13,11 +15,16 @@ setupVbenVxeTable({
     vxeUI.setConfig({
       grid: {
         align: 'center',
-        border: false,
+        size: 'small',
+        border: true,
+        height: 'auto',
+        minHeight: 180,
+        keepSource: true,
+        round: true,
+        showOverflow: true,
         columnConfig: {
           resizable: true,
         },
-        minHeight: 180,
         formConfig: {
           // 全局禁用vxe-table的表单配置，使用formOptions
           enabled: false,
@@ -32,10 +39,32 @@ setupVbenVxeTable({
           showActiveMsg: true,
           showResponseMsg: false,
         },
-        round: true,
-        showOverflow: true,
-        size: 'small',
+        sortConfig: {
+          defaultSort: { field: 'createdTime', order: 'desc' },
+          remote: true,
+        },
+        toolbarConfig: {
+          custom: true,
+          export: false,
+          // // import: true,
+          // refresh: { code: 'query' },
+        },
       } as VxeTableGridOptions,
+    });
+
+    vxeUI.renderer.add('CellActions', {
+      renderTableDefault(renderOpts, params) {
+        const { column, $table } = params;
+        const { props, options } = renderOpts;
+
+        return h(TableAction, {
+          params,
+          align: column.align ?? 'center',
+          options: options ?? [],
+          el: $table.getEl(),
+          ...props,
+        });
+      },
     });
 
     // 表格配置项可以用 cellRender: { name: 'CellImage' },

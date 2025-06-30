@@ -1,6 +1,10 @@
 <script lang="ts" setup>
 import type { Recordable } from '@vben/types';
 
+import type { TenantApi } from '#/api';
+
+import { ref } from 'vue';
+
 import { useVbenModal } from '@vben/common-ui';
 import { EntityType } from '@vben/constants';
 import { $t } from '@vben/locales';
@@ -9,12 +13,18 @@ import { useQuery } from '@tanstack/vue-query';
 import { message } from 'ant-design-vue';
 
 import { useVbenForm, z } from '#/adapter/form';
-import { tenantSaveApi } from '#/api';
-import { tenantProfileInfoListApi } from '#/api/tb/tenantProfile';
+import {
+  getTenantInfoByIdApi,
+  tenantProfileInfoListApi,
+  tenantSaveApi,
+} from '#/api';
 
 defineOptions({
   name: 'TenantFormModel',
 });
+const emits = defineEmits(['success']);
+
+const record = ref<null | TenantApi.TenantInfo>(null);
 
 const { promise: fetchtenantProfileInfoFn } = useQuery({
   experimental_prefetchInRender: true,
@@ -31,8 +41,6 @@ const { promise: fetchtenantProfileInfoFn } = useQuery({
 });
 
 const [Form, formApi] = useVbenForm({
-  handleSubmit: onSubmit,
-  wrapperClass: 'grid-cols-2',
   schema: [
     {
       label: $t('租户名称'),
@@ -124,18 +132,31 @@ const [Form, formApi] = useVbenForm({
       formItemClass: 'col-span-2',
     },
   ],
+  handleSubmit: onSubmit,
+  wrapperClass: 'grid-cols-2',
   showDefaultActions: false,
 });
 
 const [Modal, modalApi] = useVbenModal({
   title: `${$t('page.tenant.addTenant')}`,
+  confirmText: `${$t('page.submit.title')}`,
   overlayBlur: 5,
-  onOpenChange(isOpen: boolean) {
+  async onOpenChange(isOpen: boolean) {
+    reset();
     if (isOpen) {
-      const { values } = modalApi.getData<Record<string, any>>();
-      if (values) {
-        formApi.setValues(values);
+      const { data, id } = modalApi.getData<Record<string, any>>();
+      if (id) {
+        record.value = await getTenantInfoByIdApi(id);
+        formApi.setValues(record.value);
+      } else if (data) {
+        record.value = data;
+        formApi.setValues(data);
       }
+      modalApi.setState({
+        title: record.value?.id?.id
+          ? `${$t('page.tenant.editTenant')}`
+          : `${$t('page.tenant.addTenant')}`,
+      });
     }
   },
   onCancel() {
@@ -143,28 +164,33 @@ const [Modal, modalApi] = useVbenModal({
   },
   onConfirm: async () => {
     await formApi.validateAndSubmitForm();
-    // modalApi.close();
   },
 });
 
+function reset() {
+  formApi.resetForm();
+  record.value = null;
+}
+
 async function onSubmit(values: Record<string, any>) {
   message.loading({
-    content: '正在提交中...',
+    content: `${$t('page.submit.loading')}`,
     duration: 0,
     key: 'is-form-submitting',
   });
   try {
     modalApi.lock();
     const res = await tenantSaveApi(values);
+    emits('success', res);
     modalApi.close();
     message.success({
-      content: `提交成功!`,
+      content: `${$t('page.submit.success')}！`,
       duration: 2,
       key: 'is-form-submitting',
     });
   } catch (error: any) {
     message.error({
-      content: error.message || '提交失败，请稍后再试',
+      content: error.message || `${$t('page.submit.error')}！`,
       duration: 2,
       key: 'is-form-submitting',
     });
