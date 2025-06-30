@@ -4,8 +4,8 @@ import type { TenantApi } from '#/api';
 
 import { reactive, watch } from 'vue';
 
-import { confirm, Page, useVbenModal } from '@vben/common-ui';
-import { MdiPlus, MdiRefresh, MdiSearch } from '@vben/icons';
+import { confirm, Page, useVbenDrawer, useVbenModal } from '@vben/common-ui';
+import { IconifyIcon } from '@vben/icons';
 import { $t } from '@vben/locales';
 
 import { Button, Input, message } from 'ant-design-vue';
@@ -13,6 +13,7 @@ import { Button, Input, message } from 'ant-design-vue';
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { tenantDeleteApi, tenantInfoListApi } from '#/api';
 
+import Detail from './detail.vue';
 import Form from './form.vue';
 
 const searchParam = reactive({
@@ -45,15 +46,30 @@ async function fetch({ page, sort }: any) {
   });
 }
 
+const [DetailDrawer, detailDrawerApi] = useVbenDrawer({
+  connectedComponent: Detail,
+});
+
 const [FormModal, formModalApi] = useVbenModal({
   connectedComponent: Form,
 });
+
+function handleDetail({ _column, _$table, row }: any) {
+  detailDrawerApi.setData({ id: row?.id?.id }).open();
+}
 
 async function handleSuccess() {
   await reload();
 }
 function handleForm({ _column, _$table, row }: any) {
-  formModalApi.setData({ id: row?.id?.id }).open();
+  formModalApi
+    .setState({
+      title: row?.id?.id
+        ? `${$t('page.tenant.editTenant')}`
+        : `${$t('page.tenant.addTenant')}`,
+    })
+    .setData({ id: row?.id?.id })
+    .open();
 }
 
 function handleDelete({ _column, _$table, row }: any) {
@@ -74,10 +90,10 @@ function handleDelete({ _column, _$table, row }: any) {
 const tableAction = {
   actions: [
     {
-      label: '编辑',
-      tooltip: '编辑',
-      icon: 'ant-design:edit-outlined',
-      onClick: handleForm,
+      label: '详情',
+      tooltip: '详情',
+      icon: 'ant-design:appstore-outlined',
+      onClick: handleDetail,
     },
     {
       label: '删除',
@@ -92,8 +108,8 @@ const tableAction = {
 const gridOptions: VxeGridProps<TenantApi.TenantInfo> = {
   columns: [
     { title: '序号', type: 'seq', width: 60 },
-    { field: 'title', sortable: true, title: '标题' },
-    { field: 'tenantProfileName', title: '配置' },
+    { field: 'title', sortable: true, title: '名称' },
+    { field: 'tenantProfileName', sortable: true, title: '配置' },
     { field: 'email', title: '邮箱' },
     { field: 'phone', title: '电话' },
     { field: 'address', title: '地址' },
@@ -144,7 +160,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
           type="primary"
           class="mr-2 flex items-center"
         >
-          <MdiPlus class="size-5" />
+          <IconifyIcon class="size-4" icon="mdi:plus" />
           <span class="font-semibold"> {{ $t('page.tenant.addTenant') }} </span>
         </Button>
         <Input
@@ -153,7 +169,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
           :placeholder="$t('page.search.placeholder')"
         >
           <template #suffix>
-            <MdiSearch class="size-5" />
+            <IconifyIcon class="size-4" icon="mdi:magnify" />
           </template>
         </Input>
       </template>
@@ -167,11 +183,12 @@ const [Grid, gridApi] = useVbenVxeGrid({
               animation: 'shift-away',
             }"
           >
-            <MdiRefresh class="size-6" @click="reload" />
+            <IconifyIcon class="size-6" icon="mdi:refresh" @click="reload" />
           </VbenIconButton>
         </div>
       </template>
     </Grid>
     <FormModal @success="handleSuccess" />
+    <DetailDrawer @edit="handleForm" />
   </Page>
 </template>

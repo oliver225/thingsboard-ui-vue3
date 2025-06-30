@@ -16,6 +16,7 @@
   },
   "tenant": {
     "title": "Tenant",
+    "detail": "Tenant Detail",
     "addTenant": "Add Tenant",
     "editTenant": "Edit Tenant"
   },

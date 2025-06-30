@@ -14,11 +14,6 @@ export const MdiQqchat = createIconifyIcon('mdi:qqchat');
 
 export const MdiPlus = createIconifyIcon('mdi:plus');
 
-export const MdiSearch = createIconifyIcon('mdi:magnify');
-
-export const MdiRefresh = createIconifyIcon('mdi:refresh');
-
 export const MdiDownLoad = createIconifyIcon('mdi:download');
 
-export const MarketeqMenu = createIconifyIcon('marketeq:menu');
 export const MaterialMore = createIconifyIcon('material-symbols:more-horiz');

@@ -16,6 +16,7 @@
   },
   "tenant": {
     "title": "租户",
+    "detail": "租户详情",
     "addTenant": "添加租户",
     "editTenant": "编辑租户"
   },

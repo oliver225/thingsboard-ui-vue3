@@ -20,7 +20,7 @@ const routes: RouteRecordRaw[] = [
   // },
   {
     meta: {
-      icon: 'ic:baseline-view-in-ar',
+      icon: 'mdi:account-supervisor',
       order: 1,
       title: $t('租户'),
       authority: [Authority.SYS_ADMIN],
@@ -31,7 +31,7 @@ const routes: RouteRecordRaw[] = [
     children: [
       {
         meta: {
-          icon: 'ic:baseline-view-in-ar',
+          icon: 'mdi:account-supervisor',
           title: $t('租户'),
           authority: [Authority.SYS_ADMIN],
         },
@@ -41,7 +41,7 @@ const routes: RouteRecordRaw[] = [
       },
       {
         meta: {
-          icon: 'ic:baseline-view-in-ar',
+          icon: 'mdi:account-supervisor',
           title: $t('租户详情'),
           authority: [Authority.SYS_ADMIN],
         },

@@ -122,6 +122,13 @@ export interface DrawerProps {
    */
   titleTooltip?: string;
   /**
+   * 弹窗宽度
+   * @default 520
+
+   */
+  width?: number | string;
+
+  /**
    * 抽屉层级
    */
   zIndex?: number;

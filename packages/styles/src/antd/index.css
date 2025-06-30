@@ -73,3 +73,27 @@
 .ant-app .form-valid-error .ant-picker-focused {
   box-shadow: 0 0 0 2px rgb(255 38 5 / 6%);
 }
+
+/** 详情页Tabs样式 */
+.detail-tabs {
+  .ant-tabs-nav {
+    padding-left: 10px;
+    padding-right: 10px;
+    .ant-tabs-tab {
+      .ant-tabs-tab-btn {
+        align-items: center;
+        line-height: 1.6rem;
+        display: flex;
+        .iconify {
+          width: 20px;
+          height: 20px;
+          margin-right: 8px;
+        }
+      }
+    }
+  }
+  .ant-tabs-content-holder{
+    display: none;
+  }
+
+}

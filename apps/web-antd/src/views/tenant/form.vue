@@ -142,6 +142,7 @@ const [Modal, modalApi] = useVbenModal({
   confirmText: `${$t('page.submit.title')}`,
   overlayBlur: 5,
   async onOpenChange(isOpen: boolean) {
+    modalApi.setState({ loading: true });
     reset();
     if (isOpen) {
       const { data, id } = modalApi.getData<Record<string, any>>();
@@ -152,12 +153,8 @@ const [Modal, modalApi] = useVbenModal({
         record.value = data;
         formApi.setValues(data);
       }
-      modalApi.setState({
-        title: record.value?.id?.id
-          ? `${$t('page.tenant.editTenant')}`
-          : `${$t('page.tenant.addTenant')}`,
-      });
     }
+    modalApi.setState({ loading: false });
   },
   onCancel() {
     modalApi.close();
