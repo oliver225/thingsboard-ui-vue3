@@ -18,6 +18,33 @@ const emits = defineEmits(['success']);
 
 const record = ref<null | TenantApi.TenantInfo>(null);
 const tabActiveKey = ref('DETAIL');
+const tabList = [
+  {
+    key: 'DETAIL',
+    label: $t('详情'),
+    icon: 'ant-design:appstore-outlined',
+  },
+  {
+    key: 'TELEMETRY',
+    label: $t('数据'),
+    icon: 'ant-design:line-chart-outlined',
+  },
+  {
+    key: 'ALARM',
+    label: $t('报警'),
+    icon: 'ant-design:alert-outlined',
+  },
+  {
+    key: 'EVENT',
+    label: $t('事件'),
+    icon: 'ant-design:info-circle-outlined',
+  },
+  {
+    key: 'RELATION',
+    label: $t('关联'),
+    icon: 'ant-design:radar-chart-outlined',
+  },
+];
 
 const [Drawer, drawerApi] = useVbenDrawer({
   title: `${$t('租户详情')}`,
@@ -68,34 +95,10 @@ function reset() {
     </template>
     <template #prepend-content>
       <Tabs v-model:active-key="tabActiveKey" class="detail-tabs">
-        <TabPane key="DETAIL">
+        <TabPane v-for="tab in tabList" :key="tab.key">
           <template #tab>
-            <IconifyIcon icon="ant-design:appstore-outlined" />
-            详情
-          </template>
-        </TabPane>
-        <TabPane key="TELEMETRY">
-          <template #tab>
-            <IconifyIcon icon="ant-design:line-chart-outlined" />
-            数据
-          </template>
-        </TabPane>
-        <TabPane key="ALARM">
-          <template #tab>
-            <IconifyIcon icon="ant-design:alert-outlined" />
-            报警
-          </template>
-        </TabPane>
-        <TabPane key="EVENT">
-          <template #tab>
-            <IconifyIcon icon="ant-design:info-circle-outlined" />
-            事件
-          </template>
-        </TabPane>
-        <TabPane key="RELATION">
-          <template #tab>
-            <IconifyIcon icon="ant-design:radar-chart-outlined" />
-            关联
+            <IconifyIcon :icon="tab.icon" />
+            {{ tab.label }}
           </template>
         </TabPane>
       </Tabs>
