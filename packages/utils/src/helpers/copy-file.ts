@@ -12,3 +12,22 @@ export function copyToClipboard(value: string) {
   document.execCommand('copy');
   input.remove();
 }
+
+/**
+ * 字节转换
+ *
+ * @param bytes 字节大小
+ */
+export function convertBytesToSize(bytes: number) {
+  const sizes = ['b', 'Kb', 'Mb', 'Gb', 'Tb']; // 存储单位的数组
+  if (bytes === 0) {
+    return '0 b';
+  }
+  if (!Number.isFinite(bytes) || bytes < 0) {
+    throw new Error(
+      'Invalid byte value. It must be a non-negative finite number.',
+    );
+  }
+  const i = Math.floor(Math.log(bytes) / Math.log(1024));
+  return `${Number(bytes / 1024 ** i).toFixed(2)} ${sizes[i]}`;
+}

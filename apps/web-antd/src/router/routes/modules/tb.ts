@@ -41,7 +41,7 @@ const routes: RouteRecordRaw[] = [
   {
     meta: {
       icon: 'mdi:account-box-multiple',
-      order: 10,
+      order: 20,
       title: $t('tenantProfile.title'),
       authority: [Authority.SYS_ADMIN],
       hideChildrenInMenu: true, // 隐藏子菜单
@@ -68,6 +68,28 @@ const routes: RouteRecordRaw[] = [
         name: 'TenantProfileDetail',
         path: '/TenantProfile/:id',
         component: () => import('#/views/tenantProfile/detail.vue'),
+      },
+    ],
+  },
+  {
+    meta: {
+      icon: 'mdi:folder-open',
+      order: 30,
+      title: $t('资源'),
+      authority: [Authority.SYS_ADMIN],
+    },
+    name: 'Resource',
+    path: '/resources',
+    children: [
+      {
+        meta: {
+          icon: 'mdi:image-multiple-outline',
+          title: $t('图像库'),
+          authority: [Authority.SYS_ADMIN],
+        },
+        name: 'ImageList',
+        path: '/resources/images',
+        component: () => import('#/views/image/list.vue'),
       },
     ],
   },

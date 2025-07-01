@@ -175,25 +175,27 @@ const [Grid, gridApi] = useVbenVxeGrid({
         </p>
       </template>
       <template #toolbar-actions>
-        <Button
-          @click="() => handleForm({})"
-          type="primary"
-          class="mr-2 flex items-center"
-        >
-          <IconifyIcon class="size-4" icon="mdi:plus" />
-          <span class="font-semibold">
-            {{ $t('tenant.button.addTenant') }}
-          </span>
-        </Button>
-        <Input
-          class="w-80"
-          v-model:value="searchParam.textSearch"
-          :placeholder="$t('page.search.placeholder')"
-        >
-          <template #suffix>
-            <IconifyIcon class="size-4" icon="mdi:magnify" />
-          </template>
-        </Input>
+        <div class="flex items-center justify-start space-x-2">
+          <Button
+            @click="() => handleForm({})"
+            type="primary"
+            class="flex items-center"
+          >
+            <IconifyIcon class="size-4" icon="mdi:plus" />
+            <span class="font-semibold">
+              {{ $t('tenant.button.addTenant') }}
+            </span>
+          </Button>
+          <Input
+            class="w-80"
+            v-model:value="searchParam.textSearch"
+            :placeholder="$t('page.search.placeholder')"
+          >
+            <template #suffix>
+              <IconifyIcon class="size-4" icon="mdi:magnify" />
+            </template>
+          </Input>
+        </div>
       </template>
       <template #citySolt="{ row }">
         <span v-if="row.city"> {{ areaList.city_list[row.city] }}</span>
