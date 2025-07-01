@@ -27,6 +27,7 @@ export namespace TenantApi {
   }
   export interface TenantInfo extends Tenant {
     tenantProfileName: string;
+    areaList?: Array<string>;
   }
 }
 export async function tenantSaveApi(data?: any | TenantApi.Tenant) {

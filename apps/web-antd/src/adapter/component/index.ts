@@ -25,6 +25,9 @@ const AutoComplete = defineAsyncComponent(
   () => import('ant-design-vue/es/auto-complete'),
 );
 const Button = defineAsyncComponent(() => import('ant-design-vue/es/button'));
+const Cascader = defineAsyncComponent(
+  () => import('ant-design-vue/es/cascader'),
+);
 const Checkbox = defineAsyncComponent(
   () => import('ant-design-vue/es/checkbox'),
 );
@@ -107,6 +110,7 @@ export type ComponentType =
   | 'ApiSelect'
   | 'ApiTreeSelect'
   | 'AutoComplete'
+  | 'Cascader'
   | 'Checkbox'
   | 'CheckboxGroup'
   | 'DatePicker'
@@ -165,6 +169,21 @@ async function initComponentAdapter() {
       },
     ),
     AutoComplete,
+    Cascader: (props, { attrs, slots }) => {
+      return h(
+        Cascader,
+        {
+          ...props,
+          attrs,
+          placeholder:
+            props?.placeholder ||
+            attrs?.placeholder ||
+            $t(`ui.placeholder.select`),
+          class: 'w-full',
+        },
+        slots,
+      );
+    },
     Checkbox,
     CheckboxGroup,
     DatePicker,

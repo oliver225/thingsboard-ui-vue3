@@ -10,6 +10,7 @@ import { $t } from '@vben/locales';
 
 import { VbenIconButton } from '@vben-core/shadcn-ui';
 
+import { areaList } from '@vant/area-data';
 import { Button, Input, message } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
@@ -126,7 +127,11 @@ const gridOptions: VxeGridProps<TenantApi.TenantInfo> = {
     },
     { field: 'email', title: $t('tenant.form.email') },
     { field: 'phone', title: $t('tenant.form.phone') },
-    { field: 'address', title: $t('tenant.form.address') },
+    {
+      field: 'city',
+      title: $t('tenant.form.city'),
+      slots: { default: 'citySolt' },
+    },
     {
       field: 'createdTime',
       sortable: true,
@@ -188,6 +193,9 @@ const [Grid, gridApi] = useVbenVxeGrid({
             <IconifyIcon class="size-4" icon="mdi:magnify" />
           </template>
         </Input>
+      </template>
+      <template #citySolt="{ row }">
+        <span v-if="row.city"> {{ areaList.city_list[row.city] }}</span>
       </template>
       <template #toolbar-tools>
         <div class="flex items-center gap-2">

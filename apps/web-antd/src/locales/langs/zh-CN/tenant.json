@@ -11,6 +11,8 @@
     "address": "详细地址",
     "address2": "备用地址",
     "description": "描述信息",
+    "city": "城市",
+    "area": "行政区域",
     "createdTime": "创建时间"
   },
   "button": {

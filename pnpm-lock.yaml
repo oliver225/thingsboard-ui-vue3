@@ -123,6 +123,9 @@ catalogs:
     '@typescript-eslint/parser':
       specifier: ^8.31.1
       version: 8.31.1
+    '@vant/area-data':
+      specifier: ^2.0.0
+      version: 2.0.0
     '@vee-validate/zod':
       specifier: ^4.15.0
       version: 4.15.0
@@ -616,6 +619,9 @@ importers:
       '@tanstack/vue-query':
         specifier: 'catalog:'
         version: 5.75.1(vue@3.5.13(typescript@5.8.3))
+      '@vant/area-data':
+        specifier: 'catalog:'
+        version: 2.0.0
       '@vben-core/shadcn-ui':
         specifier: workspace:*
         version: link:../../packages/@core/ui-kit/shadcn-ui
@@ -4475,6 +4481,9 @@ packages:
     resolution: {integrity: sha512-friS8NEQfHaDbkThxopGk+LuE5v3iY0StruifjQEt7SLbA46OnfgMO15sOTkbpJkol6RB+1l1TYPXh0sCddpvA==}
     cpu: [x64]
     os: [win32]
+
+  '@vant/area-data@2.0.0':
+    resolution: {integrity: sha512-zgP4AA8z09S9QTNgVCCHo9cHjcybrv22RJDYPjuCkecn4SB98T5EoPQh2TwqbQXmUhbaOGgiZGy3OUaUxnY7qg==}
 
   '@vee-validate/zod@4.15.0':
     resolution: {integrity: sha512-MpvIKiyg9X5yD8bJW0no2AU7wtR2T5mrvD9tuPRiie951sU2n6QKgMV38qKKOiqFBCxsMSjIuLLLV3V5kVE4nQ==}
@@ -14002,6 +14011,8 @@ snapshots:
 
   '@unrs/resolver-binding-win32-x64-msvc@1.7.2':
     optional: true
+
+  '@vant/area-data@2.0.0': {}
 
   '@vee-validate/zod@4.15.0(vue@3.5.13(typescript@5.8.3))(zod@3.24.3)':
     dependencies:

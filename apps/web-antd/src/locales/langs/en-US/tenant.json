@@ -10,6 +10,8 @@
     "phone": "Phone",
     "address": "Address",
     "address2": "Address2",
+    "area": "Area",
+    "city": "City",
     "description": "Description",
     "createdTime": "Created time"
   },

@@ -10,6 +10,7 @@ import { copyToClipboard } from '@vben/utils';
 
 import { VbenIconButton } from '@vben-core/shadcn-ui';
 
+import { areaList } from '@vant/area-data';
 import { Button, Descriptions, message, TabPane, Tabs } from 'ant-design-vue';
 
 import { getTenantInfoByIdApi } from '#/api';
@@ -168,6 +169,19 @@ function handleCopyId() {
         </Descriptions.Item>
         <Descriptions.Item :label="$t('tenant.form.email')">
           {{ record?.email }}
+        </Descriptions.Item>
+        <Descriptions.Item :label="$t('tenant.form.area')" :span="2">
+          <span v-if="record?.state">
+            {{ areaList.province_list[record.state] }}
+          </span>
+          /
+          <span v-if="record?.city">
+            {{ areaList.city_list[record.city] }}
+          </span>
+          /
+          <span v-if="record?.country">
+            {{ areaList.county_list[record.country] }}
+          </span>
         </Descriptions.Item>
         <Descriptions.Item :label="$t('tenant.form.address')" :span="2">
           {{ record?.address }}

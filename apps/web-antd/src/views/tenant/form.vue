@@ -10,6 +10,7 @@ import { EntityType } from '@vben/constants';
 import { $t } from '@vben/locales';
 
 import { useQuery } from '@tanstack/vue-query';
+import { useCascaderAreaData } from '@vant/area-data';
 import { message } from 'ant-design-vue';
 
 import { useVbenForm, z } from '#/adapter/form';
@@ -106,6 +107,17 @@ const [Form, formApi] = useVbenForm({
       formItemClass: 'col-span-2',
     },
     {
+      label: $t('tenant.form.area'),
+      fieldName: 'areaList',
+      component: 'Cascader',
+      componentProps: {
+        options: useCascaderAreaData(),
+        fieldNames: { label: 'text', value: 'value', children: 'children' },
+      },
+      rules: 'required',
+      formItemClass: 'col-span-2',
+    },
+    {
       label: $t('tenant.form.address'),
       fieldName: 'address',
       component: 'Input',
@@ -148,10 +160,16 @@ const [Modal, modalApi] = useVbenModal({
       const { data, id } = modalApi.getData<Record<string, any>>();
       if (id) {
         record.value = await getTenantInfoByIdApi(id);
-        formApi.setValues(record.value);
       } else if (data) {
         record.value = data;
-        formApi.setValues(data);
+      }
+      if (record.value) {
+        record.value.areaList = [
+          record.value.state || '',
+          record.value.city || '',
+          record.value.country || '',
+        ];
+        formApi.setValues(record.value);
       }
     }
     modalApi.setState({ loading: false });
@@ -177,7 +195,14 @@ async function onSubmit(values: Record<string, any>) {
   });
   try {
     modalApi.lock();
-    const data = { ...record.value, ...values };
+    const areaList = values.areaList;
+    const data = {
+      ...record.value,
+      ...values,
+      state: areaList[0],
+      city: areaList[1],
+      country: areaList[2],
+    };
     const res = await tenantSaveApi(data);
     emits('success', res);
     modalApi.close();

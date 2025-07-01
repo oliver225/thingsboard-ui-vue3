@@ -56,6 +56,7 @@ catalog:
   '@types/sortablejs': ^1.15.8
   '@typescript-eslint/eslint-plugin': ^8.31.1
   '@typescript-eslint/parser': ^8.31.1
+  '@vant/area-data': ^2.0.0
   '@vee-validate/zod': ^4.15.0
   '@vite-pwa/vitepress': ^1.0.0
   '@vitejs/plugin-vue': ^5.2.3
