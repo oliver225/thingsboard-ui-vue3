@@ -89,6 +89,10 @@ function handleDelete({ _column, _$table, row }: any) {
   });
 }
 
+function handleAdmin({ _column, _$table, row }: any) {
+  console.log(_column, _$table, row);
+}
+
 const tableAction = {
   actions: [
     {
@@ -191,6 +195,10 @@ const [Grid, gridApi] = useVbenVxeGrid({
       </template>
     </Grid>
     <FormModal @success="handleSuccess" />
-    <DetailDrawer @edit="handleForm" />
+    <DetailDrawer
+      @edit="handleForm"
+      @delete="handleDelete"
+      @admin="handleAdmin"
+    />
   </Page>
 </template>

@@ -6,17 +6,18 @@ import { ref } from 'vue';
 import { useVbenDrawer } from '@vben/common-ui';
 import { IconifyIcon } from '@vben/icons';
 import { $t } from '@vben/locales';
+import { copyToClipboard } from '@vben/utils';
 
 import { VbenIconButton } from '@vben-core/shadcn-ui';
 
-import { Button, Descriptions, TabPane, Tabs } from 'ant-design-vue';
+import { Button, Descriptions, message, TabPane, Tabs } from 'ant-design-vue';
 
 import { getTenantInfoByIdApi } from '#/api';
 
 defineOptions({
   name: 'TenantFormDetail',
 });
-const emits = defineEmits(['success']);
+const emits = defineEmits(['edit', 'delete', 'admin']);
 
 const record = ref<null | TenantApi.TenantInfo>(null);
 const tabActiveKey = ref('DETAIL');
@@ -74,6 +75,31 @@ function reset() {
   record.value = null;
   tabActiveKey.value = 'DETAIL';
 }
+
+function handleEdit() {
+  drawerApi.close();
+  emits('edit', { row: record.value });
+}
+function handleDelete() {
+  drawerApi.close();
+  emits('delete', { row: record.value });
+}
+
+function handleAdmin() {
+  drawerApi.close();
+  emits('admin', { row: record.value });
+}
+
+function handleCopyId() {
+  if (record?.value?.id) {
+    copyToClipboard(record?.value?.id.id);
+    message.success({
+      content: `${$t('复制成功！')}`,
+      duration: 2,
+      key: 'is-form-submitting',
+    });
+  }
+}
 </script>
 <template>
   <Drawer>
@@ -108,21 +134,21 @@ function reset() {
 
     <div v-if="tabActiveKey === 'DETAIL'">
       <div class="mb-2 flex space-x-4">
-        <Button type="primary">
+        <Button type="primary" @click="handleAdmin">
           <IconifyIcon class="mb-1 size-4" icon="mdi:account-circle-outline" />
           租户管理员
         </Button>
-        <Button type="primary">
+        <Button type="primary" @click="handleEdit">
           <IconifyIcon class="mb-1 size-4" icon="ant-design:edit-outlined" />
           编辑租户
         </Button>
-        <Button type="primary" danger>
+        <Button type="primary" danger @click="handleDelete">
           <IconifyIcon class="mb-1 size-4" icon="ant-design:delete-outlined" />
           删除租户
         </Button>
       </div>
       <div class="mb-2 flex space-x-4">
-        <Button>
+        <Button @click="handleCopyId">
           <IconifyIcon class="mb-1 size-4" icon="mdi:content-copy" />
           复制租户ID
         </Button>

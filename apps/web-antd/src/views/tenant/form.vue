@@ -181,13 +181,13 @@ async function onSubmit(values: Record<string, any>) {
     emits('success', res);
     modalApi.close();
     message.success({
-      content: `${$t('page.submit.success')}！`,
+      content: `${$t('page.submit.success')}`,
       duration: 2,
       key: 'is-form-submitting',
     });
   } catch (error: any) {
     message.error({
-      content: error.message || `${$t('page.submit.error')}！`,
+      content: error.message || `${$t('page.submit.error')}`,
       duration: 2,
       key: 'is-form-submitting',
     });
