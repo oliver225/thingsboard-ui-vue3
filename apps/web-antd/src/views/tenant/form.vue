@@ -177,7 +177,8 @@ async function onSubmit(values: Record<string, any>) {
   });
   try {
     modalApi.lock();
-    const res = await tenantSaveApi(values);
+    const data = { ...record.value, ...values };
+    const res = await tenantSaveApi(data);
     emits('success', res);
     modalApi.close();
     message.success({
