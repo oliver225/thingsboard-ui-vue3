@@ -18,6 +18,10 @@ import { tenantDeleteApi, tenantInfoListApi } from '#/api';
 import Detail from './detail.vue';
 import Form from './form.vue';
 
+defineOptions({
+  name: 'TenantList',
+});
+
 const searchParam = reactive({
   textSearch: '',
 });

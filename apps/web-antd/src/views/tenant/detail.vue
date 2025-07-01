@@ -15,7 +15,7 @@ import { Button, Descriptions, message, TabPane, Tabs } from 'ant-design-vue';
 import { getTenantInfoByIdApi } from '#/api';
 
 defineOptions({
-  name: 'TenantFormDetail',
+  name: 'TenantDetailDrawer',
 });
 const emits = defineEmits(['edit', 'delete', 'admin']);
 
