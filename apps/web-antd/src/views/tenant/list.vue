@@ -8,6 +8,8 @@ import { confirm, Page, useVbenDrawer, useVbenModal } from '@vben/common-ui';
 import { IconifyIcon } from '@vben/icons';
 import { $t } from '@vben/locales';
 
+import { VbenIconButton } from '@vben-core/shadcn-ui';
+
 import { Button, Input, message } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';

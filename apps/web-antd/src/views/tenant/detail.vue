@@ -7,6 +7,8 @@ import { useVbenDrawer } from '@vben/common-ui';
 import { IconifyIcon } from '@vben/icons';
 import { $t } from '@vben/locales';
 
+import { VbenIconButton } from '@vben-core/shadcn-ui';
+
 import { Button, Descriptions, TabPane, Tabs } from 'ant-design-vue';
 
 import { getTenantInfoByIdApi } from '#/api';
@@ -77,7 +79,7 @@ function reset() {
   <Drawer>
     <template #extra>
       <VbenIconButton class="mr-2">
-        <IconifyIcon class="mb-1 size-4" icon="mdi:help-circle" />
+        <IconifyIcon class="size-4" icon="mdi:help-circle" />
       </VbenIconButton>
     </template>
     <template #title>
