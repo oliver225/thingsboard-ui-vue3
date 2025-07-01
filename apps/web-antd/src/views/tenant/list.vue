@@ -71,8 +71,8 @@ function handleForm({ _column, _$table, row }: any) {
   formModalApi
     .setState({
       title: row?.id?.id
-        ? `${$t('page.tenant.editTenant')}`
-        : `${$t('page.tenant.addTenant')}`,
+        ? `${$t('tenant.button.editTenant')}`
+        : `${$t('tenant.button.addTenant')}`,
     })
     .setData({ id: row?.id?.id })
     .open();
@@ -80,10 +80,10 @@ function handleForm({ _column, _$table, row }: any) {
 
 function handleDelete({ _column, _$table, row }: any) {
   confirm({
-    title: `刪除租户[${row.title}]`,
-    content: '确认后，租户和所有相关数据将不可恢复!',
+    title: `${$t('tenant.button.removeTenant')}[${row.title}]`,
+    content: `${$t('tenant.removeContent')}`,
     icon: 'error',
-    confirmText: '删除',
+    confirmText: `${$t('page.remove.title')}`,
     beforeClose({ isConfirm }) {
       return isConfirm ? tenantDeleteApi(row.id.id) : true;
     },
@@ -100,14 +100,14 @@ function handleAdmin({ _column, _$table, row }: any) {
 const tableAction = {
   actions: [
     {
-      label: '详情',
-      tooltip: '详情',
+      label: `${$t('page.detail.title')}`,
+      tooltip: `${$t('page.detail.title')}`,
       icon: 'ant-design:appstore-outlined',
       onClick: handleDetail,
     },
     {
-      label: '删除',
-      tooltip: '删除',
+      label: `${$t('page.remove.title')}`,
+      tooltip: `${$t('page.remove.title')}`,
       icon: 'ant-design:delete-outlined',
       danger: true,
       onClick: handleDelete,
@@ -118,19 +118,23 @@ const tableAction = {
 const gridOptions: VxeGridProps<TenantApi.TenantInfo> = {
   columns: [
     { title: '序号', type: 'seq', width: 60 },
-    { field: 'title', sortable: true, title: '名称' },
-    { field: 'tenantProfileName', sortable: true, title: '配置' },
-    { field: 'email', title: '邮箱' },
-    { field: 'phone', title: '电话' },
-    { field: 'address', title: '地址' },
+    { field: 'title', sortable: true, title: $t('tenant.form.title') },
+    {
+      field: 'tenantProfileName',
+      sortable: true,
+      title: $t('tenant.form.tenantProfileName'),
+    },
+    { field: 'email', title: $t('tenant.form.email') },
+    { field: 'phone', title: $t('tenant.form.phone') },
+    { field: 'address', title: $t('tenant.form.address') },
     {
       field: 'createdTime',
       sortable: true,
       formatter: 'formatDateTime',
-      title: '创建时间',
+      title: $t('tenant.form.createdTime'),
     },
     {
-      title: '操作',
+      title: $t('page.action.title'),
       field: 'action',
       align: 'center',
       fixed: 'right',
@@ -159,7 +163,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
   <Page auto-content-height>
     <Grid>
       <template #table-top>
-        <p class="text-lg font-semibold">{{ $t('page.tenant.title') }}</p>
+        <p class="text-lg font-semibold">{{ $t('tenant.title') }}</p>
         <p class="text-muted-foreground">
           这是一个基础的租户列表，包含了租户的基本信息。
         </p>
@@ -171,7 +175,9 @@ const [Grid, gridApi] = useVbenVxeGrid({
           class="mr-2 flex items-center"
         >
           <IconifyIcon class="size-4" icon="mdi:plus" />
-          <span class="font-semibold"> {{ $t('page.tenant.addTenant') }} </span>
+          <span class="font-semibold">
+            {{ $t('tenant.button.addTenant') }}
+          </span>
         </Button>
         <Input
           class="w-80"
@@ -187,7 +193,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
         <div class="flex items-center gap-2">
           <VbenIconButton
             v-tippy="{
-              content: '刷新',
+              content: `${$t('page.refresh.title')}`,
               theme: 'dark',
               delay: 100,
               animation: 'shift-away',

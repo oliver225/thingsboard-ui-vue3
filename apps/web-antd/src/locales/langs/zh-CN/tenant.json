@@ -1,0 +1,23 @@
+{
+  "title": "租户",
+  "detail": "租户详情",
+  "removeContent": "确认后，租户和所有相关数据将不可恢复!",
+  "form": {
+    "title": "租户名称",
+    "tenantProfileName": "租户配置",
+    "email": "电子邮箱",
+    "zip": "邮政编码",
+    "phone": "手机号码",
+    "address": "详细地址",
+    "address2": "备用地址",
+    "description": "描述信息",
+    "createdTime": "创建时间"
+  },
+  "button": {
+    "tenantAdmin": "租户管理员",
+    "addTenant": "添加租户",
+    "editTenant": "编辑租户",
+    "removeTenant": "删除租户",
+    "copyTenantId": "复制租户ID"
+  }
+}

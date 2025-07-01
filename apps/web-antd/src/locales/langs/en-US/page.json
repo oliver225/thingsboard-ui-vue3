@@ -11,19 +11,36 @@
     "analytics": "Analytics",
     "workspace": "Workspace"
   },
+  "tabs": {
+    "detail": "Details",
+    "telemetry": "Telemetry",
+    "alarm": "Alarms",
+    "event": "Events",
+    "relation": "Relations",
+    "auditLog": "AuditLogs"
+  },
   "search": {
     "placeholder": "please input search content"
-  },
-  "tenant": {
-    "title": "Tenant",
-    "detail": "Tenant Detail",
-    "addTenant": "Add Tenant",
-    "editTenant": "Edit Tenant"
   },
   "submit": {
     "title": "Submit",
     "success": "submit success!",
     "loading": "submit loading...",
     "error": "submit error, try again later"
+  },
+  "remove": {
+    "title": "Remove",
+    "success": "remove success!",
+    "loading": "remove loading...",
+    "error": "remove error, try again later"
+  },
+  "detail": {
+    "title": "Detail"
+  },
+  "refresh": {
+    "title": "Refresh"
+  },
+  "action": {
+    "title": "Action"
   }
 }

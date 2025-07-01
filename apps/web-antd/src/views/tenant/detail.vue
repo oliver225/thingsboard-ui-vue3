@@ -24,33 +24,33 @@ const tabActiveKey = ref('DETAIL');
 const tabList = [
   {
     key: 'DETAIL',
-    label: $t('详情'),
+    label: $t('page.tabs.detail'),
     icon: 'ant-design:appstore-outlined',
   },
   {
     key: 'TELEMETRY',
-    label: $t('数据'),
+    label: $t('page.tabs.telemetry'),
     icon: 'ant-design:line-chart-outlined',
   },
   {
     key: 'ALARM',
-    label: $t('报警'),
+    label: $t('page.tabs.alarm'),
     icon: 'ant-design:alert-outlined',
   },
   {
     key: 'EVENT',
-    label: $t('事件'),
+    label: $t('page.tabs.event'),
     icon: 'ant-design:info-circle-outlined',
   },
   {
     key: 'RELATION',
-    label: $t('关联'),
+    label: $t('page.tabs.relation'),
     icon: 'ant-design:radar-chart-outlined',
   },
 ];
 
 const [Drawer, drawerApi] = useVbenDrawer({
-  title: `${$t('租户详情')}`,
+  title: `${$t('tenant.detail')}`,
   overlayBlur: 0,
   footer: false,
   width: '50%',
@@ -116,7 +116,7 @@ function handleCopyId() {
             {{ record?.title }}
           </p>
           <p class="text-muted-foreground mt-1 text-sm">
-            {{ $t('page.tenant.detail') }}
+            {{ $t('tenant.detail') }}
           </p>
         </div>
       </div>
@@ -136,46 +136,46 @@ function handleCopyId() {
       <div class="mb-2 flex space-x-4">
         <Button type="primary" @click="handleAdmin">
           <IconifyIcon class="mb-1 size-4" icon="mdi:account-circle-outline" />
-          租户管理员
+          {{ $t('tenant.button.tenantAdmin') }}
         </Button>
         <Button type="primary" @click="handleEdit">
           <IconifyIcon class="mb-1 size-4" icon="ant-design:edit-outlined" />
-          编辑租户
+          {{ $t('tenant.button.editTenant') }}
         </Button>
         <Button type="primary" danger @click="handleDelete">
           <IconifyIcon class="mb-1 size-4" icon="ant-design:delete-outlined" />
-          删除租户
+          {{ $t('tenant.button.removeTenant') }}
         </Button>
       </div>
       <div class="mb-2 flex space-x-4">
         <Button @click="handleCopyId">
           <IconifyIcon class="mb-1 size-4" icon="mdi:content-copy" />
-          复制租户ID
+          {{ $t('tenant.button.copyTenantId') }}
         </Button>
       </div>
       <Descriptions bordered :column="2" size="middle">
-        <Descriptions.Item label="租户名称" :span="2">
+        <Descriptions.Item :label="$t('tenant.form.title')" :span="2">
           {{ record?.title }}
         </Descriptions.Item>
-        <Descriptions.Item label="租户配置">
+        <Descriptions.Item :label="$t('tenant.form.tenantProfileName')">
           {{ record?.tenantProfileName }}
         </Descriptions.Item>
-        <Descriptions.Item label="邮政编码">
+        <Descriptions.Item :label="$t('tenant.form.zip')">
           {{ record?.zip }}
         </Descriptions.Item>
-        <Descriptions.Item label="手机号码">
+        <Descriptions.Item :label="$t('tenant.form.phone')">
           {{ record?.phone }}
         </Descriptions.Item>
-        <Descriptions.Item label="邮箱地址">
+        <Descriptions.Item :label="$t('tenant.form.email')">
           {{ record?.email }}
         </Descriptions.Item>
-        <Descriptions.Item label="详细地址" :span="2">
+        <Descriptions.Item :label="$t('tenant.form.address')" :span="2">
           {{ record?.address }}
         </Descriptions.Item>
-        <Descriptions.Item label="备用地址" :span="2">
+        <Descriptions.Item :label="$t('tenant.form.address2')" :span="2">
           {{ record?.address2 }}
         </Descriptions.Item>
-        <Descriptions.Item label="描述信息" :span="2">
+        <Descriptions.Item :label="$t('tenant.form.description')" :span="2">
           {{ record?.additionalInfo?.description }}
         </Descriptions.Item>
       </Descriptions>

@@ -1,0 +1,23 @@
+{
+  "title": "Tenants",
+  "detail": "Tenant Detail",
+  "removeContent": "After the confirmation the tenant and all related data will become unrecoverable.",
+  "form": {
+    "title": "Title",
+    "tenantProfileName": "Tenant profile",
+    "email": "Email",
+    "zip": "Zip",
+    "phone": "Phone",
+    "address": "Address",
+    "address2": "Address2",
+    "description": "Description",
+    "createdTime": "Created time"
+  },
+  "button": {
+    "tenantAdmin": "Manage tenant admins",
+    "addTenant": "Add tenant",
+    "editTenant": "Edit tenant",
+    "removeTenant": "Remove tenant",
+    "copyTenantId": "Copy tenant Id"
+  }
+}

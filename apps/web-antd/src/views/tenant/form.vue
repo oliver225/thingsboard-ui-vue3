@@ -43,7 +43,7 @@ const { promise: fetchtenantProfileInfoFn } = useQuery({
 const [Form, formApi] = useVbenForm({
   schema: [
     {
-      label: $t('租户名称'),
+      label: $t('tenant.form.title'),
       fieldName: 'title',
       component: 'Input',
       componentProps: {
@@ -62,7 +62,7 @@ const [Form, formApi] = useVbenForm({
       defaultValue: EntityType.TENANT_PROFILE,
     },
     {
-      label: $t('租户配置'),
+      label: $t('tenant.form.tenantProfileName'),
       fieldName: 'tenantProfileId.id',
       component: 'ApiSelect',
       componentProps: {
@@ -81,7 +81,7 @@ const [Form, formApi] = useVbenForm({
       formItemClass: 'col-span-2',
     },
     {
-      label: $t('手机号码'),
+      label: $t('tenant.form.phone'),
       fieldName: 'phone',
       component: 'Input',
       rules: z.string().regex(/^1[3-9]\d{9}$/, {
@@ -89,12 +89,12 @@ const [Form, formApi] = useVbenForm({
       }),
     },
     {
-      label: $t('邮政编码'),
+      label: $t('tenant.form.zip'),
       fieldName: 'zip',
       component: 'Input',
     },
     {
-      label: $t('邮箱地址'),
+      label: $t('tenant.form.email'),
       fieldName: 'email',
       component: 'Input',
       rules: z
@@ -106,7 +106,7 @@ const [Form, formApi] = useVbenForm({
       formItemClass: 'col-span-2',
     },
     {
-      label: $t('详细地址'),
+      label: $t('tenant.form.address'),
       fieldName: 'address',
       component: 'Input',
       componentProps: {
@@ -116,7 +116,7 @@ const [Form, formApi] = useVbenForm({
       formItemClass: 'col-span-2',
     },
     {
-      label: $t('备用地址'),
+      label: $t('tenant.form.address2'),
       fieldName: 'address2',
       component: 'Input',
       componentProps: {
@@ -126,7 +126,7 @@ const [Form, formApi] = useVbenForm({
     },
 
     {
-      label: $t('描述信息'),
+      label: $t('tenant.form.description'),
       fieldName: 'additionalInfo.description',
       component: 'Textarea',
       formItemClass: 'col-span-2',
@@ -138,7 +138,7 @@ const [Form, formApi] = useVbenForm({
 });
 
 const [Modal, modalApi] = useVbenModal({
-  title: `${$t('page.tenant.addTenant')}`,
+  title: `${$t('tenant.button.addTenant')}`,
   confirmText: `${$t('page.submit.title')}`,
   overlayBlur: 5,
   async onOpenChange(isOpen: boolean) {
