@@ -152,7 +152,6 @@ const [Form, formApi] = useVbenForm({
 const [Modal, modalApi] = useVbenModal({
   title: `${$t('tenant.button.addTenant')}`,
   confirmText: `${$t('page.submit.title')}`,
-  overlayBlur: 5,
   async onOpenChange(isOpen: boolean) {
     modalApi.setState({ loading: true });
     reset();
@@ -224,6 +223,6 @@ async function onSubmit(values: Record<string, any>) {
 </script>
 <template>
   <Modal class="w-1/2">
-    <Form />
+    <Form class="mr-8" />
   </Modal>
 </template>

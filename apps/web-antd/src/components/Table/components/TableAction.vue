@@ -52,7 +52,7 @@ export default defineComponent({
   },
   props,
   setup(props: any) {
-    function isIfShow(action: ActionItem): boolean {
+    function isIfShow(action: any): boolean {
       const ifShow = action.ifShow;
 
       let isIfShow = true;
@@ -66,10 +66,24 @@ export default defineComponent({
       return isIfShow;
     }
 
+    function isDisabledFn(action: any): boolean {
+      const disabled = action.disabled;
+
+      let isDisabled = false;
+
+      if (isBoolean(disabled)) {
+        isDisabled = disabled;
+      }
+      if (isFunction(disabled)) {
+        isDisabled = disabled(action);
+      }
+      return isDisabled;
+    }
+
     const getActions = computed(() => {
       return (toRaw(props.actions) || [])
-        .filter((action: any) => {
-          return isIfShow(action);
+        .filter((action: ActionItem) => {
+          return isIfShow({ ...props.params, ifShow: action.ifShow });
         })
         .map((action: any) => {
           return {
@@ -77,6 +91,10 @@ export default defineComponent({
             type: 'link',
             size: 'small',
             ...action,
+            disabled: isDisabledFn({
+              ...props.params,
+              disabled: action.disabled,
+            }),
             onClick: () => {
               action.onClick?.(props.params);
             },
@@ -150,7 +168,7 @@ export default defineComponent({
         v-tippy="getTooltip(action.tooltip)"
         icon=""
       >
-        <IconifyIcon :icon="action.icon" v-if="action.icon" />
+        <IconifyIcon class="size-4" :icon="action.icon" v-if="action.icon" />
         <template v-else-if="action.label">
           <span>{{ action.label }}</span>
         </template>
@@ -206,12 +224,6 @@ export default defineComponent({
     }
   }
 
-  button.ant-btn-circle {
-    span {
-      margin: auto !important;
-    }
-  }
-
   .ant-divider,
   .ant-divider-vertical {
     margin: 0 2px;
@@ -225,10 +237,6 @@ export default defineComponent({
       font-weight: 700;
       vertical-align: baseline;
     }
-  }
-
-  .anticon {
-    font-size: 18px;
   }
 }
 </style>

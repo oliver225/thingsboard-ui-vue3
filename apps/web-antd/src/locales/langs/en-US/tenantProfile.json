@@ -1,0 +1,18 @@
+{
+  "title": "Tenant profiles",
+  "detail": "Tenant profile detail",
+  "removeContent": "After the confirmation the tenant profile and all related data will become unrecoverable.",
+  "form": {
+    "name": "Name",
+    "default": "Default",
+    "isolatedTbRuleEngine": "Isolated ruleEngine",
+    "description": "Description",
+    "createdTime": "Create time"
+  },
+  "button": {
+    "add": "Add Tenant profile",
+    "edit": "Edit Tenant profile",
+    "remove": "Remove Tenant profile",
+    "copyId": "Copy Tenant profile Id"
+  }
+}

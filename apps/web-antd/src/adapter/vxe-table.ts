@@ -4,7 +4,7 @@ import { h } from 'vue';
 
 import { setupVbenVxeTable, useVbenVxeGrid } from '@vben/plugins/vxe-table';
 
-import { Button, Image } from 'ant-design-vue';
+import { Button, Checkbox, Image } from 'ant-design-vue';
 
 import { TableAction } from '#/components/Table';
 
@@ -63,6 +63,19 @@ setupVbenVxeTable({
           options: options ?? [],
           el: $table.getEl(),
           ...props,
+        });
+      },
+    });
+
+    vxeUI.renderer.add('CellCheckbox', {
+      renderTableDefault(_renderOpts, params) {
+        const { column, row } = params;
+        return h(Checkbox, {
+          checked: row[column.field],
+          onClick: (e: Event) => {
+            e.stopPropagation();
+            e.preventDefault();
+          },
         });
       },
     });

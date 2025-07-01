@@ -38,6 +38,39 @@ const routes: RouteRecordRaw[] = [
       },
     ],
   },
+  {
+    meta: {
+      icon: 'mdi:account-box-multiple',
+      order: 10,
+      title: $t('tenantProfile.title'),
+      authority: [Authority.SYS_ADMIN],
+      hideChildrenInMenu: true, // 隐藏子菜单
+    },
+    name: 'TenantProfile',
+    path: '/tenantProfiles',
+    children: [
+      {
+        meta: {
+          icon: 'mdi:account-box-multiple',
+          title: $t('tenantProfile.title'),
+          authority: [Authority.SYS_ADMIN],
+        },
+        name: 'TenantProfileList',
+        path: '/tenantProfiles',
+        component: () => import('#/views/tenantProfile/list.vue'),
+      },
+      {
+        meta: {
+          icon: 'mdi:account-box-multiple',
+          title: $t('tenantProfile.detail'),
+          authority: [Authority.SYS_ADMIN],
+        },
+        name: 'TenantProfileDetail',
+        path: '/TenantProfile/:id',
+        component: () => import('#/views/tenantProfile/detail.vue'),
+      },
+    ],
+  },
 ];
 
 export default routes;

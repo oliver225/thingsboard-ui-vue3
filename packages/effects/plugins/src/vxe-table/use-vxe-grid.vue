@@ -371,7 +371,7 @@ onUnmounted(() => {
 
 <template>
   <div :class="cn('bg-card h-full rounded-md', className)">
-    <div ref="headerTopRef" class="px-3 pb-0 pt-4" v-if="$slots['table-top']">
+    <div ref="headerTopRef" class="px-3 pt-3" v-if="$slots['table-top']">
       <slot name="table-top"></slot>
     </div>
     <div class="overflow-hidden" :style="vxeGridStyle">

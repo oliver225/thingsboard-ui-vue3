@@ -32,9 +32,9 @@ export interface ActionItem extends ButtonProps {
   color?: 'error' | 'success' | 'warning';
   icon?: string;
   // popConfirm?: PopConfirm;
-  disabled?: boolean;
+  disabled?: ((params: any) => boolean) | boolean;
   divider?: boolean;
   // 业务控制是否显示
-  ifShow?: ((action: ActionItem) => boolean) | boolean;
+  ifShow?: ((params: any) => boolean) | boolean;
   tooltip?: string | TippyProps;
 }

@@ -8,60 +8,82 @@ import { requestClient } from '#/api/request';
 
 export namespace TenantProfileApi {
   export interface Configuration {
-    type: string;
+    type: 'DEFAULT';
 
-    maxDevices?: number;
-    maxAssets?: number;
-    maxCustomers?: number;
-    maxUsers?: number;
-    maxDashboards?: number;
-    maxRuleChains?: number;
-    maxResourcesInBytes?: number;
-    maxOtaPackagesInBytes?: number;
+    maxDevices: number;
+    maxDashboards: number;
+    maxAssets: number;
+    maxUsers: number;
+    maxCustomers: number;
+    maxRuleChains: number;
+    // maxEdges: number;
+
+    maxREExecutions: number;
+    maxTransportMessages: number;
+    maxJSExecutions: number;
+    maxTbelExecutions: number;
+    maxRuleNodeExecutionsPerMessage: number;
+    maxTransportDataPoints: number;
+
+    maxDPStorageDays: number;
+    alarmsTtlDays: number;
+    defaultStorageTtlDays: number;
+    rpcTtlDays: number;
+    queueStatsTtlDays: 0;
+    ruleEngineExceptionsTtlDays: 0;
+
+    smsEnabled?: boolean;
+    maxSms: number;
+    maxEmails: number;
+    maxCreatedAlarms: number;
+
+    maxResourceSize: number;
+    maxOtaPackagesInBytes: number;
+    maxResourcesInBytes: number;
+
+    maxWsSessionsPerTenant: number;
+    maxWsSubscriptionsPerTenant: number;
+    maxWsSessionsPerCustomer: number;
+    maxWsSubscriptionsPerCustomer: number;
+    maxWsSessionsPerPublicUser: number;
+    maxWsSubscriptionsPerPublicUser: number;
+    maxWsSessionsPerRegularUser: number;
+    maxWsSubscriptionsPerRegularUser: number;
+    wsMsgQueueLimitPerSession: number;
+
+    // maxCalculatedFieldsPerEntity: number;
+    // maxArgumentsPerCF: number;
+    // maxDataPointsPerRollingArg: number;
+    // maxStateSizeInKBytes: number;
+    // maxSingleValueArgumentSizeInKBytes: number;
+    // warnThreshold: number;
+    // maxDebugModeDurationMinutes: number;
 
     transportTenantMsgRateLimit?: string;
-    transportTenantTelemetryMsgRateLimit?: string;
-    transportTenantTelemetryDataPointsRateLimit?: string;
     transportDeviceMsgRateLimit?: string;
+    transportTenantTelemetryMsgRateLimit?: string;
     transportDeviceTelemetryMsgRateLimit?: string;
+    transportGatewayMsgRateLimit?: string;
+    transportGatewayDeviceMsgRateLimit?: string;
+    transportGatewayTelemetryMsgRateLimit?: string;
+    transportGatewayDeviceTelemetryMsgRateLimit?: string;
+
+    transportTenantTelemetryDataPointsRateLimit?: string;
     transportDeviceTelemetryDataPointsRateLimit?: string;
-
-    tenantEntityExportRateLimit?: string;
-    tenantEntityImportRateLimit?: string;
-    tenantNotificationRequestsRateLimit?: string;
-    tenantNotificationRequestsPerRuleRateLimit?: string;
-
-    maxTransportMessages?: number;
-    maxTransportDataPoints?: number;
-    maxREExecutions?: number;
-    maxJSExecutions?: number;
-    maxDPStorageDays?: number;
-    maxRuleNodeExecutionsPerMessage?: number;
-    maxEmails?: number;
-    maxSms?: number;
-    maxCreatedAlarms?: number;
-
+    transportGatewayTelemetryDataPointsRateLimit?: string;
+    transportGatewayDeviceTelemetryDataPointsRateLimit?: string;
     tenantServerRestLimitsConfiguration?: string;
     customerServerRestLimitsConfiguration?: string;
-
-    maxWsSessionsPerTenant?: number;
-    maxWsSessionsPerCustomer?: number;
-    maxWsSessionsPerRegularUser?: number;
-    maxWsSessionsPerPublicUser?: number;
-    wsMsgQueueLimitPerSession?: number;
-    maxWsSubscriptionsPerTenant?: number;
-    maxWsSubscriptionsPerCustomer?: number;
-    maxWsSubscriptionsPerRegularUser?: number;
-    maxWsSubscriptionsPerPublicUser?: number;
+    tenantEntityImportRateLimit?: string;
+    tenantEntityExportRateLimit?: string;
     wsUpdatesPerSessionRateLimit?: string;
-
     cassandraQueryTenantRateLimitsConfiguration?: string;
-
-    defaultStorageTtlDays?: number;
-    alarmsTtlDays?: number;
-    rpcTtlDays?: number;
-
-    warnThreshold?: number;
+    tenantNotificationRequestsRateLimit?: string;
+    tenantNotificationRequestsPerRuleRateLimit?: string;
+    edgeEventRateLimits?: string;
+    edgeEventRateLimitsPerEdge?: string;
+    edgeUplinkMessagesRateLimits?: string;
+    edgeUplinkMessagesRateLimitsPerEdge?: string;
   }
 
   export interface TenantProfile {
@@ -127,9 +149,7 @@ export function saveTenantProfileApi(
 }
 
 export function setTenantProfileDefaultApi(tenantProfileId: string) {
-  return requestClient.post<TenantProfileApi.TenantProfile>(
-    `/tenantProfile/${tenantProfileId}/default`,
-  );
+  return requestClient.post(`/tenantProfile/${tenantProfileId}/default`);
 }
 
 export function deleteTenantProfileApi(tenantProfileId: string) {
