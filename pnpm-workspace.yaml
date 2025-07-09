@@ -140,6 +140,7 @@ catalog:
   postcss-preset-env: ^10.1.6
   postcss-scss: ^4.0.9
   prettier: ^3.5.3
+  prismjs: ^1.30.0
   prettier-plugin-tailwindcss: ^0.6.11
   publint: ^0.3.12
   qrcode: ^1.5.4
@@ -178,6 +179,7 @@ catalog:
   vite-plugin-lazy-import: ^1.0.7
   vite-plugin-pwa: ^1.0.0
   vite-plugin-vue-devtools: ^7.7.6
+  vite-plugin-prismjs: ^0.0.11
   vitepress: ^1.6.3
   vitepress-plugin-group-icons: ^1.5.2
   vitest: ^3.1.2

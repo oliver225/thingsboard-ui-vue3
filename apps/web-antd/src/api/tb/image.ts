@@ -5,7 +5,7 @@ import type { ResourceApi } from './resources-library';
 
 import type { BasicQuery, Page } from '#/api/model';
 
-import { rawRequestClient, requestClient } from '#/api/request';
+import { requestClient } from '#/api/request';
 
 export const tbImagePrefix = 'tb-image;';
 
@@ -70,7 +70,7 @@ export function downloadImageApi(
     `/images/${type}/${key}`,
     { t: Date.now() },
     {
-      headers: { 'If-None-Match': etag, 'Accept-Encoding': acceptEncode },
+      headers: { Etag: etag, 'Accept-Encoding': acceptEncode },
       responseType: 'blob',
     },
   );
@@ -85,7 +85,7 @@ export function downloadPublicImageApi(
     `/images/public/${publicResourceKey}`,
     { t: Date.now() },
     {
-      headers: { 'If-None-Match': etag, 'Accept-Encoding': acceptEncode },
+      headers: { Etag: etag, 'Accept-Encoding': acceptEncode },
       responseType: 'blob',
     },
   );
@@ -97,15 +97,16 @@ export function imagePreviewApi(
   etag?: string,
   acceptEncode?: string,
 ) {
-  return rawRequestClient.get(
+  return requestClient.get(
     `/images/${type}/${key}/preview`,
     { t: Date.now() },
     {
       headers: {
-        // 'If-None-Match': `"${etag}"`,
+        Etag: `"${etag}"`,
         'Accept-Encoding': acceptEncode,
       },
       responseType: 'arraybuffer',
+      responseReturn: 'raw',
     },
   );
 }

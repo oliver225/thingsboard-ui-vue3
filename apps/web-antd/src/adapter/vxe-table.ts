@@ -15,10 +15,9 @@ setupVbenVxeTable({
     vxeUI.setConfig({
       grid: {
         align: 'center',
-        size: 'small',
-        border: true,
+        size: 'medium',
+        // border: true,
         height: 'auto',
-        minHeight: 180,
         keepSource: true,
         round: true,
         showOverflow: true,

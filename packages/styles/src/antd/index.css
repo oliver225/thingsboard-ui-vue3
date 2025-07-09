@@ -74,6 +74,15 @@
   box-shadow: 0 0 0 2px rgb(255 38 5 / 6%);
 }
 
+.ant-upload-list-picture-card {
+  display: flex;
+  .ant-upload-select-picture-card {
+    width: 100% !important;
+    flex:1;
+  }
+
+}
+
 /** 详情页Tabs样式 */
 .detail-tabs {
   .ant-tabs-nav {

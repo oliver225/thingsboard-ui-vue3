@@ -120,7 +120,3 @@ export const requestClient = createRequestClient(apiURL, {
 });
 
 export const baseRequestClient = new RequestClient({ baseURL: apiURL });
-
-export const rawRequestClient = createRequestClient(apiURL, {
-  responseReturn: 'raw',
-});

@@ -102,7 +102,7 @@ function handleDefault({ _column, _$table, row }: any) {
   confirm({
     title: `设为默认租户配置[${row.name}]`,
     content: `${$t('此租户配置将被标记为默认配置，并将用于未指定配置的新租户。')}`,
-    icon: 'question',
+    icon: 'warning',
     beforeClose({ isConfirm }) {
       return isConfirm ? setTenantProfileDefaultApi(row.id.id) : true;
     },

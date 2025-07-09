@@ -31,3 +31,18 @@ export function convertBytesToSize(bytes: number) {
   const i = Math.floor(Math.log(bytes) / Math.log(1024));
   return `${Number(bytes / 1024 ** i).toFixed(2)} ${sizes[i]}`;
 }
+
+export const REGULAR_HTML_ENCODE =
+  /["&'<>\u0000-\u0020\u007F-\u00FF\u0100-\u2700]/g;
+
+export function encodeHtml(s: any) {
+  return typeof s === 'string'
+    ? s.replaceAll(REGULAR_HTML_ENCODE, ($0) => {
+        let c = $0.codePointAt(0);
+        const r = ['&#'];
+        c = c === 0x20 ? 0xa0 : c;
+        r.push(c, ';');
+        return r.join('');
+      })
+    : s;
+}

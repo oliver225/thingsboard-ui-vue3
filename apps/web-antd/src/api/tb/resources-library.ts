@@ -20,6 +20,8 @@ export namespace ResourceApi {
     resourceSubType?: 'EXTENSION' | 'IMAGE' | 'MODULE' | 'SCADA_SYMBOL';
     resourceKey?: string;
     public?: boolean;
+    link?: string;
+    publicLink?: string;
     publicResourceKey?: string;
     searchText?: string;
     etag?: string;

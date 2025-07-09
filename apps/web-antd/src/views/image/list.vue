@@ -6,41 +6,36 @@ import type { ResourceApi } from '#/api';
 
 import { reactive, watch } from 'vue';
 
-import { confirm, Page } from '@vben/common-ui';
+import { confirm, Page, useVbenModal } from '@vben/common-ui';
 import { IconifyIcon } from '@vben/icons';
 import { $t } from '@vben/locales';
-import { convertBytesToSize } from '@vben/utils';
+import { convertBytesToSize, downloadByData } from '@vben/utils';
 
 import { VbenIconButton } from '@vben-core/shadcn-ui';
 
-import { Button, Input, message } from 'ant-design-vue';
+import { Button, Image, Input, message } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { deleteImageApi, imageListApi, imagePreviewApi } from '#/api';
+import {
+  deleteImageApi,
+  downloadImageApi,
+  imageListApi,
+  imagePreviewApi,
+} from '#/api';
 
-/**
- * 图片列表页面
- * @fileoverview 展示图片资源，支持 base64 预览，优化代码结构和可读性
- */
+import Embed from './embed.vue';
+import Upload from './upload.vue';
 
 defineOptions({
   name: 'ImageList',
 });
 
-/**
- * 搜索参数
- * @type {object}
- */
+const previewCache = new Map<string, string>();
+
 const searchParam = reactive({
   textSearch: '',
   includeSystemImages: false,
 });
-
-/**
- * 图片预览缓存，避免重复请求
- * @type {Map<string, string>}
- */
-const previewCache = new Map<string, string>();
 
 watch(
   () => searchParam.textSearch,
@@ -49,19 +44,17 @@ watch(
   },
 );
 
-/**
- * 刷新表格
- */
+const [UploadModal, uploadModalApi] = useVbenModal({
+  connectedComponent: Upload,
+});
+const [EmbedModal, embedModalApi] = useVbenModal({
+  connectedComponent: Embed,
+});
 async function reload() {
   searchParam.textSearch = '';
   await gridApi?.query();
 }
 
-/**
- * 获取图片列表数据
- * @param {object} param0
- * @returns {Promise<object>}
- */
 async function fetch({ page, sort }: any) {
   const res = await imageListApi(
     {
@@ -132,14 +125,19 @@ async function handleSuccess() {
   await reload();
 }
 
-/**
- * 删除图片
- * @param {object} param0
- */
+function handleForm({ _column, _$table, row }: any) {
+  uploadModalApi
+    .setState({
+      title: row?.id?.id ? `${$t('编辑图像')}` : `${$t('上传图像')}`,
+    })
+    .setData({ id: row?.id?.id })
+    .open();
+}
+
 function handleDelete({ row }: any) {
   confirm({
-    title: `${$t('tenant.button.removeTenant')}[${row.title}]`,
-    content: `${$t('tenant.removeContent')}`,
+    title: `${$t('删除图像')}[${row.title}]`,
+    content: `${$t('确认后图像将无法恢！')}`,
     icon: 'error',
     confirmText: `${$t('page.remove.title')}`,
     beforeClose: async ({ isConfirm }) => {
@@ -150,13 +148,39 @@ function handleDelete({ row }: any) {
       return true;
     },
   }).then(async () => {
-    message.success(`删除租户[${row.title}]成功！`);
+    message.success(`删除图像[${row.title}]成功！`);
     await reload();
   });
 }
 
+function handleEmbed({ row }: any) {
+  embedModalApi.setData({ data: row }).open();
+}
+
+async function handleDownload({ row }: any) {
+  const result = await downloadImageApi(
+    row.imageType,
+    row.resourceKey,
+    row.etag,
+  );
+
+  await downloadByData(result, row.resourceKey);
+}
+
 const tableAction = {
   actions: [
+    {
+      label: `${$t('下载')}`,
+      tooltip: `${$t('下载')}`,
+      icon: 'mdi:download',
+      onClick: handleDownload,
+    },
+    {
+      label: `${$t('嵌入图像')}`,
+      tooltip: `${$t('嵌入图像')}`,
+      icon: 'ant-design:code-outlined',
+      onClick: handleEmbed,
+    },
     {
       label: `${$t('page.remove.title')}`,
       tooltip: `${$t('page.remove.title')}`,
@@ -170,8 +194,12 @@ const tableAction = {
 const gridOptions: VxeGridProps<ResourceApi.ResourceInfo> = {
   columns: [
     { title: '序号', type: 'seq', width: 60 },
-    { field: 'preview', title: '图片', cellRender: { name: 'CellImage' } },
-    { field: 'title', sortable: true, title: $t('名称') },
+    {
+      field: 'title',
+      title: $t('名称'),
+      sortable: true,
+      slots: { default: 'title-image' },
+    },
     {
       field: 'descriptor.height',
       title: $t('分辨率'),
@@ -201,9 +229,15 @@ const gridOptions: VxeGridProps<ResourceApi.ResourceInfo> = {
         name: 'CellActions',
         props: tableAction,
       },
-      width: 120,
+      width: 180,
     },
   ],
+  cellConfig: {
+    height: 65,
+  },
+  pagerConfig: {
+    pageSize: 10,
+  },
   proxyConfig: {
     ajax: {
       query: fetch,
@@ -221,29 +255,36 @@ const [Grid, gridApi] = useVbenVxeGrid({
   <Page auto-content-height>
     <Grid>
       <template #table-top>
-        <p class="text-lg font-semibold">{{ $t('tenant.title') }}</p>
-        <p class="text-muted-foreground">
-          这是一个基础的租户列表，包含了租户的基本信息。
-        </p>
+        <p class="text-lg font-semibold">{{ $t('图像库') }}</p>
+        <p class="text-muted-foreground">这是一个图像库列表</p>
       </template>
       <template #toolbar-actions>
-        <div class="flex w-full items-center justify-between">
-          <Button type="primary" class="flex items-center">
-            <IconifyIcon class="size-4" icon="mdi:plus" />
-            <span class="ml-1 font-semibold">
-              {{ $t('tenant.button.addTenant') }}
+        <div class="flex items-center justify-start space-x-2">
+          <Button
+            @click="() => handleForm({})"
+            type="primary"
+            class="flex items-center"
+          >
+            <IconifyIcon class="size-4" icon="mdi:upload" />
+            <span class="font-semibold">
+              {{ $t('上传图像') }}
             </span>
           </Button>
           <Input
             class="w-80"
             v-model:value="searchParam.textSearch"
             :placeholder="$t('page.search.placeholder')"
-            allow-clear
           >
             <template #suffix>
               <IconifyIcon class="size-4" icon="mdi:magnify" />
             </template>
           </Input>
+        </div>
+      </template>
+      <template #title-image="{ row }">
+        <div class="juestify-start cursour-pointer flex items-center space-x-4">
+          <Image :src="row.preview" :preview="false" :height="60" :width="60" />
+          <span>{{ row.title }}</span>
         </div>
       </template>
       <template #resolution="{ row }">
@@ -269,5 +310,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
         </div>
       </template>
     </Grid>
+    <UploadModal @success="handleSuccess" />
+    <EmbedModal />
   </Page>
 </template>
