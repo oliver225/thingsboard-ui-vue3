@@ -44,9 +44,7 @@ export function updateImageInfoApi(
 ) {
   return requestClient.put<ResourceApi.ResourceInfo>(
     `/images/${type}/${key}/info`,
-    {
-      request: data,
-    },
+    data,
   );
 }
 

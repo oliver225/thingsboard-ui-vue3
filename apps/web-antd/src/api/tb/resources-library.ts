@@ -19,6 +19,7 @@ export namespace ResourceApi {
       | 'PKCS_12';
     resourceSubType?: 'EXTENSION' | 'IMAGE' | 'MODULE' | 'SCADA_SYMBOL';
     resourceKey?: string;
+    imageType?: 'system' | 'tenant';
     public?: boolean;
     link?: string;
     publicLink?: string;
@@ -33,7 +34,7 @@ export namespace ResourceApi {
 
   export interface Resource extends ResourceInfo {
     preview?: string;
-    data?: string;
+    data?: any;
   }
 
   export interface LwM2mResourceObserve {

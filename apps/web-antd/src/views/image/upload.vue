@@ -5,18 +5,19 @@ import { ref } from 'vue';
 
 import { useVbenModal } from '@vben/common-ui';
 import { $t } from '@vben/locales';
+import { blobToBase64 } from '@vben/utils';
 
 import { message } from 'ant-design-vue';
 
 import { useVbenForm } from '#/adapter/form';
-import { uploadImageApi } from '#/api';
+import { updateImageApi, uploadImageApi } from '#/api';
 
 defineOptions({
-  name: 'ImageFormModel',
+  name: 'ImageUploadModel',
 });
 const emits = defineEmits(['success']);
 
-const record = ref<null | ResourceApi.ResourceInfo>(null);
+const record = ref<null | ResourceApi.Resource>(null);
 
 const [Form, formApi] = useVbenForm({
   schema: [
@@ -55,6 +56,10 @@ const [Form, formApi] = useVbenForm({
       label: $t('名称'),
       fieldName: 'title',
       component: 'Input',
+      dependencies: {
+        if: () => record.value?.resourceKey === undefined,
+        triggerFields: ['title'],
+      },
       rules: 'required',
       formItemClass: 'col-span-2',
     },
@@ -69,23 +74,18 @@ const [UploadModal, modalApi] = useVbenModal({
   confirmText: `${$t('上传')}`,
   async onOpenChange(isOpen: boolean) {
     modalApi.setState({ loading: true });
-    reset();
     if (isOpen) {
-      // const { data, id } = modalApi.getData<Record<string, any>>();
-      // if (id) {
-      //   record.value = await getTenantInfoByIdApi(id);
-      // } else if (data) {
-      //   record.value = data;
-      // }
-      // if (record.value) {
-      //   record.value.areaList = [
-      //     record.value.state || '',
-      //     record.value.city || '',
-      //     record.value.country || '',
-      //   ];
-      //   formApi.setValues(record.value);
-      // }
-      formApi.setValues({});
+      reset();
+      const data = modalApi.getData<Record<string, any>>();
+      if (data.resourceKey) {
+        record.value = data as ResourceApi.Resource;
+        formApi.setValues({ file: [{ originFileObj: record.value.data }] });
+        modalApi.setState({
+          confirmText: `${$t('更新')} `,
+        });
+      } else {
+        formApi.setValues({});
+      }
     }
     modalApi.setState({ loading: false });
   },
@@ -106,14 +106,7 @@ async function handleFileUpload({ file, onError, onProgress, onSuccess }: any) {
   try {
     onProgress?.({ percent: 0 });
     formApi.setValues({ title: file.name });
-    const base64 = await new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.addEventListener('loadend', () =>
-        resolve(reader.result as string),
-      );
-      reader.addEventListener('error', () => reject(new Error('读取文件失败')));
-      reader.readAsDataURL(file);
-    });
+    const base64 = await blobToBase64(file);
     onProgress?.({ percent: 100 });
     onSuccess?.(base64, file);
   } catch (error) {
@@ -129,13 +122,24 @@ async function onSubmit(values: Record<string, any>) {
   });
   try {
     modalApi.lock();
+    if (record.value?.resourceKey === undefined) {
+      // 新建上传图片
+      const res = await uploadImageApi(
+        values.file[0].originFileObj,
+        values.title,
+        values.imageSubType,
+      );
+      emits('success', res);
+    } else {
+      // 更新图片
+      await updateImageApi(
+        record.value.imageType || 'tenant',
+        record.value.resourceKey,
+        values.file[0].originFileObj,
+      );
+      emits('success', values.file[0].originFileObj);
+    }
 
-    const res = await uploadImageApi(
-      values.file[0].originFileObj,
-      values.title,
-      values.imageSubType,
-    );
-    emits('success', res);
     modalApi.close();
     message.success({
       content: `${$t('page.submit.success')}`,

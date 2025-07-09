@@ -24,7 +24,7 @@ const [EmbedModal, modalApi] = useVbenModal({
     modalApi.setState({ loading: true });
     if (isOpen) {
       record.value = null;
-      const { data } = modalApi.getData<Record<string, any>>();
+      const data = modalApi.getData<Record<string, any>>();
       if (data) {
         record.value = data as ResourceApi.ResourceInfo;
       }

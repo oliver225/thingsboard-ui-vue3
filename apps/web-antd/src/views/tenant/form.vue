@@ -223,6 +223,6 @@ async function onSubmit(values: Record<string, any>) {
 </script>
 <template>
   <Modal class="w-1/2">
-    <Form class="mr-8" />
+    <Form />
   </Modal>
 </template>

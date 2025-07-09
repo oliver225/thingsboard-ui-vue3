@@ -1,6 +1,4 @@
 <script lang="ts" setup>
-import type { Recordable } from '@vben/types';
-
 import type { VxeGridProps } from '#/adapter/vxe-table';
 import type { ResourceApi } from '#/api';
 
@@ -9,11 +7,11 @@ import { reactive, watch } from 'vue';
 import { confirm, Page, useVbenModal } from '@vben/common-ui';
 import { IconifyIcon } from '@vben/icons';
 import { $t } from '@vben/locales';
-import { convertBytesToSize, downloadByData } from '@vben/utils';
+import { blobToBase64, convertBytesToSize, downloadByData } from '@vben/utils';
 
 import { VbenIconButton } from '@vben-core/shadcn-ui';
 
-import { Button, Image, Input, message } from 'ant-design-vue';
+import { Button, Input, message } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
@@ -24,6 +22,7 @@ import {
 } from '#/api';
 
 import Embed from './embed.vue';
+import Form from './form.vue';
 import Upload from './upload.vue';
 
 defineOptions({
@@ -46,6 +45,9 @@ watch(
 
 const [UploadModal, uploadModalApi] = useVbenModal({
   connectedComponent: Upload,
+});
+const [FormModal, formModalApi] = useVbenModal({
+  connectedComponent: Form,
 });
 const [EmbedModal, embedModalApi] = useVbenModal({
   connectedComponent: Embed,
@@ -76,61 +78,48 @@ async function fetch({ page, sort }: any) {
 
 /**
  * 处理图片数据，生成 base64 预览
- * @param {Array} data
+ * @param {Array} dataList
  * @returns {Promise<Array>}
  */
-async function afterFetch(data: any[]) {
+async function afterFetch(dataList: any[]) {
   return Promise.all(
-    data.map(async (item) => {
+    dataList.map(async (item) => {
       const imageType = item.link.includes('system') ? 'system' : 'tenant';
       const key = `${imageType}_${item.resourceKey}_${item.etag}`;
       let preview = previewCache.get(key);
       if (!preview) {
-        preview = (await fetchPreview({ ...item, imageType })) || undefined;
+        const { data, headers } = await imagePreviewApi(
+          imageType,
+          item.resourceKey,
+          item.etag,
+        );
+        const blob = new Blob([data], { type: headers['content-type'] });
+        preview = await blobToBase64(blob);
         if (preview) previewCache.set(key, preview);
       }
-      return { ...item, imageType, preview: preview || undefined };
+      return { ...item, imageType, preview };
     }),
   );
-}
-
-/**
- * 获取图片 base64 预览
- * @param {object} record
- * @returns {Promise<string|null>}
- */
-async function fetchPreview(record: Recordable<any>): Promise<null | string> {
-  try {
-    const { data, headers } = await imagePreviewApi(
-      record.imageType,
-      record.resourceKey,
-      record.etag,
-    );
-    const blob = new Blob([data], { type: headers['content-type'] });
-    return await new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.addEventListener('loadend', () =>
-        resolve(reader.result as string),
-      );
-      reader.addEventListener('error', () => reject(new Error('读取文件失败')));
-      reader.readAsDataURL(blob);
-    });
-  } catch (error) {
-    console.error('预览图片失败:', error);
-    return null;
-  }
 }
 
 async function handleSuccess() {
   await reload();
 }
 
-function handleForm({ _column, _$table, row }: any) {
+function handleForm({ row }: any) {
+  formModalApi
+    .setState({
+      title: `${$t('编辑图像')}`,
+    })
+    .setData({ imageType: row.imageType, resourceKey: row.resourceKey })
+    .open();
+}
+
+function handleUpload() {
   uploadModalApi
     .setState({
-      title: row?.id?.id ? `${$t('编辑图像')}` : `${$t('上传图像')}`,
+      title: `${$t('上传图像')}`,
     })
-    .setData({ id: row?.id?.id })
     .open();
 }
 
@@ -154,7 +143,7 @@ function handleDelete({ row }: any) {
 }
 
 function handleEmbed({ row }: any) {
-  embedModalApi.setData({ data: row }).open();
+  embedModalApi.setData({ ...row }).open();
 }
 
 async function handleDownload({ row }: any) {
@@ -170,8 +159,8 @@ async function handleDownload({ row }: any) {
 const tableAction = {
   actions: [
     {
-      label: `${$t('下载')}`,
-      tooltip: `${$t('下载')}`,
+      label: `${$t('下载图像')}`,
+      tooltip: `${$t('下载图像')}`,
       icon: 'mdi:download',
       onClick: handleDownload,
     },
@@ -180,6 +169,12 @@ const tableAction = {
       tooltip: `${$t('嵌入图像')}`,
       icon: 'ant-design:code-outlined',
       onClick: handleEmbed,
+    },
+    {
+      label: `${$t('编辑图像')}`,
+      tooltip: `${$t('编辑图像')}`,
+      icon: 'ant-design:edit-outlined',
+      onClick: handleForm,
     },
     {
       label: `${$t('page.remove.title')}`,
@@ -229,7 +224,7 @@ const gridOptions: VxeGridProps<ResourceApi.ResourceInfo> = {
         name: 'CellActions',
         props: tableAction,
       },
-      width: 180,
+      width: 200,
     },
   ],
   cellConfig: {
@@ -261,7 +256,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
       <template #toolbar-actions>
         <div class="flex items-center justify-start space-x-2">
           <Button
-            @click="() => handleForm({})"
+            @click="() => handleUpload()"
             type="primary"
             class="flex items-center"
           >
@@ -282,8 +277,15 @@ const [Grid, gridApi] = useVbenVxeGrid({
         </div>
       </template>
       <template #title-image="{ row }">
-        <div class="juestify-start cursour-pointer flex items-center space-x-4">
-          <Image :src="row.preview" :preview="false" :height="60" :width="60" />
+        <div class="flex items-center space-x-4">
+          <div class="flex h-12 w-12 items-center justify-center">
+            <img
+              :class="[
+                `${row.descriptor?.width < row.descriptor?.height ? 'h-full' : 'w-full'}`,
+              ]"
+              :src="row.preview"
+            />
+          </div>
           <span>{{ row.title }}</span>
         </div>
       </template>
@@ -311,6 +313,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
       </template>
     </Grid>
     <UploadModal @success="handleSuccess" />
+    <FormModal @success="handleSuccess" />
     <EmbedModal />
   </Page>
 </template>
