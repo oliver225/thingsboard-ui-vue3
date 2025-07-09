@@ -13,7 +13,13 @@ interface UserInfo extends BasicUserInfo {
   lastName: string;
   phone: string;
   authority: Authority;
-  additionalInfo: any;
+  additionalInfo: {
+    [key: string]: any;
+    description?: string;
+    lastLoginTs: number;
+    userActivated?: boolean;
+    userCredentialsEnabled?: boolean;
+  };
   createdTime: number;
 }
 

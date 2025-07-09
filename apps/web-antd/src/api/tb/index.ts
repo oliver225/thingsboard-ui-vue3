@@ -3,3 +3,4 @@ export * from './queue';
 export * from './resources-library';
 export * from './tenant';
 export * from './tenantProfile';
+export * from './user';

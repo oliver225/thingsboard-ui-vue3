@@ -33,8 +33,42 @@ const routes: RouteRecordRaw[] = [
           authority: [Authority.SYS_ADMIN],
         },
         name: 'TenantDetail',
-        path: '/tenants/:id',
+        path: '/tenants/:tenantId',
         component: () => import('#/views/tenant/detail.vue'),
+      },
+      {
+        meta: {
+          icon: 'mdi:account-circle-outline',
+          order: 11,
+          title: $t('租户管理员'),
+          authority: [Authority.SYS_ADMIN],
+          hideChildrenInMenu: true, // 隐藏子菜单
+        },
+        name: 'TenantAdmin',
+        path: '/tenants/:tenantId/users',
+
+        children: [
+          {
+            meta: {
+              icon: 'mdi:account-circle-outline',
+              title: $t('租户管理员'),
+              authority: [Authority.SYS_ADMIN],
+            },
+            name: 'TenantAdminList',
+            path: '/tenants/:tenantId/users',
+            component: () => import('#/views/tenant/admin/list.vue'),
+          },
+          {
+            meta: {
+              icon: 'mdi:account-circle-outline',
+              title: $t('租户管理员详情'),
+              authority: [Authority.SYS_ADMIN],
+            },
+            name: 'TenantAdminDetail',
+            path: '/tenants/:tenantId/users/:userId',
+            component: () => import('#/views/tenant/admin/detail.vue'),
+          },
+        ],
       },
     ],
   },

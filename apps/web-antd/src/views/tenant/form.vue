@@ -154,8 +154,8 @@ const [Modal, modalApi] = useVbenModal({
   confirmText: `${$t('page.submit.title')}`,
   async onOpenChange(isOpen: boolean) {
     modalApi.setState({ loading: true });
-    reset();
     if (isOpen) {
+      reset();
       const { data, id } = modalApi.getData<Record<string, any>>();
       if (id) {
         record.value = await getTenantInfoByIdApi(id);

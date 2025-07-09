@@ -70,9 +70,7 @@ const [Modal, modalApi] = useVbenModal({
         modalApi.getData<Record<string, any>>();
       if (imageType && resourceKey) {
         record.value = await getImageInfoApi(imageType, resourceKey);
-        record.value.imageType = record.value.link?.includes('system')
-          ? 'system'
-          : 'tenant';
+        record.value.imageType = imageType;
         const { data, headers } = await imagePreviewApi(
           imageType,
           resourceKey,

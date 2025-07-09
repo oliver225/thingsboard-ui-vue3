@@ -1,12 +1,16 @@
 <script lang="ts" setup>
+import type { UserInfo } from '@vben/types';
+
 import type { VxeGridProps } from '#/adapter/vxe-table';
 import type { TenantApi } from '#/api';
 
-import { reactive, watch } from 'vue';
+import { reactive, ref, watch } from 'vue';
 
 import { confirm, Page, useVbenDrawer, useVbenModal } from '@vben/common-ui';
+import { Authority } from '@vben/constants';
 import { IconifyIcon } from '@vben/icons';
 import { $t } from '@vben/locales';
+import { isEmpty } from '@vben/utils';
 
 import { VbenIconButton } from '@vben-core/shadcn-ui';
 
@@ -14,15 +18,21 @@ import { areaList } from '@vant/area-data';
 import { Button, Input, message } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { tenantDeleteApi, tenantInfoListApi } from '#/api';
+import {
+  deleteUserApi,
+  getTenantAdminListApi,
+  getTenantInfoByIdApi,
+} from '#/api';
 import { router } from '#/router';
 
 import Detail from './detail.vue';
 import Form from './form.vue';
 
 defineOptions({
-  name: 'TenantList',
+  name: 'TenantAdminList',
 });
+
+const tenantInfo = ref<null | TenantApi.TenantInfo>(null);
 
 const searchParam = reactive({
   textSearch: '',
@@ -45,13 +55,22 @@ async function reload() {
 }
 
 async function fetch({ page, sort }: any) {
-  return await tenantInfoListApi({
-    page: page.currentPage - 1,
-    pageSize: page.pageSize,
-    sortProperty: sort.field,
-    sortOrder: sort.order,
-    ...searchParam,
-  });
+  const tenantId = router.currentRoute.value.params.tenantId as string;
+  if (isEmpty(tenantId)) {
+    throw new Error('租户为空！');
+  }
+  tenantInfo.value = await getTenantInfoByIdApi(tenantId);
+
+  return await getTenantAdminListApi(
+    {
+      page: page.currentPage - 1,
+      pageSize: page.pageSize,
+      sortProperty: sort.field,
+      sortOrder: sort.order,
+      ...searchParam,
+    },
+    tenantId,
+  );
 }
 
 const [DetailDrawer, detailDrawerApi] = useVbenDrawer({
@@ -62,7 +81,7 @@ const [FormModal, formModalApi] = useVbenModal({
   connectedComponent: Form,
 });
 
-function handleDetail({ _column, _$table, row }: any) {
+function handleDetail({ row }: any) {
   detailDrawerApi.setData({ id: row?.id?.id }).open();
 }
 
@@ -72,43 +91,33 @@ async function handleSuccess() {
 function handleForm({ row }: any) {
   formModalApi
     .setState({
-      title: row?.id?.id
-        ? `${$t('tenant.button.editTenant')}`
-        : `${$t('tenant.button.addTenant')}`,
+      title: row?.id?.id ? `${$t('编辑管理员')}` : `${$t('添加管理员')}`,
     })
-    .setData({ id: row?.id?.id })
+    .setData({
+      ...row,
+      authority: Authority.TENANT_ADMIN,
+      tenantId: tenantInfo.value?.id,
+    })
     .open();
 }
 
 function handleDelete({ row }: any) {
   confirm({
-    title: `${$t('tenant.button.removeTenant')}[${row.title}]`,
-    content: `${$t('tenant.removeContent')}`,
+    title: `${$t('删除用户')}[${row.email}]`,
+    content: `${$t('确认后，用户和所有相关数据将不可恢复!')}`,
     icon: 'error',
     confirmText: `${$t('page.remove.title')}`,
     beforeClose({ isConfirm }) {
-      return isConfirm ? tenantDeleteApi(row.id.id) : true;
+      return isConfirm ? deleteUserApi(row.id.id) : true;
     },
   }).then(async () => {
-    message.success(`删除租户[${row.title}]成功！`);
+    message.success(`删除用户[${row.email}]成功！`);
     await reload();
-  });
-}
-
-function handleAdmin({ row }: any) {
-  router.push({
-    path: `/tenants/${row.id.id}/users`,
   });
 }
 
 const tableAction = {
   actions: [
-    {
-      label: `${$t('租户管理员')}`,
-      tooltip: `${$t('租户管理员')}`,
-      icon: 'mdi:account-circle-outline',
-      onClick: handleAdmin,
-    },
     {
       label: `${$t('page.detail.title')}`,
       tooltip: `${$t('page.detail.title')}`,
@@ -125,21 +134,24 @@ const tableAction = {
   ],
 };
 
-const gridOptions: VxeGridProps<TenantApi.TenantInfo> = {
+const gridOptions: VxeGridProps<UserInfo> = {
   columns: [
     { title: '序号', type: 'seq', width: 60 },
-    { field: 'title', sortable: true, title: $t('tenant.form.title') },
-    {
-      field: 'tenantProfileName',
-      sortable: true,
-      title: $t('tenant.form.tenantProfileName'),
-    },
     { field: 'email', title: $t('tenant.form.email') },
+    {
+      field: 'firstName',
+      sortable: true,
+      title: $t('用户名称'),
+    },
+    {
+      field: 'lastName',
+      sortable: true,
+      title: $t('用户昵称'),
+    },
     { field: 'phone', title: $t('tenant.form.phone') },
     {
-      field: 'city',
-      title: $t('tenant.form.city'),
-      slots: { default: 'citySolt' },
+      title: $t('描述信息'),
+      field: 'additionalInfo.description',
     },
     {
       field: 'createdTime',
@@ -157,7 +169,7 @@ const gridOptions: VxeGridProps<TenantApi.TenantInfo> = {
         name: 'CellActions',
         props: tableAction,
       },
-      width: 160,
+      width: 120,
     },
   ],
 
@@ -178,9 +190,12 @@ const [Grid, gridApi] = useVbenVxeGrid({
   <Page auto-content-height>
     <Grid>
       <template #table-top>
-        <p class="text-lg font-semibold">{{ $t('tenant.title') }}</p>
+        <p class="text-lg font-semibold">
+          {{ $t('租户管理员') }}
+          <span class="text-sm">（{{ tenantInfo?.title }}）</span>
+        </p>
         <p class="text-muted-foreground">
-          这是一个基础的租户列表，包含了租户的基本信息。
+          这是一个租户 {{ tenantInfo?.title }} 的管理员列表
         </p>
       </template>
       <template #toolbar-actions>
@@ -192,7 +207,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
           >
             <IconifyIcon class="size-4" icon="mdi:plus" />
             <span class="font-semibold">
-              {{ $t('tenant.button.addTenant') }}
+              {{ $t('添加租户管理员') }}
             </span>
           </Button>
           <Input
@@ -225,10 +240,6 @@ const [Grid, gridApi] = useVbenVxeGrid({
       </template>
     </Grid>
     <FormModal @success="handleSuccess" />
-    <DetailDrawer
-      @edit="handleForm"
-      @delete="handleDelete"
-      @admin="handleAdmin"
-    />
+    <DetailDrawer @edit="handleForm" @delete="handleDelete" />
   </Page>
 </template>
