@@ -67,10 +67,13 @@ setupVbenVxeTable({
     });
 
     vxeUI.renderer.add('CellCheckbox', {
-      renderTableDefault(_renderOpts, params) {
+      renderTableDefault(renderOpts, params) {
+        const { props } = renderOpts;
         const { column, row } = params;
         return h(Checkbox, {
-          checked: row[column.field],
+          checked: props?.convert
+            ? props.convert(row[column.field])
+            : row[column.field],
           onClick: (e: Event) => {
             e.stopPropagation();
             e.preventDefault();

@@ -1,11 +1,13 @@
 <script lang="ts" setup>
 import type { ResourceApi } from '#/api';
 
-import { ref } from 'vue';
+import { computed, ref } from 'vue';
 
 import { useVbenModal } from '@vben/common-ui';
+import { Authority } from '@vben/constants';
 import { IconifyIcon } from '@vben/icons';
 import { $t } from '@vben/locales';
+import { useAccessStore } from '@vben/stores';
 import { blobToBase64, convertBytesToSize, downloadByData } from '@vben/utils';
 
 import { VbenIconButton } from '@vben-core/shadcn-ui';
@@ -28,11 +30,21 @@ defineOptions({
 });
 const emits = defineEmits(['success']);
 
+const accessStore = useAccessStore();
+const { hasAccessCode } = accessStore;
+
 const record = ref<null | ResourceApi.Resource>(null);
+
+const editable = computed(
+  () =>
+    !(
+      hasAccessCode(Authority.TENANT_ADMIN) &&
+      record.value?.imageType === 'system'
+    ),
+);
 
 const [Form, formApi] = useVbenForm({
   layout: 'vertical',
-
   schema: [
     {
       label: $t('名称'),
@@ -64,8 +76,8 @@ const [Modal, modalApi] = useVbenModal({
   confirmText: `${$t('page.submit.title')}`,
   async onOpenChange(isOpen: boolean) {
     modalApi.setState({ loading: true });
-    reset();
     if (isOpen) {
+      reset();
       const { imageType, resourceKey } =
         modalApi.getData<Record<string, any>>();
       if (imageType && resourceKey) {
@@ -83,7 +95,7 @@ const [Modal, modalApi] = useVbenModal({
         formApi.setValues(record.value);
       }
     }
-    modalApi.setState({ loading: false });
+    modalApi.setState({ loading: false, showConfirmButton: editable.value });
   },
 
   onCancel() {
@@ -115,12 +127,8 @@ function handleEmbedImage() {
 
 function handleUpload() {
   uploadModalApi
-    .setState({
-      title: `${$t('更新图像')}`,
-    })
-    .setData({
-      ...record.value,
-    })
+    .setState({ title: `${$t('更新图像')}` })
+    .setData({ ...record.value })
     .open();
 }
 
@@ -194,17 +202,12 @@ async function onSubmit(values: Record<string, any>) {
                 <IconifyIcon class="size-8" icon="ant-design:code-outlined" />
               </VbenIconButton>
             </div>
-            <Button type="primary" @click="handleUpload">更新图像</Button>
+            <Button v-if="editable" type="primary" @click="handleUpload">
+              更新图像
+            </Button>
           </div>
-          <div
-            class="flex h-96 w-full items-center justify-center overflow-hidden"
-          >
-            <img
-              :class="[
-                `${record?.descriptor?.width > record?.descriptor?.height ? 'w-full' : 'h-full'}`,
-              ]"
-              :src="record?.preview || ''"
-            />
+          <div class="h-96 w-full bg-white">
+            <img class="img-content-clip" :src="record?.preview || ''" />
           </div>
           <div
             class="text-muted-foreground mt-2 flex items-center space-x-1 opacity-70"

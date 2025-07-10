@@ -1,3 +1,4 @@
+export * from './auth';
 export * from './image';
 export * from './queue';
 export * from './resources-library';

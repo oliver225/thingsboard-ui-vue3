@@ -5,13 +5,15 @@ import type { ResourceApi } from '#/api';
 import { reactive, watch } from 'vue';
 
 import { confirm, Page, useVbenModal } from '@vben/common-ui';
+import { Authority } from '@vben/constants';
 import { IconifyIcon } from '@vben/icons';
 import { $t } from '@vben/locales';
+import { useAccessStore } from '@vben/stores';
 import { blobToBase64, convertBytesToSize, downloadByData } from '@vben/utils';
 
 import { VbenIconButton } from '@vben-core/shadcn-ui';
 
-import { Button, Input, message } from 'ant-design-vue';
+import { Button, Checkbox, Input, message } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
@@ -28,6 +30,8 @@ import Upload from './upload.vue';
 defineOptions({
   name: 'ImageList',
 });
+const accessStore = useAccessStore();
+const { hasAccessCode } = accessStore;
 
 const previewCache = new Map<string, string>();
 
@@ -37,7 +41,7 @@ const searchParam = reactive({
 });
 
 watch(
-  () => searchParam.textSearch,
+  [() => searchParam.textSearch, () => searchParam.includeSystemImages],
   () => {
     gridApi?.query();
   },
@@ -181,6 +185,8 @@ const tableAction = {
       tooltip: `${$t('page.remove.title')}`,
       icon: 'ant-design:delete-outlined',
       danger: true,
+      disabled: ({ row }: any) =>
+        row.imageType === 'system' && hasAccessCode(Authority.TENANT_ADMIN),
       onClick: handleDelete,
     },
   ],
@@ -207,6 +213,20 @@ const gridOptions: VxeGridProps<ResourceApi.ResourceInfo> = {
       slots: { default: 'descriptorSize' },
       align: 'right',
       width: 160,
+    },
+    {
+      field: 'imageType',
+      title: $t('系统'),
+      visible: hasAccessCode(Authority.TENANT_ADMIN),
+      cellRender: {
+        name: 'CellCheckbox',
+        props: {
+          convert: (value: any) => value === 'system',
+        },
+      },
+
+      align: 'center',
+      width: 100,
     },
     {
       field: 'createdTime',
@@ -274,17 +294,18 @@ const [Grid, gridApi] = useVbenVxeGrid({
               <IconifyIcon class="size-4" icon="mdi:magnify" />
             </template>
           </Input>
+          <Checkbox
+            v-if="hasAccessCode(Authority.TENANT_ADMIN)"
+            v-model:checked="searchParam.includeSystemImages"
+          >
+            包含系统图像
+          </Checkbox>
         </div>
       </template>
       <template #title-image="{ row }">
         <div class="flex items-center space-x-4">
-          <div class="flex h-12 w-12 items-center justify-center">
-            <img
-              :class="[
-                `${row.descriptor?.width < row.descriptor?.height ? 'h-full' : 'w-full'}`,
-              ]"
-              :src="row.preview"
-            />
+          <div class="h-12 w-12">
+            <img class="img-content-clip" :src="row.preview" />
           </div>
           <span>{{ row.title }}</span>
         </div>

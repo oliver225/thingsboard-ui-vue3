@@ -72,6 +72,6 @@ watch(
     <pre
       class="code-viewer rounded-[var(--radius)]"
       :class="[`language-${language}`]"
-    ><code :class="[`language-${language}`]" :innerHTML="value"></code></pre>
+    ><code class="!whitespace-pre-wrap !break-words" :class="[`language-${language}`]" :innerHTML="value"></code></pre>
   </div>
 </template>

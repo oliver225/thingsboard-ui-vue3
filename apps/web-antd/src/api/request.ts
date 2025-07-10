@@ -17,7 +17,7 @@ import { message } from 'ant-design-vue';
 
 import { useAuthStore } from '#/store';
 
-import { refreshTokenApi } from './core';
+import { refreshTokenApi } from './tb';
 
 const { apiURL } = useAppConfig(import.meta.env, import.meta.env.PROD);
 

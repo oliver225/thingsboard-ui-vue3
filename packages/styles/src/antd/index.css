@@ -78,9 +78,8 @@
   display: flex;
   .ant-upload-select-picture-card {
     width: 100% !important;
-    flex:1;
+    flex: 1;
   }
-
 }
 
 /** 详情页Tabs样式 */
@@ -101,8 +100,16 @@
       }
     }
   }
-  .ant-tabs-content-holder{
+  .ant-tabs-content-holder {
     display: none;
   }
+}
 
+/** 图片的安全裁剪 */
+.img-content-clip {
+  width: 100%;
+  height: 100%;
+  overflow: clip;
+  object-fit: contain;
+  overflow-clip-margin: content-box;
 }
