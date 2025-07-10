@@ -14,6 +14,15 @@ export namespace AuthApi {
     refreshToken: string;
     token: string;
   }
+
+  export interface ChangePasswordParams {
+    currentPassword: string;
+    newPassword: string;
+  }
+  export interface ActivateUserParams {
+    activateToken: string;
+    password: string;
+  }
 }
 
 /**
@@ -50,8 +59,17 @@ export async function logoutApi() {
 }
 
 /**
- * 获取用户权限码
+ * 修改密码
  */
-// export async function getAccessCodesApi() {
-//   return requestClient.get<string[]>('/auth/codes');
-// }
+export async function changePassword(data: AuthApi.ChangePasswordParams) {
+  return requestClient.post<AuthApi.LoginResult>('/auth/changePassword', data);
+}
+
+/**
+ * 激活用户
+ */
+export async function activateUser(data: AuthApi.ActivateUserParams) {
+  return requestClient.post<AuthApi.LoginResult>('/noauth/activate', data, {
+    withCredentials: false,
+  });
+}

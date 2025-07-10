@@ -1,9 +1,9 @@
 <script lang="ts" setup>
 import type { UserInfo } from '@vben/types';
 
-import { ref } from 'vue';
+import { h, ref } from 'vue';
 
-import { useVbenDrawer } from '@vben/common-ui';
+import { alert, useVbenDrawer } from '@vben/common-ui';
 import { AUTHORITY_OPTIONS } from '@vben/constants';
 import { IconifyIcon } from '@vben/icons';
 import { $t } from '@vben/locales';
@@ -20,12 +20,16 @@ import {
   Tag,
 } from 'ant-design-vue';
 
-import { getUserByIdApi } from '#/api';
+import {
+  getActivationLinkApi,
+  getUserByIdApi,
+  setUserCredentialsEnabled,
+} from '#/api';
 
 defineOptions({
   name: 'TenantAdminDetailDrawer',
 });
-const emits = defineEmits(['edit', 'delete', 'admin']);
+const emits = defineEmits(['edit', 'delete', 'login']);
 
 const record = ref<null | UserInfo>(null);
 const tabActiveKey = ref('DETAIL');
@@ -55,9 +59,8 @@ const [Drawer, drawerApi] = useVbenDrawer({
 
   async onOpenChange(isOpen: boolean) {
     drawerApi.setState({ loading: true });
-    reset();
-
     if (isOpen) {
+      reset();
       const { id } = drawerApi.getData<Record<string, any>>();
       if (id) {
         record.value = await getUserByIdApi(id);
@@ -72,6 +75,10 @@ function reset() {
   tabActiveKey.value = 'DETAIL';
 }
 
+function handleLoginUser() {
+  drawerApi.close();
+  emits('login', { row: record.value });
+}
 function handleEdit() {
   drawerApi.close();
   emits('edit', { row: record.value });
@@ -88,6 +95,50 @@ function handleCopyId() {
       content: `${$t('复制成功！')}`,
       duration: 2,
       key: 'is-form-submitting',
+    });
+  }
+}
+
+async function handleDisableAccount() {
+  if (record?.value?.id.id) {
+    try {
+      await setUserCredentialsEnabled(record?.value?.id.id, false);
+      message.success({
+        content: `${$t('停用用户成功！')}`,
+        duration: 2,
+        key: 'is-form-submitting',
+      });
+    } finally {
+      record.value = await getUserByIdApi(record?.value?.id.id);
+    }
+  }
+}
+
+async function handleEnableAccount() {
+  if (record?.value?.id.id) {
+    try {
+      await setUserCredentialsEnabled(record?.value?.id.id, true);
+      message.success({
+        content: `${$t('启用用户成功！')}`,
+        duration: 2,
+        key: 'is-form-submitting',
+      });
+    } finally {
+      record.value = await getUserByIdApi(record?.value?.id.id);
+    }
+  }
+}
+async function handlShowActivationLink() {
+  if (record?.value?.id.id) {
+    const activationLink = await getActivationLinkApi(record?.value?.id.id);
+    alert({
+      content: h(
+        'a',
+        { href: activationLink, target: '_blank', class: 'text-blue-500' },
+        `${activationLink}`,
+      ),
+      icon: 'success',
+      title: '用户激活链接',
     });
   }
 }
@@ -125,10 +176,40 @@ function handleCopyId() {
 
     <div v-if="tabActiveKey === 'DETAIL'">
       <div class="mb-2 flex space-x-4">
-        <!-- <Button type="primary" @click="handleAdmin">
-          <IconifyIcon class="mb-1 size-4" icon="mdi:account-circle-outline" />
-          {{ $t('tenant.button.tenantAdmin') }}
-        </Button> -->
+        <Button type="primary" @click="handleLoginUser">
+          <IconifyIcon class="mb-1 size-4" icon="ant-design:login-outlined" />
+          {{ $t('以管理员身份登录') }}
+        </Button>
+        <Button
+          type="primary"
+          class="bg-orange-500 hover:!bg-orange-600"
+          v-show="record?.additionalInfo?.userActivated === false"
+          @click="handlShowActivationLink"
+        >
+          <IconifyIcon class="mb-1 size-4" icon="mdi:account-key-outline" />
+          {{ $t('显示激活连接') }}
+        </Button>
+        <Button
+          type="primary"
+          danger
+          @click="handleDisableAccount"
+          v-show="record?.additionalInfo?.userCredentialsEnabled === true"
+        >
+          <IconifyIcon class="mb-1 size-4" icon="mdi:account-off-outline" />
+          {{ $t('禁用用户账户') }}
+        </Button>
+        <Button
+          type="primary"
+          class="bg-green-500 hover:!bg-green-600"
+          @click="handleEnableAccount"
+          v-show="
+            record?.additionalInfo?.userActivated !== false &&
+            record?.additionalInfo?.userCredentialsEnabled === false
+          "
+        >
+          <IconifyIcon class="mb-1 size-4" icon="mdi:account-check-outline" />
+          {{ $t('启用用户账户') }}
+        </Button>
         <Button type="primary" @click="handleEdit">
           <IconifyIcon class="mb-1 size-4" icon="ant-design:edit-outlined" />
           {{ $t('编辑用户') }}

@@ -110,7 +110,7 @@ const routes: RouteRecordRaw[] = [
       icon: 'mdi:folder-open',
       order: 30,
       title: $t('资源'),
-      authority: [Authority.SYS_ADMIN],
+      authority: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN],
     },
     name: 'Resource',
     path: '/resources',
@@ -119,7 +119,7 @@ const routes: RouteRecordRaw[] = [
         meta: {
           icon: 'mdi:image-multiple-outline',
           title: $t('图像库'),
-          authority: [Authority.SYS_ADMIN],
+          authority: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN],
         },
         name: 'ImageList',
         path: '/resources/images',

@@ -43,9 +43,15 @@ export function deleteUserApi(userId: string) {
 }
 
 export function setUserCredentialsEnabled(userId: string, enabled = true) {
-  return requestClient.post(`/user/${userId}/userCredentialsEnabled`, {
-    userCredentialsEnabled: enabled,
-  });
+  return requestClient.post(
+    `/user/${userId}/userCredentialsEnabled`,
+    undefined,
+    {
+      params: {
+        userCredentialsEnabled: enabled,
+      },
+    },
+  );
 }
 
 export function getTenantAdminListApi(params: BasicQuery, tenantId: string) {

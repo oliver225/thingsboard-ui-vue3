@@ -15,7 +15,11 @@ interface UserInfo extends BasicUserInfo {
   authority: Authority;
   additionalInfo: {
     [key: string]: any;
+    defaultDashboardFullscreen?: boolean;
+    defaultDashboardId?: string;
     description?: string;
+    homeDashboardHideToolbar?: boolean;
+    homeDashboardId?: string;
     lastLoginTs: number;
     userActivated?: boolean;
     userCredentialsEnabled?: boolean;

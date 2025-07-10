@@ -4,7 +4,9 @@
     "register": "Register",
     "codeLogin": "Code Login",
     "qrcodeLogin": "Qr Code Login",
-    "forgetPassword": "Forget Password"
+    "forgetPassword": "Forget Password",
+    "createPassword": "Create Password",
+    "createPasswordSuccess": "create password success!"
   },
   "dashboard": {
     "title": "Dashboard",

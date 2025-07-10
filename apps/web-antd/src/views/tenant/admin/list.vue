@@ -14,7 +14,6 @@ import { isEmpty } from '@vben/utils';
 
 import { VbenIconButton } from '@vben-core/shadcn-ui';
 
-import { areaList } from '@vant/area-data';
 import { Button, Input, message } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
@@ -170,7 +169,7 @@ const gridOptions: VxeGridProps<UserInfo> = {
     },
     { field: 'phone', title: $t('tenant.form.phone') },
     {
-      title: $t('描述信息'),
+      title: $t('账户状态'),
       field: 'additionalInfo.description',
     },
     {
@@ -241,9 +240,6 @@ const [Grid, gridApi] = useVbenVxeGrid({
           </Input>
         </div>
       </template>
-      <template #citySolt="{ row }">
-        <span v-if="row.city"> {{ areaList.city_list[row.city] }}</span>
-      </template>
       <template #toolbar-tools>
         <div class="flex items-center gap-2">
           <VbenIconButton
@@ -260,6 +256,10 @@ const [Grid, gridApi] = useVbenVxeGrid({
       </template>
     </Grid>
     <FormModal @success="handleSuccess" />
-    <DetailDrawer @edit="handleForm" @delete="handleDelete" />
+    <DetailDrawer
+      @edit="handleForm"
+      @delete="handleDelete"
+      @login="handleLoginUser"
+    />
   </Page>
 </template>
