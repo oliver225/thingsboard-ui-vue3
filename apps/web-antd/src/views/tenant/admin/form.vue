@@ -9,7 +9,7 @@ import { $t } from '@vben/locales';
 import { message } from 'ant-design-vue';
 
 import { useVbenForm, z } from '#/adapter/form';
-import { getActivationLinkApi, getUserByIdApi, saveUserApi } from '#/api';
+import { getActivationLink, getUserByIdApi, saveUserApi } from '#/api';
 
 defineOptions({
   name: 'TenantAdminFormModel',
@@ -138,7 +138,7 @@ async function onSubmit(values: Record<string, any>) {
     const res = await saveUserApi(data, values.sendActivationMail);
     emits('success', res);
     if (!record.value?.id?.id && values.sendActivationMail === false) {
-      const activationLink = await getActivationLinkApi(res.id.id);
+      const activationLink = await getActivationLink(res.id.id);
       alert({
         content: h(
           'a',

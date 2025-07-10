@@ -20,6 +20,15 @@ export function getActivationLinkApi(userId: string) {
   return requestClient.get<string>(`/user/${userId}/activationLink`);
 }
 
+export async function getActivationLink(userId: string) {
+  const activationLink = await getActivationLinkApi(userId);
+  // 创建 URL 对象
+  const activeLinkURL = new URL(activationLink);
+  // 获取 location对象
+  const { protocol, hostname, port } = window.location;
+  return `${protocol}//${hostname}${port ? `:${port}` : ''}/auth/create-password${activeLinkURL.search}`;
+}
+
 export function sendActivationEmailApi(email: string) {
   return requestClient.post(`/user/sendActivationMail?email=${email}`);
 }

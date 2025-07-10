@@ -21,7 +21,7 @@ import {
 } from 'ant-design-vue';
 
 import {
-  getActivationLinkApi,
+  getActivationLink,
   getUserByIdApi,
   setUserCredentialsEnabled,
 } from '#/api';
@@ -130,7 +130,8 @@ async function handleEnableAccount() {
 }
 async function handlShowActivationLink() {
   if (record?.value?.id.id) {
-    const activationLink = await getActivationLinkApi(record?.value?.id.id);
+    const activationLink = await getActivationLink(record?.value?.id.id);
+
     alert({
       content: h(
         'a',
