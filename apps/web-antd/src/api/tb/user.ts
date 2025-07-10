@@ -25,7 +25,7 @@ export function sendActivationEmailApi(email: string) {
 }
 
 export function getUserTokenApi(userId: string) {
-  return requestClient.get<AuthApi.RefreshTokenResult>(`/user/${userId}/token`);
+  return requestClient.get<AuthApi.LoginResult>(`/user/${userId}/token`);
 }
 
 export function saveUserApi(data: any | UserInfo, sendActivationMail = false) {

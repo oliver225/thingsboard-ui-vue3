@@ -14,11 +14,6 @@ export namespace AuthApi {
     refreshToken: string;
     token: string;
   }
-
-  export interface RefreshTokenResult {
-    refreshToken: string;
-    token: string;
-  }
 }
 
 /**
@@ -38,7 +33,7 @@ export async function getUserInfoApi() {
  * 刷新accessToken
  */
 export async function refreshTokenApi(refreshToken: string) {
-  return requestClient.post<AuthApi.RefreshTokenResult>(
+  return requestClient.post<AuthApi.LoginResult>(
     '/auth/token',
     { refreshToken },
     {

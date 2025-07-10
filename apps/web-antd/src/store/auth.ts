@@ -1,11 +1,18 @@
 import type { Recordable, UserInfo } from '@vben/types';
 
+import type { AuthApi } from '#/api';
+
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { LOGIN_PATH } from '@vben/constants';
 import { preferences } from '@vben/preferences';
-import { resetAllStores, useAccessStore, useUserStore } from '@vben/stores';
+import {
+  resetAllStores,
+  useAccessStore,
+  useTabbarStore,
+  useUserStore,
+} from '@vben/stores';
 
 import { notification } from 'ant-design-vue';
 import { defineStore } from 'pinia';
@@ -16,6 +23,8 @@ import { $t } from '#/locales';
 export const useAuthStore = defineStore('auth', () => {
   const accessStore = useAccessStore();
   const userStore = useUserStore();
+  const tabbarStore = useTabbarStore();
+
   const router = useRouter();
 
   const loginLoading = ref(false);
@@ -78,6 +87,51 @@ export const useAuthStore = defineStore('auth', () => {
     };
   }
 
+  async function tokenLogin(token: AuthApi.LoginResult) {
+    // 异步处理用户登录操作并获取 accessToken
+    let userInfo: null | UserInfo = null;
+    try {
+      loginLoading.value = true;
+
+      // 如果成功获取到 accessToken
+      if (token) {
+        accessStore.setAccessToken(token.token);
+        accessStore.setRefreshToken(token.refreshToken);
+
+        // 获取用户信息并存储到 accessStore 中
+
+        userInfo = await fetchUserInfo();
+
+        userStore.setUserInfo(userInfo);
+        accessStore.setAccessCodes([userInfo.authority]);
+
+        if (accessStore.loginExpired) {
+          accessStore.setLoginExpired(false);
+        } else {
+          await tabbarStore.closeAllTabs(router);
+          await router.push(
+            userInfo.additionalInfo?.homePath ||
+              preferences.app.defaultHomePath,
+          );
+        }
+
+        if (userInfo?.firstName || userInfo.lastName || userInfo?.email) {
+          notification.success({
+            description: `${$t('authentication.loginSuccessDesc')}:${userInfo?.firstName ?? userInfo.email} `,
+            duration: 3,
+            message: $t('authentication.loginSuccess'),
+          });
+        }
+      }
+    } finally {
+      loginLoading.value = false;
+    }
+
+    return {
+      userInfo,
+    };
+  }
+
   async function logout(redirect: boolean = true) {
     try {
       await logoutApi();
@@ -112,6 +166,7 @@ export const useAuthStore = defineStore('auth', () => {
 
   return {
     $reset,
+    tokenLogin,
     authLogin,
     fetchUserInfo,
     loginLoading,

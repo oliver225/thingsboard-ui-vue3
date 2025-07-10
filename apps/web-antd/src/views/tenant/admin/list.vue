@@ -22,8 +22,10 @@ import {
   deleteUserApi,
   getTenantAdminListApi,
   getTenantInfoByIdApi,
+  getUserTokenApi,
 } from '#/api';
 import { router } from '#/router';
+import { useAuthStore } from '#/store';
 
 import Detail from './detail.vue';
 import Form from './form.vue';
@@ -31,6 +33,7 @@ import Form from './form.vue';
 defineOptions({
   name: 'TenantAdminList',
 });
+const authStore = useAuthStore();
 
 const tenantInfo = ref<null | TenantApi.TenantInfo>(null);
 
@@ -116,8 +119,25 @@ function handleDelete({ row }: any) {
   });
 }
 
+async function handleLoginUser({ row }: any) {
+  try {
+    const jwtPair = await getUserTokenApi(row.id.id);
+    await authStore.tokenLogin(jwtPair);
+  } catch (error: any) {
+    message.error(error.message);
+  } finally {
+    location.reload();
+  }
+}
+
 const tableAction = {
   actions: [
+    {
+      label: `${$t('以管理员身份登录')}`,
+      tooltip: `${$t('以管理员身份登录')}`,
+      icon: 'ant-design:login-outlined',
+      onClick: handleLoginUser,
+    },
     {
       label: `${$t('page.detail.title')}`,
       tooltip: `${$t('page.detail.title')}`,
@@ -169,7 +189,7 @@ const gridOptions: VxeGridProps<UserInfo> = {
         name: 'CellActions',
         props: tableAction,
       },
-      width: 120,
+      width: 160,
     },
   ],
 
