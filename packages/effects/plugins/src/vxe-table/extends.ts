@@ -41,6 +41,9 @@ function extendProxyOption(
     ...args: Recordable<any>[]
   ) => {
     const formValues = getFormValues();
+    if (!params.sort.field) {
+      params.sort = options.sortConfig?.defaultSort;
+    }
     const data = await configFn(
       params,
       {

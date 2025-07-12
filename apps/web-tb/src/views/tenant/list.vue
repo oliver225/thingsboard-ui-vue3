@@ -5,16 +5,14 @@ import type { TenantApi } from '#/api';
 import { reactive, watch } from 'vue';
 
 import { confirm, Page, useVbenDrawer, useVbenModal } from '@vben/common-ui';
-import { IconifyIcon } from '@vben/icons';
 import { $t } from '@vben/locales';
 
-import { VbenIconButton } from '@vben-core/shadcn-ui';
-
 import { areaList } from '@vant/area-data';
-import { Button, Input, message } from 'ant-design-vue';
+import { message } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { tenantDeleteApi, tenantInfoListApi } from '#/api';
+import { ToolBar, TopAction } from '#/components/Table';
 import { router } from '#/router';
 
 import Detail from './detail.vue';
@@ -31,17 +29,13 @@ const searchParam = reactive({
 watch(
   () => searchParam.textSearch,
   () => {
-    if (gridApi) {
-      gridApi.query();
-    }
+    gridApi?.query();
   },
 );
 
 async function reload() {
   searchParam.textSearch = '';
-  if (gridApi) {
-    await gridApi.query();
-  }
+  gridApi?.reload();
 }
 
 async function fetch({ page, sort }: any) {
@@ -62,7 +56,7 @@ const [FormModal, formModalApi] = useVbenModal({
   connectedComponent: Form,
 });
 
-function handleDetail({ _column, _$table, row }: any) {
+function handleDetail({ row }: any) {
   detailDrawerApi.setData({ id: row?.id?.id }).open();
 }
 
@@ -176,52 +170,22 @@ const [Grid, gridApi] = useVbenVxeGrid({
 
 <template>
   <Page auto-content-height>
-    <Grid>
-      <template #table-top>
-        <p class="text-lg font-semibold">{{ $t('tenant.title') }}</p>
-        <p class="text-muted-foreground">
-          这是一个基础的租户列表，包含了租户的基本信息。
-        </p>
+    <Grid
+      :top-title="$t('tenant.title')"
+      top-title-help="这是一个基础的租户列表，包含了租户的基本信息。"
+    >
+      <template #toolbar-tools>
+        <ToolBar :api="gridApi" />
       </template>
       <template #toolbar-actions>
-        <div class="flex items-center justify-start space-x-2">
-          <Button
-            @click="() => handleForm({})"
-            type="primary"
-            class="flex items-center"
-          >
-            <IconifyIcon class="size-4" icon="mdi:plus" />
-            <span class="font-semibold">
-              {{ $t('tenant.button.addTenant') }}
-            </span>
-          </Button>
-          <Input
-            class="w-80"
-            v-model:value="searchParam.textSearch"
-            :placeholder="$t('page.search.placeholder')"
-          >
-            <template #suffix>
-              <IconifyIcon class="size-4" icon="mdi:magnify" />
-            </template>
-          </Input>
-        </div>
+        <TopAction
+          :btn-title="$t('tenant.button.addTenant')"
+          v-model:search-text="searchParam.textSearch"
+          @btn-click="handleForm({})"
+        />
       </template>
       <template #citySolt="{ row }">
         <span v-if="row.city"> {{ areaList.city_list[row.city] }}</span>
-      </template>
-      <template #toolbar-tools>
-        <div class="flex items-center gap-2">
-          <VbenIconButton
-            v-tippy="{
-              content: `${$t('page.refresh.title')}`,
-              theme: 'dark',
-              delay: 100,
-              animation: 'shift-away',
-            }"
-          >
-            <IconifyIcon class="size-6" icon="mdi:refresh" @click="reload" />
-          </VbenIconButton>
-        </div>
       </template>
     </Grid>
     <FormModal @success="handleSuccess" />

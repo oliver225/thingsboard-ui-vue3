@@ -24,10 +24,6 @@ setupVbenVxeTable({
         columnConfig: {
           resizable: true,
         },
-        formConfig: {
-          // 全局禁用vxe-table的表单配置，使用formOptions
-          enabled: false,
-        },
         proxyConfig: {
           autoLoad: true,
           response: {
@@ -35,6 +31,7 @@ setupVbenVxeTable({
             total: 'totalElements',
             list: '',
           },
+          seq: true,
           showActiveMsg: true,
           showResponseMsg: false,
         },

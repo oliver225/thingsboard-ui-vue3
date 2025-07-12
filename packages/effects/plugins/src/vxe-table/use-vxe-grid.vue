@@ -73,6 +73,8 @@ const {
   gridClass,
   gridEvents,
   formOptions,
+  topTitle,
+  topTitleHelp,
   tableTitle,
   tableTitleHelp,
   showSearchForm,
@@ -371,8 +373,18 @@ onUnmounted(() => {
 
 <template>
   <div :class="cn('bg-card h-full rounded-md', className)">
-    <div ref="headerTopRef" class="px-3 pt-3" v-if="$slots['table-top']">
-      <slot name="table-top"></slot>
+    <div
+      ref="headerTopRef"
+      class="px-3 pt-3"
+      v-if="topTitle || topTitleHelp || $slots['table-top']"
+    >
+      <div>
+        <p v-if="topTitle" class="mb-2 text-lg font-semibold">{{ topTitle }}</p>
+        <p v-if="topTitleHelp" class="text-muted-foreground">
+          {{ topTitleHelp }}
+        </p>
+      </div>
+      <slot v-if="$slots['table-top']" name="table-top"></slot>
     </div>
     <div class="overflow-hidden" :style="vxeGridStyle">
       <VxeGrid
@@ -399,7 +411,9 @@ onUnmounted(() => {
               </VbenHelpTooltip>
             </div>
           </slot>
-          <slot name="toolbar-actions" v-bind="slotProps"> </slot>
+          <div class="flex items-center space-x-2">
+            <slot name="toolbar-actions" v-bind="slotProps"> </slot>
+          </div>
         </template>
 
         <!-- 继承默认的slot -->

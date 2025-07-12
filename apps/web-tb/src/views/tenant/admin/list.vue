@@ -44,7 +44,7 @@ watch(
   () => searchParam.textSearch,
   () => {
     if (gridApi) {
-      gridApi.query();
+      gridApi.reload();
     }
   },
 );
