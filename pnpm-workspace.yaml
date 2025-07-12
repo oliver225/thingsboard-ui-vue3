@@ -190,6 +190,7 @@ catalog:
   vue-router: ^4.5.1
   vue-tippy: ^6.7.0
   vue-tsc: 2.2.10
+  vue-types: "6.0.0"
   vxe-pc-ui: ^4.5.35
   vxe-table: ^4.13.16
   watermark-js-plus: ^1.6.0

@@ -41,6 +41,7 @@
     "@vueuse/motion": "catalog:",
     "echarts": "catalog:",
     "vue": "catalog:",
+    "vue-types": "catalog:",
     "vxe-pc-ui": "catalog:",
     "vxe-table": "catalog:"
   }

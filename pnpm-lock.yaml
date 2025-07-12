@@ -498,6 +498,9 @@ catalogs:
     vue-tsc:
       specifier: 2.2.10
       version: 2.2.10
+    vue-types:
+      specifier: 6.0.0
+      version: 6.0.0
     vxe-pc-ui:
       specifier: ^4.5.35
       version: 4.5.35
@@ -621,6 +624,85 @@ importers:
         version: 2.2.10(typescript@5.8.3)
 
   apps/web-antd:
+    dependencies:
+      '@tanstack/vue-query':
+        specifier: 'catalog:'
+        version: 5.75.1(vue@3.5.13(typescript@5.8.3))
+      '@vant/area-data':
+        specifier: 'catalog:'
+        version: 2.0.0
+      '@vben-core/shadcn-ui':
+        specifier: workspace:*
+        version: link:../../packages/@core/ui-kit/shadcn-ui
+      '@vben/access':
+        specifier: workspace:*
+        version: link:../../packages/effects/access
+      '@vben/common-ui':
+        specifier: workspace:*
+        version: link:../../packages/effects/common-ui
+      '@vben/constants':
+        specifier: workspace:*
+        version: link:../../packages/constants
+      '@vben/hooks':
+        specifier: workspace:*
+        version: link:../../packages/effects/hooks
+      '@vben/icons':
+        specifier: workspace:*
+        version: link:../../packages/icons
+      '@vben/layouts':
+        specifier: workspace:*
+        version: link:../../packages/effects/layouts
+      '@vben/locales':
+        specifier: workspace:*
+        version: link:../../packages/locales
+      '@vben/plugins':
+        specifier: workspace:*
+        version: link:../../packages/effects/plugins
+      '@vben/preferences':
+        specifier: workspace:*
+        version: link:../../packages/preferences
+      '@vben/request':
+        specifier: workspace:*
+        version: link:../../packages/effects/request
+      '@vben/stores':
+        specifier: workspace:*
+        version: link:../../packages/stores
+      '@vben/styles':
+        specifier: workspace:*
+        version: link:../../packages/styles
+      '@vben/types':
+        specifier: workspace:*
+        version: link:../../packages/types
+      '@vben/utils':
+        specifier: workspace:*
+        version: link:../../packages/utils
+      '@vueuse/core':
+        specifier: 'catalog:'
+        version: 13.1.0(vue@3.5.13(typescript@5.8.3))
+      ant-design-vue:
+        specifier: 'catalog:'
+        version: 4.2.6(vue@3.5.13(typescript@5.8.3))
+      dayjs:
+        specifier: 'catalog:'
+        version: 1.11.13
+      pinia:
+        specifier: ^3.0.2
+        version: 3.0.2(typescript@5.8.3)(vue@3.5.13(typescript@5.8.3))
+      prismjs:
+        specifier: 'catalog:'
+        version: 1.30.0
+      vue:
+        specifier: ^3.5.13
+        version: 3.5.13(typescript@5.8.3)
+      vue-router:
+        specifier: 'catalog:'
+        version: 4.5.1(vue@3.5.13(typescript@5.8.3))
+    devDependencies:
+      vite-plugin-prismjs:
+        specifier: 'catalog:'
+        version: 0.0.11(prismjs@1.30.0)
+
+  apps/web-tb:
     dependencies:
       '@tanstack/vue-query':
         specifier: 'catalog:'
@@ -1566,6 +1648,9 @@ importers:
       vue:
         specifier: ^3.5.13
         version: 3.5.13(typescript@5.8.3)
+      vue-types:
+        specifier: 'catalog:'
+        version: 6.0.0(vue@3.5.13(typescript@5.8.3))
       vxe-pc-ui:
         specifier: 'catalog:'
         version: 4.5.35(vue@3.5.13(typescript@5.8.3))
@@ -10627,6 +10712,15 @@ packages:
     engines: {node: '>=10.15.0'}
     peerDependencies:
       vue: ^3.5.13
+
+  vue-types@6.0.0:
+    resolution: {integrity: sha512-fBgCA4nrBrB8SCU/AN40tFq8HUxLGBvU2ds7a5+SEDse6dYc+TJyvy8mWiwwL8oWIC/aGS/8nTqmhwxApgU5eA==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      vue: ^3.5.13
+    peerDependenciesMeta:
+      vue:
+        optional: true
 
   vue@3.5.13:
     resolution: {integrity: sha512-wmeiSMxkZCSc+PM2w2VRsOYAZC8GdipNFRTsLSfodVqI9mbejKeXEGr8SckuLnrQPGe3oJN5c3K0vpoU9q/wCQ==}
@@ -20855,6 +20949,10 @@ snapshots:
   vue-types@3.0.2(vue@3.5.13(typescript@5.8.3)):
     dependencies:
       is-plain-object: 3.0.1
+      vue: 3.5.13(typescript@5.8.3)
+
+  vue-types@6.0.0(vue@3.5.13(typescript@5.8.3)):
+    optionalDependencies:
       vue: 3.5.13(typescript@5.8.3)
 
   vue@3.5.13(typescript@5.8.3):
