@@ -4,12 +4,16 @@ import type { ResourceApi } from '#/api';
 
 import { reactive, watch } from 'vue';
 
+import { useAccess } from '@vben/access';
 import { confirm, Page, useVbenModal } from '@vben/common-ui';
 import { Authority } from '@vben/constants';
 import { IconifyIcon } from '@vben/icons';
 import { $t } from '@vben/locales';
-import { useAccessStore } from '@vben/stores';
-import { blobToBase64, convertBytesToSize, downloadByData } from '@vben/utils';
+import {
+  blobToBase64,
+  convertBytesToSize,
+  downloadFileFromBlob,
+} from '@vben/utils';
 
 import { VbenIconButton } from '@vben-core/shadcn-ui';
 
@@ -30,8 +34,7 @@ import Upload from './upload.vue';
 defineOptions({
   name: 'ImageList',
 });
-const accessStore = useAccessStore();
-const { hasAccessCode } = accessStore;
+const { hasAccessByCodes } = useAccess();
 
 const previewCache = new Map<string, string>();
 
@@ -157,7 +160,7 @@ async function handleDownload({ row }: any) {
     row.etag,
   );
 
-  await downloadByData(result, row.resourceKey);
+  downloadFileFromBlob({ fileName: row.resourceKey, source: result });
 }
 
 const tableAction = {
@@ -186,7 +189,7 @@ const tableAction = {
       icon: 'ant-design:delete-outlined',
       danger: true,
       disabled: ({ row }: any) =>
-        row.imageType === 'system' && hasAccessCode(Authority.TENANT_ADMIN),
+        row.imageType === 'system' && hasAccessByCodes(Authority.TENANT_ADMIN),
       onClick: handleDelete,
     },
   ],
@@ -217,7 +220,7 @@ const gridOptions: VxeGridProps<ResourceApi.ResourceInfo> = {
     {
       field: 'imageType',
       title: $t('系统'),
-      visible: hasAccessCode(Authority.TENANT_ADMIN),
+      visible: hasAccessByCodes(Authority.TENANT_ADMIN),
       cellRender: {
         name: 'CellCheckbox',
         props: {
@@ -295,7 +298,7 @@ const [Grid, gridApi] = useVbenVxeGrid({
             </template>
           </Input>
           <Checkbox
-            v-if="hasAccessCode(Authority.TENANT_ADMIN)"
+            v-access:code="[Authority.TENANT_ADMIN]"
             v-model:checked="searchParam.includeSystemImages"
           >
             包含系统图像

@@ -69,10 +69,6 @@ export const useAccessStore = defineStore('core-access', {
       }
       return findMenu(this.accessMenus, path);
     },
-    hasAccessCode(codes: string | string[]) {
-      const codeList = Array.isArray(codes) ? codes : [codes];
-      return codeList.every((code) => this.accessCodes.includes(code));
-    },
     lockScreen(password: string) {
       this.isLockScreen = true;
       this.lockScreenPassword = password;

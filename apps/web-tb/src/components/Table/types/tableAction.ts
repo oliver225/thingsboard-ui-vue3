@@ -2,6 +2,7 @@ import type { Fn } from '@vueuse/core';
 import type { ButtonProps } from 'ant-design-vue';
 
 import type { TippyProps } from '@vben/common-ui';
+import type { AnyFunction } from '@vben/types';
 
 export interface PopConfirm {
   title: string;
@@ -32,7 +33,7 @@ export interface ActionItem extends ButtonProps {
   color?: 'error' | 'success' | 'warning';
   icon?: string;
   // popConfirm?: PopConfirm;
-  disabled?: ((params: any) => boolean) | boolean;
+  disabled?: AnyFunction | boolean;
   divider?: boolean;
   // 业务控制是否显示
   ifShow?: ((params: any) => boolean) | boolean;

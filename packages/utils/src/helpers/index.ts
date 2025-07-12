@@ -1,5 +1,4 @@
 export * from './copy-file';
-export * from './download';
 export * from './find-menu-by-path';
 export * from './generate-menus';
 export * from './generate-routes-backend';

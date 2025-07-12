@@ -26,10 +26,11 @@ function useAccess() {
    * @description: Determine whether there is permission，The permission code is judged by the user's permission code
    * @param codes
    */
-  function hasAccessByCodes(codes: string[]) {
+  function hasAccessByCodes(codes: string | string[]) {
     const userCodesSet = new Set(accessStore.accessCodes);
+    const codeArray = Array.isArray(codes) ? codes : [codes];
 
-    const intersection = codes.filter((item) => userCodesSet.has(item));
+    const intersection = codeArray.filter((item) => userCodesSet.has(item));
     return intersection.length > 0;
   }
 

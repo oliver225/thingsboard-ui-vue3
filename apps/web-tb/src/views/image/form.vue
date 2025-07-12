@@ -3,12 +3,16 @@ import type { ResourceApi } from '#/api';
 
 import { computed, ref } from 'vue';
 
+import { useAccess } from '@vben/access';
 import { useVbenModal } from '@vben/common-ui';
 import { Authority } from '@vben/constants';
 import { IconifyIcon } from '@vben/icons';
 import { $t } from '@vben/locales';
-import { useAccessStore } from '@vben/stores';
-import { blobToBase64, convertBytesToSize, downloadByData } from '@vben/utils';
+import {
+  blobToBase64,
+  convertBytesToSize,
+  downloadFileFromBlob,
+} from '@vben/utils';
 
 import { VbenIconButton } from '@vben-core/shadcn-ui';
 
@@ -30,15 +34,14 @@ defineOptions({
 });
 const emits = defineEmits(['success']);
 
-const accessStore = useAccessStore();
-const { hasAccessCode } = accessStore;
+const { hasAccessByCodes } = useAccess();
 
 const record = ref<null | ResourceApi.Resource>(null);
 
 const editable = computed(
   () =>
     !(
-      hasAccessCode(Authority.TENANT_ADMIN) &&
+      hasAccessByCodes(Authority.TENANT_ADMIN) &&
       record.value?.imageType === 'system'
     ),
 );
@@ -118,7 +121,10 @@ async function handleDownload() {
     record.value?.etag,
   );
 
-  await downloadByData(result, record.value?.resourceKey || '');
+  downloadFileFromBlob({
+    fileName: record.value?.resourceKey,
+    source: result,
+  });
 }
 
 function handleEmbedImage() {
