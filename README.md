@@ -1,7 +1,5 @@
 <div align="center">
-  <a href="https://github.com/oliver225/thingsboard-ui-vue3">
-    <img alt="VbenAdmin Logo" width="215" src="https://unpkg.com/@vbenjs/static-source@0.1.7/source/logo-v1.webp">
-  </a>
+
   <br>
   <br>
 
