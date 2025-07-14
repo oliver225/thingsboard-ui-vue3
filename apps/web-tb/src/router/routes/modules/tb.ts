@@ -125,7 +125,28 @@ const routes: RouteRecordRaw[] = [
         path: '/resources/images',
         component: () => import('#/views/image/list.vue'),
       },
+      {
+        meta: {
+          icon: 'mdi:format-textbox',
+          title: $t('SCADA符号库'),
+          authority: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN],
+        },
+        name: 'ScadaSymbolList',
+        path: '/resources/scadaSymbols',
+        component: () => import('#/views/scadaSymbol/list.vue'),
+      },
     ],
+  },
+  {
+    meta: {
+      icon: 'mdi:cog-outline',
+      title: $t('设置'),
+      order: 50,
+      authority: [Authority.SYS_ADMIN],
+    },
+    name: 'Settings',
+    path: '/settings/:type',
+    component: () => import('#/views/setting/index.vue'),
   },
 ];
 

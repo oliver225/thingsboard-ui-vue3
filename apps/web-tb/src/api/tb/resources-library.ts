@@ -5,7 +5,7 @@ import type { BasicQuery, Page } from '#/api/model';
 
 import { requestClient } from '#/api/request';
 
-export namespace ResourceApi {
+export namespace Resource {
   export interface ResourceInfo {
     id: EntityId<EntityType.TB_RESOURCE>;
     tenantId?: EntityId<EntityType.TENANT>;
@@ -65,19 +65,19 @@ export namespace ResourceApi {
   }
 }
 
-export function getResourceListApi(params: ResourceApi.ResourceQuery) {
-  return requestClient.get<Page<ResourceApi.ResourceInfo>>('/resource', params);
+export function getResourceListApi(params: Resource.ResourceQuery) {
+  return requestClient.get<Page<Resource.ResourceInfo>>('/resource', params);
 }
 
-export function getTenantResourceListApi(params: ResourceApi.ResourceQuery) {
-  return requestClient.get<Page<ResourceApi.ResourceInfo>>(
+export function getTenantResourceListApi(params: Resource.ResourceQuery) {
+  return requestClient.get<Page<Resource.ResourceInfo>>(
     '/resource/tenant',
     params,
   );
 }
 
 export function getLwm2mListObjectsPageApi(params: BasicQuery) {
-  return requestClient.get<[ResourceApi.LwM2mObject]>(
+  return requestClient.get<[Resource.LwM2mObject]>(
     '/resource/lwm2m/page',
     params,
   );
@@ -88,22 +88,19 @@ export function getLwm2mListObjectsApi(params: {
   sortOrder: 'ASC' | 'DESC';
   sortProperty: string;
 }) {
-  return requestClient.get<[ResourceApi.LwM2mObject]>(
-    '/resource/lwm2m',
-    params,
-  );
+  return requestClient.get<[Resource.LwM2mObject]>('/resource/lwm2m', params);
 }
 
-export function saveResourceApi(data?: any | ResourceApi.Resource) {
-  return requestClient.post<ResourceApi.ResourceInfo>('/resource', data);
+export function saveResourceApi(data?: any | Resource.Resource) {
+  return requestClient.post<Resource.ResourceInfo>('/resource', data);
 }
 
 export function getResourceByIdApi(resourceId: string) {
-  return requestClient.get<ResourceApi.Resource>(`/api/resource/${resourceId}`);
+  return requestClient.get<Resource.Resource>(`/api/resource/${resourceId}`);
 }
 
 export function getResourceInfoByIdApi(resourceId: string) {
-  return requestClient.get<ResourceApi.ResourceInfo>(
+  return requestClient.get<Resource.ResourceInfo>(
     `/resource/info/${resourceId}`,
   );
 }
@@ -113,7 +110,7 @@ export function getResourceInfoApi(
   scope: 'system' | 'tenant',
   key: string,
 ) {
-  return requestClient.get<ResourceApi.ResourceInfo>(
+  return requestClient.get<Resource.ResourceInfo>(
     `/resource/${resourceType}/${scope}/${key}/info`,
   );
 }

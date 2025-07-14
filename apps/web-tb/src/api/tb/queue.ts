@@ -9,30 +9,28 @@ import type { BasicQuery, Page } from '#/api/model';
 
 import { requestClient } from '#/api/request';
 
-export namespace QueueApi {
-  export interface Queue {
-    id: EntityId<EntityType.QUEUE>;
-    tenantId: EntityId<EntityType.TENANT>;
-    name?: string;
-    topic?: string;
-    pollInterval?: number;
-    partitions?: number;
-    consumerPerPartition?: boolean;
-    packProcessingTimeout?: number;
-    submitStrategy: {
-      batchSize?: number;
-      type?: SubmitStrategyType;
-    };
-    processingStrategy: {
-      failurePercentage?: number;
-      maxPauseBetweenRetries?: number;
-      pauseBetweenRetries?: number;
-      retries?: number;
-      type?: ProcessingStrategyType;
-    };
-    additionalInfo: { description?: string };
-    createdTime?: number;
-  }
+export interface Queue {
+  id: EntityId<EntityType.QUEUE>;
+  tenantId: EntityId<EntityType.TENANT>;
+  name?: string;
+  topic?: string;
+  pollInterval?: number;
+  partitions?: number;
+  consumerPerPartition?: boolean;
+  packProcessingTimeout?: number;
+  submitStrategy: {
+    batchSize?: number;
+    type?: SubmitStrategyType;
+  };
+  processingStrategy: {
+    failurePercentage?: number;
+    maxPauseBetweenRetries?: number;
+    pauseBetweenRetries?: number;
+    retries?: number;
+    type?: ProcessingStrategyType;
+  };
+  additionalInfo: { description?: string };
+  createdTime?: number;
 }
 
 export function saveQueueApi(
@@ -42,9 +40,9 @@ export function saveQueueApi(
     | 'TB_RULE_ENGINE'
     | 'TB_TRANSPORT'
     | 'TB_VC_EXECUTOR',
-  data?: any | QueueApi.Queue,
+  data?: any | Queue,
 ) {
-  return requestClient.post<QueueApi.Queue>(`/api/queues`, data, {
+  return requestClient.post<Queue>(`/api/queues`, data, {
     params: { serviceType },
   });
 }
@@ -58,17 +56,17 @@ export function queueListApi(
     | 'TB_TRANSPORT'
     | 'TB_VC_EXECUTOR' = 'TB_RULE_ENGINE',
 ) {
-  return requestClient.get<Page<QueueApi.Queue>>(`/api/queues`, {
+  return requestClient.get<Page<Queue>>(`/api/queues`, {
     serviceType,
     ...params,
   });
 }
 
 export function getQueueByNameApi(queueName: string) {
-  return requestClient.get<QueueApi.Queue>(`/queues/name/${queueName}`);
+  return requestClient.get<Queue>(`/queues/name/${queueName}`);
 }
 export function getQueueByIdApi(queueId: string) {
-  return requestClient.get<QueueApi.Queue>(`/queues/${queueId}`);
+  return requestClient.get<Queue>(`/queues/${queueId}`);
 }
 
 export function deleteQueueApi(queueId: string) {

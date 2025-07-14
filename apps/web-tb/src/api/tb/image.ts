@@ -1,7 +1,7 @@
 import type { AxiosProgressEvent } from '@vben/request';
 import type { Recordable } from '@vben/types';
 
-import type { ResourceApi } from './resources-library';
+import type { Resource } from './resources-library';
 
 import type { BasicQuery, Page } from '#/api/model';
 
@@ -15,7 +15,7 @@ export function uploadImageApi(
   imageSubType?: 'IMAGE' | 'SCADA_SYMBOL',
   onUploadProgress?: (progressEvent: AxiosProgressEvent) => void,
 ) {
-  return requestClient.post<ResourceApi.ResourceInfo>(
+  return requestClient.post<Resource.ResourceInfo>(
     '/image',
     { file, title, imageSubType },
     {
@@ -30,7 +30,7 @@ export function updateImageApi(
   key: string,
   file: Blob | File,
 ) {
-  return requestClient.put<ResourceApi.ResourceInfo>(
+  return requestClient.put<Resource.ResourceInfo>(
     `/images/${type}/${key}`,
     { file },
     { headers: { 'Content-type': 'multipart/form-data;charset=UTF-8' } },
@@ -40,9 +40,9 @@ export function updateImageApi(
 export function updateImageInfoApi(
   type: 'system' | 'tenant',
   key: string,
-  data: any | ResourceApi.ResourceInfo,
+  data: any | Resource.ResourceInfo,
 ) {
-  return requestClient.put<ResourceApi.ResourceInfo>(
+  return requestClient.put<Resource.ResourceInfo>(
     `/images/${type}/${key}/info`,
     data,
   );
@@ -53,7 +53,7 @@ export function updateImagePublicStatusApi(
   key: string,
   isPublic: boolean,
 ) {
-  return requestClient.put<ResourceApi.ResourceInfo>(
+  return requestClient.put<Resource.ResourceInfo>(
     `/images/${type}/${key}/public/${isPublic}`,
   );
 }
@@ -114,7 +114,7 @@ export function imageListApi(
   imageSubType: 'IMAGE' | 'SCADA_SYMBOL',
   includeSystemImages = false,
 ) {
-  return requestClient.get<Page<ResourceApi.ResourceInfo>>('/images', {
+  return requestClient.get<Page<Resource.ResourceInfo>>('/images', {
     ...params,
     imageSubType,
     includeSystemImages,
@@ -122,7 +122,7 @@ export function imageListApi(
 }
 
 export function getImageInfoApi(type: 'system' | 'tenant', key: string) {
-  return requestClient.get<ResourceApi.ResourceInfo>(
+  return requestClient.get<Resource.ResourceInfo>(
     `/images/${type}/${key}/info`,
   );
 }

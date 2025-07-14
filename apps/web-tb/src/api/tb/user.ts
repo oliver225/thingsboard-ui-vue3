@@ -1,6 +1,7 @@
 import type { Recordable, UserInfo } from '@vben/types';
 
-import type { AuthApi } from '#/api/core';
+import type { AuthApi } from './auth';
+
 import type { BasicQuery, Page } from '#/api/model';
 
 import { requestClient } from '#/api/request';

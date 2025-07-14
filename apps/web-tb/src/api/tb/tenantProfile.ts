@@ -1,6 +1,6 @@
 import type { EntityId, EntityType } from '@vben/constants';
 
-import type { QueueApi } from './queue';
+import type { Queue } from './queue';
 
 import type { BasicQuery, EntityInfo, Page } from '#/api/model';
 
@@ -94,7 +94,7 @@ export namespace TenantProfileApi {
     isolatedTbRuleEngine?: boolean;
     profileData: {
       configuration: Configuration;
-      queueConfiguration?: [any | QueueApi.Queue];
+      queueConfiguration?: [any | Queue];
     };
     createdTime?: number;
   }
