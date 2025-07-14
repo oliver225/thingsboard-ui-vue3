@@ -1,7 +1,27 @@
-# thingsboard-ui-vue
+<div align="center">
+
+  <br>
+  <br>
 
 
-ThingsBoard凭借其优秀的性能和高效的性能得到了广大开发者的认可,但基于Angular的前端不符合中国的用户习惯， 本项目为基于Vue3开发的 ThingsBoard 前台
+  <h1>Thingsboard UI Vue3</h1>
+</div>
+
+
+
+
+## 介绍
+
+Thingsboard UI Vue3 是 Thingsboard 的前端适配版本。作为一个免费开源的前端项目，它采用了最新的 Vue 3、Vite、TypeScript 等主流技术开发，基于[vue-vben-admin](https://github.com/vbenjs/vue-vben-admin), 开箱即用，可用于前端替换，也适合学习参考。
+
+
+🎉 请大家持续关注，watch、star、fork 一键三连
+
+## 升级提示
+
+该版本为最新版本，适配thingsboard 4.0.1 版本。与其他版本不兼容，如果你是新项目，建议使用最新版本。如果你想查看3.x 版本  请查看其他分支
+
+## 功能
 
 📌 规则链代码已全部开放
 
@@ -18,9 +38,6 @@ ThingsBoard凭借其优秀的性能和高效的性能得到了广大开发者的
 📌 仪表板 开发中...
 
 
-  
-
-🎉 请大家持续关注，watch、star、fork 一键三连
 
 ## 预览地址
   thingsboard:   http://thingsboard.yantsing.com/
@@ -32,7 +49,7 @@ ThingsBoard凭借其优秀的性能和高效的性能得到了广大开发者的
 
 ## Thingsbaord
  
-   thingsboard：V3.8.1，持续跟进更新中
+   thingsboard：V4.0.1，持续跟进更新中
 
 
 ## 使用技术
