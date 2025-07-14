@@ -7,7 +7,6 @@ import { reactive, watch } from 'vue';
 import { useAccess } from '@vben/access';
 import { confirm, Page, useVbenModal } from '@vben/common-ui';
 import { Authority } from '@vben/constants';
-import { IconifyIcon } from '@vben/icons';
 import { $t } from '@vben/locales';
 import {
   blobToBase64,
@@ -15,9 +14,7 @@ import {
   downloadFileFromBlob,
 } from '@vben/utils';
 
-import { VbenIconButton } from '@vben-core/shadcn-ui';
-
-import { Button, Checkbox, Input, message } from 'ant-design-vue';
+import { Checkbox, message } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
@@ -26,6 +23,7 @@ import {
   imageListApi,
   imagePreviewApi,
 } from '#/api';
+import { ToolBar, TopAction } from '#/components/Table';
 
 import Embed from './embed.vue';
 import Form from './form.vue';
@@ -61,7 +59,7 @@ const [EmbedModal, embedModalApi] = useVbenModal({
 });
 async function reload() {
   searchParam.textSearch = '';
-  await gridApi?.query();
+  await gridApi?.reload();
 }
 
 async function fetch({ page, sort }: any) {
@@ -271,40 +269,25 @@ const [Grid, gridApi] = useVbenVxeGrid({
 
 <template>
   <Page auto-content-height>
-    <Grid>
-      <template #table-top>
-        <p class="text-lg font-semibold">{{ $t('图像库') }}</p>
-        <p class="text-muted-foreground">这是一个图像库列表</p>
+    <Grid :top-title="$t('图像库')" top-title-help="这是一个图像库列表">
+      <template #toolbar-tools>
+        <ToolBar :api="gridApi" />
       </template>
       <template #toolbar-actions>
-        <div class="flex items-center justify-start space-x-2">
-          <Button
-            @click="() => handleUpload()"
-            type="primary"
-            class="flex items-center"
-          >
-            <IconifyIcon class="size-4" icon="mdi:upload" />
-            <span class="font-semibold">
-              {{ $t('上传图像') }}
-            </span>
-          </Button>
-          <Input
-            class="w-80"
-            v-model:value="searchParam.textSearch"
-            :placeholder="$t('page.search.placeholder')"
-          >
-            <template #suffix>
-              <IconifyIcon class="size-4" icon="mdi:magnify" />
-            </template>
-          </Input>
-          <Checkbox
-            v-access:code="[Authority.TENANT_ADMIN]"
-            v-model:checked="searchParam.includeSystemImages"
-          >
-            包含系统图像
-          </Checkbox>
-        </div>
+        <TopAction
+          :btn-title="$t('上传图像')"
+          btn-icon="mdi:upload"
+          v-model:search-text="searchParam.textSearch"
+          @btn-click="handleUpload()"
+        />
+        <Checkbox
+          v-access:code="[Authority.TENANT_ADMIN]"
+          v-model:checked="searchParam.includeSystemImages"
+        >
+          包含系统图像
+        </Checkbox>
       </template>
+
       <template #title-image="{ row }">
         <div class="flex items-center space-x-4">
           <div class="h-12 w-12">
@@ -320,20 +303,6 @@ const [Grid, gridApi] = useVbenVxeGrid({
       </template>
       <template #descriptorSize="{ row }">
         <span> {{ convertBytesToSize(row.descriptor?.size) }}</span>
-      </template>
-      <template #toolbar-tools>
-        <div class="flex items-center gap-2">
-          <VbenIconButton
-            v-tippy="{
-              content: `${$t('page.refresh.title')}`,
-              theme: 'dark',
-              delay: 100,
-              animation: 'shift-away',
-            }"
-          >
-            <IconifyIcon class="size-6" icon="mdi:refresh" @click="reload" />
-          </VbenIconButton>
-        </div>
       </template>
     </Grid>
     <UploadModal @success="handleSuccess" />

@@ -8,13 +8,10 @@ import { reactive, ref, watch } from 'vue';
 
 import { confirm, Page, useVbenDrawer, useVbenModal } from '@vben/common-ui';
 import { Authority } from '@vben/constants';
-import { IconifyIcon } from '@vben/icons';
 import { $t } from '@vben/locales';
 import { isEmpty } from '@vben/utils';
 
-import { VbenIconButton } from '@vben-core/shadcn-ui';
-
-import { Button, Input, message } from 'ant-design-vue';
+import { message } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
@@ -23,6 +20,7 @@ import {
   getTenantInfoByIdApi,
   getUserTokenApi,
 } from '#/api';
+import { ToolBar, TopAction } from '#/components/Table';
 import { router } from '#/router';
 import { useAuthStore } from '#/store';
 
@@ -43,17 +41,13 @@ const searchParam = reactive({
 watch(
   () => searchParam.textSearch,
   () => {
-    if (gridApi) {
-      gridApi.reload();
-    }
+    gridApi?.query();
   },
 );
 
 async function reload() {
   searchParam.textSearch = '';
-  if (gridApi) {
-    await gridApi.query();
-  }
+  gridApi?.reload();
 }
 
 async function fetch({ page, sort }: any) {
@@ -207,52 +201,19 @@ const [Grid, gridApi] = useVbenVxeGrid({
 
 <template>
   <Page auto-content-height>
-    <Grid>
-      <template #table-top>
-        <p class="text-lg font-semibold">
-          {{ $t('租户管理员') }}
-          <span class="text-sm">（{{ tenantInfo?.title }}）</span>
-        </p>
-        <p class="text-muted-foreground">
-          这是一个租户 {{ tenantInfo?.title }} 的管理员列表
-        </p>
+    <Grid
+      :top-title="$t('租户管理员')"
+      :top-title-help="`这是一个租户 ${tenantInfo?.title} 的管理员列表`"
+    >
+      <template #toolbar-tools>
+        <ToolBar :api="gridApi" />
       </template>
       <template #toolbar-actions>
-        <div class="flex items-center justify-start space-x-2">
-          <Button
-            @click="() => handleForm({})"
-            type="primary"
-            class="flex items-center"
-          >
-            <IconifyIcon class="size-4" icon="mdi:plus" />
-            <span class="font-semibold">
-              {{ $t('添加租户管理员') }}
-            </span>
-          </Button>
-          <Input
-            class="w-80"
-            v-model:value="searchParam.textSearch"
-            :placeholder="$t('page.search.placeholder')"
-          >
-            <template #suffix>
-              <IconifyIcon class="size-4" icon="mdi:magnify" />
-            </template>
-          </Input>
-        </div>
-      </template>
-      <template #toolbar-tools>
-        <div class="flex items-center gap-2">
-          <VbenIconButton
-            v-tippy="{
-              content: `${$t('page.refresh.title')}`,
-              theme: 'dark',
-              delay: 100,
-              animation: 'shift-away',
-            }"
-          >
-            <IconifyIcon class="size-6" icon="mdi:refresh" @click="reload" />
-          </VbenIconButton>
-        </div>
+        <TopAction
+          :btn-title="$t('tenant.button.addTenant')"
+          v-model:search-text="searchParam.textSearch"
+          @btn-click="handleForm({})"
+        />
       </template>
     </Grid>
     <FormModal @success="handleSuccess" />

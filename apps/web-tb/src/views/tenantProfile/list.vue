@@ -5,13 +5,10 @@ import type { TenantProfileApi } from '#/api';
 import { reactive, watch } from 'vue';
 
 import { confirm, Page, useVbenDrawer, useVbenModal } from '@vben/common-ui';
-import { IconifyIcon } from '@vben/icons';
 import { $t } from '@vben/locales';
 
-import { VbenIconButton } from '@vben-core/shadcn-ui';
-
 import { areaList } from '@vant/area-data';
-import { Button, Input, message } from 'ant-design-vue';
+import { message } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
@@ -19,6 +16,7 @@ import {
   setTenantProfileDefaultApi,
   tenantProfileListApi,
 } from '#/api';
+import { ToolBar, TopAction } from '#/components/Table';
 
 import Detail from './detail.vue';
 import Form from './form.vue';
@@ -196,50 +194,23 @@ const [Grid, gridApi] = useVbenVxeGrid({
 
 <template>
   <Page auto-content-height>
-    <Grid>
-      <template #table-top>
-        <p class="text-lg font-semibold">{{ $t('tenantProfile.title') }}</p>
-        <p class="text-muted-foreground">包含一个租户相关的配置信息。</p>
+    <Grid
+      :top-title="$t('tenantProfile.title')"
+      top-title-help="包含一个租户相关的配置信息。"
+    >
+      <template #toolbar-tools>
+        <ToolBar :api="gridApi" />
       </template>
       <template #toolbar-actions>
-        <div class="flex items-center justify-start space-x-2">
-          <Button
-            @click="() => handleForm({})"
-            type="primary"
-            class="flex items-center"
-          >
-            <IconifyIcon class="size-4" icon="mdi:plus" />
-            <span class="font-semibold">
-              {{ $t('tenantProfile.button.add') }}
-            </span>
-          </Button>
-          <Input
-            class="w-80"
-            v-model:value="searchParam.textSearch"
-            :placeholder="$t('page.search.placeholder')"
-          >
-            <template #suffix>
-              <IconifyIcon class="size-4" icon="mdi:magnify" />
-            </template>
-          </Input>
-        </div>
+        <TopAction
+          :btn-title="$t('tenantProfile.button.add')"
+          v-model:search-text="searchParam.textSearch"
+          @btn-click="handleForm({})"
+        />
       </template>
+
       <template #citySolt="{ row }">
         <span v-if="row.city"> {{ areaList.city_list[row.city] }}</span>
-      </template>
-      <template #toolbar-tools>
-        <div class="flex items-center gap-2">
-          <VbenIconButton
-            v-tippy="{
-              content: `${$t('page.refresh.title')}`,
-              theme: 'dark',
-              delay: 100,
-              animation: 'shift-away',
-            }"
-          >
-            <IconifyIcon class="size-6" icon="mdi:refresh" @click="reload" />
-          </VbenIconButton>
-        </div>
       </template>
     </Grid>
     <FormModal @success="handleSuccess" />
