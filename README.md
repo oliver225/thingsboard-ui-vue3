@@ -23,10 +23,10 @@ Thingsboard UI Vue3 是 Thingsboard 的前端适配版本。作为一个免费�
 
 ## 特性
 
-- **Vue-Vben-Admin 5**:使用 Vue3/vite 等前端前沿技术开发
+- [**Vue-Vben-Admin 5**](https://github.com/vbenjs/vue-vben-admin):使用 Vue3/vite 等前端前沿技术开发
 - **TypeScript**: 应用程序级 JavaScript 的语言
-- **Themes**: 提供多套主题色彩，可配置自定义主题
-- **Internationalization**: 内置完善的国际化方案
+- **主题**: 提供多套主题色彩，可配置自定义主题
+- **国际化**: 内置完善的国际化方案
 - **Ant-Design-Vue**: 使用 Ant Design Vue 构建
 - [**AntV x6**](https://x6.antv.antgroup.com/): 使用antd x6 开发组态
 
