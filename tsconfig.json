@@ -29,29 +29,31 @@
     "jsx": "preserve",
     "jsxImportSource": "vue",
     "useDefineForClassFields": true,
+    "allowImportingTsExtensions": false,
     "lib": ["ESNext", "DOM"],
     "types": [
+      "node",
+      "vue-types",
       "vite/client"
     ],
     "paths": {
       "/@/*": ["src/*"],
-      "/#/*": ["types/*"]
+      "/#/*": ["types/*"],
+      "@jeesite/core/*": ["src/*"],
+      "@jeesite/assets/*": ["src/assets/*"],
+      "@jeesite/types/*": ["types/*"],
+      "@jeesite/*": ["packages/*"]
     }
   },
   "include": [
-    "build/**/*.ts",
-    "src/**/*.ts",
-    "src/**/*.tsx",
-    "src/**/*.vue",
-    "tests/**/*.ts",
-    "types/*.ts",
-    "uno.config.ts",
-    "vite.config.ts"
+    "./**/*.ts",
+    "./**/*.tsx",
+    "./**/*.vue"
   ],
   "exclude": [
-    "tests/server/**/*.ts",
+    "packages/tests",
     "node_modules",
-    "**/*.js",
+    "vite.config.ts",
     "dist"
   ]
 }

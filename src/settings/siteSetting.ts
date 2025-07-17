@@ -1,11 +1,11 @@
 // github repo url
-export const GITHUB_URL = 'https://github.com/oliver225/thingsboard-ui-vue3';
+export const GITHUB_URL = 'https://gitee.com/thinkgem';
 
 // jeesite docs
-export const DOC_URL = 'https://thingsboard.io/docs/getting-started-guides/helloworld/';
+export const DOC_URL = 'http://docs.jeesite.com';
 
 // linker url
-export const LINK_URL = 'https://gitee.com/oliver225/thingsboard-ui-vue3';
+export const LINK_URL = 'http://s.jeesite.com';
 
 // site url
-export const SITE_URL = 'https://gitee.com/oliver225/thingsboard-ui-vue3';
+export const SITE_URL = 'https://jeesite.com';

@@ -56,7 +56,7 @@ async function bootstrap() {
 // 仅开发模式显示
 if (!isDevMode()) {
   console.log(
-    '%c thingsboard %c Vue \n%c 。\n 您的一个关注，就是对我们最大的支持：  https://gitee.com/oliver225/thingsboard-ui-vue3  （请点 star 收藏我们）\n 1069035666@qq.com 17621315188 %c\n ',
+    '%c JeeSite %cVue \n%c 用心去做我们的快速开发平台，用心去帮助我们的客户！好不好用，您说的算。\n 您的一个关注，就是对我们最大的支持：  https://gitee.com/thinkgem/jeesite-vue  （请点 star 收藏我们）\n 免费技术 QQ 交流群： 127515876、209330483、223507718、709534275、730390092、1373527、183903863(外包) %c\n ',
     'font-family:"Helvetica Neue",Helvetica,Arial,sans-serif;font-size:39px;color:#0f87e8;-webkit-text-fill-color:#0f87e8;-webkit-text-stroke:1px #0f87e8;',
     'font-size:24px;color:#aaa;',
     'font-size:14px;color:#888;',

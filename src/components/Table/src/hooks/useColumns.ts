@@ -1,19 +1,19 @@
 import type { BasicColumn, BasicTableProps, CellFormat, GetColumnsParams } from '../types/table';
 import type { PaginationProps } from '../types/pagination';
-import type { ComputedRef } from 'vue';
+import { ComputedRef, h } from 'vue';
 import { computed, Ref, ref, reactive, toRaw, unref, watch } from 'vue';
 import { renderEditCell } from '../components/editable';
 import { usePermission } from '/@/hooks/web/usePermission';
 import { useI18n } from '/@/hooks/web/useI18n';
-import { useDict } from '/@/components/Dict';
 import { isObject, isArray, isBoolean, isFunction, isMap, isString } from '/@/utils/is';
 import { deepMerge } from '/@/utils';
 import { error } from '/@/utils/log';
 import { cloneDeep, isEqual, uniqBy } from 'lodash-es';
 import { formatToDate } from '/@/utils/dateUtil';
-import { ACTION_COLUMN_FLAG, DEFAULT_ALIGN, INDEX_COLUMN_FLAG, PAGE_SIZE } from '../const';
+import { ACTION_COLUMN_FLAG, DEFAULT_ALIGN, INDEX_COLUMN_FLAG, DRAG_COLUMN_FLAG, PAGE_SIZE } from '../const';
+import { Icon } from '/@/components/Icon';
 
-function handleItem(item: BasicColumn, ellipsis: boolean, dictTypes: Set<string>) {
+function handleItem(item: BasicColumn, ellipsis: boolean) {
   const { key, dataIndex, children } = item;
   item.align = item.align || DEFAULT_ALIGN;
   // 未设置宽度的列，不进行拖拽调整列宽
@@ -39,40 +39,16 @@ function handleItem(item: BasicColumn, ellipsis: boolean, dictTypes: Set<string>
     item.dataIndex_ = dataIndex?.toString() || '';
   }
   if (children && children.length) {
-    handleChildren(children, !!ellipsis, dictTypes);
-  }
-  if (item.filterDictType) {
-    const { getDictList } = useDict();
-    dictTypes.add(item.filterDictType);
-    const filterList = getDictList(item.filterDictType);
-    item.filters = filterList.map((item) => {
-      return { text: item.name, value: item.value };
-    });
-  }
-  if (item.dictType) {
-    dictTypes.add(item.dictType);
-    // if (!item.slots?.customRender) {
-    //   if (!item.slots) {
-    //     item.slots = {};
-    //   }
-    //   item.slots.customRender = 'dictLabelColumn';
-    // }
-    if (!item.slot) {
-      item.slot = 'dictLabelColumn';
-    }
+    handleChildren(children, !!ellipsis);
   }
 }
 
-function handleChildren(
-  children: BasicColumn[] | undefined,
-  ellipsis: boolean,
-  dictTypes: Set<string>,
-) {
+function handleChildren(children: BasicColumn[] | undefined, ellipsis: boolean) {
   if (!children) return;
   children.forEach((item) => {
     const { children } = item;
-    handleItem(item, ellipsis, dictTypes);
-    handleChildren(children, ellipsis, dictTypes);
+    handleItem(item, ellipsis);
+    handleChildren(children, ellipsis);
   });
 }
 
@@ -83,7 +59,7 @@ function handleIndexColumn(
 ) {
   const { t } = useI18n();
 
-  const { showIndexColumn, indexColumnProps, isTreeTable } = unref(propsRef);
+  const { showIndexColumn, indexColumnProps, isTreeTable, canRowDrag } = unref(propsRef);
 
   if (unref(isTreeTable)) {
     return;
@@ -103,6 +79,29 @@ function handleIndexColumn(
   if (!pushIndexColumns) return;
 
   // const isFixedLeft = columns.some((item) => item.fixed === 'left');
+
+  if (canRowDrag) {
+    columns.unshift({
+      flag: DRAG_COLUMN_FLAG,
+      title: '',
+      width: 40,
+      align: 'center',
+      fixed: 'left',
+      customRender: () => {
+        return h(Icon, {
+          icon: 'i-ant-design:drag-outlined',
+          class: 'cursor-move',
+          onMouseenter: (event: any) => {
+            event.target.closest('tr').draggable = true;
+          },
+          onMouseleave: (event: any) => {
+            event.target.closest('tr').draggable = false;
+          },
+        });
+      },
+      ...indexColumnProps,
+    });
+  }
 
   columns.unshift({
     flag: INDEX_COLUMN_FLAG,
@@ -135,6 +134,7 @@ function handleActionColumn(propsRef: ComputedRef<BasicTableProps>, columns: Bas
       title: t('操作'),
       fixed: 'right',
       slot: 'tableActions',
+      align: 'left',
       ...actionColumn,
       flag: ACTION_COLUMN_FLAG,
     });
@@ -159,19 +159,13 @@ export function useColumns(
     }
     const { ellipsis } = unref(propsRef);
 
-    propsRef.value.dictTypes = new Set<string>();
-    const dictTypes = propsRef.value.dictTypes;
-
     columns.forEach((item) => {
       // const { customRender, slots } = item;
 
       handleItem(
         item,
         // Reflect.has(item, 'ellipsis') ? !!item.ellipsis : !!ellipsis && !customRender && !slots,
-        Reflect.has(item, 'ellipsis')
-          ? !!item.ellipsis
-          : !!ellipsis && item.dataIndex !== 'actions', // 自定义渲染列应和非自定义的省略条件一样
-        dictTypes,
+        Reflect.has(item, 'ellipsis') ? !!item.ellipsis : !!ellipsis && item.dataIndex !== 'actions', // 自定义渲染列应和非自定义的省略条件一样
       );
     });
     return columns;
@@ -215,7 +209,7 @@ export function useColumns(
           const isDefaultAction = [INDEX_COLUMN_FLAG, ACTION_COLUMN_FLAG].includes(flag!);
           if (!customRender && format && !edit && !isDefaultAction) {
             column.customRender = ({ text, record, index }) => {
-              return formatCell(text, format, record, index);
+              return formatCell(text, format, record, index, column);
             };
           }
 
@@ -287,10 +281,7 @@ export function useColumns(
       // Sort according to another array
       if (!isEqual(cacheKeys, columns)) {
         newColumns.sort((prev, next) => {
-          return (
-            columnKeys.indexOf(prev.dataIndex_ as string) -
-            columnKeys.indexOf(next.dataIndex_ as string)
-          );
+          return columnKeys.indexOf(prev.dataIndex_ as string) - columnKeys.indexOf(next.dataIndex_ as string);
         });
       }
       columnsRef.value = newColumns;
@@ -305,9 +296,7 @@ export function useColumns(
     if (isArray(data)) {
       updateData = [...data];
     }
-    const hasDataIndex = updateData.every(
-      (item) => Reflect.has(item, 'dataIndex') && item.dataIndex,
-    );
+    const hasDataIndex = updateData.every((item) => Reflect.has(item, 'dataIndex') && item.dataIndex);
     if (!hasDataIndex) {
       error('必须包含 dataIndex 字段。');
       return;
@@ -373,20 +362,18 @@ function sortFixedColumn(columns: BasicColumn[]) {
     }
     defColumns.push(column);
   }
-  return [...fixedLeftColumns, ...defColumns, ...fixedRightColumns].filter(
-    (item) => !item.defaultHidden,
-  );
+  return [...fixedLeftColumns, ...defColumns, ...fixedRightColumns].filter((item) => !item.defaultHidden);
 }
 
 // format cell
-export function formatCell(text: string, format: CellFormat, record: Recordable, index: number) {
+export function formatCell(text: string, format: CellFormat, record: Recordable, index: number, column: BasicColumn) {
   if (!format) {
     return text;
   }
 
   // custom function
   if (isFunction(format)) {
-    return format(text, record, index);
+    return format(text, record, index, column);
   }
 
   try {

@@ -29,7 +29,6 @@
   import { useLockPage } from '/@/hooks/web/useLockPage';
 
   import { useAppInject } from '/@/hooks/web/useAppInject';
-  import { switchSkin } from '/@/api/sys/login';
 
   export default defineComponent({
     name: 'DefaultLayout',
@@ -48,7 +47,6 @@
       const { getShowFullHeaderRef } = useHeaderSetting();
       const { getShowSidebar, getIsMixSidebar, getShowMenu } = useMenuSetting();
 
-      switchSkin();
 
       // Create a lock screen monitor
       const lockEvents = useLockPage();

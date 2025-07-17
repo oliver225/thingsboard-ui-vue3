@@ -8,13 +8,8 @@ export const Notify = createAsyncComponent(() => import('./notify/index.vue'));
 
 export const ErrorAction = createAsyncComponent(() => import('./ErrorAction.vue'));
 
-export const OnlineCount = createAsyncComponent(() => import('./OnlineCount.vue'));
-
-export const SettingDrawer = createAsyncComponent(
-  () => import('/@/layouts/default/setting/index.vue'),
-  {
-    loading: true,
-  },
-);
+export const SettingDrawer = createAsyncComponent(() => import('/@/layouts/default/setting/index.vue'), {
+  loading: true,
+});
 
 export { FullScreen, UserDropDown };

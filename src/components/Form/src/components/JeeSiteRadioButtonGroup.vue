@@ -16,11 +16,10 @@
 <script lang="ts" setup name="JeeSiteRadioButtonGroup">
   import { PropType, computed, ref, unref, watch } from 'vue';
   import { Radio } from 'ant-design-vue';
-  import { isEmpty, isString } from '/@/utils/is';
+  import { isString } from '/@/utils/is';
   import { propTypes } from '/@/utils/propTypes';
   import { useAttrs } from '/@/hooks/core/useAttrs';
   import { useRuleFormItem } from '/@/hooks/component/useFormItem';
-  import { useDict } from '/@/components/Dict';
 
   type OptionsItem = { label: string; value: string | number | boolean; disabled?: boolean };
   type RadioItem = string | OptionsItem;
@@ -36,7 +35,6 @@
       type: Array as PropType<RadioItem[]>,
       default: () => [],
     },
-    dictType: propTypes.string,
   });
 
   const emit = defineEmits(['change', 'update:value']);
@@ -44,11 +42,6 @@
   const attrs = useAttrs();
   const [state] = useRuleFormItem(props);
   const optionsRef = ref<RadioItem[]>(props.options);
-
-  if (!isEmpty(props.dictType)) {
-    const { initSelectOptions } = useDict();
-    initSelectOptions(optionsRef, props.dictType);
-  }
 
   watch(
     () => props.options,

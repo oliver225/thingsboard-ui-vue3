@@ -2,17 +2,12 @@ import type { Ref } from 'vue';
 import { nextTick, unref } from 'vue';
 import { warn } from '/@/utils/log';
 
-export function useTableScrollTo(
-  tableElRef: Ref<ComponentRef>,
-  getDataSourceRef: Ref<Recordable[]>,
-) {
+export function useTableScrollTo(tableRef: Ref<ComponentRef>, getDataSourceRef: Ref<Recordable[]>) {
   let bodyEl: HTMLElement | null;
 
   async function findTargetRowToScroll(targetRowData: Recordable) {
     const { id } = targetRowData;
-    const targetRowEl: HTMLElement | null | undefined = bodyEl?.querySelector(
-      `[data-row-key="${id}"]`,
-    );
+    const targetRowEl: HTMLElement | null | undefined = bodyEl?.querySelector(`[data-row-key="${id}"]`);
     //Add a delay to get new dataSource
     await nextTick();
     bodyEl?.scrollTo({
@@ -22,7 +17,7 @@ export function useTableScrollTo(
   }
 
   function scrollTo(pos: string): void {
-    const table = unref(tableElRef);
+    const table = unref(tableRef);
     if (!table) return;
 
     const tableEl: Element = table.$el;

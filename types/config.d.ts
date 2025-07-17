@@ -139,23 +139,16 @@ export interface ProjectConfig {
 export interface GlobConfig {
   // Site title
   title: string;
-  // Service interface url，如：/js
+  // Service interface url，如：/api
   apiUrl: string;
-  // // Upload url（5.5.2+弃用）
-  // uploadUrl?: string;
   //  Service interface url prefix
   urlPrefix?: string;
   // Project abbreviation
   shortName: string;
-  // context-path，如：/js
+  // context-path，如：/api
   ctxPath: string;
-  // 管理路径，如：/a
-  adminPath: string;
-  // // 后台管理路径，如：/js/a
-  ctxAdminPath: string;
-  // // 文件预览类型，如：true、oss
-  // filePreview: string;
-  wsPath: string;
+  // 文件预览类型，如：true、oss
+  filePreview: string;
 }
 
 export interface GlobEnvConfig {
@@ -167,11 +160,6 @@ export interface GlobEnvConfig {
   VITE_GLOB_API_URL_PREFIX: string;
   // Project abbreviation
   VITE_GLOB_APP_SHORT_NAME: string;
-  // Upload url（5.5.2+弃用）
-  // VITE_GLOB_UPLOAD_URL?: string;
-  // Admin path
-  VITE_GLOB_ADMIN_PATH: string;
-  // // File preview
-  // VITE_FILE_PREVIEW: string;
-  VITE_GLOB_WS_PREFIX: string;
+  // File preview
+  VITE_FILE_PREVIEW: string;
 }

@@ -1,10 +1,4 @@
-import type {
-  ProjectConfig,
-  HeaderSetting,
-  MenuSetting,
-  TransitionSetting,
-  MultiTabsSetting,
-} from '/#/config';
+import type { ProjectConfig, HeaderSetting, MenuSetting, TransitionSetting, MultiTabsSetting } from '/#/config';
 import type { BeforeMiniState } from '/#/store';
 
 import { defineStore } from 'pinia';
@@ -16,7 +10,6 @@ import { Persistent } from '/@/utils/cache/persistent';
 import { darkMode } from '/@/settings/designSetting';
 import { resetRouter } from '/@/router';
 import { deepMerge } from '/@/utils';
-import { switchSkin } from '/@/api/sys/login';
 
 interface AppState {
   darkMode?: ThemeEnum;
@@ -29,8 +22,7 @@ interface AppState {
 }
 
 let timeId: TimeoutHandle;
-export const useAppStore = defineStore({
-  id: 'app',
+export const useAppStore = defineStore('app', {
   state: (): AppState => ({
     darkMode: undefined,
     pageLoading: false,
@@ -74,7 +66,6 @@ export const useAppStore = defineStore({
     setDarkMode(mode: ThemeEnum): void {
       this.darkMode = mode;
       localStorage.setItem(APP_DARK_MODE_KEY, mode);
-      switchSkin();
     },
 
     setBeforeMiniInfo(state: BeforeMiniState): void {

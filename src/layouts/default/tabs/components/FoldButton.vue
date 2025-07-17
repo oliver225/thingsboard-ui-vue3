@@ -1,10 +1,10 @@
 <template>
-  <span :class="`${prefixCls}__extra-fold`" @click="handleFold">
+  <span :class="`${prefixCls}__extra-fold`" @click="handleToggle">
     <Icon :icon="getIcon" />
   </span>
 </template>
 <script lang="ts">
-  import { defineComponent, unref, computed } from 'vue';
+  import { defineComponent, unref, computed, onMounted } from 'vue';
   import { Icon } from '/@/components/Icon';
 
   import { useDesign } from '/@/hooks/web/useDesign';
@@ -17,17 +17,16 @@
     components: { Icon },
     setup() {
       const { prefixCls } = useDesign('multiple-tabs-content');
-      const { getShowMenu, setMenuSetting } = useMenuSetting();
+      const { getShowMenu, getShowSidebar, setMenuSetting } = useMenuSetting();
       const { getShowHeader, setHeaderSetting } = useHeaderSetting();
 
-      const getIsUnFold = computed(() => !unref(getShowMenu) && !unref(getShowHeader));
+      const getIsUnFold = computed(() => !unref(getShowMenu) && !unref(getShowHeader) && !unref(getShowSidebar));
 
       const getIcon = computed(() =>
-        unref(getIsUnFold) ? 'codicon:screen-normal' : 'codicon:screen-full',
+        unref(getIsUnFold) ? 'i-ant-design:fullscreen-exit-outlined' : 'i-ant-design:fullscreen-outlined',
       );
 
-      function handleFold() {
-        const isUnFold = unref(getIsUnFold);
+      function handleFold(isUnFold: boolean) {
         setMenuSetting({
           show: isUnFold,
           hidden: !isUnFold,
@@ -36,7 +35,15 @@
         triggerResize();
       }
 
-      return { prefixCls, getIcon, handleFold };
+      function handleToggle() {
+        handleFold(unref(getIsUnFold));
+      }
+
+      onMounted(() => {
+        handleFold(true);
+      });
+
+      return { prefixCls, getIcon, handleToggle };
     },
   });
 </script>

@@ -22,15 +22,13 @@ import { asyncRoutes } from '/@/router/routes';
 import { ERROR_LOG_ROUTE } from '/@/router/routes/basic';
 
 import { filter } from '/@/utils/helper/treeHelper';
-import { userInfoApi, menuRouteApi } from '/@/api/tb/login';
+
 import { useMessage } from '/@/hooks/web/useMessage';
 import { PageEnum } from '/@/enums/pageEnum';
-import { Authority } from '/@/enums/authorityEnum';
+import { userInfoApi } from '/@/api/tb/login';
+import { isEmpty } from '/@/utils/is';
 
 interface PermissionState {
-  // Permission code list
-  // permCodeList: string[][];
-  authority: Nullable<Authority>;
   // Whether the route has been dynamically added
   isDynamicAddedRoute: boolean;
   // To trigger a menu update
@@ -39,10 +37,8 @@ interface PermissionState {
   backMenuList: Menu[];
   frontMenuList: Menu[];
 }
-export const usePermissionStore = defineStore({
-  id: 'app-permission',
+export const usePermissionStore = defineStore('app-permission', {
   state: (): PermissionState => ({
-    authority: null,
     // Whether the route has been dynamically added
     isDynamicAddedRoute: false,
     // To trigger a menu update
@@ -53,9 +49,6 @@ export const usePermissionStore = defineStore({
     frontMenuList: [],
   }),
   getters: {
-    getAuthority(): Nullable<Authority> {
-      return this.authority;
-    },
     getBackMenuList(): Menu[] {
       return this.backMenuList;
     },
@@ -70,9 +63,6 @@ export const usePermissionStore = defineStore({
     },
   },
   actions: {
-    setAuthority(authority: Authority | null) {
-      this.authority = authority;
-    },
     setBackMenuList(list: Menu[]) {
       this.backMenuList = list;
       list?.length > 0 && this.setLastBuildMenuTime();
@@ -88,37 +78,29 @@ export const usePermissionStore = defineStore({
     },
     resetState(): void {
       this.isDynamicAddedRoute = false;
-      this.authority = null;
       this.backMenuList = [];
       this.lastBuildMenuTime = 0;
     },
-    async changeAuthority() {
+    async changePermissionCode() {
       const userStore = useUserStore();
-      const userInfo = await userInfoApi();
-      this.setAuthority(userInfo.authority);
-      userStore.setUserInfo(userInfo);
+      const authInfo = await userInfoApi();
+      userStore.setAuthority(authInfo?.authority);
     },
-
-    // async changePermissionCode() {
-    //   const userStore = useUserStore();
-    //   const authInfo = await userInfoApi();
-    //   this.setPermCodeList(authInfo.stringPermissions.map((e) => e.split(':')));
-    //   userStore.setRoleList(authInfo.roles || []);
-    // },
     async buildRoutesAction(): Promise<AppRouteRecordRaw[]> {
       const { t } = useI18n();
       const userStore = useUserStore();
       const appStore = useAppStoreWithOut();
 
       let routes: AppRouteRecordRaw[] = [];
-      const authority = toRaw(userStore.getAuthority) || null;
+      const currentAuthority = toRaw(userStore.getAuthority);
       const { permissionMode = projectSetting.permissionMode } = appStore.getProjectConfig;
 
       const routeFilter = (route: AppRouteRecordRaw) => {
         const { meta } = route;
-        const { authorities } = meta || {};
-        if (!authorities) return true;
-        return authorities.includes(authority);
+        const { authority: authorityList } = meta || {};
+        if (!authorityList || isEmpty(authorityList)) return true;
+
+        return authorityList.includes(currentAuthority) || authorityList.includes('*');
       };
 
       const routeRemoveIgnoreFilter = (route: AppRouteRecordRaw) => {
@@ -193,8 +175,9 @@ export const usePermissionStore = defineStore({
           // this function may only need to be executed once, and the actual project can be put at the right time by itself
           let routeList: AppRouteRecordRaw[] = [];
           try {
-            this.changeAuthority();
-            routeList = (await menuRouteApi()) as AppRouteRecordRaw[];
+            this.changePermissionCode();
+            // routeList = (await menuRouteApi()) as AppRouteRecordRaw[];
+            routeList = [];
           } catch (error) {
             console.error(error);
           }

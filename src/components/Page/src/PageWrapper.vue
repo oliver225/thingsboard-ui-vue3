@@ -5,13 +5,7 @@
 -->
 <template>
   <div :class="getClass" ref="wrapperRef">
-    <PageHeader
-      ref="headerRef"
-      v-if="getShowHeader"
-      v-bind="omit($attrs, 'class')"
-      :ghost="ghost"
-      :title="title"
-    >
+    <PageHeader ref="headerRef" v-if="getShowHeader" v-bind="omit($attrs, 'class')" :ghost="ghost" :title="title">
       <template #title v-if="$slots.headerTitle">
         <slot name="headerTitle"></slot>
       </template>
@@ -29,7 +23,7 @@
       </template>
     </PageHeader>
     <div :class="getContentClass" :style="getContentStyle" ref="contentRef">
-      <Layout v-if="sidebar || sidebarRight">
+      <Layout v-if="sidebar || sidebarRight" :style="getSidebarContentStyle">
         <Layout.Sider
           v-if="sidebar"
           class="sidebar"
@@ -79,11 +73,7 @@
           @breakpoint="onBreakpointRight"
         >
           <template v-if="!sidebarResizerRight">
-            <div
-              class="sidebar-close right"
-              v-if="!collapsedRight"
-              @click="collapsedRight = !collapsedRight"
-            >
+            <div class="sidebar-close right" v-if="!collapsedRight" @click="collapsedRight = !collapsedRight">
               <Icon icon="i-fa:angle-right" />
             </div>
             <div class="sidebar-open right" v-else @click="collapsedRight = !collapsedRight">
@@ -213,25 +203,21 @@
 
   const getShowHeader = computed(
     () =>
-      props.title !== 'false' &&
-      (props.content || slots.headerContent || props.title || getHeaderSlots.value.length),
+      props.title !== 'false' && (props.content || slots.headerContent || props.title || getHeaderSlots.value.length),
   );
 
   const getShowFooter = computed(() => slots?.leftFooter || slots?.rightFooter);
 
   const getContentStyle = computed((): CSSProperties => {
     const { contentFullHeight, contentStyle, fixedHeight } = props;
-    let offsetHeight = !getShowHeader.value && !getShowFooter.value ? -15 : 0;
-    const height = `${(unref(contentHeight) || 800) - offsetHeight}px`;
+    const height = `${(unref(contentHeight) || 800) - (!sidebar ? -15 : 0)}px`;
 
     if (sidebar) {
       return {
         ...contentStyle,
         minHeight: height,
       };
-    }
-
-    if (contentFullHeight) {
+    } else if (contentFullHeight) {
       return {
         ...contentStyle,
         minHeight: height,
@@ -253,6 +239,11 @@
 
   // 自适应侧边栏高度 by think gem
   function calcSidebarContentHeight() {
+    if (props.contentFullHeight && contentHeight.value) {
+      const height = contentHeight.value - 14;
+      getSidebarContentHeight.value = height < 300 ? 300 : height;
+      return;
+    }
     let height = 0;
     const el = unref(contentRef) as any;
     if (!el || el.clientHeight <= 0) return;
@@ -340,6 +331,7 @@
     .@{prefix-cls}-content {
       // margin: 16px;
       padding: 15px;
+      margin-bottom: 13px;
       border-radius: 5px;
       color: @text-color-base;
       overflow-y: auto;
@@ -395,13 +387,15 @@
       .sidebar {
         background-color: @content-bg;
         transition: none;
-        min-height: 400px;
+        //min-height: 400px;
 
         &-content {
           // margin: 15px 0 0 15px;
           // margin-right: 15px;
-          height: calc(100% - 29px);
+          //height: calc(100% - 14px);
+          height: 100%;
           overflow: hidden;
+          border-radius: 4px;
 
           .jeesite-basic-tree-header {
             padding: 10px 6px;

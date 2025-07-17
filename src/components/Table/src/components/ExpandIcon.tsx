@@ -18,13 +18,8 @@ export default (expandCollapse: Fn, handleTableExpand: Fn, expandedRowRender = f
     return (
       <BasicArrow
         style={
-          expandedRowRender
-            ? ''
-            : leaf
-              ? 'margin-left: 1px; margin-right: 7px; opacity: 0.7;'
-              : 'margin-right: 8px;'
+          expandedRowRender ? '' : leaf ? 'margin-left: 1px; margin-right: 7px; opacity: 0.7;' : 'margin-right: 8px;'
         }
-        iconStyle="vertical-align: middle; margin-top: -5px;"
         onClick={async (_e: Event) => {
           if (leaf) return;
           if (expandedRowRender) {

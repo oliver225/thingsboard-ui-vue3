@@ -8,7 +8,7 @@ export default {
   tenantProfile: 'Tenant Profile',
   resource: 'Resource',
   widgetsBundle: 'Widgets Bundle',
-  widgetType:'Widget Type',
+  widgetType: 'Widget Type',
   resourceLibrary: 'Resource Library',
   notification_center: 'Notification Center',
   notification_list: 'Notification List',
@@ -30,5 +30,13 @@ export default {
   entityView: 'Entity View',
   ota: 'OTA Update',
   images: 'Image Library',
-  scadaSymbols:'SCADA Symbols'
-}
+  scadaSymbols: 'SCADA Symbols',
+  tabs: {
+    detail: 'Details',
+    telemetry: 'Telemetry',
+    alarm: 'Alarms',
+    event: 'Events',
+    relation: 'Relations',
+    auditLog: 'AuditLogs',
+  },
+};

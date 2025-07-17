@@ -18,7 +18,7 @@
         </TabPane>
       </template>
 
-      <template #rightExtra v-if="getShowRedo || getShowQuick">
+      <template #rightExtra v-if="getShowRedo || getShowQuick || getShowFold">
         <TabRedo v-if="getShowRedo" />
         <TabContent isExtra :tabItem="$route" v-if="getShowQuick" />
         <FoldButton v-if="getShowFold" />
@@ -104,9 +104,7 @@
         }
 
         if (isHide) {
-          const findParentRoute = router
-            .getRoutes()
-            .find((item) => item.path === currentActiveMenu);
+          const findParentRoute = router.getRoutes().find((item) => item.path === currentActiveMenu);
 
           findParentRoute && tabStore.addTab(findParentRoute as unknown as RouteLocationNormalized);
         } else {
@@ -144,5 +142,5 @@
   });
 </script>
 <style lang="less">
-  @import './index.less';
+  @import './index3.less';
 </style>

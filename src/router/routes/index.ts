@@ -30,7 +30,7 @@ export const RootRoute: AppRouteRecordRaw = {
 export const LoginRoute: AppRouteRecordRaw = {
   path: '/login',
   name: 'Login',
-  component: () => import('/@/views/sys/login/Login.vue'),
+  component: () => import('/@/layouts/views/login/Login.vue'),
   meta: {
     title: t('routes.basic.login'),
   },
@@ -39,19 +39,12 @@ export const LoginRoute: AppRouteRecordRaw = {
 const ModPwdRoute: AppRouteModule = {
   path: '/modPwd',
   name: 'ModPwd',
-  component: () => import('/@/views/sys/account/modPwd.vue'),
+  component: () => import('/@/layouts/views/account/modPwd.vue'),
   meta: {
-    icon: 'i-ion:key-outline',
+    icon: 'i-ant-design:key-outlined',
     title: t('sys.account.modifyPwd'),
   },
 };
 
 // Basic routing without permission
-export const basicRoutes = [
-  LoginRoute,
-  ModPwdRoute,
-  RootRoute,
-  ...mainOutRoutes,
-  REDIRECT_ROUTE,
-  PAGE_NOT_FOUND_ROUTE,
-];
+export const basicRoutes = [LoginRoute, ModPwdRoute, RootRoute, ...mainOutRoutes, REDIRECT_ROUTE, PAGE_NOT_FOUND_ROUTE];

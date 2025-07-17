@@ -6,23 +6,20 @@ import { isBoolean } from '/@/utils/is';
 import { useWindowSizeFn } from '/@/hooks/event/useWindowSizeFn';
 import { useModalContext } from '/@/components/Modal';
 import { onMountedOrActivated } from '/@/hooks/core/onMountedOrActivated';
-import { useDebounceFn } from '@vueuse/core';
+import { useDebounceFn, useResizeObserver } from '@vueuse/core';
 import { useScroll } from '/@/hooks/event/useScroll';
 
 export function useTableScroll(
   propsRef: ComputedRef<BasicTableProps>,
-  tableElRef: Ref<ComponentRef>,
+  tableRef: Ref<ComponentRef>,
   columnsRef: ComputedRef<BasicColumn[]>,
   rowSelectionRef: ComputedRef<TableRowSelection | null>,
   getDataSourceRef: Ref<Recordable[]>,
-  wrapRef: Ref<HTMLElement | null>,
+  wrapRef: Ref<ComponentRef>,
   formRef: Ref<ComponentRef>,
 ) {
   const tableHeightRef = ref<number | string | undefined>(167);
   const modalFn = useModalContext();
-
-  // Greater than animation time 280
-  const debounceRedoHeight = useDebounceFn(redoHeight, 200);
 
   const getCanResize = computed(() => {
     const { canResize, scroll } = unref(propsRef);
@@ -55,17 +52,10 @@ export function useTableScroll(
   const { refY: tableScrollRefY } = useScroll(tableScrollRef);
 
   async function calcTableHeight() {
-    const {
-      resizeHeightOffset,
-      pagination,
-      maxHeight,
-      minHeight,
-      isCanResizeParent,
-      useSearchForm,
-    } = unref(propsRef);
+    const { resizeHeightOffset, pagination, maxHeight, minHeight, isCanResizeParent, useSearchForm } = unref(propsRef);
     const tableData = unref(getDataSourceRef);
 
-    const table = unref(tableElRef);
+    const table = unref(tableRef);
     if (!table) return;
 
     const tableEl: HTMLElement = table.$el;
@@ -87,15 +77,13 @@ export function useTableScroll(
     const hasScrollBarX = bodyEl.scrollWidth > bodyEl.clientWidth;
 
     if (hasScrollBarY) {
-      tableEl.classList.contains('hide-scrollbar-y') &&
-        tableEl.classList.remove('hide-scrollbar-y');
+      tableEl.classList.contains('hide-scrollbar-y') && tableEl.classList.remove('hide-scrollbar-y');
     } else {
       !tableEl.classList.contains('hide-scrollbar-y') && tableEl.classList.add('hide-scrollbar-y');
     }
 
     if (hasScrollBarX) {
-      tableEl.classList.contains('hide-scrollbar-x') &&
-        tableEl.classList.remove('hide-scrollbar-x');
+      tableEl.classList.contains('hide-scrollbar-x') && tableEl.classList.remove('hide-scrollbar-x');
     } else {
       !tableEl.classList.contains('hide-scrollbar-x') && tableEl.classList.add('hide-scrollbar-x');
     }
@@ -164,23 +152,16 @@ export function useTableScroll(
         paddingHeight = 0;
       }
 
-      const headerCellHeight =
-        (tableEl.querySelector('.ant-table-title') as HTMLElement)?.offsetHeight ?? 0;
+      const headerCellHeight = (tableEl.querySelector('.ant-table-title') as HTMLElement)?.offsetHeight ?? 0;
 
-      bottomIncludeBody =
-        wrapHeight - formHeight - headerCellHeight - tablePadding - paginationMargin;
+      bottomIncludeBody = wrapHeight - formHeight - headerCellHeight - tablePadding - paginationMargin;
     } else {
       // Table height from bottom
       bottomIncludeBody = getViewportOffset(headEl).bottomIncludeBody;
     }
 
     let height =
-      bottomIncludeBody -
-      (resizeHeightOffset || 0) -
-      paddingHeight -
-      paginationHeight -
-      footerHeight -
-      headerHeight;
+      bottomIncludeBody - (resizeHeightOffset || 0) - paddingHeight - paginationHeight - footerHeight - headerHeight;
 
     if (minHeight && height < minHeight) {
       height = minHeight;
@@ -198,10 +179,15 @@ export function useTableScroll(
       }
     }
   }
-  useWindowSizeFn(calcTableHeight, 280);
-  onMountedOrActivated(() => {
-    debounceRedoHeight();
-  });
+  useWindowSizeFn(calcTableHeight, 200);
+  onMountedOrActivated(useDebounceFn(redoHeight, 100));
+
+  const tableWidthRef = ref();
+  function redoTableWidth() {
+    const table = unref(tableRef);
+    tableWidthRef.value = table?.$el?.offsetWidth - 50 || 600; // 默认宽度不小于，列中指定的宽度总合
+  }
+  useResizeObserver(wrapRef, useDebounceFn(redoTableWidth, 20));
 
   const getScrollRef: ComputedRef<any> = computed(() => {
     let width = 0;
@@ -220,12 +206,11 @@ export function useTableScroll(
     //   width += unsetWidthColumnSize * 50;
     // }
 
-    const table = unref(tableElRef);
-    const tableWidth = table?.$el?.offsetWidth ?? 600; // 默认宽度不小于，列中指定的宽度总合
+    const tableWidth = tableWidthRef.value;
     const { canResize, scroll } = unref(propsRef);
     const canScrollX = tableWidth == 0 || width == 0 || tableWidth > width;
     return {
-      x: canScrollX ? (canResize ? width : undefined) : width,
+      x: canScrollX ? (canResize ? tableWidth : undefined) : tableWidth,
       y: canResize ? unref(tableHeightRef) : undefined,
       scrollToFirstRowOnChange: true,
       ...scroll,

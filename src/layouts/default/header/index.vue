@@ -10,9 +10,7 @@
         :style="getLogoWidth"
       />
       <LayoutTrigger
-        v-if="
-          (getShowContent && getShowHeaderTrigger && !getSplit && !getIsMixSidebar) || getIsMobile
-        "
+        v-if="(getShowContent && getShowHeaderTrigger && !getSplit && !getIsMixSidebar) || getIsMobile"
         :theme="getHeaderTheme"
         :sider="false"
       />
@@ -22,20 +20,13 @@
 
     <!-- menu start -->
     <div :class="`${prefixCls}-menu`" v-if="getIsInitMenu && getShowTopMenu && !getIsMobile">
-      <LayoutMenu
-        :isHorizontal="true"
-        :theme="getHeaderTheme"
-        :splitType="getSplitType"
-        :menuMode="getMenuMode"
-      />
+      <LayoutMenu :isHorizontal="true" :theme="getHeaderTheme" :splitType="getSplitType" :menuMode="getMenuMode" />
     </div>
     <!-- menu-end -->
 
     <!-- action  -->
     <div :class="`${prefixCls}-action`">
       <AppSearch v-if="getShowSearch" :class="`${prefixCls}-action__item `" />
-
-      <!-- <OnlineCount :class="`${prefixCls}-action__item online-count`" /> -->
 
       <Notify v-if="getShowNotice" :class="`${prefixCls}-action__item notify-item`" />
 
@@ -62,21 +53,11 @@
   import { useRootSetting } from '/@/hooks/setting/useRootSetting';
   import { useAppInject } from '/@/hooks/web/useAppInject';
   import { useDesign } from '/@/hooks/web/useDesign';
-  import { usePermission } from '/@/hooks/web/usePermission';
   import { useLocale } from '/@/locales/useLocale';
-  import { useUserStore } from '/@/store/modules/user';
   import { onMountedOrActivated } from '/@/hooks/core/onMountedOrActivated';
   import LayoutMenu from '../menu/index.vue';
   import LayoutTrigger from '../trigger/index.vue';
-  import {
-    UserDropDown,
-    LayoutBreadcrumb,
-    FullScreen,
-    Notify,
-    ErrorAction,
-    OnlineCount,
-    SettingDrawer,
-  } from './components';
+  import { UserDropDown, LayoutBreadcrumb, FullScreen, Notify, ErrorAction, SettingDrawer } from './components';
 
   export default defineComponent({
     name: 'LayoutHeader',
@@ -91,7 +72,6 @@
       Notify,
       AppSearch,
       ErrorAction,
-      OnlineCount,
       SettingDrawer,
     },
     props: {
@@ -106,16 +86,9 @@
           getIsInitMenu.value = true;
         }, 100);
       });
-      const {
-        getShowTopMenu,
-        getShowHeaderTrigger,
-        getSplit,
-        getIsMixMode,
-        getMenuWidth,
-        getIsMixSidebar,
-      } = useMenuSetting();
-      const { getUseErrorHandle, getShowSettingButton, getSettingButtonPosition } =
-        useRootSetting();
+      const { getShowTopMenu, getShowHeaderTrigger, getSplit, getIsMixMode, getMenuWidth, getIsMixSidebar } =
+        useMenuSetting();
+      const { getUseErrorHandle, getShowSettingButton, getSettingButtonPosition } = useRootSetting();
 
       const {
         getHeaderTheme,
@@ -142,14 +115,6 @@
             [`${prefixCls}--${theme}`]: theme,
           },
         ];
-      });
-
-      const getUseCorpModel = computed(() => {
-        const userStore = useUserStore();
-        const { hasPermission } = usePermission();
-        return (
-          userStore.getPageCacheByKey('useCorpModel', false) && hasPermission('sys:corpAdmin:edit')
-        );
       });
 
       const getShowSetting = computed(() => {
@@ -203,7 +168,6 @@
         getShowSettingButton,
         getShowSetting,
         getShowSearch,
-        getUseCorpModel,
       };
     },
   });

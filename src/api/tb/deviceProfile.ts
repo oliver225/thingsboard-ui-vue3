@@ -20,15 +20,7 @@ export interface EntityKey {
 export interface Predicate {
   type: 'STRING' | 'NUMERIC' | 'BOOLEAN' | 'COMPLEX';
   //STRING
-  operation:
-    | 'EQUAL'
-    | 'NOT_EQUAL'
-    | 'STARTS_WITH'
-    | 'ENDS_WITH'
-    | 'CONTAINS'
-    | 'NOT_CONTAINS'
-    | 'IN'
-    | 'NOT_IN';
+  operation: 'EQUAL' | 'NOT_EQUAL' | 'STARTS_WITH' | 'ENDS_WITH' | 'CONTAINS' | 'NOT_CONTAINS' | 'IN' | 'NOT_IN';
   ignoreCase: boolean;
   value: { defaultValue: any; userValue: Object; dynamicValue: DynamicValue };
   //NUMERIC

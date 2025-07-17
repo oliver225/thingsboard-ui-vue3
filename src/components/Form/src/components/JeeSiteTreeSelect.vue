@@ -6,12 +6,7 @@
 -->
 <template>
   <div class="jeesite-tree-select">
-    <TreeSelect
-      v-bind="getAttrs"
-      v-model:value="state"
-      :treeData="treeDataRef"
-      @click="handleFetch"
-    >
+    <TreeSelect v-bind="getAttrs" v-model:value="state" :treeData="treeDataRef" @click="handleFetch">
       <template #[item]="data" v-for="item in Object.keys($slots)">
         <slot :name="item" v-bind="data || {}"></slot>
       </template>
@@ -35,7 +30,6 @@
   import { get, omit } from 'lodash-es';
   import { LoadingOutlined } from '@ant-design/icons-vue';
   import { useI18n } from '/@/hooks/web/useI18n';
-  import { useDict } from '/@/components/Dict';
   import { TreeItem } from '/@/components/Tree';
 
   const props = defineProps({
@@ -64,7 +58,6 @@
     },
     resultField: propTypes.string.def(''),
     immediate: propTypes.bool.def(false),
-    dictType: propTypes.string,
     treeCheckable: propTypes.bool,
     treeDataSimpleMode: propTypes.bool.def(true),
     canSelectParent: propTypes.bool.def(true),
@@ -74,16 +67,11 @@
     returnFullNameSplit: propTypes.string.def('/'),
   });
 
-  const emit = defineEmits([
-    'change',
-    'update:value',
-    'update:labelValue',
-    'options-change',
-    'click',
-  ]);
+  const emit = defineEmits(['change', 'update:value', 'update:labelValue', 'options-change', 'click']);
 
   const { t } = useI18n();
   const attrs = useAttrs();
+  const [state] = useRuleFormItem(props);
   const treeDataRef = ref<Recordable[]>(props.treeData);
   const isFirstLoad = ref<boolean>(false);
   const loading = ref<boolean>(false);
@@ -94,7 +82,7 @@
       showSearch: true,
       treeNodeFilterProp: 'name',
       fieldNames: {
-        value: props.dictType ? 'value' : 'id',
+        value: 'id',
         label: 'name',
       },
       treeDataSimpleMode: false,
@@ -109,13 +97,6 @@
     }
     return omit(propsData, 'treeData');
   });
-
-  const [state] = useRuleFormItem(props);
-
-  if (!isEmpty(props.dictType)) {
-    const { initSelectTreeData } = useDict();
-    initSelectTreeData(treeDataRef, props.dictType, true);
-  }
 
   watch(
     () => props.treeData,

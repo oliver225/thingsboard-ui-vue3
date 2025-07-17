@@ -4,17 +4,23 @@
     {{ !$slots.title ? title : '' }}
   </BasicTitle>
 
-  <div :class="[prefixCls, `${prefixCls}--detail`]" v-else>
-    <span :class="`${prefixCls}__twrap`">
-      <span @click="handleClose" v-if="showDetailBack">
-        <Icon icon="i-ant-design:arrow-left-outlined" :class="`${prefixCls}__back`" />
-      </span>
-      <span v-if="title">{{ title }}</span>
-    </span>
-
-    <span :class="`${prefixCls}__toolbar`">
-      <slot name="titleToolbar"></slot>
-    </span>
+  <div v-else>
+    <div :class="[prefixCls, `${prefixCls}--detail`]">
+      <div :class="`${prefixCls}__twrap`">
+        <div>
+          <span @click="handleClose" v-if="showDetailBack">
+            <Icon icon="i-ant-design:arrow-left-outlined" :class="`${prefixCls}__back`" />
+          </span>
+          <span v-if="icon">
+            <Icon :icon="icon" :class="`${prefixCls}__icon`" />
+          </span>
+        </div>
+        <div>
+          <span v-if="title">{{ title }}</span>
+          <span v-if="secondTitle">{{ secondTitle }}</span>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 <script lang="ts">
@@ -28,9 +34,11 @@
     name: 'BasicDrawerHeader',
     components: { Icon, BasicTitle },
     props: {
+      icon: propTypes.string,
       isDetail: propTypes.bool,
       showDetailBack: propTypes.bool,
       title: propTypes.string,
+      secondTitle: propTypes.string,
     },
     emits: ['close'],
     setup(_, { emit }) {
@@ -64,7 +72,8 @@
     }
 
     &__twrap {
-      flex: 1;
+      display: flex;
+      align-items: center;
     }
 
     &__toolbar {

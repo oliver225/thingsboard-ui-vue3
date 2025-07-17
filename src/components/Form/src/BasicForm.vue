@@ -11,6 +11,7 @@
     :model="formModel"
     @keypress.enter="handleEnterPress"
   >
+    <slot name="formTop"></slot>
     <Row v-bind="getRow">
       <slot name="formHeader"></slot>
       <template v-for="schema in getSchema" :key="schema.field">
@@ -30,15 +31,13 @@
       </template>
 
       <FormAction v-bind="getFormActionBindProps" @toggle-advanced="handleToggleAdvanced">
-        <template
-          #[item]="data"
-          v-for="item in ['resetBefore', 'submitBefore', 'advanceBefore', 'advanceAfter']"
-        >
+        <template #[item]="data" v-for="item in ['resetBefore', 'submitBefore', 'advanceBefore', 'advanceAfter']">
           <slot :name="item" v-bind="data || {}"></slot>
         </template>
       </FormAction>
       <slot name="formFooter"></slot>
     </Row>
+    <slot name="formBottom"></slot>
   </Form>
 </template>
 <script lang="ts" setup name="BasicForm">
@@ -258,9 +257,7 @@
     }
   }
 
-  const getFormActionBindProps = computed(
-    (): Recordable => ({ ...getProps.value, ...advanceState }),
-  );
+  const getFormActionBindProps = computed((): Recordable => ({ ...getProps.value, ...advanceState }));
 
   const formActionType: Partial<FormActionType> = {
     getFieldsValue,
@@ -293,6 +290,8 @@
     padding-right: 20px;
 
     .ant-form-item {
+      margin-bottom: 20px;
+
       &-label {
         line-height: 14px;
 
@@ -301,8 +300,13 @@
         }
       }
 
-      &-with-help {
-        margin-bottom: 0;
+      &-explain {
+        position: absolute;
+
+        &-error {
+          position: absolute;
+          top: -2px;
+        }
       }
 
       &.suffix-item {
@@ -325,10 +329,6 @@
       &.no-label {
         margin-left: 20px;
       }
-
-      &:not(.ant-form-item-with-help) {
-        margin-bottom: 20px;
-      }
     }
 
     .ant-row > .ant-col:last-child > .ant-form-item {
@@ -339,6 +339,15 @@
 
     .ant-form-explain {
       font-size: 14px;
+    }
+
+    .ant-input-disabled,
+    .ant-input-number-disabled,
+    .ant-radio-wrapper-disabled,
+    .ant-select-disabled .ant-select-selector,
+    .ant-select-disabled .ant-select-selection-item {
+      color: fade(@text-color-base, 75) !important;
+      background: rgb(0 0 0 / 2%) !important;
     }
 
     &--compact {
@@ -390,6 +399,7 @@
     }
 
     .ant-input-number,
+    .ant-input-number-group-wrapper,
     .ant-picker-default {
       width: 100%;
     }

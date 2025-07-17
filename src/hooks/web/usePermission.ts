@@ -16,12 +16,11 @@ import { router, resetRouter } from '/@/router';
 
 import projectSetting from '/@/settings/projectSetting';
 import { PermissionModeEnum } from '/@/enums/appEnum';
-import { RoleEnum } from '/@/enums/roleEnum';
+import { Authority } from '../../enums/authorityEnum';
 
 import { intersection } from 'lodash-es';
 import { isArray } from '/@/utils/is';
 import { useMultipleTabStore } from '/@/store/modules/multipleTab';
-import { Authority } from '/@/enums/authorityEnum';
 
 // User permissions related operations
 export function usePermission() {
@@ -40,7 +39,6 @@ export function usePermission() {
           ? PermissionModeEnum.ROUTE_MAPPING
           : PermissionModeEnum.BACK,
     });
-    console.log('asda');
     location.reload();
   }
 
@@ -73,28 +71,29 @@ export function usePermission() {
 
     if ([PermissionModeEnum.ROUTE_MAPPING, PermissionModeEnum.ROLE].includes(permMode)) {
       if (!isArray(value)) {
-        // return userStore.getRoleList?.includes(value as Authority);
-        return userStore.getAuthority== value as Authority
+        return userStore.getAuthority.toString() == value.toString();
       }
       return (intersection(value, userStore.getAuthority) as Authority[]).length > 0;
     }
 
     if (PermissionModeEnum.BACK === permMode) {
-      const authority = permissionStore.getAuthority;
+      const permiCodeList = [];
+
+      // if (!isArray(value)) {
+      //   return permiCodeList.includes(value);
+      // }
+      // return (intersection(value, permiCodeList) as string[]).length > 0;
 
       if (value) {
         const values = !isArray(value) ? [value] : value;
         for (const val of values) {
           if (val && val !== '') {
             const currPermi = val.split(':');
-            if (isPermitted([authority as string], currPermi)) {
-              return true;
+            for (const permi of permiCodeList) {
+              if (isPermitted(permi, currPermi)) {
+                return true;
+              }
             }
-            // for (const permi of permiCodeList) {
-            //   if (isPermitted(permi, currPermi)) {
-            //     return true;
-            //   }
-            // }
           }
         }
       }
@@ -114,17 +113,14 @@ export function usePermission() {
   }
 
   /**
-   * Change authority
-   * @param authority
+   * Change roles
+   * @param roles
    */
-  async function changeAuthority(authority: Authority ): Promise<void> {
+  async function changeRole(authority: Authority): Promise<void> {
     if (projectSetting.permissionMode !== PermissionModeEnum.ROUTE_MAPPING) {
-      throw new Error(
-        'Please switch PermissionModeEnum to ROUTE_MAPPING mode in the configuration to operate!',
-      );
+      throw new Error('Please switch PermissionModeEnum to ROUTE_MAPPING mode in the configuration to operate!');
     }
 
-    
     userStore.setAuthority(authority);
     await resume();
   }
@@ -136,5 +132,5 @@ export function usePermission() {
     resume();
   }
 
-  return { changeAuthority, hasPermission, togglePermissionMode, refreshMenu };
+  return { changeRole, hasPermission, togglePermissionMode, refreshMenu };
 }

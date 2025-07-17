@@ -10,19 +10,13 @@
         <slot name="tableTitle"></slot>
       </template>
       <template #toolbar v-if="$slots.tableTitle || $slots.toolbar">
-        <a-button v-if="getBindValues.useSearchForm && !formShow" @click="handleFormShowToggle()">
-          <Icon icon="i-ant-design:filter-twotone" /> {{ t('common.queryText') }}
-        </a-button>
-        <a-button v-if="getBindValues.useSearchForm && formShow" @click="handleFormShowToggle()">
-          <Icon icon="i-ant-design:filter-outlined" /> {{ t('common.hideText') }}
+        <a-button v-if="getBindValues.useSearchForm" @click="handleFormShowToggle()" :class="{ active: formShow }">
+          <Icon icon="i-ant-design:filter-outlined" /> {{ formShow ? t('common.hideText') : t('common.queryText') }}
         </a-button>
         <slot v-if="$slots.toolbar" name="toolbar"></slot>
       </template>
       <template #headerTop v-if="$slots.headerTop">
         <slot name="headerTop"></slot>
-      </template>
-      <template #tableTop v-if="$slots.tableTop">
-        <slot name="tableTop"></slot>
       </template>
     </TableHeader>
     <BasicForm
@@ -41,20 +35,17 @@
         <slot :name="item" v-bind="data || {}"></slot>
       </template>
     </BasicForm>
+    <slot v-if="$slots.tableTop" name="tableTop"></slot>
     <div v-if="showSelectionBar" class="m-3 mt-0">
-      <TableSelectionBar
-        :clearSelectedRowKeys="getHeaderProps.clearSelectedRowKeys!"
-        :count="getHeaderProps.count"
-      />
+      <TableSelectionBar :clearSelectedRowKeys="getHeaderProps.clearSelectedRowKeys!" :count="getHeaderProps.count" />
     </div>
     <FormItemRest>
       <ATable
-        ref="tableElRef"
+        ref="tableRef"
         v-bind="getBindValues"
         :rowClassName="getRowClassName"
         v-show="getEmptyDataIsShowTable"
         @change="handleTableChange"
-        v-if="getProps.cardList == false"
       >
         <template #[item]="data" v-for="item in Object.keys($slots)" :key="item">
           <slot :name="item" v-bind="data || {}"></slot>
@@ -67,40 +58,18 @@
             <TableAction
               v-if="data.column.slot === 'tableActions'"
               :actions="tableActions.actions && tableActions.actions(data.record)"
-              :dropDownActions="
-                tableActions.dropDownActions && tableActions.dropDownActions(data.record)
-              "
+              :dropDownActions="tableActions.dropDownActions && tableActions.dropDownActions(data.record)"
             />
-            <DictLabel
-              v-else-if="data.column.slot === 'dictLabelColumn'"
-              :dictType="data.column.dictType"
-              :dictValue="getColumnValue(data)"
-              :defaultValue="data.column.defaultValue"
-            />
-            <slot
-              v-else-if="data.column.slot"
-              :name="data.column.slot"
-              v-bind="getSlotData(data)"
-            ></slot>
+            <slot v-else-if="data.column.slot" :name="data.column.slot" v-bind="getSlotData(data)"></slot>
           </template>
           <slot v-else name="bodyCell" v-bind="getSlotData(data)"></slot>
         </template>
       </ATable>
-      <CardList v-bind="getBindValues" v-if="getProps.cardList == true">
-        <template v-if="$slots.itemContainer" #itemContainer ="{ record }"  >
-          <slot name="itemContainer" :record="record"></slot>
-        </template>
-      </CardList>
     </FormItemRest>
   </div>
 </template>
 <script lang="ts" setup name="BasicTable">
-  import type {
-    BasicTableProps,
-    TableActionType,
-    SizeType,
-    ColumnChangeParam,
-  } from './types/table';
+  import type { BasicTableProps, TableActionType, SizeType, ColumnChangeParam } from './types/table';
   import { ref, computed, unref, toRaw, inject, watchEffect, useSlots } from 'vue';
   import { Table, Form } from 'ant-design-vue';
   import { BasicForm, useForm } from '/@/components/Form';
@@ -110,7 +79,6 @@
   import TableAction from './components/TableAction.vue';
   import TableHeader from './components/TableHeader.vue';
   import { InnerHandlers } from './types/table';
-  import { DictLabel } from '/@/components/Dict';
   import { Icon } from '/@/components/Icon';
 
   import { useI18n } from '/@/hooks/web/useI18n';
@@ -130,7 +98,6 @@
   import { useTableForm } from './hooks/useTableForm';
   import { useDesign } from '/@/hooks/web/useDesign';
 
-  import CardList from '/@/components/Table/src/components/CardList.vue';
   import { omit } from 'lodash-es';
   import { basicProps } from './props';
   import { isFunction, isArray, isString } from '/@/utils/is';
@@ -148,10 +115,13 @@
     'selection-change',
     'register',
     'row-click',
-    'row-dbClick',
+    'row-db-click',
     'row-contextmenu',
     'row-mouseenter',
     'row-mouseleave',
+    'row-dragstart',
+    'row-dragover',
+    'row-drop',
     'edit-end',
     'edit-cancel',
     'edit-row-end',
@@ -165,10 +135,10 @@
   const slots = useSlots();
 
   const { t } = useI18n();
-  const tableElRef = ref<ComponentRef>(null);
+  const tableRef = ref<ComponentRef>(null);
   const tableData = ref<Recordable[]>([]);
 
-  const wrapRef = ref<HTMLElement | null>(null);
+  const wrapRef = ref<ComponentRef>(null);
   const formRef = ref<ComponentRef>(null);
   const innerPropsRef = ref<Partial<BasicTableProps>>();
 
@@ -183,9 +153,7 @@
   watchEffect(() => {
     unref(isFixedHeightPage) &&
       props.canResize &&
-      warn(
-        "'canResize' of BasicTable may not work in PageWrapper with 'fixedHeight' (especially in hot updates)",
-      );
+      warn("'canResize' of BasicTable may not work in PageWrapper with 'fixedHeight' (especially in hot updates)");
   });
 
   const { getLoading, setLoading } = useLoading(getProps);
@@ -271,7 +239,7 @@
 
   const { getScrollRef, redoHeight } = useTableScroll(
     getProps,
-    tableElRef,
+    tableRef,
     getColumnsRef,
     getRowSelectionRef,
     getDataSourceRef,
@@ -279,13 +247,15 @@
     formRef,
   );
 
-  const { scrollTo } = useTableScrollTo(tableElRef, getDataSourceRef);
+  const { scrollTo } = useTableScrollTo(tableRef, getDataSourceRef);
 
   const { customRow } = useCustomRow(getProps, {
     setSelectedRowKeys,
     getSelectRowKeys,
     clearSelectedRowKeys,
     getAutoCreateKey,
+    getDataSourceRef,
+    tableRef,
     emit,
   });
 
@@ -301,15 +271,8 @@
 
   // const { getHeaderProps } = useTableHeader(getProps, slots, handlers, methods);
   const getHeaderProps = computed(() => {
-    const { title, showTableSetting, titleHelpMessage, tableSetting, showSelectionBar } =
-      unref(getProps);
-    const hideTitle =
-      !title &&
-      !slots.tableTitle &&
-      !slots.toolbar &&
-      !slots.headerTop &&
-      !slots.tableTop &&
-      !showTableSetting;
+    const { title, showTableSetting, titleHelpMessage, tableSetting, showSelectionBar } = unref(getProps);
+    const hideTitle = !title && !slots.tableTitle && !slots.toolbar && !slots.headerTop && !showTableSetting;
     if (hideTitle && !isString(title)) {
       return { class: 'hidden' };
     }
@@ -326,10 +289,14 @@
     } as Recordable;
   });
 
-  const { getFooterProps } = useTableFooter(getProps, getScrollRef, tableElRef, getDataSourceRef);
+  const { getFooterProps } = useTableFooter(getProps, getScrollRef, tableRef, getDataSourceRef);
 
-  const { getFormProps, replaceFormSlotKey, getFormSlotKeys, handleSearchInfoChange } =
-    useTableForm(getProps, slots, reload, getLoading);
+  const { getFormProps, replaceFormSlotKey, getFormSlotKeys, handleSearchInfoChange } = useTableForm(
+    getProps,
+    slots,
+    reload,
+    getLoading,
+  );
 
   const getBindValues = computed(() => {
     const { isTreeTable } = unref(getProps);
@@ -415,7 +382,7 @@
   function getSlotData(rawData: Recordable) {
     let data = rawData || {};
     if (!data.record) data.record = {};
-    // if (!data.record.dataMap) data.record.dataMap = {};
+    if (!data.record.dataMap) data.record.dataMap = {};
     return data;
   }
 
@@ -426,45 +393,58 @@
     redoHeight();
   }
 
+  function getSize() {
+    return unref(getBindValues).size as SizeType;
+  }
+
+  function getTableRef() {
+    return tableRef;
+  }
+
   const tableAction: Partial<TableActionType> = {
     reload,
-    getSelectRows,
-    clearSelectedRowKeys,
-    getSelectRowKeys,
-    deleteSelectRowByKey,
+    setProps,
+    setLoading,
+    getTableRef,
+    redoHeight,
+    scrollTo,
+    getSize,
+    emit,
+
+    getColumns,
+    getCacheColumns,
+    setColumns,
+    updateColumn,
+    // setCacheColumnsByField,
+
+    getPagination,
     setPagination,
+    getShowPagination,
+    setShowPagination,
+
+    getDataSource,
+    getDelDataSource,
+    getRawDataSource,
+
     setTableData,
+    updateTableData,
     updateTableDataRecord,
     deleteTableDataRecord,
     insertTableDataRecord,
     findTableDataRecord,
-    redoHeight,
-    setSelectedRowKeys,
-    setColumns,
-    updateColumn,
-    setLoading,
-    getDataSource,
-    getDelDataSource,
-    getRawDataSource,
-    setProps,
+
     getRowSelection,
     getDefaultRowSelection,
-    getPaginationRef: getPagination,
-    getColumns,
-    getCacheColumns,
-    emit,
-    updateTableData,
-    setShowPagination,
-    getShowPagination,
-    // setCacheColumnsByField,
+    getSelectRows,
+    getSelectRowKeys,
+    setSelectedRowKeys,
+    deleteSelectRowByKey,
+    clearSelectedRowKeys,
+
     expandAll,
     expandRows,
     collapseAll,
     expandCollapse,
-    scrollTo,
-    getSize: () => {
-      return unref(getBindValues).size as SizeType;
-    },
   };
 
   createTableContext({ ...(tableAction as TableActionType), wrapRef, getBindValues });
@@ -530,12 +510,12 @@
           border: 1px solid @table-border-color !important;
 
           .ant-table-thead > tr > th {
-            font-weight: normal;
+            font-weight: 600;
           }
         }
 
         .ant-table-column-sorter {
-          margin-left: -5px;
+          margin: 0 -4px 0 -1px;
         }
 
         .ant-table-title {
@@ -632,6 +612,20 @@
 
       .ant-table-row-expand-icon {
         margin-left: 7px;
+      }
+
+      tr.dragover {
+        &-top td {
+          border-top: 2px solid rgb(22 119 255 / 30%) !important;
+          border-top-left-radius: 0 !important;
+          border-top-right-radius: 0 !important;
+        }
+
+        &-bottom td {
+          border-bottom: 2px solid rgb(22 119 255 / 30%) !important;
+          border-bottom-left-radius: 0 !important;
+          border-bottom-right-radius: 0 !important;
+        }
       }
     }
 

@@ -1,5 +1,4 @@
 import { Ref, unref, computed, onMounted, ref } from 'vue';
-import { uploadParams } from '/@/api/sys/upload';
 import { useI18n } from '/@/hooks/web/useI18n';
 const { t } = useI18n();
 
@@ -22,15 +21,11 @@ export function useUploadType({
   const allowSuffixes = ref<string[]>([]);
 
   onMounted(async () => {
-    const params = await uploadParams();
+    const params = {};
     imageAllowSuffixes.value = params.imageAllowSuffixes.split(',');
     mediaAllowSuffixes.value = params.mediaAllowSuffixes.split(',');
     fileAllowSuffixes.value = params.fileAllowSuffixes.split(',');
-    allowSuffixes.value = [
-      ...unref(imageAllowSuffixes),
-      ...unref(mediaAllowSuffixes),
-      ...unref(fileAllowSuffixes),
-    ];
+    allowSuffixes.value = [...unref(imageAllowSuffixes), ...unref(mediaAllowSuffixes), ...unref(fileAllowSuffixes)];
   });
 
   // 文件类型限制

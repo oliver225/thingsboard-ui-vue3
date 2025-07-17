@@ -20,10 +20,10 @@ export function createPermissionGuard(router: Router) {
     if (
       from.path === ROOT_PATH &&
       to.path === HOME_PATH &&
-      userStore.getUserInfo.homePath &&
-      userStore.getUserInfo.homePath !== HOME_PATH
+      userStore.getUserInfo.additionalInfo?.homePath &&
+      userStore.getUserInfo.additionalInfo?.homePath !== HOME_PATH
     ) {
-      next(userStore.getUserInfo.homePath);
+      next(userStore.getUserInfo.additionalInfo?.homePath);
       return;
     }
 
@@ -89,9 +89,10 @@ export function createPermissionGuard(router: Router) {
     if (
       from.path === LOGIN_PATH &&
       to.name === PAGE_NOT_FOUND_ROUTE.name &&
-      to.fullPath !== (userStore.getUserInfo.homePath || HOME_PATH)
+      to.fullPath !== (userStore.getUserInfo.additionalInfo?.homePath || HOME_PATH)
     ) {
-      next(userStore.getUserInfo.homePath || HOME_PATH);
+      // 如果用户定义的 desktopUrl 是非法路径，就跳转到 404，防止无法进入系统
+      next('/404/' + (userStore.getUserInfo.additionalInfo?.homePath || HOME_PATH));
       return;
     }
 

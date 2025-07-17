@@ -4,10 +4,7 @@
       <img :class="`${prefixCls}__header`" :src="getUserInfo.avatarUrl" />
       <span :class="`${prefixCls}__info`">
         <span :class="`${prefixCls}__name`" class="truncate">
-          {{ getUserInfo.name }}
-        </span>
-        <span :class="`${prefixCls}__authority`" class="block">
-          {{ authorityLabel }}
+          {{ getUserInfo.firstName || '未命名' }}
         </span>
         <span :class="`${prefixCls}__btns`" class="block">
           <a class="online"><Icon icon="i-fa:circle" /> {{ t('layout.header.sidebarOnline') }}</a>
@@ -22,22 +19,15 @@
     <span :class="[prefixCls, `${prefixCls}--${props.theme}`]" class="flex">
       <img :class="`${prefixCls}__header`" :src="getUserInfo.avatarUrl" />
       <span :class="`${prefixCls}__info hidden md:block`">
-        <div :class="`${prefixCls}__name`" class="truncate">
-          {{ getUserInfo.firstName || getUserInfo.name }}
-        </div>
-        <div :class="`${prefixCls}__authority`">
-          {{ authorityLabel }}
-        </div>
+        <span :class="`${prefixCls}__name`" class="truncate">
+          {{ getUserInfo.firstName || '未命名' }}
+        </span>
       </span>
     </span>
     <template #overlay>
       <Menu @click="handleMenuClick">
-        <MenuItem
-          value="accountCenter"
-          :text="t('sys.account.center')"
-          icon="i-ion:person-outline"
-        />
-        <MenuItem value="modifyPwd" :text="t('sys.account.modifyPwd')" icon="i-ion:key-outline" />
+        <MenuItem value="accountCenter" :text="t('sys.account.center')" icon="i-ion:person-outline" />
+        <MenuItem value="modifyPwd" :text="t('sys.account.modifyPwd')" icon="i-ant-design:key-outlined" />
         <MenuDivider />
         <MenuItem
           value="doc"
@@ -52,11 +42,7 @@
           :text="t('layout.header.tooltipLock')"
           icon="i-ion:lock-closed-outline"
         />
-        <MenuItem
-          value="logout"
-          :text="t('layout.header.dropdownItemLoginOut')"
-          icon="i-ion:power-outline"
-        />
+        <MenuItem value="logout" :text="t('layout.header.dropdownItemLoginOut')" icon="i-ion:power-outline" />
       </Menu>
     </template>
   </Dropdown>
@@ -74,12 +60,9 @@
   import { useGo } from '/@/hooks/web/usePage';
   import { propTypes } from '/@/utils/propTypes';
   import { openWindow } from '/@/utils';
-  import { Authority, AUTHORITY_OPTIONS } from '/@/enums/authorityEnum';
-  import { PageEnum } from '/@/enums/pageEnum';
   import { Icon } from '/@/components/Icon';
   import MenuItem from './DropMenuItem.vue';
   import LockAction from '../lock/LockModal.vue';
-  import { NULL_UUID } from '/@/enums/constant';
 
   type MenuEvent = 'accountCenter' | 'modifyPwd' | 'logout' | 'doc' | 'lock' | 'roleCode-';
 
@@ -106,40 +89,31 @@
       const userStore = useUserStore();
       const go = useGo();
 
-      const authorityRef = ref<Authority | undefined>();
-      const tenantIdRef = ref<string>('');
-      const customerIdRef = ref<string>('');
+      const sysCodeRef = ref<string>('default');
+      const sysListRef = ref<Recordable[]>([]);
+      const roleCodeRef = ref<string>('');
+      const postCodeRef = ref<string>('');
 
       const getUserInfo = computed(() => {
         const {
-          name = '',
-          email,
           firstName,
-          lastName,
-          phone,
           authority,
-          additionalInfo,
+          email,
+          additionalInfo: { avatarUrl },
         } = userStore.getUserInfo || {};
         return {
-          name,
-          email,
           firstName,
-          lastName,
-          phone,
+          avatarUrl,
+          email,
           authority,
-          avatarUrl: additionalInfo?.avatarUrl,
         };
-      });
-
-      const authorityLabel = computed(() => {
-        return AUTHORITY_OPTIONS.find((item) => item.value == getUserInfo.value.authority)?.label;
       });
 
       if (!props.sidebar) {
         onMounted(async () => {
-          authorityRef.value = userStore.getPageCacheByKey('authority', Authority.CUSTOMER_USER);
-          tenantIdRef.value = userStore.getPageCacheByKey('tenantId', NULL_UUID);
-          customerIdRef.value = userStore.getPageCacheByKey('customerId', NULL_UUID);
+          sysCodeRef.value = userStore.getPageCacheByKey('sysCode', 'default');
+          roleCodeRef.value = userStore.getPageCacheByKey('roleCode', '');
+          postCodeRef.value = userStore.getPageCacheByKey('postCode', '');
         });
       }
 
@@ -154,7 +128,7 @@
       }
 
       function handleModifyPwd() {
-        go('/account/center');
+        go('/account/modPwd');
       }
 
       function handleOpenDoc() {
@@ -191,12 +165,15 @@
         prefixCls,
         t,
         getUserInfo,
-        authorityLabel,
         handleMenuClick,
         getShowDoc,
         registerModal,
         getUseLockPage,
         handleLoginOut,
+        sysCodeRef,
+        sysListRef,
+        roleCodeRef,
+        postCodeRef,
         props,
       };
     },
@@ -228,12 +205,6 @@
 
     &__name {
       font-size: 14px;
-      line-height: 20px;
-    }
-
-    &__authority {
-      font-size: 12px;
-      line-height: 24px;
     }
 
     &--dark {
@@ -296,10 +267,6 @@
         }
 
         &__name {
-          font-weight: bold;
-        }
-
-        &__authority {
           font-weight: bold;
         }
 

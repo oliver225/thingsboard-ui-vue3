@@ -8,11 +8,7 @@
       </template>
       <template #tableTitle>
         <div class="space-x-2">
-          <a-button
-            type="primary"
-            @click="handleForm({})"
-            v-show="hasPermission(Authority.TENANT_ADMIN)"
-          >
+          <a-button type="primary" @click="handleForm({})" v-show="hasPermission(Authority.TENANT_ADMIN)">
             <Icon icon="i-fluent:add-12-filled" /> 新增设备
           </a-button>
           <a-input

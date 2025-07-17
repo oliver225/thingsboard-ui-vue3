@@ -1,14 +1,7 @@
 import { defineComponent, computed, unref } from 'vue';
 import { BasicDrawer } from '/@/components/Drawer';
 import { Divider } from 'ant-design-vue';
-import {
-  TypePicker,
-  ThemeColorPicker,
-  SettingFooter,
-  SwitchItem,
-  SelectItem,
-  InputNumberItem,
-} from './components';
+import { TypePicker, ThemeColorPicker, SettingFooter, SwitchItem, SelectItem, InputNumberItem } from './components';
 
 import { AppDarkModeToggle } from '/@/components/Application';
 
@@ -30,11 +23,7 @@ import {
   mixSidebarTriggerOptions,
 } from './enum';
 
-import {
-  HEADER_PRESET_BG_COLOR_LIST,
-  SIDE_BAR_BG_COLOR_LIST,
-  APP_PRESET_COLOR_LIST,
-} from '/@/settings/designSetting';
+import { HEADER_PRESET_BG_COLOR_LIST, SIDE_BAR_BG_COLOR_LIST, APP_PRESET_COLOR_LIST } from '/@/settings/designSetting';
 
 const { t } = useI18n();
 
@@ -72,7 +61,7 @@ export default defineComponent({
 
     const { getShowHeader, getHeaderBgColor, getShowSearch } = useHeaderSetting();
 
-    const { getShowMultipleTab, getShowQuick, getShowRedo } = useMultipleTabSetting();
+    const { getShowMultipleTab, getShowQuick, getShowRedo, getShowFold } = useMultipleTabSetting();
 
     const getShowMenuRef = computed(() => {
       return unref(getShowMenu) && !unref(getIsHorizontal);
@@ -225,6 +214,13 @@ export default defineComponent({
                 : `${value}${t('layout.setting.minute')}`;
             }}
           />
+        </>
+      );
+    }
+
+    function renderContent() {
+      return (
+        <>
           <InputNumberItem
             title={t('layout.setting.expandedMenuWidth')}
             max={600}
@@ -235,13 +231,7 @@ export default defineComponent({
             defaultValue={unref(getMenuWidth)}
             formatter={(value: string) => `${parseInt(value)}px`}
           />
-        </>
-      );
-    }
 
-    function renderContent() {
-      return (
-        <>
           <SwitchItem
             title={t('layout.setting.tabsRedoBtn')}
             event={HandlerEnum.TABS_SHOW_REDO}
@@ -253,6 +243,13 @@ export default defineComponent({
             title={t('layout.setting.tabsQuickBtn')}
             event={HandlerEnum.TABS_SHOW_QUICK}
             def={unref(getShowQuick)}
+            disabled={!unref(getShowMultipleTab)}
+          />
+
+          <SwitchItem
+            title={t('layout.setting.tabsFoldBtn')}
+            event={HandlerEnum.TABS_SHOW_FOLD}
+            def={unref(getShowFold)}
             disabled={!unref(getShowMultipleTab)}
           />
 
@@ -270,17 +267,9 @@ export default defineComponent({
             disabled={!unref(getShowHeader)}
           />
 
-          <SwitchItem
-            title={t('layout.setting.grayMode')}
-            event={HandlerEnum.GRAY_MODE}
-            def={unref(getGrayMode)}
-          />
+          <SwitchItem title={t('layout.setting.grayMode')} event={HandlerEnum.GRAY_MODE} def={unref(getGrayMode)} />
 
-          <SwitchItem
-            title={t('layout.setting.colorWeak')}
-            event={HandlerEnum.COLOR_WEAK}
-            def={unref(getColorWeak)}
-          />
+          <SwitchItem title={t('layout.setting.colorWeak')} event={HandlerEnum.COLOR_WEAK} def={unref(getColorWeak)} />
         </>
       );
     }

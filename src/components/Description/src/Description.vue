@@ -122,9 +122,9 @@
                 return null;
               }
               const getField = get(_data, field);
-              
+
               if (slot) {
-                return getSlot(slots, slot, { val: getField, data: _data })
+                return getSlot(slots, slot, { val: getField, data: _data });
               }
               return isFunction(render) ? render(getField, _data) : (getField ?? '');
             };
@@ -166,12 +166,7 @@
         const { title } = unref(getMergeProps);
 
         return (
-          <CollapseContainer
-            title={title}
-            canExpan={canExpand}
-            expand={expand}
-            helpMessage={helpMessage}
-          >
+          <CollapseContainer title={title} canExpan={canExpand} expand={expand} helpMessage={helpMessage}>
             {{
               default: () => content,
               action: () => getSlot(slots, 'action'),

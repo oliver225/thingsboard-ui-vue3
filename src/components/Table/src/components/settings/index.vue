@@ -1,6 +1,5 @@
 <template>
   <div class="table-settings">
-    <CardListSetting v-if="getSetting.card" :getPopupContainer="getTableContainer"/>
     <RedoSetting v-if="getSetting.redo" :getPopupContainer="getTableContainer" />
     <SizeSetting v-if="getSetting.size" :getPopupContainer="getTableContainer" />
     <ColumnSetting
@@ -19,7 +18,6 @@
   import SizeSetting from './SizeSetting.vue';
   import RedoSetting from './RedoSetting.vue';
   import FullScreenSetting from './FullScreenSetting.vue';
-  import CardListSetting from './CardListSetting.vue';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { useTableContext } from '../../hooks/useTableContext';
 
@@ -30,7 +28,6 @@
       SizeSetting,
       RedoSetting,
       FullScreenSetting,
-      CardListSetting,
     },
     props: {
       setting: {
@@ -46,7 +43,6 @@
       const getSetting = computed((): TableSetting => {
         return {
           redo: true,
-          card: false,
           size: true,
           setting: true,
           fullScreen: false,
@@ -67,22 +63,28 @@
   });
 </script>
 <style lang="less">
-  html[data-theme='dark'] {
-    .table-settings {
-      color: rgb(255 255 255 / 75%);
-    }
-  }
-
   .table-settings {
     & > * {
       margin-left: 4px;
-      margin-right: 8px;
+      margin-right: 5px;
       margin-top: 6px;
+      font-size: 13px;
+      color: #666;
     }
 
     svg {
       width: 1.3em;
       height: 1.3em;
+    }
+  }
+
+  html[data-theme='dark'] {
+    .table-settings {
+      color: #c9d1d9;
+
+      svg {
+        color: #afafaf;
+      }
     }
   }
 </style>

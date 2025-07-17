@@ -10,11 +10,7 @@
     </template>
 
     <template #title v-if="!$slots.title">
-      <ModalHeader
-        :helpMessage="getProps.helpMessage"
-        :title="getMergeProps.title"
-        @dblclick="handleTitleDbClick"
-      >
+      <ModalHeader :helpMessage="getProps.helpMessage" :title="getMergeProps.title" @dblclick="handleTitleDbClick">
         <template #[item]="data" v-for="item in Object.keys($slots)">
           <slot :name="item" v-bind="data || {}"></slot>
         </template>
@@ -54,17 +50,7 @@
 </template>
 <script lang="ts" setup name="BasicModal">
   import type { ModalProps, ModalMethods } from './typing';
-  import {
-    computed,
-    ref,
-    watch,
-    unref,
-    watchEffect,
-    toRef,
-    getCurrentInstance,
-    nextTick,
-    useAttrs,
-  } from 'vue';
+  import { computed, ref, watch, unref, watchEffect, toRef, getCurrentInstance, nextTick, useAttrs } from 'vue';
   import Modal from './components/Modal';
   import ModalWrapper from './components/ModalWrapper.vue';
   import ModalClose from './components/ModalClose.vue';
@@ -81,14 +67,7 @@
   });
 
   const props = defineProps(basicProps);
-  const emit = defineEmits([
-    'open-change',
-    'height-change',
-    'cancel',
-    'ok',
-    'register',
-    'update:open',
-  ]);
+  const emit = defineEmits(['open-change', 'height-change', 'cancel', 'ok', 'register', 'update:open']);
   const attrs = useAttrs();
   const openRef = ref(false);
   const propsRef = ref<Partial<ModalProps> | null>(null);
@@ -270,13 +249,14 @@
 
         > .scrollbar {
           > .scrollbar__wrap {
-            margin: 12px 15px 0;
-            padding: 1px;
+            > .scrollbar__view {
+              margin: 12px 15px 1px;
 
-            > .scrollbar__view > div {
-              > form:first-child {
-                margin-top: 13px;
-                margin-right: 5px;
+              > div {
+                > form:first-child {
+                  margin-top: 13px;
+                  margin-right: 5px;
+                }
               }
             }
           }
@@ -416,7 +396,10 @@
     overflow: hidden;
 
     .ant-modal {
-      inset: 0 !important;
+      top: 0 !important; /* stylelint-disable-line */
+      right: 0 !important; /* stylelint-disable-line */
+      bottom: 0 !important; /* stylelint-disable-line */
+      left: 0 !important; /* stylelint-disable-line */
       width: 100% !important;
       max-width: calc(100vw - 15px) !important;
 

@@ -57,8 +57,7 @@ export default {
     minute: 'Minute',
 
     operatingTitle: 'Successful!',
-    operatingContent:
-      'The copy is successful, please go to projectSetting.ts to modify the configuration!',
+    operatingContent: 'The copy is successful, please go to projectSetting.ts to modify the configuration!',
     resetSuccess: 'Successfully reset!',
 
     copyBtn: 'Copy',
@@ -114,7 +113,7 @@ export default {
     fixedHeader: 'Fixed header',
     fixedSideBar: 'Fixed Sidebar',
 
-    mixSidebarTrigger: 'Mixed menu Trigger',
+    mixSidebarTrigger: 'Mixed menu trigger',
     triggerHover: 'Hover',
     triggerClick: 'Click',
 

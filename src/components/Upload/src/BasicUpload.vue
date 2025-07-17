@@ -56,7 +56,6 @@
   import { omit } from 'lodash-es';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { isArray } from '/@/utils/is';
-  import { FileUpload, uploadFileList } from '/@/api/sys/upload';
 
   const props = defineProps(uploadContainerProps);
   const emit = defineEmits(['change', 'delete', 'update:value', 'click']);
@@ -72,8 +71,8 @@
   }
 
   const dataMap = ref<object>({});
-  const fileList = ref<FileUpload[]>([]);
-  const fileListDel = ref<FileUpload[]>([]);
+  const fileList = ref<[]>([]);
+  const fileListDel = ref<[]>([]);
 
   const getShowPreview = computed(() => {
     const { showPreview, emptyHidePreview } = props;
@@ -107,22 +106,22 @@
   function loadFileList() {
     fileList.value = [];
     fileListDel.value = [];
-    if (props.bizKey != '') {
-      uploadFileList(
-        {
-          bizKey: props.bizKey,
-          bizType: props.bizType,
-        },
-        props.apiFileListUrl,
-      ).then((res) => {
-        if (isArray(res)) {
-          fileList.value = res;
-          dataMap.value[props.bizType + '__len'] = fileList.value.length;
-          emit('update:value', dataMap.value);
-          emit('change', dataMap.value);
-        }
-      });
-    }
+    // if (props.bizKey != '') {
+    //   uploadFileList(
+    //     {
+    //       bizKey: props.bizKey,
+    //       bizType: props.bizType,
+    //     },
+    //     props.apiFileListUrl,
+    //   ).then((res) => {
+    //     if (isArray(res)) {
+    //       fileList.value = res;
+    //       dataMap.value[props.bizType + '__len'] = fileList.value.length;
+    //       emit('update:value', dataMap.value);
+    //       emit('change', dataMap.value);
+    //     }
+    //   });
+    // }
   }
 
   // 上传modal保存操作
@@ -131,7 +130,7 @@
     dataMap.value[props.bizType] = fileList.value.map((item) => item.id).join(',');
     dataMap.value[props.bizType + '__len'] = fileList.value.length;
     emit('update:value', dataMap.value);
-    emit('change', dataMap.value);
+    emit('change', dataMap.value, fileList.value);
   }
 
   // 预览modal保存操作
@@ -140,7 +139,7 @@
     dataMap.value[props.bizType] = fileList.value.map((item) => item.id).join(',');
     dataMap.value[props.bizType + '__len'] = fileList.value.length;
     emit('update:value', dataMap.value);
-    emit('change', dataMap.value);
+    emit('change', dataMap.value, fileList.value);
   }
 
   function handleDelete(record: FileUpload) {
@@ -149,6 +148,6 @@
     dataMap.value[props.bizType + '__len'] = fileList.value.length;
     emit('delete', record);
     emit('update:value', dataMap.value);
-    emit('change', dataMap.value);
+    emit('change', dataMap.value, fileList.value);
   }
 </script>

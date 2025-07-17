@@ -23,15 +23,6 @@ const searchForm: FormProps = {
       component: 'Input',
     },
     {
-      label: t('状态'),
-      field: 'status',
-      component: 'Select',
-      componentProps: {
-        dictType: 'sys_user_status',
-        allowClear: true,
-      },
-    },
-    {
       field: 'none',
       component: 'None',
     },
@@ -110,7 +101,6 @@ const tableColumns: BasicColumn[] = [
     key: 'a.status',
     sorter: true,
     width: 80,
-    dictType: 'sys_status',
   },
 ];
 

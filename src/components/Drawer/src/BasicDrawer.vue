@@ -3,27 +3,24 @@
     <template #title v-if="!$slots.title">
       <DrawerHeader
         :title="getMergeProps.title"
+        :secondTitle="secondTitle"
         :isDetail="isDetail"
+        :icon="titleIcon"
         :showDetailBack="showDetailBack"
         @close="onClose"
-      >
-        <template #titleToolbar>
-          <slot name="titleToolbar"></slot>
-        </template>
-      </DrawerHeader>
+      />
     </template>
     <template v-else #title>
       <slot name="title"></slot>
     </template>
     <template #extra>
       <Tooltip :title="t('component.drawer.cancelText')" placement="bottom">
-        <Icon
-          icon="i-ant-design:close-outlined"
-          class="anticon-close cursor-pointer"
-          @click="onClose"
-        />
+        <Icon icon="i-ant-design:close-outlined" class="anticon-close cursor-pointer" @click="onClose" />
       </Tooltip>
     </template>
+    <div :class="`${prefixCls}__toolbar`">
+      <slot name="titleToolbar"></slot>
+    </div>
     <div v-if="widthResize" class="ew-resize" @mousedown="onMousedown"></div>
     <ScrollContainer
       :style="getScrollContentStyle"
@@ -41,16 +38,7 @@
 </template>
 <script lang="ts" setup name="BasicDrawer">
   import type { DrawerInstance, DrawerProps } from './typing';
-  import {
-    ref,
-    computed,
-    watch,
-    unref,
-    toRaw,
-    getCurrentInstance,
-    CSSProperties,
-    watchEffect,
-  } from 'vue';
+  import { ref, computed, watch, unref, toRaw, getCurrentInstance, CSSProperties, watchEffect } from 'vue';
   import { Drawer } from 'ant-design-vue';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { isFunction, isNumber } from '/@/utils/is';
@@ -191,6 +179,7 @@
   const onMousedown = function (e) {
     const wrapper = e.target.closest('.ant-drawer-content-wrapper') as HTMLElement;
     if (!wrapper) return;
+    wrapper.style.transition = 'none';
     const w = wrapper.clientWidth;
     const x = e.clientX;
     const l = e.target.offsetLeft;
@@ -255,12 +244,13 @@
       position: absolute;
       left: 0;
       height: 90%;
-      width: 5px;
+      width: 3px;
       z-index: 1000;
       user-select: none;
 
       &:hover {
         cursor: ew-resize;
+        background: @border-color-light;
       }
     }
 
@@ -272,10 +262,9 @@
 
         > .scrollbar {
           > .scrollbar__wrap {
-            margin: 16px 16px 5px;
-            padding-bottom: 30px;
-
             > .scrollbar__view {
+              margin: 16px 16px 5px;
+
               > form:first-child,
               > .ant-tabs:first-child {
                 margin-top: 13px;
@@ -322,9 +311,10 @@
         padding: 0 !important;
 
         > .scrollbar {
-          .scrollbar__wrap {
-            margin: 10px;
-            padding-bottom: 10px;
+          > .scrollbar__wrap {
+            > .scrollbar__view {
+              margin: 10px;
+            }
           }
 
           .is-horizontal {

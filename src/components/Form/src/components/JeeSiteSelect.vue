@@ -1,9 +1,3 @@
-<!--
- * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
- * No deletion without permission, or be held responsible to law.
- * @description 支持字典类型、支持下拉框标签返回、支持 API 接口
- * @author Vben、ThinkGem
--->
 <template>
   <div class="jeesite-select">
     <Select v-bind="getAttrs" v-model:value="state" :options="optionsRef" @click="handleFetch">
@@ -25,14 +19,13 @@
 <script lang="ts" setup name="JeeSiteSelect">
   import { ref, unref, computed, watch, onMounted } from 'vue';
   import { Select } from 'ant-design-vue';
-  import { isEmpty, isFunction } from '/@/utils/is';
+  import { isFunction } from '/@/utils/is';
   import { propTypes } from '/@/utils/propTypes';
   import { useAttrs } from '/@/hooks/core/useAttrs';
   import { useRuleFormItem } from '/@/hooks/component/useFormItem';
   import { get } from 'lodash-es';
   import { LoadingOutlined } from '@ant-design/icons-vue';
   import { useI18n } from '/@/hooks/web/useI18n';
-  import { useDict } from '/@/components/Dict';
 
   type OptionsItem = { label: string; value: string; disabled?: boolean };
 
@@ -63,20 +56,14 @@
     resultField: propTypes.string.def(''),
     immediate: propTypes.bool.def(false),
     each: propTypes.bool.def(false),
-    dictType: propTypes.string,
     mode: propTypes.string,
   });
 
-  const emit = defineEmits([
-    'change',
-    'update:value',
-    'update:labelValue',
-    'options-change',
-    'click',
-  ]);
+  const emit = defineEmits(['change', 'update:value', 'update:labelValue', 'options-change', 'click']);
 
   const { t } = useI18n();
   const attrs = useAttrs();
+  const [state] = useRuleFormItem(props);
   const optionsRef = ref<Recordable[]>(props.options);
   const isFirstLoad = ref<boolean>(false);
   const loading = ref<boolean>(false);
@@ -85,17 +72,14 @@
     return {
       showSearch: true,
       optionFilterProp: 'label',
+      fieldNames: {
+        value: 'value',
+        label: 'label',
+      },
       ...unref(attrs),
       ...(props as Recordable),
     };
   });
-
-  const [state] = useRuleFormItem(props);
-
-  if (!isEmpty(props.dictType)) {
-    const { initSelectOptions } = useDict();
-    initSelectOptions(optionsRef, props.dictType);
-  }
 
   watch(
     () => props.options,
@@ -118,6 +102,31 @@
     (v) => {
       v && !isFirstLoad.value && fetch();
     },
+  );
+
+  watch(
+    () => optionsRef.value,
+    () => {
+      // 如果没有给初始值，并不允许清空选择项和非多选的时候，默认选择第一个选项
+      if (
+        !state.value &&
+        !getAttrs.value.allowClear &&
+        getAttrs.value.mode != 'multiple' &&
+        optionsRef.value.length > 0
+      ) {
+        const fieldNames = getAttrs.value.fieldNames;
+        const firstValue = optionsRef.value[0];
+        if (props.labelInValue) {
+          state.value = {
+            label: firstValue[fieldNames.label],
+            value: firstValue[fieldNames.value],
+          };
+        } else {
+          state.value = firstValue[fieldNames.value];
+        }
+      }
+    },
+    { immediate: true },
   );
 
   onMounted(async () => {

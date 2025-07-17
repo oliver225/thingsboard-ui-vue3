@@ -57,8 +57,7 @@ export default {
     subTitle500: 'Sorry, the server is reporting an error.',
     noDataTitle: 'No data on the current page.',
     networkErrorTitle: 'Network Error',
-    networkErrorSubTitle:
-      'Sorry，Your network connection has been disconnected, please check your network!',
+    networkErrorSubTitle: 'Sorry，Your network connection has been disconnected, please check your network!',
   },
   lock: {
     unlock: 'Click to unlock',
@@ -75,9 +74,7 @@ export default {
     signUpFormTitle: 'Sign up',
     forgetFormTitle: 'Reset password',
 
-    signInTitle: 'Backstage management system',
-    signInDesc: 'Enter your personal details and get started!',
-    policy: 'I agree to the about Privacy Policy',
+    policy: 'I agree to the Thingsboard Privacy Policy',
     scanSign: `scanning the code to complete the login`,
 
     loginButton: 'Sign in',
@@ -85,6 +82,7 @@ export default {
     rememberMe: 'Remember me',
     forgetPassword: 'Forget Password?',
     otherSignIn: 'Sign in with',
+    requestResetPassword: 'Request password reset',
 
     // notify
     loginSuccessTitle: 'Login successful',
@@ -95,17 +93,22 @@ export default {
     passwordPlaceholder: 'Please input password',
     smsPlaceholder: 'Please input sms code',
     mobilePlaceholder: 'Please input mobile',
+    emailPlaceholder: 'Please input E-mail',
     policyPlaceholder: 'Register after checking',
     diffPwd: 'The two passwords are inconsistent',
     corpPlaceholder: 'Please selection tenant',
+    userPlaceholder: 'Please selection account',
+    userNamePlaceholder: 'Please input nick name',
 
-    userName: 'Username',
+    account: 'Username',
+    userName: 'Nick name',
     password: 'Password',
     confirmPassword: 'Confirm Password',
     validCode: 'Valid Code',
+    mobile: 'Mobile',
     email: 'Email',
     smsCode: 'SMS code',
-    mobile: 'Mobile',
+    emailCode: 'Email code',
   },
   account: {
     center: 'Account Center',

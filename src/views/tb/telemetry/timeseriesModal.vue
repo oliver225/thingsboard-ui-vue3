@@ -54,8 +54,8 @@
   import { BasicForm, FormSchema, useForm } from '/@/components/Form';
   import { WsCmdType } from '/@/enums/wsCmdEnum';
   import { DataType } from '/@/enums/thingsModelEnum';
-  import { isArray } from 'lodash';
   import dayjs from 'dayjs';
+  import { isArray } from '/@/utils/is';
 
   const { t } = useI18n('tb');
 
@@ -168,11 +168,7 @@
   });
 
   const { setOptions, resize } = useECharts(chartRef as Ref<HTMLDivElement>);
-  const {
-    getAndIncrementCmdId,
-    send: websocketSend,
-    unsubscribe: websocketUnsubscribe,
-  } = useWebsocketStore();
+  const { getAndIncrementCmdId, send: websocketSend, unsubscribe: websocketUnsubscribe } = useWebsocketStore();
 
   const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
     setModalProps({ loading: true });

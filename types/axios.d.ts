@@ -28,9 +28,9 @@ export interface RequestOptions {
 export interface Result {
   // code: number;
   // type: 'success' | 'error' | 'warning';
-  sessionid: string;
-  message: string;
-  result: string;
+  errorCode?: number;
+  status?: number;
+  message?: string;
   data?: any;
 }
 

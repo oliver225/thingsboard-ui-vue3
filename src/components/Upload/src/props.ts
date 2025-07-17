@@ -1,13 +1,13 @@
 import type { PropType } from 'vue';
 import { FileBasicColumn } from './typing';
-import { FileUpload, uploadFile } from '/@/api/sys/upload';
 import { useGlobSetting } from '/@/hooks/setting';
 import type { SizeType } from '/@/components/Table';
 import { DEFAULT_SIZE } from '/@/components/Table/src/const';
+import { File } from 'buffer';
 
 type UploadType = 'image' | 'media' | 'file' | 'all';
 
-const { ctxAdminPath } = useGlobSetting();
+const { ctxPath } = useGlobSetting();
 
 export const basicProps = {
   uploadText: {
@@ -56,19 +56,19 @@ export const basicProps = {
   },
   api: {
     type: Function as PropType<PromiseFn>,
-    default: uploadFile,
+    default: () => {},
   },
   apiUploadUrl: {
     type: String as PropType<string>,
-    default: ctxAdminPath + '/file/upload',
+    default: ctxPath + '/file/upload',
   },
   apiDownloadUrl: {
     type: String as PropType<string>,
-    default: ctxAdminPath + '/file/download',
+    default: ctxPath + '/file/download',
   },
   apiFileListUrl: {
     type: String as PropType<string>,
-    default: ctxAdminPath + '/file/fileList',
+    default: ctxPath + '/file/fileList',
   },
   isLazy: {
     type: Boolean as PropType<boolean>,
@@ -136,7 +136,7 @@ export const uploadContainerProps = {
 export const uploadProps = {
   ...basicProps,
   previewFileList: {
-    type: Array as PropType<FileUpload[]>,
+    type: Array as PropType<File[]>,
     default: () => [],
   },
 };
@@ -144,7 +144,7 @@ export const uploadProps = {
 export const previewProps = {
   ...basicProps,
   value: {
-    type: Array as PropType<FileUpload[]>,
+    type: Array as PropType<File[]>,
     default: () => [],
   },
 };

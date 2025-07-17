@@ -1,3 +1,4 @@
+import { def } from '@vue/shared';
 import type { PropType } from 'vue';
 
 export const footerProps = {
@@ -26,8 +27,10 @@ export const footerProps = {
 export const basicProps = {
   isDetail: { type: Boolean },
   title: { type: String, default: '' },
+  titleIcon: { type: String },
+  secondTitle: { type: String, default: '' },
   loadingText: { type: String },
-  showDetailBack: { type: Boolean, default: true },
+  showDetailBack: { type: Boolean, default: false },
   open: { type: Boolean },
   loading: { type: Boolean },
   maskClosable: { type: Boolean, default: true },
@@ -43,4 +46,8 @@ export const basicProps = {
   // 是否允许拖拽调整抽屉宽度
   widthResize: { type: Boolean, default: true },
   ...footerProps,
+  // eslint check
+  width: { type: [Number, String] },
+  mask: { type: Boolean, default: true },
+  maskStyle: { type: Object },
 };

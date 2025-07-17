@@ -1,14 +1,12 @@
 <template>
-  <div class="tenant-list">
+  <div>
     <BasicTable @register="registerTable">
       <template #headerTop>
-        <div class="text-lg font-bold my-2"> 租户 </div>
+        <div class="tb-table-title"> 租户 </div>
       </template>
       <template #tableTitle>
-        <div class="space-x-2">
-          <a-button type="primary" @click="handleForm({})">
-            <Icon icon="i-fluent:add-12-filled" /> 新增租户
-          </a-button>
+        <div class="space-x-4 flex items-center">
+          <a-button type="primary" @click="handleForm({})"> <Icon icon="i-fluent:add-12-filled" /> 新增租户 </a-button>
           <a-input
             v-model:value="searchParam.textSearch"
             placeholder="输入搜索内容"
@@ -33,12 +31,7 @@
       </template>
     </BasicTable>
     <InputForm @register="registerModal" @success="handleSuccess" />
-    <DetailDrawer
-      @register="registerDrawer"
-      @edit="handleForm"
-      @delete="handleDelete"
-      @admin="handleTenantAdmin"
-    />
+    <DetailDrawer @register="registerDrawer" @edit="handleForm" @delete="handleDelete" @admin="handleTenantAdmin" />
   </div>
 </template>
 <script lang="ts">
@@ -47,7 +40,7 @@
   });
 </script>
 <script lang="ts" setup>
-  import { defineComponent } from 'vue';
+  import { defineComponent, reactive } from 'vue';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { useModal } from '/@/components/Modal';
   import { useDrawer } from '/@/components/Drawer';
@@ -56,7 +49,6 @@
   import { Icon } from '/@/components/Icon';
   import { router } from '/@/router';
   import { tenantInfoList, tenantDelete } from '/@/api/tb/tenant';
-  import { reactive } from 'vue';
   import { areaList } from '@vant/area-data';
   import InputForm from './form.vue';
   import DetailDrawer from './detail.vue';
@@ -142,7 +134,6 @@
     rowKey: (record) => record.id.id,
     api: tenantInfoList,
     beforeFetch: wrapFetchParams,
-    defSort: { sortProperty: 'createdTime', sortOrder: 'DESC' },
     columns: tableColumns,
     actionColumn: actionColumn,
     showTableSetting: true,
@@ -162,9 +153,8 @@
     createConfirm({
       iconType: 'error',
       title: `确定删除租户[${record.title}]吗？`,
-      content: '请注意：确认后，租户和所有相关数据将不可恢复。',
-      centered: false,
-      okText: '删除',
+      content: '确认后，租户和所有相关数据将不可恢复。',
+      okType: 'danger',
       onOk: async () => {
         try {
           await tenantDelete(record.id.id);
@@ -190,7 +180,3 @@
     openDrawer(true, record);
   }
 </script>
-<style lang="less">
-  .tenant-list {
-  }
-</style>

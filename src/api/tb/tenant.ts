@@ -1,8 +1,8 @@
-import { BasicModel, BasicQuery, Page } from "../model/baseModel";
-import { DashboardInfo } from "./dashboard";
-import { EntityId } from "/#/store";
-import { EntityType } from "/@/enums/entityTypeEnum";
-import { defHttp } from "/@/utils/http/axios";
+import { BasicModel, BasicQuery, Page } from '../model/baseModel';
+import { DashboardInfo } from './dashboard';
+import { EntityId } from '/#/store';
+import { EntityType } from '/@/enums/entityTypeEnum';
+import { defHttp } from '/@/utils/http/axios';
 
 export interface Tenant extends BasicModel<EntityType.TENANT> {
   title?: string;
@@ -17,10 +17,10 @@ export interface Tenant extends BasicModel<EntityType.TENANT> {
   email?: string;
   tenantProfileId?: EntityId<EntityType.TENANT_PROFILE>;
   additionalInfo?: {
-    description?: string,
-    homeDashboardId?: DashboardInfo,
-    homeDashboardHideToolbar: boolean
-  }
+    description?: string;
+    homeDashboardId?: DashboardInfo;
+    homeDashboardHideToolbar: boolean;
+  };
 }
 
 export interface TenantInfo extends Tenant {
@@ -29,40 +29,41 @@ export interface TenantInfo extends Tenant {
 
 export function tenantSave(data?: Tenant | any) {
   return defHttp.postJson<Tenant>({
-    url: '/api/tenant', data
+    url: '/tenant',
+    data,
   });
 }
 
 export function tenantById(tenantId: string, params?: any) {
   return defHttp.get<Tenant>({
-    url: `/api/tenant/${tenantId}`,
-    params
+    url: `/tenant/${tenantId}`,
+    params,
   });
 }
 
 export function tenantInfoById(tenantId: string, params?: any) {
   return defHttp.get<TenantInfo>({
-    url: `/api/tenant/info/${tenantId}`,
-    params
+    url: `/tenant/info/${tenantId}`,
+    params,
   });
 }
 
 export function tenantDelete(tenantId: string) {
   return defHttp.delete<void>({
-    url: `/api/tenant/${tenantId}`,
+    url: `/tenant/${tenantId}`,
   });
 }
 
 export function tenantList(params: BasicQuery) {
   return defHttp.get<Page<Tenant>>({
-    url: `/api/tenants`,
+    url: `/tenants`,
     params,
   });
 }
 
 export function tenantInfoList(params: BasicQuery) {
   return defHttp.get<Page<TenantInfo>>({
-    url: `/api/tenantInfos`,
+    url: `/tenantInfos`,
     params,
   });
 }

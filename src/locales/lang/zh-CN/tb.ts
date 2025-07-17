@@ -8,7 +8,7 @@ export default {
   tenantProfile: '租户配置',
   resource: '资源',
   widgetsBundle: '部件包',
-  widgetType:'部件',
+  widgetType: '部件',
   resourceLibrary: '资源库',
   notification_center: '通知中心',
   notification_list: '通知列表',
@@ -30,5 +30,13 @@ export default {
   entityView: '实体视图',
   ota: 'OTA升级',
   images: '图像库',
-  scadaSymbols:'SCADA 符号集'
-}
+  scadaSymbols: 'SCADA 符号集',
+  tabs: {
+    detail: '详情',
+    telemetry: '数据',
+    alarm: '告警',
+    event: '事件',
+    relation: '关联',
+    auditLog: '审计日志',
+  },
+};

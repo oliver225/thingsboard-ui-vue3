@@ -1,7 +1,7 @@
 // axios配置  可自行根据项目进行更改，只需更改该文件即可，其他文件可以不动
 // The axios configuration can be changed according to the project, just change the file, other files can be left unchanged
 
-import type { AxiosInstance, AxiosResponse } from 'axios';
+import type { AxiosResponse } from 'axios';
 import type { RequestOptions, Result } from '/#/axios';
 import type { AxiosTransform, CreateAxiosOptions } from './axiosTransform';
 import { VAxios } from './Axios';
@@ -16,8 +16,8 @@ import { useErrorLogStoreWithOut } from '/@/store/modules/errorLog';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { joinTimestamp, formatRequestDate } from './helper';
 import { useUserStoreWithOut } from '/@/store/modules/user';
-import { isExpired } from '/@/utils/jwt';
-import { refreshTokenApi } from '/@/api/tb/login';
+import { router } from '/@/router';
+import { PageEnum } from '/@/enums/pageEnum';
 
 const globSetting = useGlobSetting();
 const urlPrefix = globSetting.urlPrefix;
@@ -53,68 +53,12 @@ const transform: AxiosTransform = {
     // }
 
     // 处理响应头中的令牌
-    // const token = res?.headers[(config as any)?.authenticationHeader];
-    // if (token) {
-    //   const userStore = useUserStoreWithOut();
-    //   userStore.setToken(token);
-    // }
+    const token = res?.headers[(config as any)?.authenticationHeader];
+    if (token) {
+      const userStore = useUserStoreWithOut();
+      userStore.setToken(token);
+    }
 
-    // 非对象类型的直接返回数据
-    if (typeof data !== 'object') return data;
-
-    //  这里 code，result，message为 后台统一的字段，需要在 types.ts内修改为项目自己的接口返回格式
-    // const { code, result, message } = data;
-    // const { sessionid, result, message } = data;
-
-    // // 设置会话编码
-    // if (data && Reflect.has(data, 'sessionid')) {
-    //   const userStore = useUserStoreWithOut();
-    //   userStore.setToken(sessionid);
-    // }
-
-    // if (data && Reflect.has(data, 'result')) {
-    //   if (result === 'login' && options.errorMessageMode !== 'none') {
-    //     if (!isShowMessage) {
-    //       isShowMessage = true;
-    //       // userStore.resetState();
-    //       const currentRoute = router.currentRoute.value;
-    //       if (currentRoute.path !== '/') {
-    //         showMessage(data.message, undefined, 180);
-    //       }
-    //       if (config.url?.indexOf('__notUpdateSession=true') == -1) {
-    //         let path = PageEnum.BASE_LOGIN as string;
-    //         if (currentRoute.path !== '/' && currentRoute.path !== PageEnum.BASE_LOGIN) {
-    //           path = path + '?redirect=' + currentRoute.fullPath;
-    //         }
-    //         router.replace(path);
-    //       }
-    //       setTimeout(() => (isShowMessage = false), 1000);
-    //     }
-    //     throw new Error(t('sys.api.timeoutMessage'));
-    //   } else if (result === 'false') {
-    //     const errorMessage = message || t('sys.api.apiRequestFailed');
-    //     if (options.errorMessageMode === 'modal') {
-    //       if (!isShowMessageModal) {
-    //         isShowMessageModal = true;
-    //         showMessageModal({
-    //           content: errorMessage,
-    //           onOk() {
-    //             isShowMessageModal = false;
-    //             return Promise.resolve();
-    //           },
-    //         });
-    //       }
-    //       throw new Error(errorMessage);
-    //     } else if (options.errorMessageMode === 'message') {
-    //       if (!isShowMessage) {
-    //         isShowMessage = true;
-    //         showMessage(errorMessage);
-    //         setTimeout(() => (isShowMessage = false), 1000);
-    //       }
-    //       throw new Error(errorMessage);
-    //     }
-    //   }
-    // }
     return data;
   },
 
@@ -153,10 +97,7 @@ const transform: AxiosTransform = {
           config.params = undefined;
         }
         if (joinParamsToUrl) {
-          config.url = setObjToUrlParams(
-            config.url as string,
-            Object.assign({}, config.params, config.data),
-          );
+          config.url = setObjToUrlParams(config.url as string, Object.assign({}, config.params, config.data));
         }
       } else {
         // 兼容restful风格
@@ -166,7 +107,6 @@ const transform: AxiosTransform = {
     }
     return config;
   },
-
   /**
    * @description: 请求拦截器处理
    */
@@ -193,14 +133,12 @@ const transform: AxiosTransform = {
   /**
    * @description: 响应错误处理
    */
-  responseInterceptorsCatch: (error: any, instance: AxiosInstance) => {
+  responseInterceptorsCatch: (error: any) => {
     const { t } = useI18n();
     const errorLogStore = useErrorLogStoreWithOut();
     errorLogStore.addAjaxErrorInfo(error);
     const { response, code, message, config } = error || {};
     const errorMessageMode = config?.requestOptions?.errorMessageMode || 'none';
-    const status: number = response?.status ?? 0;
-    const errorCode: number = response?.data?.errorCode ?? 0;
     const msg: string = response?.data?.message ?? '';
     const err: string = error?.toString?.() ?? '';
     let errMessage = '';
@@ -214,33 +152,21 @@ const transform: AxiosTransform = {
         errMessage = t('sys.api.apiRequestFailed');
       }
 
-      if (status == 401 && errorCode == 11) {
-        console.log('Token 到期,刷新获取新的token');
-        const userStore = useUserStoreWithOut();
-        const refreshToken = userStore.getRefreshToken;
-        if (refreshToken && !isExpired(refreshToken)) {
-          userStore.setToken(null);
-          return refreshTokenApi(refreshToken).then((jwtToken) => {
-            userStore.setToken(jwtToken);
-            return instance.request(config);
-          });
-        } else {
-          errMessage = error?.response?.data?.message || '登录过期,请重新登陆。。。';
-        }
-      }
-
       if (errMessage) {
         if (errorMessageMode === 'modal') {
           if (!isShowMessageModal) {
             isShowMessageModal = true;
-            showMessageModal({
-              title: t('sys.api.errorTip'),
-              content: msg || errMessage,
-              onOk() {
-                isShowMessageModal = false;
-                return Promise.resolve();
+            showMessageModal(
+              {
+                title: t('sys.api.errorTip'),
+                content: msg || errMessage,
+                onOk() {
+                  isShowMessageModal = false;
+                  return Promise.resolve();
+                },
               },
-            });
+              'error',
+            );
           }
         } else if (errorMessageMode === 'message') {
           if (!isShowMessage) {
@@ -255,7 +181,7 @@ const transform: AxiosTransform = {
       throw new Error(error);
     }
 
-    checkStatus(error?.response?.status, error?.response?.data?.errorCode, msg, errorMessageMode);
+    checkStatus(error?.response?.status, msg, errorMessageMode);
     return Promise.reject(error);
   },
 };
@@ -264,12 +190,10 @@ function createAxios(opt?: Partial<CreateAxiosOptions>) {
   return new VAxios(
     deepMerge(
       {
-        // authenticationHeader: 'Authorization',
         authenticationScheme: 'Bearer',
         authenticationHeader: 'X-Authorization',
-        // authenticationScheme: '',
-        // 请求超时时间，默认3分钟
-        timeout: 3 * 60 * 1000,
+        // 请求超时时间，默认1分钟
+        timeout: 1 * 60 * 1000,
         // 基础接口地址
         // baseURL: globSetting.apiUrl,
         // 默认请求头设置

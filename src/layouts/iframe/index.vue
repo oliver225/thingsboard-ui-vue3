@@ -1,17 +1,13 @@
 <template>
   <div v-if="showFrame">
     <template v-for="frame in getFramePages" :key="frame.path">
-      <FramePage
-        v-if="frame.meta.frameSrc && hasRenderFrame(frame.name)"
-        v-show="showIframe(frame)"
-        :frame="frame"
-      />
+      <FramePage v-if="frame.meta.frameSrc && hasRenderFrame(frame.name)" v-show="showIframe(frame)" :frame="frame" />
     </template>
   </div>
 </template>
 <script lang="ts">
   import { defineComponent, unref, computed } from 'vue';
-  import FramePage from '/@/views/sys/iframe/index.vue';
+  import FramePage from '/@/layouts/iframe/FramePage.vue';
 
   import { useFrameKeepAlive } from './useFrameKeepAlive';
 

@@ -11,9 +11,8 @@ import type {
 } from './types/table';
 import type { FormProps } from '/@/components/Form';
 
-import { DEFAULT_FILTER_FN, DEFAULT_SORT_FN, FETCH_SETTING, DEFAULT_SIZE } from './const';
+import { DEFAULT_FILTER_FN, DEFAULT_SORT, DEFAULT_SORT_FN, FETCH_SETTING, DEFAULT_SIZE } from './const';
 import { propTypes } from '/@/utils/propTypes';
-import { ListGridType } from 'ant-design-vue/es/list';
 
 export const basicProps = {
   isTreeTable: propTypes.bool.def(false),
@@ -44,7 +43,7 @@ export const basicProps = {
     default: null,
   },
   indentSize: propTypes.number.def(24),
-  canColDrag: propTypes.bool.def(true),
+  canRowDrag: propTypes.bool.def(false),
   api: {
     type: Function as PropType<(...arg: any[]) => Promise<any>>,
     default: null,
@@ -78,7 +77,7 @@ export const basicProps = {
   // 默认的排序参数
   defSort: {
     type: Object as PropType<Recordable>,
-    default: null,
+    default: DEFAULT_SORT,
   },
   // 使用搜索表单
   useSearchForm: propTypes.bool,
@@ -139,9 +138,6 @@ export const basicProps = {
     default: true,
   },
   loading: propTypes.bool,
-  cardList: propTypes.bool.def(false),
-  imageFiled: propTypes.string,
-  cardGrid:  Object as PropType<ListGridType>,
   rowClassName: {
     type: Function as PropType<(record: TableCustomRecord<any>, index: number) => string>,
   },
@@ -151,12 +147,7 @@ export const basicProps = {
   },
   beforeEditSubmit: {
     type: Function as PropType<
-      (data: {
-        record: Recordable;
-        index: number;
-        key: string | number;
-        value: any;
-      }) => Promise<any>
+      (data: { record: Recordable; index: number; key: string | number; value: any }) => Promise<any>
     >,
   },
   size: {

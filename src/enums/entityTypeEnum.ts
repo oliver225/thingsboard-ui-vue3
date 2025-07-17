@@ -55,25 +55,25 @@ export const ENTITY_TYPE_OPTIONS = [
   { value: EntityType.NOTIFICATION_TEMPLATE, label: '通知模板' },
   { value: EntityType.NOTIFICATION_REQUEST, label: '通知记录' },
   { value: EntityType.NOTIFICATION, label: '通知' },
-  { value: EntityType.NOTIFICATION_RULE, label: '通知规则' }
+  { value: EntityType.NOTIFICATION_RULE, label: '通知规则' },
 ];
 
 export enum ActionType {
-  ADDED = 'ADDED',     // log entity
-  DELETED = 'DELETED',     // log string id
-  UPDATED = 'UPDATED',     // log entity
-  ATTRIBUTES_UPDATED = 'ATTRIBUTES_UPDATED',     // log attributes/values
-  ATTRIBUTES_DELETED = 'ATTRIBUTES_DELETED',     // log attributes
-  TIMESERIES_UPDATED = 'TIMESERIES_UPDATED',     // log timeseries update
-  TIMESERIES_DELETED = 'TIMESERIES_DELETED',     // log timeseries
-  RPC_CALL = 'RPC_CALL',     // log method and params
-  CREDENTIALS_UPDATED = 'CREDENTIALS_UPDATED',     // log new credentials
-  ASSIGNED_TO_CUSTOMER = 'ASSIGNED_TO_CUSTOMER',     // log customer name
-  UNASSIGNED_FROM_CUSTOMER = 'UNASSIGNED_FROM_CUSTOMER',     // log customer name
-  ACTIVATED = 'ACTIVATED',     // log string id
-  SUSPENDED = 'SUSPENDED',     // log string id
-  CREDENTIALS_READ = 'CREDENTIALS_READ',    // log device id
-  ATTRIBUTES_READ = 'ATTRIBUTES_READ',    // log attributes
+  ADDED = 'ADDED', // log entity
+  DELETED = 'DELETED', // log string id
+  UPDATED = 'UPDATED', // log entity
+  ATTRIBUTES_UPDATED = 'ATTRIBUTES_UPDATED', // log attributes/values
+  ATTRIBUTES_DELETED = 'ATTRIBUTES_DELETED', // log attributes
+  TIMESERIES_UPDATED = 'TIMESERIES_UPDATED', // log timeseries update
+  TIMESERIES_DELETED = 'TIMESERIES_DELETED', // log timeseries
+  RPC_CALL = 'RPC_CALL', // log method and params
+  CREDENTIALS_UPDATED = 'CREDENTIALS_UPDATED', // log new credentials
+  ASSIGNED_TO_CUSTOMER = 'ASSIGNED_TO_CUSTOMER', // log customer name
+  UNASSIGNED_FROM_CUSTOMER = 'UNASSIGNED_FROM_CUSTOMER', // log customer name
+  ACTIVATED = 'ACTIVATED', // log string id
+  SUSPENDED = 'SUSPENDED', // log string id
+  CREDENTIALS_READ = 'CREDENTIALS_READ', // log device id
+  ATTRIBUTES_READ = 'ATTRIBUTES_READ', // log attributes
   RELATION_ADD_OR_UPDATE = 'RELATION_ADD_OR_UPDATE',
   RELATION_DELETED = 'RELATION_DELETED',
   RELATIONS_DELETED = 'RELATIONS_DELETED',
@@ -89,7 +89,7 @@ export enum ActionType {
   ASSIGNED_TO_TENANT = 'ASSIGNED_TO_TENANT',
   PROVISION_SUCCESS = 'PROVISION_SUCCESS',
   PROVISION_FAILURE = 'PROVISION_FAILURE',
-  ASSIGNED_TO_EDGE = 'ASSIGNED_TO_EDGE',     // log edge name
+  ASSIGNED_TO_EDGE = 'ASSIGNED_TO_EDGE', // log edge name
   UNASSIGNED_FROM_EDGE = 'UNASSIGNED_FROM_EDGE',
   ADDED_COMMENT = 'ADDED_COMMENT',
   UPDATED_COMMENT = 'UPDATED_COMMENT',
@@ -131,7 +131,7 @@ export const ACTION_TYPE_OPTIONS = [
   { value: ActionType.UNASSIGNED_FROM_EDGE, label: '取消委托给Edge' },
   { value: ActionType.ADDED_COMMENT, label: '添加评论' },
   { value: ActionType.UPDATED_COMMENT, label: '更新评论' },
-  { value: ActionType.DELETED_COMMENT, label: '删除评论' }
+  { value: ActionType.DELETED_COMMENT, label: '删除评论' },
 ];
 
 export enum OriginatorSource {
@@ -139,5 +139,5 @@ export enum OriginatorSource {
   TENANT = 'TENANT',
   RELATED = 'RELATED',
   ALARM_ORIGINATOR = 'ALARM_ORIGINATOR',
-  ENTITY = 'ENTITY'
+  ENTITY = 'ENTITY',
 }

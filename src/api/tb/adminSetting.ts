@@ -1,7 +1,7 @@
-import { BasicModel } from "../model/baseModel";
-import { EntityId } from "/#/store";
-import { EntityType } from "/@/enums/entityTypeEnum";
-import { defHttp } from "/@/utils/http/axios";
+import { BasicModel } from '../model/baseModel';
+import { EntityId } from '/#/store';
+import { EntityType } from '/@/enums/entityTypeEnum';
+import { defHttp } from '/@/utils/http/axios';
 
 export interface AdminSetting extends BasicModel<null> {
   tenantId?: EntityId<EntityType.TENANT>;
@@ -46,16 +46,18 @@ export interface SecuritySettings {
 
 export interface SystemInfo {
   isMonolith: boolean;
-  systemData: [{
-    serviceId?: string;
-    serviceType?: string;
-    cpuUsage?: number;
-    cpuCount?: number;
-    memoryUsage?: number;
-    totalMemory?: number;
-    discUsage?: number;
-    totalDiscSpace?: number
-  }];
+  systemData: [
+    {
+      serviceId?: string;
+      serviceType?: string;
+      cpuUsage?: number;
+      cpuCount?: number;
+      memoryUsage?: number;
+      totalMemory?: number;
+      discUsage?: number;
+      totalDiscSpace?: number;
+    },
+  ];
 }
 
 export function getAdminSetting(key: string) {
@@ -67,21 +69,21 @@ export function getAdminSetting(key: string) {
 export function saveAdminSetting(data: AdminSetting | any) {
   return defHttp.postJson<AdminSetting>({
     url: `/api/admin/settings`,
-    data
+    data,
   });
 }
 
 export function sendTestMail(data: AdminSetting | any) {
   return defHttp.postJson<void>({
     url: `/api/admin/settings/testMail`,
-    data
+    data,
   });
 }
 
 export function sendTestSms(data: SmsRequest | any) {
   return defHttp.postJson<void>({
     url: `/api/admin/settings/testSms`,
-    data
+    data,
   });
 }
 
@@ -94,10 +96,9 @@ export function getJwtSetting() {
 export function saveJwtSetting(data: JwtSetting | any) {
   return defHttp.postJson<JwtSetting>({
     url: `/api/admin/jwtSettings`,
-    data
+    data,
   });
 }
-
 
 export function getSecuritySettings() {
   return defHttp.get<SecuritySettings>({
@@ -108,6 +109,6 @@ export function getSecuritySettings() {
 export function saveSecuritySettings(data: SecuritySettings | any) {
   return defHttp.postJson<JwtSetting>({
     url: `/api/admin/securitySettings`,
-    data
+    data,
   });
 }

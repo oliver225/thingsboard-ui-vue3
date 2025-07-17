@@ -41,9 +41,7 @@
         default: () => ({}),
       },
       setFormModel: {
-        type: Function as PropType<
-          (key: string, value: any, labelKey?: string, labelValue?: any) => void
-        >,
+        type: Function as PropType<(key: string, value: any, labelKey?: string, labelValue?: any) => void>,
         default: null,
       },
       tableAction: {
@@ -143,14 +141,7 @@
       }
 
       function handleRules(): Rule[] {
-        const {
-          rules: defRules = [],
-          component,
-          rulesMessageJoinLabel,
-          label,
-          dynamicRules,
-          required,
-        } = props.schema;
+        const { rules: defRules = [], component, rulesMessageJoinLabel, label, dynamicRules, required } = props.schema;
 
         if (isFunction(dynamicRules)) {
           return dynamicRules(unref(getValues)) as Rule[];
@@ -229,8 +220,7 @@
         const characterInx = rules.findIndex((val) => val.max);
         if (characterInx !== -1 && !rules[characterInx].validator) {
           rules[characterInx].message =
-            rules[characterInx].message ||
-            t('component.form.maxTip', [rules[characterInx].max] as Recordable);
+            rules[characterInx].message || t('component.form.maxTip', [rules[characterInx].max] as Recordable);
         }
         return rules;
       }
@@ -269,7 +259,6 @@
             }
           },
         };
-        const Comp = componentMap.get(component) as ReturnType<typeof defineComponent>;
 
         const { autoSetPlaceHolder, size } = props.formProps;
         const propsData: Recordable = {
@@ -283,8 +272,7 @@
         const isCreatePlaceholder = !propsData.disabled && autoSetPlaceHolder;
         // RangePicker place is an array
         if (isCreatePlaceholder && component && component !== 'RangePicker') {
-          propsData.placeholder =
-            unref(getComponentsProps)?.placeholder || createPlaceholderMessage(component);
+          propsData.placeholder = unref(getComponentsProps)?.placeholder || createPlaceholderMessage(component);
         }
         propsData.codeField = field;
         propsData.formValues = unref(getValues);
@@ -317,6 +305,7 @@
           // bindValue.treeCheckable = true;
         }
 
+        const Comp = componentMap.get(component) as ReturnType<typeof defineComponent>;
         const compAttr: Recordable = {
           ...propsData,
           ...on,
@@ -345,9 +334,7 @@
         ) : (
           label + colonText
         );
-        const getHelpMessage = isFunction(helpMessage)
-          ? helpMessage(unref(getValues))
-          : helpMessage;
+        const getHelpMessage = isFunction(helpMessage) ? helpMessage(unref(getValues)) : helpMessage;
         if (!getHelpMessage || (Array.isArray(getHelpMessage) && getHelpMessage.length === 0)) {
           return renderLabel;
         }
@@ -360,8 +347,7 @@
       }
 
       function renderItem() {
-        const { itemProps, slot, render, label, field, fieldLabel, suffix, component } =
-          props.schema;
+        const { itemProps, slot, render, label, field, fieldLabel, suffix, component } = props.schema;
         const { labelCol, wrapperCol } = unref(itemLabelWidthProp);
 
         if (component === 'None') {
@@ -390,11 +376,11 @@
               name={field}
               colon={false}
               class={{ 'suffix-item': showSuffix, 'no-label': isEmpty(label) }}
-              {...(itemProps as Recordable)}
               label={renderLabelHelpMessage(true)}
               rules={handleRules()}
               labelCol={labelCol}
               wrapperCol={wrapperCol}
+              {...(itemProps as Recordable)}
             >
               {showSuffix ? (
                 <div style="display: flex">
@@ -425,11 +411,7 @@
         const values = unref(getValues);
 
         const getContent = () => {
-          return colSlot
-            ? getSlot(slots, colSlot, values)
-            : renderColContent
-              ? renderColContent(values)
-              : renderItem();
+          return colSlot ? getSlot(slots, colSlot, values) : renderColContent ? renderColContent(values) : renderItem();
         };
 
         return (

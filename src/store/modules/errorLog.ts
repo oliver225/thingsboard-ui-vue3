@@ -13,8 +13,7 @@ export interface ErrorLogState {
   errorLogListCount: number;
 }
 
-export const useErrorLogStore = defineStore({
-  id: 'app-error-log',
+export const useErrorLogStore = defineStore('app-error-log', {
   state: (): ErrorLogState => ({
     errorLogInfoList: null,
     errorLogListCount: 0,
@@ -56,10 +55,8 @@ export const useErrorLogStore = defineStore({
         type: ErrorTypeEnum.AJAX,
       };
       if (error.response) {
-        const {
-          config: { url = '', data: params = '', method = 'get', headers = {} } = {},
-          data = {},
-        } = error.response;
+        const { config: { url = '', data: params = '', method = 'get', headers = {} } = {}, data = {} } =
+          error.response;
         errInfo.url = url;
         errInfo.name = 'Ajax Error!';
         errInfo.file = '-';

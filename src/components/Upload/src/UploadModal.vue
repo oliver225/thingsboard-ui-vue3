@@ -60,7 +60,6 @@
   import { warn } from '/@/utils/log';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { useGlobSetting } from '/@/hooks/setting';
-  import { FileUpload } from '/@/api/sys/upload';
   import { openWindowLayer } from '/@/utils';
 
   const props = defineProps(uploadProps);
@@ -84,15 +83,12 @@
 
   const getIsSelectFile = computed(() => {
     return (
-      fileItemList.value.length > 0 &&
-      !fileItemList.value.every((item) => item.status === UploadResultStatus.SUCCESS)
+      fileItemList.value.length > 0 && !fileItemList.value.every((item) => item.status === UploadResultStatus.SUCCESS)
     );
   });
 
   const getOkButtonProps = computed(() => {
-    const someSuccess = fileItemList.value.some(
-      (item) => item.status === UploadResultStatus.SUCCESS,
-    );
+    const someSuccess = fileItemList.value.some((item) => item.status === UploadResultStatus.SUCCESS);
     return {
       disabled: uploading.value || fileItemList.value.length === 0 || !someSuccess,
     };
@@ -161,7 +157,11 @@
   function handleRemove(record: FileItem) {
     const index = fileItemList.value.findIndex((item) => item.id === record.id);
     if (index !== -1) {
-      fileItemList.value.splice(index, 1);
+      const removed = fileItemList.value.splice(index, 1);
+      const item = removed[0] as FileItem;
+      if (item && item.responseData?.fileUpload) {
+        emit('delete', item.responseData?.fileUpload);
+      }
     }
   }
 
@@ -235,8 +235,7 @@
     uploading.value = true;
     try {
       // 只上传不是成功状态的
-      const uploadFileList =
-        fileItemList.value.filter((item) => item.status !== UploadResultStatus.SUCCESS) || [];
+      const uploadFileList = fileItemList.value.filter((item) => item.status !== UploadResultStatus.SUCCESS) || [];
       const data = await Promise.all(
         uploadFileList.map((item) => {
           return uploadApiByItem(item);
@@ -260,7 +259,7 @@
     if (uploading.value) {
       return createMessage.warning(t('component.upload.saveWarn'));
     }
-    const fileList: FileUpload[] = [];
+    const fileList: [] = [];
 
     for (const item of fileItemList.value) {
       const { status, responseData } = item;

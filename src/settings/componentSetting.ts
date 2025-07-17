@@ -23,13 +23,15 @@ export default {
     defaultPageSize: 20,
     // Default Size
     defaultSize: 'middle',
+    // Default Sort
+    defaultSort: { sortProperty: 'createdTime', sortOrder: 'DESC' },
     // Custom general sort function
     defaultSortFn: (sortInfo: SorterResult) => {
       const { order, columnKey } = sortInfo;
       if (order && columnKey) {
         return {
           sortProperty: columnKey,
-          sortOrder: order.replace('end', '').toUpperCase(),
+          sortOrder: order.replace('end', ''),
         };
       }
     },

@@ -34,7 +34,6 @@
   import { useTree } from './useTree';
   import { useContextMenu } from '/@/hooks/web/useContextMenu';
   import { useDesign } from '/@/hooks/web/useDesign';
-  import { useDict } from '/@/components/Dict';
 
   import { basicProps } from './props';
   import { CreateContextOptions } from '/@/components/ContextMenu';
@@ -78,11 +77,6 @@
 
       const treeDataRef = ref<TreeItem[]>(props.treeData as TreeItem[]);
 
-      if (props.dictType && props.dictType !== '') {
-        const { initSelectTreeData } = useDict();
-        initSelectTreeData(treeDataRef, props.dictType, true);
-      }
-
       const [createContextMenu] = useContextMenu();
       const { prefixCls } = useDesign('basic-tree');
 
@@ -101,6 +95,7 @@
           blockNode: true,
           ...attrs,
           ...props,
+          openAnimation: {}, // fix parent undefined
           expandedKeys: state.expandedKeys,
           selectedKeys: state.selectedKeys,
           checkedKeys: state.checkedKeys,
@@ -282,7 +277,19 @@
         let result;
         try {
           result = await api(props.params);
-          result = listToTree(result);
+          result = listToTree(result, {
+            callback: (parent, _node) => {
+              if (!props.canSelectParent && parent) {
+                if (parent.children && parent.children.length > 0) {
+                  if (props.checkable) {
+                    parent.disableCheckbox = true;
+                  } else {
+                    parent.disabled = true;
+                  }
+                }
+              }
+            },
+          });
         } catch (e) {
           console.error(e);
         } finally {
@@ -345,8 +352,7 @@
           searchState.startSearch = false;
           return;
         }
-        const { filterFn, checkable, expandOnSearch, checkOnSearch, selectedOnSearch } =
-          unref(props);
+        const { filterFn, checkable, expandOnSearch, checkOnSearch, selectedOnSearch } = unref(props);
         searchState.startSearch = true;
         const { title: titleField, key: keyField } = unref(getFieldNames);
 
@@ -507,18 +513,13 @@
         eachTree(data, (item, _parent) => {
           const searchText = searchState.searchText;
           const { highlight } = unref(props);
-          const {
-            title: titleField,
-            key: keyField,
-            children: childrenField,
-          } = unref(getFieldNames);
+          const { title: titleField, key: keyField, children: childrenField } = unref(getFieldNames);
 
           const icon = getIcon(item, item.icon);
           const title = get(item, titleField);
 
           const searchIdx = searchText ? title.indexOf(searchText) : -1;
-          const isHighlight =
-            searchState.startSearch && !isEmpty(searchText) && highlight && searchIdx !== -1;
+          const isHighlight = searchState.startSearch && !isEmpty(searchText) && highlight && searchIdx !== -1;
           const highlightStyle = `color: ${isBoolean(highlight) ? '#f50' : highlight}`;
 
           const titleDom = isHighlight ? (
@@ -609,11 +610,7 @@
               />
             </ScrollContainer>
             <Spin spinning={unref(loading)}>
-              <Empty
-                v-show={unref(getNotFound)}
-                image={Empty.PRESENTED_IMAGE_SIMPLE}
-                class="!mt-4"
-              />
+              <Empty v-show={unref(getNotFound)} image={Empty.PRESENTED_IMAGE_SIMPLE} class="!mt-4" />
             </Spin>
           </div>
         );
@@ -633,25 +630,27 @@
       background-color: transparent;
 
       .ant-tree-checkbox {
-        margin-top: 1px;
+        margin-top: -2px;
       }
 
-      .ant-tree-switcher-icon svg {
+      .ant-tree-switcher {
         margin-top: -1px;
       }
 
       .ant-tree-node-content-wrapper {
         position: relative;
-        margin-top: 3px !important;
+        display: flex;
+        padding: 0 !important;
+        margin-bottom: 2px;
 
-        .ant-tree-title {
-          position: absolute;
-          left: 0;
-          width: 100%;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-        }
+        //.ant-tree-title {
+        //  position: absolute;
+        //  left: 0;
+        //  width: 100%;
+        //  overflow: hidden;
+        //  text-overflow: ellipsis;
+        //  white-space: nowrap;
+        //}
       }
 
       &.ant-tree-directory {

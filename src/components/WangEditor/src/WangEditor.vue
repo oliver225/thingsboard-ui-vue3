@@ -19,15 +19,7 @@
 
 <script lang="ts">
   import '@wangeditor/editor/dist/css/style.css'; // 引入 css
-  import {
-    defineComponent,
-    computed,
-    watch,
-    onBeforeUnmount,
-    shallowRef,
-    nextTick,
-    onMounted,
-  } from 'vue';
+  import { defineComponent, computed, watch, onBeforeUnmount, shallowRef, nextTick, onMounted } from 'vue';
   import { Editor, Toolbar } from '@wangeditor/editor-for-vue';
   import { i18nChangeLanguage, IDomEditor } from '@wangeditor/editor';
   import { useDesign } from '/@/hooks/web/useDesign';
@@ -122,7 +114,7 @@
                   bizKey: props.bizKey,
                   bizType: props.bizType + '_editor_image',
                   uploadType: 'image',
-                  fileMd5: buildUUID(), // 专业版支持 MD5 秒传
+                  fileMd5: buildUUID(), // 专业版支持 MD5 校验
                   fileName: file.name,
                   file,
                 },

@@ -16,11 +16,9 @@
 <script lang="ts" setup name="JeeSiteCheckboxGroup">
   import { PropType, computed, ref, unref, watch } from 'vue';
   import { Checkbox } from 'ant-design-vue';
-  import { isEmpty, isString } from '/@/utils/is';
-  import { propTypes } from '/@/utils/propTypes';
+  import { isString } from '/@/utils/is';
   import { useRuleFormItem } from '/@/hooks/component/useFormItem';
   import { useAttrs } from '/@/hooks/core/useAttrs';
-  import { useDict } from '/@/components/Dict';
 
   type OptionsItem = { label: string; value: string | number | boolean; disabled?: boolean };
   type CheckboxItem = string | OptionsItem;
@@ -35,7 +33,6 @@
       type: Array as PropType<CheckboxItem[]>,
       default: () => [],
     },
-    dictType: propTypes.string,
   });
 
   const emit = defineEmits(['change', 'update:value']);
@@ -47,11 +44,6 @@
   const getAttrs = computed(() => {
     return { ...unref(attrs), ...(props as Recordable) };
   });
-
-  if (!isEmpty(props.dictType)) {
-    const { initSelectOptions } = useDict();
-    initSelectOptions(optionsRef, props.dictType);
-  }
 
   watch(
     () => props.options,

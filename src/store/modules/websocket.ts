@@ -1,10 +1,10 @@
-import { defineStore } from "pinia";
+import { defineStore } from 'pinia';
 import { store } from '/@/store';
 import { UseWebSocketReturn, useWebSocket } from '@vueuse/core';
 import { useGlobSetting } from '/@/hooks/setting';
 import { useUserStore } from '/@/store/modules/user';
-import { sleep } from "/@/utils";
-import { isArray } from "/@/utils/is";
+import { sleep } from '/@/utils';
+import { isArray } from '/@/utils/is';
 
 interface WebsocketState {
   cmdId: number;
@@ -23,11 +23,10 @@ export const useWebsocketStore = defineStore({
     getCmdId(): number {
       return this.cmdId;
     },
-
   },
   actions: {
     close(): any {
-      if (this.websocket!= null) {
+      if (this.websocket != null) {
         this.websocket.close();
       }
       this.websocket = null;
@@ -40,14 +39,14 @@ export const useWebsocketStore = defineStore({
       if (this.websocket == null) {
         this.initWebsocket();
       }
-      if (this.websocket!= null) {
+      if (this.websocket != null) {
         if (this.websocket.status == 'CLOSED') {
           this.websocket.open();
           await sleep(500);
         }
         if (callback) {
           if (isArray(cmdId)) {
-            cmdId.forEach(i => this.callbackMap.set(i, callback));
+            cmdId.forEach((i) => this.callbackMap.set(i, callback));
           } else {
             this.callbackMap.set(cmdId, callback);
           }
@@ -57,7 +56,7 @@ export const useWebsocketStore = defineStore({
       return false;
     },
     async unsubscribe(cmdId: number | Array<number>, data: any) {
-      if (this.websocket!= null) {
+      if (this.websocket != null) {
         if (this.websocket.status == 'CLOSED') {
           this.websocket.open();
           await sleep(500);
@@ -65,7 +64,7 @@ export const useWebsocketStore = defineStore({
         this.websocket.send(JSON.stringify(data));
       }
       if (isArray(cmdId)) {
-        cmdId.forEach(i => this.callbackMap.delete(i));
+        cmdId.forEach((i) => this.callbackMap.delete(i));
       } else {
         this.callbackMap.delete(cmdId);
       }
@@ -73,10 +72,11 @@ export const useWebsocketStore = defineStore({
     initWebsocket(): WebSocket | undefined {
       const userStore = useUserStore();
       const { wsPath } = useGlobSetting();
-      const useWebSocketReturn = useWebSocket(
-        `${wsPath}`,
-        { autoReconnect: false, autoClose: false, onMessage: this.onMessage }
-      )
+      const useWebSocketReturn = useWebSocket(`${wsPath}`, {
+        autoReconnect: false,
+        autoClose: false,
+        onMessage: this.onMessage,
+      });
       this.websocket = useWebSocketReturn;
       return this.websocket?.ws;
     },
@@ -87,10 +87,9 @@ export const useWebsocketStore = defineStore({
       } else if (dataObj.hasOwnProperty('cmdId')) {
         this.callbackMap.get(dataObj.cmdId)?.(dataObj);
       }
-    }
-  }
+    },
+  },
 });
-
 
 export function useWebsocketStoreWithOut() {
   return useWebsocketStore(store);

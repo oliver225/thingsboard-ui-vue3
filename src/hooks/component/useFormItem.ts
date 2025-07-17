@@ -5,19 +5,10 @@
  * @author Vben、ThinkGem
  */
 import type { UnwrapRef, Ref } from 'vue';
-import {
-  reactive,
-  readonly,
-  computed,
-  getCurrentInstance,
-  watchEffect,
-  unref,
-  nextTick,
-  toRaw,
-} from 'vue';
+import { reactive, readonly, computed, getCurrentInstance, watchEffect, unref, nextTick, toRaw } from 'vue';
 
 import { isEqual } from 'lodash-es';
-import { isEmpty, isNumber, isObject } from '/@/utils/is';
+import { isNumber, isObject } from '/@/utils/is';
 
 export function useRuleFormItem<T extends Recordable>(
   props: T,
@@ -47,8 +38,6 @@ export function useRuleFormItem<T extends Recordable>(
     return false;
   });
 
-  const isDictType = computed(() => !isEmpty(props.dictType));
-
   const innerState = reactive({
     value: props[key],
   });
@@ -69,14 +58,14 @@ export function useRuleFormItem<T extends Recordable>(
       if (!value) return undefined;
       if (props.labelInValue) {
         const values: Recordable = [];
-        if (isMultiple.value && !(value instanceof Array)) {
+        if (isMultiple.value && !(value instanceof Object) && !(value instanceof Array)) {
           const vals = (value as string)?.split(',');
-          const lbls = (props.labelValue as string)?.split(',');
+          const labs = (props.labelValue as string)?.split(',');
           for (const i in vals) {
-            values.push({ value: vals && vals[i], label: lbls && lbls[i] });
+            values.push({ value: vals && vals[i], label: labs && labs[i] });
           }
           value = values as T[keyof T];
-        } else if (!isObject(value) && !(value instanceof Array)) {
+        } else if (!isObject(value) && !(value instanceof Object) && !(value instanceof Array)) {
           value = { value: String(value), label: props.labelValue };
         } else if (value instanceof Array) {
           for (const i in value) {
@@ -87,10 +76,8 @@ export function useRuleFormItem<T extends Recordable>(
             value = values as T[keyof T];
           }
         }
-      } else if (isMultiple.value && !(value instanceof Array)) {
+      } else if (isMultiple.value && !(value instanceof Object) && !(value instanceof Array)) {
         value = (value as string).split(',');
-      } else if (isDictType.value && isNumber(value)) {
-        value = String(value);
       }
       // console.log('innerState', value);
       innerState.value = value as T[keyof T];

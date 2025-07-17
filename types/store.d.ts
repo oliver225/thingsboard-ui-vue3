@@ -1,7 +1,7 @@
 import { ErrorTypeEnum } from '/@/enums/exceptionEnum';
 import { MenuModeEnum, MenuTypeEnum } from '/@/enums/menuEnum';
 import { EntityType } from '/@/enums/entityTypeEnum';
-import { Authority } from '/@/enums/authorityEnum';
+import { Authority } from '../src/enums/authorityEnum';
 // import { RoleInfo } from '/@/api/sys/model/userModel';
 
 // Lock screen information
@@ -33,19 +33,6 @@ export interface ErrorLogInfo {
 }
 
 export interface UserInfo {
-  // userId: string | number;
-  // username: string;
-  // realName: string;
-  // avatar: string;
-  // desc?: string;
-  // userCode: string | number;
-  // loginCode: string;
-  // userName: string;
-  // avatarUrl: string;
-  // remarks?: string;
-  // roleList?: any[];
-  // homePath?: string;
-  // roles: RoleInfo[];
   id: EntityId<EntityType.USER>;
   tenantId: EntityId<EntityType.TENANT>;
   customerId: EntityId<EntityType.CUSTOMER>;
@@ -55,8 +42,28 @@ export interface UserInfo {
   lastName: string;
   phone: string;
   authority: Authority;
-  additionalInfo: any;
+  additionalInfo: {
+    [key: string]: any;
+    defaultDashboardFullscreen?: boolean;
+    defaultDashboardId?: string;
+    description?: string;
+    homeDashboardHideToolbar?: boolean;
+    homeDashboardId?: string;
+    lastLoginTs: number;
+    userActivated?: boolean;
+    userCredentialsEnabled?: boolean;
+  };
   createdTime: number;
+}
+
+export interface JwtPair {
+  token: string;
+  refreshToken: string;
+}
+
+export interface EntityId<T> {
+  entityType?: T;
+  id: string;
 }
 
 export interface BeforeMiniState {
@@ -66,13 +73,3 @@ export interface BeforeMiniState {
   menuType?: MenuTypeEnum;
 }
 
-export interface JwtPair {
-  token: string;
-  refreshToken: string;
-  scope: string;
-}
-
-export interface EntityId<T> {
-  entityType?: T;
-  id: string;
-}
