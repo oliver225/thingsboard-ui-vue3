@@ -46,6 +46,7 @@
     "@vueuse/core": "catalog:",
     "ant-design-vue": "catalog:",
     "dayjs": "catalog:",
+    "lodash-es": "catalog:",
     "pinia": "catalog:",
     "prismjs": "catalog:",
     "vue": "catalog:",

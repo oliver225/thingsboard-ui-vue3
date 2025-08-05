@@ -24,6 +24,10 @@ type AnyPromiseFunction<T extends any[] = any[], R = void> = (
   ...arg: T
 ) => PromiseLike<R>;
 
+type Fn<T = any, R = T> = {
+  (...arg: T[]): R;
+};
+
 /**
  * 任意类型的普通函数
  */
@@ -49,7 +53,7 @@ type NonNullable<T> = T extends null | undefined ? never : T;
 /**
  * 字符串类型对象
  */
-type Recordable<T> = Record<string, T>;
+type Recordable<T = any> = Record<string, T>;
 
 /**
  * 字符串类型对象（只读）
@@ -118,6 +122,7 @@ export type {
   DeepPartial,
   DeepReadonly,
   EmitType,
+  Fn,
   IntervalHandle,
   MaybeComputedRef,
   MaybePromise,

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { VxeGridProps } from '#/adapter/vxe-table';
-import type { ResourceApi } from '#/api';
+import type { Resource } from '#/api';
 
 import { reactive, watch } from 'vue';
 
@@ -193,7 +193,7 @@ const tableAction = {
   ],
 };
 
-const gridOptions: VxeGridProps<ResourceApi.ResourceInfo> = {
+const gridOptions: VxeGridProps<Resource.ResourceInfo> = {
   columns: [
     { title: '序号', type: 'seq', width: 60 },
     {

@@ -1,3 +1,5 @@
+import type { Authority } from '@vben/constants';
+
 import { computed } from 'vue';
 
 import { preferences, updatePreferences } from '@vben/preferences';
@@ -26,11 +28,15 @@ function useAccess() {
    * @description: Determine whether there is permission，The permission code is judged by the user's permission code
    * @param codes
    */
-  function hasAccessByCodes(codes: string | string[]) {
+  function hasAccessByCodes(
+    codes: Authority | Authority[] | string | string[],
+  ) {
     const userCodesSet = new Set(accessStore.accessCodes);
     const codeArray = Array.isArray(codes) ? codes : [codes];
 
-    const intersection = codeArray.filter((item) => userCodesSet.has(item));
+    const intersection = codeArray.filter((item) =>
+      userCodesSet.has(item.toString()),
+    );
     return intersection.length > 0;
   }
 

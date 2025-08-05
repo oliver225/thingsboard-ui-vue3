@@ -12,4 +12,16 @@ type ComponentRef<T extends HTMLElement = HTMLDivElement> =
   | null
   | Ref<Nullable<HTMLElement>, Nullable<HTMLElement>>;
 
-export type { ComponentElRef, ComponentRef };
+type LabelValueOptions = {
+  [key: string]: boolean | number | string;
+  label: string;
+  value: any;
+}[];
+
+type TargetContext = '_blank' | '_self';
+
+interface ComponentElRef<T extends HTMLElement = HTMLDivElement> {
+  $el: T;
+}
+
+export type { ComponentElRef, ComponentRef, LabelValueOptions, TargetContext };

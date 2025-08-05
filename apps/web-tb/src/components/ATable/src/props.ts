@@ -1,0 +1,168 @@
+import type { PropType } from 'vue';
+
+import type { Fn, Recordable } from '@vben/types';
+
+import type { PaginationProps } from './types/pagination';
+import type {
+  BasicColumn,
+  FetchSetting,
+  SizeType,
+  SorterResult,
+  TableCustomRecord,
+  TableRowSelection,
+  TableSetting,
+} from './types/table';
+
+import { propTypes } from '@vben/types';
+
+import {
+  DEFAULT_FILTER_FN,
+  DEFAULT_SIZE,
+  DEFAULT_SORT,
+  DEFAULT_SORT_FN,
+  FETCH_SETTING,
+} from './const';
+
+export const basicProps = {
+  isTreeTable: propTypes.bool.def(false),
+  clickToRowSelect: propTypes.bool.def(true),
+  childrenColumnName: propTypes.string.def('childList'),
+  tableSetting: propTypes.shape<TableSetting>({}),
+  inset: propTypes.bool,
+  sortFn: {
+    type: Function as PropType<(sortInfo: SorterResult) => any>,
+    default: DEFAULT_SORT_FN,
+  },
+  filterFn: {
+    type: Function as PropType<(data: Partial<Recordable<string[]>>) => any>,
+    default: DEFAULT_FILTER_FN,
+  },
+  showTableSetting: propTypes.bool,
+  tableSettingStore: propTypes.bool.def(true),
+  tableSettingStoreKey: propTypes.string,
+  autoCreateKey: propTypes.bool.def(true),
+  striped: propTypes.bool.def(true),
+  showSummary: propTypes.bool,
+  summaryFunc: {
+    type: [Function, Array] as PropType<(...arg: any[]) => any[]>,
+    default: null,
+  },
+  summaryData: {
+    type: Array as PropType<Recordable[]>,
+    default: null,
+  },
+  indentSize: propTypes.number.def(24),
+  canRowDrag: propTypes.bool.def(false),
+  api: {
+    type: Function as PropType<(...arg: any[]) => Promise<any>>,
+    default: null,
+  },
+  beforeFetch: {
+    type: Function as PropType<Fn>,
+    default: null,
+  },
+  afterFetch: {
+    type: Function as PropType<Fn>,
+    default: null,
+  },
+  handleSearchInfoFn: {
+    type: Function as PropType<Fn>,
+    default: null,
+  },
+  fetchSetting: {
+    type: Object as PropType<FetchSetting>,
+    default: () => {
+      return FETCH_SETTING;
+    },
+  },
+  // 立即请求接口
+  immediate: propTypes.bool.def(true),
+  emptyDataIsShowTable: propTypes.bool.def(true),
+  // 额外的请求参数
+  searchInfo: {
+    type: Object as PropType<Recordable>,
+    default: null,
+  },
+  // 默认的排序参数
+  defSort: {
+    type: Object as PropType<Recordable>,
+    default: DEFAULT_SORT,
+  },
+  columns: {
+    type: [Array] as PropType<BasicColumn[]>,
+    default: () => [],
+  },
+  showIndexColumn: propTypes.bool.def(true),
+  indexColumnProps: {
+    type: Object as PropType<BasicColumn>,
+    default: null,
+  },
+  actionColumn: {
+    type: Object as PropType<BasicColumn>,
+    default: null,
+  },
+  ellipsis: propTypes.bool.def(true),
+  isCanResizeParent: propTypes.bool.def(false),
+  canResize: propTypes.bool.def(false),
+  resizeHeightOffset: propTypes.number.def(0),
+  rowSelection: {
+    type: Object as PropType<null | TableRowSelection>,
+    default: null,
+  },
+  defaultRowSelection: {
+    type: Object as PropType<null | TableRowSelection>,
+    default: null,
+  },
+  clearSelectedOnReload: propTypes.bool.def(true),
+  showSelectionBar: propTypes.bool.def(false),
+  title: {
+    type: [String, Function] as PropType<
+      ((data: Recordable) => string) | string
+    >,
+    default: null,
+  },
+  titleHelpMessage: {
+    type: [String, Array] as PropType<string | string[]>,
+  },
+  maxHeight: propTypes.number,
+  minHeight: propTypes.number.def(200),
+  dataSource: {
+    type: Array as PropType<Recordable[]>,
+    default: null,
+  },
+  rowKey: {
+    type: [String, Function] as PropType<
+      ((record: Recordable) => string) | string
+    >,
+    default: 'id',
+  },
+  bordered: propTypes.bool.def(true),
+  pagination: {
+    type: [Object, Boolean] as PropType<boolean | PaginationProps>,
+    default: true,
+  },
+  loading: propTypes.bool,
+  rowClassName: {
+    type: Function as PropType<
+      (record: TableCustomRecord<any>, index: number) => string
+    >,
+  },
+  scroll: {
+    type: Object as PropType<{ x: number | true; y: number }>,
+    default: null,
+  },
+  beforeEditSubmit: {
+    type: Function as PropType<
+      (data: {
+        index: number;
+        key: number | string;
+        record: Recordable;
+        value: any;
+      }) => Promise<any>
+    >,
+  },
+  size: {
+    type: String as PropType<SizeType>,
+    default: DEFAULT_SIZE,
+  },
+};

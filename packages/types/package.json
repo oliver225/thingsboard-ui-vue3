@@ -23,6 +23,7 @@
     "@vben-core/typings": "workspace:*",
     "@vben/constants": "workspace:*",
     "vue": "catalog:",
-    "vue-router": "catalog:"
+    "vue-router": "catalog:",
+    "vue-types": "catalog:"
   }
 }
