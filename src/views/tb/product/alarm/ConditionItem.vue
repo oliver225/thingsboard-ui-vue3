@@ -40,7 +40,7 @@ import { Select, AutoComplete, Row, Col } from 'ant-design-vue';
 import { ConditionItem, getAttributesKeys, getTimeseriesKeys } from '/@/api/tb/deviceProfile';
 import { ALARM_CONDITION_KEY_TYPE_OPTIONS, PREDICATE_OPERATION_OPTIONS, PredicateOperation, ALARM_CONDITION_VALUE_TYPE_OPTIONS } from '/@/enums/alarmEnum';
 import { BasicModal, useModalInner } from '/@/components/Modal';
-import { isArray, isEmpty } from 'lodash';
+import { isArray, isEmpty } from 'lodash-es';
 import dayjs from 'dayjs';
 
 const emit = defineEmits(['success', 'register']);

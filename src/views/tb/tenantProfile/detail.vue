@@ -707,6 +707,7 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import { router } from '/@/router';
   import RateLimit from './RateLimit.vue';
+  import { EntityType } from '/@/enums/entityTypeEnum';
   import { CollapseContainer } from '/@/components/Container';
   import { copyToClipboard } from '/@/utils';
   import { Icon } from '/@/components/Icon';
@@ -731,8 +732,6 @@
 
   import Alarm from '/@/views/tb/alarm/list.vue';
   import Telemetry from '/@/views/tb/telemetry/index.vue';
-
-  import { EntityType } from '/@/enums/entityTypeEnum';
 
   const emit = defineEmits(['edit', 'delete', 'default', 'register']);
 

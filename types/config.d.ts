@@ -147,8 +147,8 @@ export interface GlobConfig {
   shortName: string;
   // context-path，如：/api
   ctxPath: string;
-  // 文件预览类型，如：true、oss
-  filePreview: string;
+  //websokcet-path
+  websocketPath: string;
 }
 
 export interface GlobEnvConfig {
@@ -158,8 +158,8 @@ export interface GlobEnvConfig {
   VITE_GLOB_API_URL: string;
   // Service interface url prefix
   VITE_GLOB_API_URL_PREFIX: string;
+  // websocket-url
+  VITE_GLOB_API_URL_WEBSOCKET: string;
   // Project abbreviation
   VITE_GLOB_APP_SHORT_NAME: string;
-  // File preview
-  VITE_FILE_PREVIEW: string;
 }

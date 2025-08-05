@@ -1,10 +1,11 @@
 import { defineStore } from 'pinia';
 import { store } from '/@/store';
-import { UseWebSocketReturn, useWebSocket } from '@vueuse/core';
+import { useWebSocket } from '@vueuse/core';
+import type { UseWebSocketReturn } from '@vueuse/core';
 import { useGlobSetting } from '/@/hooks/setting';
-import { useUserStore } from '/@/store/modules/user';
 import { sleep } from '/@/utils';
 import { isArray } from '/@/utils/is';
+import { getToken } from '/@/utils/auth';
 
 interface WebsocketState {
   cmdId: number;
@@ -59,7 +60,7 @@ export const useWebsocketStore = defineStore({
       if (this.websocket != null) {
         if (this.websocket.status == 'CLOSED') {
           this.websocket.open();
-          await sleep(500);
+          await sleep(250);
         }
         this.websocket.send(JSON.stringify(data));
       }
@@ -70,21 +71,23 @@ export const useWebsocketStore = defineStore({
       }
     },
     initWebsocket(): WebSocket | undefined {
-      const userStore = useUserStore();
-      const { wsPath } = useGlobSetting();
-      const useWebSocketReturn = useWebSocket(`${wsPath}`, {
+      const { websocketPath } = useGlobSetting();
+      const useWebSocketReturn = useWebSocket<any>(`${websocketPath}`, {
         autoReconnect: false,
         autoClose: false,
         onMessage: this.onMessage,
+        onConnected: (ws) => {
+          ws.send(JSON.stringify({ authCmd: { cmdId: 0, token: getToken() } }));
+        },
       });
       this.websocket = useWebSocketReturn;
       return this.websocket?.ws;
     },
     onMessage(ws: WebSocket, { data }: MessageEvent): any {
       const dataObj = JSON.parse(data);
-      if (dataObj.hasOwnProperty('subscriptionId')) {
+      if (Object.prototype.hasOwnProperty.call(dataObj, 'subscriptionId')) {
         this.callbackMap.get(dataObj.subscriptionId)?.(dataObj);
-      } else if (dataObj.hasOwnProperty('cmdId')) {
+      } else if (Object.prototype.hasOwnProperty.call(dataObj, 'cmdId')) {
         this.callbackMap.get(dataObj.cmdId)?.(dataObj);
       }
     },

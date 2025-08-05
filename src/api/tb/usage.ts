@@ -1,4 +1,4 @@
-import { defHttp } from "/@/utils/http/axios";
+import { defHttp } from '/@/utils/http/axios';
 
 export interface Usage extends Recordable {
   sms: number;
@@ -23,7 +23,6 @@ export interface Usage extends Recordable {
   maxJsExecutions: number;
   maxTransportMessages: number;
 }
-
 
 export function getUsage() {
   return defHttp.get<Usage>({

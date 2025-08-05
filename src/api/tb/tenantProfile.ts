@@ -1,7 +1,7 @@
 import { BasicModel, BasicQuery, EntityInfo, Page } from '../model/baseModel';
 import { Queue } from './queue';
-import { EntityType } from '/@/enums/entityTypeEnum';
 import { defHttp } from '/@/utils/http/axios';
+import { EntityType } from '/@/enums/entityTypeEnum';
 
 export interface TenantProfileConfiguration {
   type: string;
@@ -73,58 +73,58 @@ export interface TenantProfile extends BasicModel<EntityType.TENANT_PROFILE> {
 
 export function getTenantProfileInfoById(tenantProfileId: string) {
   return defHttp.get<EntityInfo<EntityType.TENANT_PROFILE>>({
-    url: `/tenantProfileInfo/${tenantProfileId}`,
+    url: `/api/tenantProfileInfo/${tenantProfileId}`,
   });
 }
 
 export function getTenantProfileInfoDefault() {
   return defHttp.get<EntityInfo<EntityType.TENANT_PROFILE>>({
-    url: '/tenantProfileInfo/default',
+    url: '/api/tenantProfileInfo/default',
   });
 }
 
 export function tenantProfileInfoList(params: BasicQuery) {
   return defHttp.get<Page<EntityInfo<EntityType.TENANT_PROFILE>>>({
-    url: '/tenantProfileInfos',
+    url: '/api/tenantProfileInfos',
     params,
   });
 }
 
 export function saveTenantProfile(data: TenantProfile | any) {
   return defHttp.postJson<TenantProfile>({
-    url: '/tenantProfile',
+    url: '/api/tenantProfile',
     data,
   });
 }
 
 export function setTenantProfileDefault(tenantProfileId: string) {
   return defHttp.post<TenantProfile>({
-    url: `/tenantProfile/${tenantProfileId}/default`,
+    url: `/api/tenantProfile/${tenantProfileId}/default`,
   });
 }
 
 export function getTenantProfileById(tenantProfileId: string) {
   return defHttp.get<TenantProfile>({
-    url: `/tenantProfile/${tenantProfileId}`,
+    url: `/api/tenantProfile/${tenantProfileId}`,
   });
 }
 
 export function tenantProfiles(ids: [string]) {
   return defHttp.get<[TenantProfile]>({
-    url: '/tenantProfiles',
+    url: '/api/tenantProfiles',
     params: { ids },
   });
 }
 
 export function tenantProfileList(params: BasicQuery) {
   return defHttp.get<Page<TenantProfile>>({
-    url: '/tenantProfiles',
+    url: '/api/tenantProfiles',
     params,
   });
 }
 
 export function deleteTenantProfile(tenantProfileId: string) {
   return defHttp.delete<void>({
-    url: `/tenantProfile/${tenantProfileId}`,
+    url: `/api/tenantProfile/${tenantProfileId}`,
   });
 }

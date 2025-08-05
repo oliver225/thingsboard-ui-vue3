@@ -1,8 +1,7 @@
-import { BasicModel, BasicQuery, Page } from "../model/baseModel";
-import { EntityId } from "/#/store";
-import { EntityType } from "/@/enums/entityTypeEnum";
-import { ProcessingStrategyType, SubmitStrategyType } from "/@/enums/queueEnum";
-import { defHttp } from "/@/utils/http/axios";
+import { BasicModel, BasicQuery, Page } from '../model/baseModel';
+import { ProcessingStrategyType, SubmitStrategyType } from '/@/enums/queueEnum';
+import { defHttp } from '/@/utils/http/axios';
+import { EntityType } from '/@/enums/entityTypeEnum';
 
 export interface Queue extends BasicModel<EntityType.QUEUE> {
   tenantId: EntityId<EntityType.TENANT>;
@@ -26,16 +25,21 @@ export interface Queue extends BasicModel<EntityType.QUEUE> {
   additionalInfo: { description?: string };
 }
 
-export function saveQueue(serviceType: 'TB_CORE' | 'TB_RULE_ENGINE' | 'TB_TRANSPORT' | 'JS_EXECUTOR' | 'TB_VC_EXECUTOR', data?: Queue | any) {
+export function saveQueue(
+  serviceType: 'TB_CORE' | 'TB_RULE_ENGINE' | 'TB_TRANSPORT' | 'JS_EXECUTOR' | 'TB_VC_EXECUTOR',
+  data?: Queue | any,
+) {
   return defHttp.postJson<Queue>({
     url: `/api/queues`,
     params: { serviceType: serviceType },
-    data
+    data,
   });
 }
 
-
-export function queueList(params: BasicQuery, serviceType: 'TB_CORE' | 'TB_RULE_ENGINE' | 'TB_TRANSPORT' | 'JS_EXECUTOR' | 'TB_VC_EXECUTOR' = 'TB_RULE_ENGINE',) {
+export function queueList(
+  params: BasicQuery,
+  serviceType: 'TB_CORE' | 'TB_RULE_ENGINE' | 'TB_TRANSPORT' | 'JS_EXECUTOR' | 'TB_VC_EXECUTOR' = 'TB_RULE_ENGINE',
+) {
   return defHttp.get<Page<Queue>>({
     url: `/api/queues`,
     params: { serviceType: serviceType, ...params },

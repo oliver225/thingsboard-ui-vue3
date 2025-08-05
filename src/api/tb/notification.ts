@@ -1,13 +1,8 @@
 import { BasicModel, BasicQuery, Page } from '../model/baseModel';
 import { NotificationTemplate } from './notificationTemplate';
-import { EntityId } from '/#/store';
-import { EntityType } from '/@/enums/entityTypeEnum';
-import {
-  NotificationRequestStatus,
-  NotificationStatus,
-  NotificationType,
-} from '/@/enums/notificationEnum';
+import { NotificationRequestStatus, NotificationStatus, NotificationType } from '/@/enums/notificationEnum';
 import { defHttp } from '/@/utils/http/axios';
+import { EntityType } from '/@/enums/entityTypeEnum';
 
 export interface Notification extends BasicModel<EntityType.NOTIFICATION> {
   requestId?: EntityId<EntityType.NOTIFICATION_REQUEST>; //  entityType: "NOTIFICATION_REQUEST"
@@ -125,10 +120,7 @@ export function deleteNotificationRequest(notificationRequestId: string) {
   });
 }
 
-export function getNotificationRequestPreview(
-  data: NotificationRequest | any,
-  recipientsPreviewSize = 20,
-) {
+export function getNotificationRequestPreview(data: NotificationRequest | any, recipientsPreviewSize = 20) {
   return defHttp.postJson<NotificationRequestPreview>({
     url: `/api/notification/request/preview`,
     params: { recipientsPreviewSize: recipientsPreviewSize },

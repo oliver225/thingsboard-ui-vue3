@@ -45,19 +45,10 @@
           <a-button type="primary" @click="handleCredentials">
             <Icon :icon="'ant-design:safety-outlined'" />管理凭证
           </a-button>
-          <a-button
-            type="primary success"
-            @click="handleEditDevice"
-            v-if="hasPermission(Authority.TENANT_ADMIN)"
-          >
+          <a-button type="primary success" @click="handleEditDevice" v-if="hasPermission(Authority.TENANT_ADMIN)">
             <Icon :icon="'i-clarity:note-edit-line'" />编辑设备
           </a-button>
-          <a-button
-            type="primary"
-            danger
-            @click="handleDeleteDevice"
-            v-if="hasPermission(Authority.TENANT_ADMIN)"
-          >
+          <a-button type="primary" danger @click="handleDeleteDevice" v-if="hasPermission(Authority.TENANT_ADMIN)">
             <Icon :icon="'ant-design:delete-outlined'" />删除设备
           </a-button>
         </div>
@@ -66,17 +57,11 @@
             <Icon :icon="'ant-design:copy-filled'" />
             复制设备ID
           </a-button>
-          <a-button
-            @click="handleCopyAccessToken"
-            v-if="credentials.credentialsType == CredentialsType.ACCESS_TOKEN"
-          >
+          <a-button @click="handleCopyAccessToken" v-if="credentials.credentialsType == CredentialsType.ACCESS_TOKEN">
             <Icon :icon="'ant-design:safety-outlined'" />
             复制访问令牌
           </a-button>
-          <a-button
-            @click="handleCopyMqttValue"
-            v-if="credentials.credentialsType == CredentialsType.MQTT_BASIC"
-          >
+          <a-button @click="handleCopyMqttValue" v-if="credentials.credentialsType == CredentialsType.MQTT_BASIC">
             <Icon :icon="'ant-design:safety-outlined'" />
             复制MQTT 凭证
           </a-button>
@@ -91,22 +76,14 @@
         <template #tab
           ><span> <Icon :icon="'ant-design:line-chart-outlined'" /> 数据 </span>
         </template>
-        <Telemetry
-          v-if="tabActiveKey == 'TELEMETRY'"
-          :entityType="EntityType.DEVICE"
-          :entityId="record?.id?.id"
-        />
+        <Telemetry v-if="tabActiveKey == 'TELEMETRY'" :entityType="EntityType.DEVICE" :entityId="record?.id?.id" />
       </TabPane>
-      <TabPane key="TGINGMODEL">
+      <!-- <TabPane key="TGINGMODEL">
         <template #tab>
           <span> <Icon :icon="'ant-design:project-outlined'" /> 物模型 </span>
         </template>
-        <ThingModelList
-          ref="thingsModelFrom"
-          :deviceProfileId="record.deviceProfileId?.id"
-          :readOnly="true"
-        />
-      </TabPane>
+        <ThingModelList ref="thingsModelFrom" :deviceProfileId="record.deviceProfileId?.id" :readOnly="true" />
+      </TabPane> -->
       <TabPane key="TOPIC">
         <template #tab
           ><span> <Icon :icon="'ant-design:api-outlined'" /> 连接API </span>
@@ -148,27 +125,20 @@
   import { copyToClipboard } from '/@/utils';
   import { Icon } from '/@/components/Icon';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
-  import {
-    DeviceInfo,
-    getDeviceInfoById,
-    DeviceCredentials,
-    getDeviceCredentialsByDeviceId,
-  } from '/@/api/tb/device';
+  import { DeviceInfo, getDeviceInfoById, DeviceCredentials, getDeviceCredentialsByDeviceId } from '/@/api/tb/device';
   import { Tabs, TabPane, Checkbox } from 'ant-design-vue';
   import { DescItem, Description, useDescription } from '/@/components/Description';
   import { usePermission } from '/@/hooks/web/usePermission';
   import { useUserStore } from '/@/store/modules/user';
   import { Authority } from '/@/enums/authorityEnum';
   import { CredentialsType } from '/@/enums/deviceEnum';
-  import { EntityType } from '/@/enums/entityTypeEnum';
   import Alarm from '/@/views/tb/alarm/list.vue';
   import Telemetry from '/@/views/tb/telemetry/index.vue';
   import AuditLog from '/@/views/tb/auditLog/list.vue';
   import Relation from '/@/views/tb/relation/list.vue';
   import Event from '/@/views/tb/event/index.vue';
   import DeviceAPI from '/@/views/tb/device/deviceApi.vue';
-  import ThingModelList from '/@/views/tb/product/thingModel/thingModelList.vue';
-
+  import { EntityType } from '/@/enums/entityTypeEnum';
 
   const userStore = useUserStore();
   const { hasPermission } = usePermission();

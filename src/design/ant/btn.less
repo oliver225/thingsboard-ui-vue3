@@ -90,7 +90,6 @@
   &-success.ant-btn-link.ant-btn-loading,
   &-warning.ant-btn-link.ant-btn-loading,
   &-error.ant-btn-link.ant-btn-loading,
-  &-dangerous.ant-btn-link.ant-btn-loading,
   &-background-ghost.ant-btn-link.ant-btn-loading,
   &.ant-btn-link.ant-btn-loading {
     &::before {
@@ -159,8 +158,7 @@
     }
   }
 
-  &-error.ant-btn-link:not([disabled='disabled']),
-  &-dangerous.ant-btn-link:not([disabled='disabled']) {
+  &-error.ant-btn-link:not([disabled='disabled']) {
     color: @button-error-color;
 
     &:hover,
@@ -177,7 +175,6 @@
     }
   }
 
-  &-dangerous:not(.ant-btn-link):not(.is-disabled),
   &-error:not(.ant-btn-link):not(.is-disabled) {
     color: @white;
     background-color: @button-error-color;
@@ -278,7 +275,7 @@
       border-color: @button-warn-active-color;
     }
   }
-  &-background-ghost&-dangerous:not(.ant-btn-link),
+
   &-background-ghost&-error:not(.ant-btn-link) {
     color: @button-error-color;
     background-color: transparent;

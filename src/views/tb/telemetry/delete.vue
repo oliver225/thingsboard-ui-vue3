@@ -40,7 +40,7 @@ import { Tag, Checkbox, Radio, Space } from 'ant-design-vue';
 import { BasicForm, FormSchema, useForm } from '/@/components/Form';
 import { BasicModal, useModalInner } from '/@/components/Modal';
 import { TelemetryDelete, deleteEntityTimeseries } from '/@/api/tb/telemetry';
-import { isArray, isEmpty } from 'lodash';
+import { isArray, isEmpty } from 'lodash-es';
 import dayjs from 'dayjs';
 
 const emit = defineEmits(['success', 'register']);

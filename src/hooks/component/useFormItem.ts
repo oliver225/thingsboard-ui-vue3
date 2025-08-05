@@ -8,7 +8,7 @@ import type { UnwrapRef, Ref } from 'vue';
 import { reactive, readonly, computed, getCurrentInstance, watchEffect, unref, nextTick, toRaw } from 'vue';
 
 import { isEqual } from 'lodash-es';
-import { isNumber, isObject } from '/@/utils/is';
+import { isObject } from '/@/utils/is';
 
 export function useRuleFormItem<T extends Recordable>(
   props: T,

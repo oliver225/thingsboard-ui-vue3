@@ -56,12 +56,12 @@
         <template #tab>
           <span> <Icon :icon="'ant-design:line-chart-outlined'" /> 数据 </span>
         </template>
-        <Telemetry  v-if="tabActiveKey == 'TELEMETRY'"  :entityType="EntityType.USER" :entityId="record?.id?.id" />
+        <Telemetry v-if="tabActiveKey == 'TELEMETRY'" :entityType="EntityType.USER" :entityId="record?.id?.id" />
       </TabPane>
       <TabPane key="RELATION">
-        <template #tab><span>
-            <Icon :icon="'ant-design:radar-chart-outlined'" /> 关联
-          </span> </template>
+        <template #tab
+          ><span> <Icon :icon="'ant-design:radar-chart-outlined'" /> 关联 </span>
+        </template>
         <Relation :entityType="EntityType.USER" :entityId="record?.id?.id" />
       </TabPane>
     </Tabs>
@@ -78,12 +78,12 @@
   import { getDashboardInfoById } from '/@/api/tb/dashboard';
   import { getUserById, getActivationLink, sendActivationEmail } from '/@/api/tb/user';
   import { Tabs, TabPane, Checkbox } from 'ant-design-vue';
+  import { EntityType } from '/@/enums/entityTypeEnum';
   import { DescItem, Description, useDescription } from '/@/components/Description';
   import { UserInfo } from '/#/store';
-  import { isEmpty } from 'lodash';
+  import { isEmpty } from 'lodash-es';
   import Telemetry from '/@/views/tb/telemetry/index.vue';
   import Relation from '/@/views/tb/relation/list.vue';
-  import { EntityType } from '/@/enums/entityTypeEnum';
 
   const emit = defineEmits(['edit', 'delete', 'login', 'register']);
 
@@ -159,15 +159,11 @@
       await clear();
       record.value = await getUserById(data.id.id);
       if (!isEmpty(record.value.additionalInfo.defaultDashboardId)) {
-        const defaultDashboard = await getDashboardInfoById(
-          record.value.additionalInfo.defaultDashboardId,
-        );
+        const defaultDashboard = await getDashboardInfoById(record.value.additionalInfo.defaultDashboardId);
         record.value.additionalInfo.defaultDashboardTitle = defaultDashboard.title || '';
       }
       if (!isEmpty(record.value.additionalInfo.homeDashboardId)) {
-        const homeDashboard = await getDashboardInfoById(
-          record.value.additionalInfo.homeDashboardId,
-        );
+        const homeDashboard = await getDashboardInfoById(record.value.additionalInfo.homeDashboardId);
         record.value.additionalInfo.homeDashboardTitle = homeDashboard.title || '';
       }
       setDescProps({ data: record.value });

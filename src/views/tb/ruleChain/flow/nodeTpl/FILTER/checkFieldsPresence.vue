@@ -31,7 +31,7 @@ export default defineComponent({
 <script lang="ts" setup >
 import { Checkbox, Form, Select } from 'ant-design-vue';
 import { FormInstance } from 'ant-design-vue/lib/form';
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash-es';
 import { defineComponent, reactive, ref, watch } from 'vue';
 
 

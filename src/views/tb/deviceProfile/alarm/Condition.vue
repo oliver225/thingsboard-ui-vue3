@@ -99,7 +99,7 @@ import { CollapseContainer } from '/@/components/Container'
 import ConditionItemForm from './ConditionItem.vue';
 import { propTypes } from '/@/utils/propTypes';
 import { ALARM_CONDITION_KEY_TYPE_OPTIONS, PREDICATE_OPERATION_OPTIONS, ALARM_CONDITION_VALUE_TYPE_OPTIONS } from '/@/enums/alarmEnum';
-import { isArray } from 'lodash';
+import { isArray } from 'lodash-es';
 import dayjs from 'dayjs';
 
 const emit = defineEmits(['update:value']);

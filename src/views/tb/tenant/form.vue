@@ -17,10 +17,10 @@
   import { BasicForm, FormSchema, useForm } from '/@/components/Form';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { TenantInfo, tenantInfoById, tenantSave } from '/@/api/tb/tenant';
-  import { tenantProfileInfoList } from '/@/api/tb/tenantProfile';
-  import { isEmpty } from '/@/utils/is';
+  import { tenantProfileInfoList, getTenantProfileInfoDefault } from '/@/api/tb/tenantProfile';
+  import { isEmpty } from 'lodash-es';
   import { useCascaderAreaData } from '@vant/area-data';
-  import { EntityType } from '/@/enums/entityTypeEnum';
+import { EntityType } from '/@/enums/entityTypeEnum';
 
   const emit = defineEmits(['success', 'register']);
 
@@ -48,7 +48,9 @@
       field: 'tenantProfileId.entityType',
       component: 'Input',
       show: false,
-      defaultValue: EntityType.TENANT_PROFILE,
+      componentProps: {
+        value: EntityType.TENANT_PROFILE,
+      },
     },
     {
       label: t('租户配置'),
@@ -57,11 +59,11 @@
       componentProps: {
         immediate: true,
         resultField: 'data',
-        api: tenantProfileInfoList,
         params: { pageSize: 50, page: 0, sortProperty: 'name', sortOrder: 'ASC' },
         mapFn: (item) => {
           return { label: item.name, value: item.id.id };
         },
+        api: tenantProfileInfoList,
       },
       required: true,
       colProps: { lg: 24, md: 24 },
@@ -145,6 +147,11 @@
       record.value = (res || {}) as TenantInfo;
       record.value.areaList = [record.value.state, record.value.city, record.value.country];
     }
+    if (isEmpty(record.value.tenantProfileId?.id)) {
+      const defaultTenantProfile = await getTenantProfileInfoDefault();
+      record.value.tenantProfileId = defaultTenantProfile.id;
+      record.value.tenantProfileName = defaultTenantProfile.name;
+    }
 
     setFieldsValue(record.value);
     setModalProps({ loading: false });
@@ -157,13 +164,14 @@
       data.state = data.areaList[0];
       data.city = data.areaList[1];
       data.country = data.areaList[2];
+      // console.log('submit', params, data, record);
       const res = await tenantSave({ ...data, id: record.value.id });
       showMessage(`${record.value.id?.id ? '编辑' : '新增'}租户成功！`);
       setTimeout(closeModal);
       emit('success', data);
     } catch (error: any) {
       if (error && error.errorFields) {
-        showMessage(error.message || t('common.validateError'), 'error');
+        showMessage(t('common.validateError'));
       }
       console.log('error', error);
     } finally {

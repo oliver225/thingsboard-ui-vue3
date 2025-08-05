@@ -8,7 +8,6 @@ import {
   TOKEN_KEY,
   SESSION_TIMEOUT_KEY,
   USER_INFO_KEY,
-  ROLES_KEY,
   LOCK_INFO_KEY,
   PROJ_CFG_KEY,
   APP_LOCAL_CACHE_KEY,
@@ -26,7 +25,6 @@ interface BasicStore {
   [REFRESH_TOKEN_KEY]: string | number | null | undefined;
   [SESSION_TIMEOUT_KEY]: boolean | undefined;
   [USER_INFO_KEY]: UserInfo;
-  [ROLES_KEY]: string[];
   [AUTHORITY_KEY]: string;
   [LOCK_INFO_KEY]: LockInfo;
   [PROJ_CFG_KEY]: ProjectConfig;

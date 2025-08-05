@@ -1,7 +1,6 @@
-import { BasicModel, BasicQuery, Page } from "../model/baseModel";
-import { EntityId } from "/#/store";
-import { EntityType } from "/@/enums/entityTypeEnum";
-import { defHttp } from "/@/utils/http/axios";
+import { BasicModel, BasicQuery, Page } from '../model/baseModel';
+import { EntityType } from '/@/enums/entityTypeEnum';
+import { defHttp } from '/@/utils/http/axios';
 
 export interface ResourceInfo extends BasicModel<EntityType.TB_RESOURCE> {
   tenantId?: EntityId<EntityType.TENANT>;
@@ -36,19 +35,18 @@ export interface LwM2mInstance {
 }
 
 export interface LwM2mObject {
-  id?: number;        //LwM2M Object id
-  keyId: string;      //LwM2M Object key id
+  id?: number; //LwM2M Object id
+  keyId: string; //LwM2M Object key id
   name: string;
   multiple: boolean;
   mandatory: boolean;
   instances: [LwM2mInstance];
 }
 
-
-
 export function saveResource(data?: Resource | any) {
   return defHttp.post<Resource>({
-    url: '/api/resource', data
+    url: '/api/resource',
+    data,
   });
 }
 
@@ -70,13 +68,11 @@ export function resourceDownload(resourceId: string) {
   });
 }
 
-
 export function deleteResource(resourceId: string) {
   return defHttp.delete<void>({
     url: `/api/resource/${resourceId}`,
   });
 }
-
 
 export function resourceList(params: BasicQuery) {
   return defHttp.get<Page<ResourceInfo>>({
@@ -85,9 +81,7 @@ export function resourceList(params: BasicQuery) {
   });
 }
 
-export function getLwm2mByObjects(
-  params: { sortProperty: string; sortOrder: 'ASC' | 'DESC'; objectIds?: [string]; }
-) {
+export function getLwm2mByObjects(params: { sortProperty: string; sortOrder: 'ASC' | 'DESC'; objectIds?: [string] }) {
   return defHttp.get<[LwM2mObject]>({
     url: `/api/resource/lwm2m`,
     params,

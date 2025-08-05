@@ -47,7 +47,6 @@
       const { getShowFullHeaderRef } = useHeaderSetting();
       const { getShowSidebar, getIsMixSidebar, getShowMenu } = useMenuSetting();
 
-
       // Create a lock screen monitor
       const lockEvents = useLockPage();
 

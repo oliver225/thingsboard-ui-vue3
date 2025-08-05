@@ -34,8 +34,7 @@
   import { CropperAvatar } from '/@/components/Cropper';
   import headerImg from '/@/assets/images/header.jpg';
   import { useUserStore } from '/@/store/modules/user';
-  import { infoSaveBase } from '/@/api/sys/user';
-  import { userInfoApi } from '/@/api/tb/login';
+  import { userInfoApi } from '/@/api/tb/user';
   // import { uploadApi } from '/@/api/sys/upload';
 
   const { t } = useI18n();

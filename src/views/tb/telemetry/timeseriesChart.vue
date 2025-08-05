@@ -11,12 +11,7 @@
       <template #extra>
         <Space>
           <Tooltip title="全屏">
-            <Icon
-              icon="ant-design:fullscreen-outlined"
-              :size="18"
-              class="cursor-pointer"
-              @click="handleOpenModal"
-            />
+            <Icon icon="ant-design:fullscreen-outlined" :size="18" class="cursor-pointer" @click="handleOpenModal" />
           </Tooltip>
           <Popover v-model:open="filterPopoverVisible" trigger="click" placement="bottom">
             <template #title> 数据过滤 </template>
@@ -61,7 +56,6 @@
   import { useI18n } from '/@/hooks/web/useI18n';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { Card, Popover, Tooltip, Space } from 'ant-design-vue';
-  import { EntityType } from '/@/enums/entityTypeEnum';
   import { Icon } from '/@/components/Icon';
   import dayjs from 'dayjs';
   import { useWebsocketStore } from '/@/store/modules/websocket';
@@ -70,13 +64,12 @@
   import { TsData, TsKvEntity } from '/@/api/tb/telemetry';
   import { BasicForm, FormSchema, useForm } from '/@/components/Form';
   import TimeseriesModal from './timeseriesModal.vue';
-  import { isArray } from 'lodash';
+  import { isArray } from 'lodash-es';
   import { AGGREGATION_OPTIONS, Aggregation } from '/@/enums/telemetryEnum';
   import { getTimeseries, TelemetryQuery } from '/@/api/tb/telemetry';
   import { Function } from '/@/api/tb/deviceProfile';
-  import { WsCmdType } from '/@/enums/wsCmdEnum';
+  import { WsCmdType } from '/@/enums/wsCmdTypeEnum';
   import { BasicColumn, BasicTable } from '/@/components/Table';
-  import { DataType } from '/@/enums/thingsModelEnum';
 
   const { t } = useI18n('tb');
   const { showMessage } = useMessage();
@@ -113,11 +106,7 @@
   const property = ref<Function>(props.kvEntity.property);
   const keyStr = computed(() => props.kvEntity.key);
 
-  const {
-    getAndIncrementCmdId,
-    send: websocketSend,
-    unsubscribe: websocketUnsubscribe,
-  } = useWebsocketStore();
+  const { getAndIncrementCmdId, send: websocketSend, unsubscribe: websocketUnsubscribe } = useWebsocketStore();
 
   const { setOptions } = useECharts(chartRef as Ref<HTMLDivElement>);
 
@@ -202,15 +191,15 @@
     },
   ];
   const showChart = computed(() => {
-    if (
-      property.value &&
-      property.value.dataType &&
-      (property.value.dataType.type == DataType.int ||
-        property.value.dataType.type == DataType.float ||
-        property.value.dataType.type == DataType.double)
-    ) {
-      return true;
-    }
+    // if (
+    //   property.value &&
+    //   property.value.dataType &&
+    //   (property.value.dataType.type == DataType.int ||
+    //     property.value.dataType.type == DataType.float ||
+    //     property.value.dataType.type == DataType.double)
+    // ) {
+    //   return true;
+    // }
     return false;
   });
   const [registerModal, { openModal }] = useModal();
@@ -484,12 +473,12 @@
   });
 
   function handleOpenModal() {
-    openModal(true, { 
+    openModal(true, {
       entityType: props.entityType,
       entityId: props.entityId,
       keys: keyStr.value,
-      property: props.kvEntity.property
-     });
+      // property: props.kvEntity.property,
+    });
   }
 </script>
 

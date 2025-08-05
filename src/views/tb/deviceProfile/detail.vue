@@ -101,7 +101,6 @@ import { Authority } from '/@/enums/authorityEnum';
 import AuditLog from '/@/views/tb/auditLog/list.vue';
 import { DescItem, Description, useDescription } from '/@/components/Description';
 import { router } from '/@/router';
-import { EntityType } from '/@/enums/entityTypeEnum';
 import TransportForm from './transport/transportForm.vue';
 import AlarmForm from './alarm/alarmForm.vue';
 import ProvisionForm from './provisionForm.vue';

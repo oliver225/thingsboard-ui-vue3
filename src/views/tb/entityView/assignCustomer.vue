@@ -23,7 +23,7 @@ import { Select } from 'ant-design-vue';
 import { BasicModal, useModalInner } from '/@/components/Modal';
 import { EntityViewInfo, assignEntityViewToCustomer } from '/@/api/tb/entityView';
 import { customerList, Customer } from '/@/api/tb/customer';
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash-es';
 
 
 

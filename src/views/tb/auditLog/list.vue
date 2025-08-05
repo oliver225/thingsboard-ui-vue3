@@ -44,7 +44,7 @@ import { Tag, RangePicker } from 'ant-design-vue';
 import { auditLogList, getAuditLogByUserId, getAuditLogByCustomerId, getAuditLogByEntityId } from '/@/api/tb/auditLog';
 import { reactive } from 'vue';
 import DetailModal from './detail.vue';
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash-es';
 import { ACTION_TYPE_OPTIONS, ENTITY_TYPE_OPTIONS, EntityType } from '/@/enums/entityTypeEnum';
 
 

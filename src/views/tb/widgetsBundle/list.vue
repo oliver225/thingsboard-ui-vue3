@@ -61,8 +61,8 @@
   import InputForm from './form.vue';
   import DetailDrawer from './detail.vue';
   import { Checkbox } from 'ant-design-vue';
-  import { isEqual } from 'lodash';
-  import { SYS_TENANT_ID } from '/@/enums/constant';
+  import { isEqual } from 'lodash-es';
+  import { SYS_TENANT_ID } from '/#/constant';
   import WidgetTypeInfoList from './widgetTypesInfo.vue';
 
   const { t } = useI18n('tb');

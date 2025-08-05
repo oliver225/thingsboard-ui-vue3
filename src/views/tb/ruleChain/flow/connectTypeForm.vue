@@ -22,7 +22,7 @@ import { Select } from 'ant-design-vue';
 import { useMessage } from '/@/hooks/web/useMessage';
 
 import { BasicModal, useModalInner } from '/@/components/Modal';
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash-es';
 
 const emit = defineEmits(['success', 'cancel', 'register']);
 

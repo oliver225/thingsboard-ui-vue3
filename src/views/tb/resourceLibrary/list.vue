@@ -7,13 +7,13 @@
 
       <template #tableTitle>
         <div class="space-x-2">
-          <a-button type="primary" @click="handleForm({})">
-            <Icon icon="i-fluent:add-12-filled" /> 新增资源
-          </a-button>
-          <Select v-model:value="searchParam.resourceType"  @change="reload"  style="width: 130px" >
+          <a-button type="primary" @click="handleForm({})"> <Icon icon="i-fluent:add-12-filled" /> 新增资源 </a-button>
+          <Select v-model:value="searchParam.resourceType" @change="reload" style="width: 130px">
             <Select.Option value="">全部 </Select.Option>
-            <Select.Option v-for="item in RESOURCE_TYPE_OPTIONS" :key="item.value" :value="item.value">{{ item.label }}</Select.Option>
-           </Select>
+            <Select.Option v-for="item in RESOURCE_TYPE_OPTIONS" :key="item.value" :value="item.value">{{
+              item.label
+            }}</Select.Option>
+          </Select>
           <a-input
             v-model:value="searchParam.textSearch"
             placeholder="输入搜索内容"
@@ -37,12 +37,7 @@
       </template>
     </BasicTable>
     <InputForm @register="registerModal" @success="handleSuccess" />
-    <DetailDrawer
-      @register="registerDrawer"
-      @edit="handleForm"
-      @delete="handleDelete"
-      @download="handleDownload"
-    />
+    <DetailDrawer @register="registerDrawer" @edit="handleForm" @delete="handleDelete" @download="handleDownload" />
   </div>
 </template>
 <script lang="ts">
@@ -64,8 +59,8 @@
   import InputForm from './form.vue';
   import DetailDrawer from './detail.vue';
   import { Checkbox, Select } from 'ant-design-vue';
-  import { isEqual } from 'lodash';
-  import { SYS_TENANT_ID } from '/@/enums/constant';
+  import { isEqual } from 'lodash-es';
+  import { SYS_TENANT_ID } from '/#/constant';
   import { RESOURCE_TYPE_OPTIONS } from '/@/enums/resourceTypeEnum';
 
   const { t } = useI18n('tb');
@@ -100,8 +95,7 @@
       dataIndex: 'resourceType',
       key: 'resourceType',
       width: 160,
-      format: (text: any) =>
-        text ? RESOURCE_TYPE_OPTIONS.find((item) => item.value === text)?.label || text : '',
+      format: (text: any) => (text ? RESOURCE_TYPE_OPTIONS.find((item) => item.value === text)?.label || text : ''),
     },
     {
       title: '系统',

@@ -17,17 +17,8 @@
         <template #tab>
           <span> 产品详情 </span>
         </template>
-        <Form
-          ref="formRef"
-          :model="formState"
-          :labelCol="{ style: { width: '120px' } }"
-          :wrapperCol="{ span: 18 }"
-        >
-          <Form.Item
-            label="产品名称"
-            name="name"
-            :rules="[{ required: true, message: '请输入产品名称!' }]"
-          >
+        <Form ref="formRef" :model="formState" :labelCol="{ style: { width: '120px' } }" :wrapperCol="{ span: 18 }">
+          <Form.Item label="产品名称" name="name" :rules="[{ required: true, message: '请输入产品名称!' }]">
             <Input v-model:value="formState.name" placeholder="请输入配置名称" />
           </Form.Item>
           <Form.Item label="默认规则链" :name="['defaultRuleChainId', 'id']">
@@ -47,31 +38,22 @@
             />
           </Form.Item>
           <Form.Item label="队列" name="defaultQueueName">
-            <Select
-              v-model:value="formState.defaultQueueName"
-              :allow-clear="true"
-              placeholder="请选择队列"
-            >
-              <Select.Option
-                v-for="(option, index) in queueOptions"
-                :key="index"
-                :value="option.value"
-              >
+            <Select v-model:value="formState.defaultQueueName" :allow-clear="true" placeholder="请选择队列">
+              <Select.Option v-for="(option, index) in queueOptions" :key="index" :value="option.value">
                 {{ option.label }}
                 <p>
                   <Tag>
                     <small>提交策略:</small>
                     {{
-                      SUBMIT_STRATEGY_OPTIONS.find((item) => item.value === option.submitStrategy)
-                        ?.label || option.submitStrategy
+                      SUBMIT_STRATEGY_OPTIONS.find((item) => item.value === option.submitStrategy)?.label ||
+                      option.submitStrategy
                     }}
                   </Tag>
                   <Tag>
                     <small>处理策略:</small>
                     {{
-                      PROCESSING_STRATEGY_OPTIONS.find(
-                        (item) => item.value === option.processingStrategy,
-                      )?.label || option.processingStrategy
+                      PROCESSING_STRATEGY_OPTIONS.find((item) => item.value === option.processingStrategy)?.label ||
+                      option.processingStrategy
                     }}
                   </Tag>
                 </p>
@@ -86,11 +68,7 @@
               placeholder="请选择默认边缘规则链"
             />
           </Form.Item>
-          <Form.Item
-            label="选择图片"
-            name="image"
-            :rules="[{ required: true, message: '请输入产品图片!' }]"
-          >
+          <Form.Item label="选择图片" name="image" :rules="[{ required: true, message: '请输入产品图片!' }]">
             <ImageUrlInput v-model:value="formState.image" />
           </Form.Item>
           <Form.Item label="描述信息" name="description">
@@ -155,8 +133,8 @@
   import { saveDeviceProfile, getDeviceProfileById, DeviceProfile } from '/@/api/tb/deviceProfile';
   import { useWindowSizeFn } from '/@/hooks/event/useWindowSizeFn';
   import { isEmpty } from '/@/utils/is';
-  import { EntityType } from '/@/enums/entityTypeEnum';
   import ImageUrlInput from '/@/views/tb/images/ImageUrlInput.vue';
+import { EntityType } from '/@/enums/entityTypeEnum';
 
   const emit = defineEmits(['success', 'register']);
 

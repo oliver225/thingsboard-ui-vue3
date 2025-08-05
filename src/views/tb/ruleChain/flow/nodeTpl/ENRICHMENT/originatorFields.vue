@@ -58,7 +58,7 @@ import { ref, watch, defineComponent, reactive } from 'vue';
 import { Form, Input, Select, Radio, Button, Checkbox, Tooltip, Alert } from 'ant-design-vue';
 import { Icon } from '/@/components/Icon';
 import { FormInstance } from 'ant-design-vue/lib/form';
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash-es';
 
 interface Configuration {
     dataMapping: Recordable,

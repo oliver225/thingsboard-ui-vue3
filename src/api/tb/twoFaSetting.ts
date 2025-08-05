@@ -1,4 +1,4 @@
-import { defHttp } from "/@/utils/http/axios";
+import { defHttp } from '/@/utils/http/axios';
 
 export interface TwoFaSetting {
   providers?: [{ providerType: 'TOTP' | 'SMS' | 'EMAIL' | 'BACKUP_CODE' }];
@@ -6,7 +6,6 @@ export interface TwoFaSetting {
   maxVerificationFailuresBeforeUserLockout?: number;
   totalAllowedTimeForVerification?: number;
   verificationCodeCheckRateLimit?: string;
-
 }
 
 export function getTwoFaSettings() {
@@ -18,6 +17,6 @@ export function getTwoFaSettings() {
 export function saveTwoFaSettings(data: TwoFaSetting | any) {
   return defHttp.postJson<TwoFaSetting>({
     url: '/api/2fa/settings',
-    data
+    data,
   });
 }

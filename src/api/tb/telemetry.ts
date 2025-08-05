@@ -1,8 +1,7 @@
 import { Function } from './deviceProfile';
-import { EntityId } from '/#/store';
-import { EntityType } from '/@/enums/entityTypeEnum';
 import { Scope } from '/@/enums/telemetryEnum';
 import { defHttp } from '/@/utils/http/axios';
+import { EntityType } from '/@/enums/entityTypeEnum';
 
 export interface LastTelemetrySubscription extends Recordable {
   subscriptionId?: number;
@@ -13,14 +12,14 @@ export interface LastTelemetrySubscription extends Recordable {
 }
 export interface kvEntity extends Recordable {
   key?: string;
-  value?: Object;
+  value?: object;
   lastUpdateTs?: number;
   property?: Function;
 }
 
 export interface TsData extends Recordable {
   ts: number;
-  value: Object;
+  value: object;
 }
 
 export type TsKvEntity = Record<string, { data: Array<TsData>; property?: Function }>;
@@ -79,11 +78,7 @@ export function getAttributesByScope(entityId: EntityId<any>, scope: Scope) {
   });
 }
 
-export function getLatestTimeseries(
-  entityId: EntityId<any>,
-  keys?: string,
-  useStrictDataTypes?: boolean,
-) {
+export function getLatestTimeseries(entityId: EntityId<any>, keys?: string, useStrictDataTypes?: boolean) {
   //useStrictDataTypes  数值转换为字符串
   return defHttp.get<TsKvEntity>({
     url: `/api/plugins/telemetry/${entityId.entityType}/${entityId.id}/values/timeseries`,
@@ -112,11 +107,7 @@ export function deleteEntityAttributes(entityId: EntityId<any>, scope: Scope, ke
   });
 }
 
-export function saveDeviceAttributes(
-  deviceId: string,
-  scope: Scope.SERVER_SCOPE | Scope.SHARED_SCOPE,
-  data: any,
-) {
+export function saveDeviceAttributes(deviceId: string, scope: Scope.SERVER_SCOPE | Scope.SHARED_SCOPE, data: any) {
   return defHttp.postJson<void>({
     url: `/api/plugins/telemetry/${deviceId}/${scope}`,
     data,

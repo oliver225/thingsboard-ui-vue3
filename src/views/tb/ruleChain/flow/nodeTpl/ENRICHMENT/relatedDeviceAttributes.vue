@@ -112,7 +112,7 @@ import { ref, watch, defineComponent, reactive, onMounted } from 'vue';
 import { PlusOutlined } from '@ant-design/icons-vue';
 import { Form, Select, Radio, Checkbox, Row, Col, Divider, Space, Input, Button, InputNumber } from 'ant-design-vue';
 import { FormInstance } from 'ant-design-vue/lib/form';
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash-es';
 import { getDeviceTypes } from '/@/api/tb/device';
 
 interface Configuration {

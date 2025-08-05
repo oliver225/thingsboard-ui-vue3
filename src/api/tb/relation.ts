@@ -1,14 +1,13 @@
-import { RelationsSearchParameters } from "../model/baseModel";
-import { EntityId } from "/#/store";
-import { EntityType } from "/@/enums/entityTypeEnum";
-import { RelationTypeGroup } from "/@/enums/relationEnum";
-import { defHttp } from "/@/utils/http/axios";
+import { RelationsSearchParameters } from '../model/baseModel';
+import { RelationTypeGroup } from '/@/enums/relationEnum';
+import { defHttp } from '/@/utils/http/axios';
+import { EntityType } from '/@/enums/entityTypeEnum';
 
 export interface EntityRelation {
   from?: EntityId<any>;
   to?: EntityId<any>;
   type?: string;
-  typeGroup?: RelationTypeGroup
+  typeGroup?: RelationTypeGroup;
   additionalInfo?: Recordable;
 }
 
@@ -26,10 +25,9 @@ export interface RelationParams {
   relationTypeGroup?: string;
 }
 
-
 export interface EntityRelationsQuery {
   parameters?: RelationsSearchParameters;
-  filters?: Array<{ relationTyp?: string, entityTypes?: Array<EntityType> }>;
+  filters?: Array<{ relationTyp?: string; entityTypes?: Array<EntityType> }>;
 }
 
 export function saveRelation(data: EntityRelation | any) {
@@ -39,7 +37,6 @@ export function saveRelation(data: EntityRelation | any) {
   });
 }
 
-
 export function deleteRelation(params: RelationParams) {
   return defHttp.delete<void>({
     url: '/api/relation',
@@ -47,7 +44,7 @@ export function deleteRelation(params: RelationParams) {
   });
 }
 
-export function deleteRelations(params: { entityId: string, entityType: EntityType }) {
+export function deleteRelations(params: { entityId: string; entityType: EntityType }) {
   return defHttp.delete<void>({
     url: '/api/relations',
     params,
@@ -61,42 +58,56 @@ export function getRelation(params: RelationParams) {
   });
 }
 
-export function findRelationListByFrom(params: { fromId: string, fromType: EntityType }) {
+export function findRelationListByFrom(params: { fromId: string; fromType: EntityType }) {
   return defHttp.get<Array<EntityRelation>>({
     url: '/api/relations',
     params,
   });
 }
 
-export function findRelationListByFromAndType(params: { fromId: string, fromType: EntityType, relationType: string, relationTypeGroup?: string }) {
+export function findRelationListByFromAndType(params: {
+  fromId: string;
+  fromType: EntityType;
+  relationType: string;
+  relationTypeGroup?: string;
+}) {
   return defHttp.get<Array<EntityRelation>>({
     url: '/api/relations',
     params,
   });
 }
 
-export function findRelationInfoListByFrom(params: { fromId: string, fromType: EntityType, relationTypeGroup?: string }) {
+export function findRelationInfoListByFrom(params: {
+  fromId: string;
+  fromType: EntityType;
+  relationTypeGroup?: string;
+}) {
   return defHttp.get<Array<EntityRelationInfo>>({
     url: '/api/relations/info',
     params,
   });
 }
 
-export function findRelationListByTo(params: { toId: string, toType: EntityType, relationTypeGroup?: string }) {
+export function findRelationListByTo(params: { toId: string; toType: EntityType; relationTypeGroup?: string }) {
   return defHttp.get<Array<EntityRelation>>({
     url: '/api/relations',
     params,
   });
 }
 
-export function findRelationListByToAndType(params: { toId: string, toType: EntityType, relationType: string, relationTypeGroup?: string }) {
+export function findRelationListByToAndType(params: {
+  toId: string;
+  toType: EntityType;
+  relationType: string;
+  relationTypeGroup?: string;
+}) {
   return defHttp.get<Array<EntityRelation>>({
     url: '/api/relations',
     params,
   });
 }
 
-export function findRelationInfoListByTo(params: { toId: string, toType: EntityType, relationTypeGroup?: string }) {
+export function findRelationInfoListByTo(params: { toId: string; toType: EntityType; relationTypeGroup?: string }) {
   return defHttp.get<Array<EntityRelationInfo>>({
     url: '/api/relations/info',
     params,
@@ -116,6 +127,3 @@ export function findRelationInfoByQuery(data: EntityRelationsQuery | any) {
     data,
   });
 }
-
-
-

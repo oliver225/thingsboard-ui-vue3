@@ -36,13 +36,12 @@ export const ALARM_STATUS_OPTIONS = [
 ];
 
 export const ALARM_SEVERITY_OPTIONS = [
-  { value: AlarmSeverity.CRITICAL, label: '危险', color: '#FF0000' },  // 红色
-  { value: AlarmSeverity.MAJOR, label: '重要', color: '#E37318' },// 橙色
+  { value: AlarmSeverity.CRITICAL, label: '危险', color: '#FF0000' }, // 红色
+  { value: AlarmSeverity.MAJOR, label: '重要', color: '#E37318' }, // 橙色
   { value: AlarmSeverity.MINOR, label: '次要', color: '#FFA000' }, // 黄色
-  { value: AlarmSeverity.WARNING, label: '警告', color: '#FFCA3D' },//蓝色
-  { value: AlarmSeverity.INDETERMINATE, label: '不确定' },//灰色
+  { value: AlarmSeverity.WARNING, label: '警告', color: '#FFCA3D' }, //蓝色
+  { value: AlarmSeverity.INDETERMINATE, label: '不确定' }, //灰色
 ];
-
 
 export enum AlarmConditionKeyType {
   ATTRIBUTE = 'ATTRIBUTE',

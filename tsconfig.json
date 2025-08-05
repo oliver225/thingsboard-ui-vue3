@@ -38,11 +38,7 @@
     ],
     "paths": {
       "/@/*": ["src/*"],
-      "/#/*": ["types/*"],
-      "@jeesite/core/*": ["src/*"],
-      "@jeesite/assets/*": ["src/assets/*"],
-      "@jeesite/types/*": ["types/*"],
-      "@jeesite/*": ["packages/*"]
+      "/#/*": ["types/*"]
     }
   },
   "include": [

@@ -1,6 +1,6 @@
 <template>
   <PageWrapper>
-    <div ref="wrapperRef" class="admin-setting" >
+    <div ref="wrapperRef" class="admin-setting">
       <Tabs tab-position="left" :destroyInactiveTabPane="true" :tabBarStyle="{ width: '180px' }">
         <Tabs.TabPane key="10">
           <template #tab>
@@ -80,7 +80,6 @@
   import QueueList from '../queue/list.vue';
   import SecuritySetting from './securitySetting.vue';
   import JwtSetting from './jwtSetting.vue';
-
 </script>
 <style lang="less">
   .admin-setting {

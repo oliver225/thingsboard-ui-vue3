@@ -1,7 +1,6 @@
-import { BasicModel, BasicQuery, Page } from "../model/baseModel";
-import { EntityId } from "/#/store";
-import { EntityType } from "/@/enums/entityTypeEnum";
-import { defHttp } from "/@/utils/http/axios";
+import { BasicModel, BasicQuery, Page } from '../model/baseModel';
+import { defHttp } from '/@/utils/http/axios';
+import { EntityType } from '/@/enums/entityTypeEnum';
 
 export interface RuleChain extends BasicModel<EntityType.RULE_CHAIN> {
   tenantId?: EntityId<EntityType.TENANT>;
@@ -16,21 +15,23 @@ export interface RuleChain extends BasicModel<EntityType.RULE_CHAIN> {
 }
 
 export interface RuleNode extends BasicModel<EntityType.RULE_NODE> {
-  ruleChainId?: EntityId<EntityType.RULE_CHAIN>
-  name: string,
-  debugMode: boolean,
-  singletonMode: boolean,
-  type: string,
-  configuration: Recordable,
-  additionalInfo: Recordable,
+  ruleChainId?: EntityId<EntityType.RULE_CHAIN>;
+  name: string;
+  debugMode: boolean;
+  singletonMode: boolean;
+  type: string;
+  configuration: Recordable;
+  additionalInfo: Recordable;
 }
 
 export interface RuleChainMetaData {
   ruleChainId?: EntityId<EntityType.RULE_CHAIN>;
   firstNodeIndex?: number;
   nodes?: [RuleNode];
-  connections?: [{ fromIndex: number, toIndex: number, type: string }];
-  ruleChainConnections?: [{ fromIndex: number, type: string, targetRuleChainId: EntityId<EntityType.RULE_CHAIN>, additionalInfo: Recordable }];
+  connections?: [{ fromIndex: number; toIndex: number; type: string }];
+  ruleChainConnections?: [
+    { fromIndex: number; type: string; targetRuleChainId: EntityId<EntityType.RULE_CHAIN>; additionalInfo: Recordable },
+  ];
 }
 
 export interface RuleChainOutputLabelsUsage {
@@ -53,17 +54,17 @@ export function getRuleChainById(ruleChainId: string) {
   });
 }
 
-
 export function saveRuleChain(data: RuleChain | any) {
   return defHttp.postJson<RuleChain>({
-    url: '/api/ruleChain', data
+    url: '/api/ruleChain',
+    data,
   });
 }
 
 export function setDefaultRuleChain(name: string) {
   return defHttp.postJson<RuleChain>({
     url: '/api/ruleChain/device/default',
-    params: { name: name }
+    params: { name: name },
   });
 }
 

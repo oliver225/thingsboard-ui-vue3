@@ -107,4 +107,9 @@ declare global {
       [elem: string]: any;
     }
   }
+
+  interface EntityId<T> {
+    entityType?: T;
+    id: string;
+  }
 }

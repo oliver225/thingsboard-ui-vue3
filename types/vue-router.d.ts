@@ -1,5 +1,3 @@
-import { Authority } from "../src/enums/authorityEnum";
-
 export {};
 
 declare module 'vue-router' {
@@ -10,7 +8,7 @@ declare module 'vue-router' {
     // Whether to ignore permissions
     ignoreAuth?: boolean;
     // role info
-    authority?: Authority[];
+    roles?: RoleEnum[];
     // Whether not to cache
     ignoreKeepAlive?: boolean;
     // Is it fixed on tab

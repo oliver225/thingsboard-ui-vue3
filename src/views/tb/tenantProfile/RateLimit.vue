@@ -61,7 +61,7 @@ import { BasicModal } from '/@/components/Modal';
 import { Icon } from '/@/components/Icon'
 import { Tooltip, InputNumber, Card } from 'ant-design-vue';
 import { propTypes } from '/@/utils/propTypes';
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash-es';
 
 const emit = defineEmits(['update:value']);
 

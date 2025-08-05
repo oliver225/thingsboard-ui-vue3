@@ -11,7 +11,7 @@ import { PageWrapper } from '/@/components/Page';
 import { ScrollContainer } from '/@/components/Container/index';
 import { RuleChain, getRuleChainById, } from '/@/api/tb/ruleChain';
 import { router } from '/@/router';
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash-es';
 import { ref, watch } from 'vue';
 
 const record = ref<RuleChain>({} as RuleChain);

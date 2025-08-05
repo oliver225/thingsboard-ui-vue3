@@ -1,8 +1,7 @@
 import { ErrorTypeEnum } from '/@/enums/exceptionEnum';
 import { MenuModeEnum, MenuTypeEnum } from '/@/enums/menuEnum';
+import { Authority } from '/@/enums/authorityEnum';
 import { EntityType } from '/@/enums/entityTypeEnum';
-import { Authority } from '../src/enums/authorityEnum';
-// import { RoleInfo } from '/@/api/sys/model/userModel';
 
 // Lock screen information
 export interface LockInfo {
@@ -61,15 +60,9 @@ export interface JwtPair {
   refreshToken: string;
 }
 
-export interface EntityId<T> {
-  entityType?: T;
-  id: string;
-}
-
 export interface BeforeMiniState {
   menuCollapsed?: boolean;
   menuSplit?: boolean;
   menuMode?: MenuModeEnum;
   menuType?: MenuTypeEnum;
 }
-

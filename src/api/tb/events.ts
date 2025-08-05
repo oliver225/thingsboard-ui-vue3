@@ -1,10 +1,7 @@
-import { BasicModel, EventQueryParam, Page } from "../model/baseModel";
-import { EntityId } from "/#/store";
-import { EntityType } from "/@/enums/entityTypeEnum";
-import { EventType } from "/@/enums/eventEnum";
-import { defHttp } from "/@/utils/http/axios";
-
-
+import { BasicModel, EventQueryParam, Page } from '../model/baseModel';
+import { EventType } from '/@/enums/eventEnum';
+import { defHttp } from '/@/utils/http/axios';
+import { EntityType } from '/@/enums/entityTypeEnum';
 
 export interface EventInfo extends BasicModel<null> {
   tenantId?: EntityId<EntityType.TENANT>;
@@ -57,7 +54,12 @@ export function getEventList(entityType: string, entityId: string, params: Event
   });
 }
 
-export function clearEvents(entityType: string, entityId: string, params: { startTime: number, endTime: number }, filter: EventFilter,) {
+export function clearEvents(
+  entityType: string,
+  entityId: string,
+  params: { startTime: number; endTime: number },
+  filter: EventFilter,
+) {
   return defHttp.postJson<Page<EventInfo>>({
     url: `/api/events/${entityType}/${entityId}/clear`,
     params: params,

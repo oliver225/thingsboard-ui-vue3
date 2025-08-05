@@ -1,8 +1,6 @@
-import { BasicModel, BasicQuery, EntitySubtype, Page, RelationsSearchParameters } from "../model/baseModel";
-import { EntityId } from "/#/store";
-import { EntityType } from "/@/enums/entityTypeEnum";
-import { defHttp } from "/@/utils/http/axios";
-
+import { BasicModel, BasicQuery, EntitySubtype, Page, RelationsSearchParameters } from '../model/baseModel';
+import { defHttp } from '/@/utils/http/axios';
+import { EntityType } from '/@/enums/entityTypeEnum';
 
 export interface AttributesEntityView {
   cs?: Array<string>;
@@ -76,7 +74,6 @@ export function unAssignEntityViewFromCustomer(entityViewId: string) {
   });
 }
 
-
 export function assignEntityViewToEdge(edgeId: string, entityViewId: string) {
   return defHttp.post<EntityView>({
     url: `/api/edge/${edgeId}/entityView/${entityViewId}`,
@@ -92,42 +89,42 @@ export function unAssignEntityViewFromEdge(edgeId: string, entityViewId: string)
 export function getEdgeEntityViews(params: BasicQuery, edgeId: string) {
   return defHttp.get<Page<EntityView>>({
     url: `/api/edge/${edgeId}/entityViews`,
-    params
+    params,
   });
 }
 
 export function getCustomerEntityViews(params: BasicQuery, customerId: string) {
   return defHttp.get<Page<EntityView>>({
     url: `/api/customer/${customerId}/entityViews`,
-    params
+    params,
   });
 }
 
 export function getCustomerEntityViewInfos(params: BasicQuery, customerId: string) {
   return defHttp.get<Page<EntityViewInfo>>({
     url: `/api/customer/${customerId}/entityViewInfos`,
-    params
+    params,
   });
 }
 
 export function getTenantEntityViews(params: BasicQuery) {
   return defHttp.get<Page<EntityView>>({
     url: '/api/tenant/entityViews',
-    params
+    params,
   });
 }
 
 export function getTenantEntityViewInfos(params: BasicQuery) {
   return defHttp.get<Page<EntityViewInfo>>({
     url: '/api/tenant/entityViewInfos',
-    params
+    params,
   });
 }
 
 export function findEntityViewByQuery(data: EntityViewSearchQuery | any) {
   return defHttp.postJson<Array<EntityViewInfo>>({
     url: '/api/entityViews',
-    data
+    data,
   });
 }
 
@@ -137,11 +134,10 @@ export function getEntityViewTypes() {
   });
 }
 
-
 export function saveEntityView(data: EntityView | any) {
   return defHttp.postJson<EntityView>({
     url: `/api/entityView`,
-    data
+    data,
   });
 }
 

@@ -116,7 +116,7 @@
   import dayjs from 'dayjs';
   import duration from 'dayjs/plugin/duration';
   import RelativeTime from 'dayjs/plugin/relativeTime';
-  import { isEmpty } from '/@/utils/is';
+  import { isEmpty } from 'lodash-es';
   import { computed, ref, unref } from 'vue';
   import {
     AlarmCommentInfo,

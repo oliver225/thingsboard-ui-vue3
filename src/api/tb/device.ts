@@ -1,8 +1,7 @@
-import { BasicModel, DeviceQueryParam, EntitySubtype, Page, RelationsSearchParameters } from "../model/baseModel";
-import { EntityId } from "/#/store";
-import { CredentialsType, TransportType } from "/@/enums/deviceEnum";
-import { EntityType } from "/@/enums/entityTypeEnum";
-import { defHttp } from "/@/utils/http/axios";
+import { BasicModel, DeviceQueryParam, EntitySubtype, Page, RelationsSearchParameters } from '../model/baseModel';
+import { CredentialsType, TransportType } from '/@/enums/deviceEnum';
+import { defHttp } from '/@/utils/http/axios';
+import { EntityType } from '/@/enums/entityTypeEnum';
 
 export interface Device extends BasicModel<EntityType.DEVICE> {
   name?: string;
@@ -15,12 +14,11 @@ export interface Device extends BasicModel<EntityType.DEVICE> {
   firmwareId?: EntityId<EntityType.OTA_PACKAGE>;
   softwareId?: EntityId<EntityType.OTA_PACKAGE>;
   deviceData?: {
-    configuration?: { type: 'DEFAULT' },
-    transportConfiguration?: { type: TransportType },
-    thingModelDefine: { properties?: []; services?: []; events?: [] },
-  }
-  additionalInfo: { description?: string, gateway: boolean, overwriteActivityTime?: boolean }
-
+    configuration?: { type: 'DEFAULT' };
+    transportConfiguration?: { type: TransportType };
+    thingModelDefine: { properties?: []; services?: []; events?: [] };
+  };
+  additionalInfo: { description?: string; gateway: boolean; overwriteActivityTime?: boolean };
 }
 
 export interface DeviceInfo extends Device {
@@ -43,7 +41,6 @@ export interface DeviceSearchQuery {
   deviceTypes?: Array<string>;
 }
 
-
 export function getDeviceById(deviceId: string) {
   return defHttp.get<Device>({
     url: `/api/device/${deviceId}`,
@@ -63,7 +60,7 @@ export function saveDevice(data: Device | any, accessToken?: string) {
   });
 }
 
-export function saveDeviceWithCredentials(data: { device: Device, credentials: DeviceCredentials } | any) {
+export function saveDeviceWithCredentials(data: { device: Device; credentials: DeviceCredentials } | any) {
   return defHttp.postJson<Device>({
     url: '/api/device-with-credentials',
     data,
@@ -139,21 +136,21 @@ export function getTenantDeviceList(params: DeviceQueryParam) {
   });
 }
 
-export function getCustomerDeviceList(params: DeviceQueryParam, customerId: string,) {
+export function getCustomerDeviceList(params: DeviceQueryParam, customerId: string) {
   return defHttp.get<Page<Device>>({
     url: `/api/customer/${customerId}/devices`,
     params,
   });
 }
 
-export function getCustomerDeviceInfoList(params: DeviceQueryParam, customerId: string,) {
+export function getCustomerDeviceInfoList(params: DeviceQueryParam, customerId: string) {
   return defHttp.get<Page<DeviceInfo>>({
     url: `/api/customer/${customerId}/deviceInfos`,
     params,
   });
 }
 
-export function getEdgeDeviceInfoList(params: DeviceQueryParam, edgeId: string,) {
+export function getEdgeDeviceInfoList(params: DeviceQueryParam, edgeId: string) {
   return defHttp.get<Page<DeviceInfo>>({
     url: `/api/edge/${edgeId}/devices`,
     params,
@@ -177,7 +174,7 @@ export function getDeviceListByQuery(data: DeviceSearchQuery | any) {
 export function getDeviceTypes() {
   return defHttp.get<Array<EntitySubtype>>({
     url: '/api/device/types',
-  })
+  });
 }
 
 export function claimDevice(deviceName: string, secretKey: string) {
@@ -196,10 +193,8 @@ export function reClaimDevice(deviceName: string) {
 export function countByDeviceProfileAndEmptyOtaPackage(otaPackageType: string, deviceProfileId: string) {
   return defHttp.get<number>({
     url: `/api/devices/count/${otaPackageType}/${deviceProfileId}`,
-  })
+  });
 }
 
 //TODO 没有写
-export function processDevicesBulkImport() {
-
-}
+export function processDevicesBulkImport() {}

@@ -1,6 +1,6 @@
 import type { RouteRecordRaw, RouteMeta } from 'vue-router';
-import { Authority } from '../enums/authorityEnum';
 import { defineComponent } from 'vue';
+import { Authority } from '/@/enums/authorityEnum';
 
 export type Component<T = any> =
   | ReturnType<typeof defineComponent>

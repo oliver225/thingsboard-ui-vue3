@@ -57,7 +57,7 @@
         total: 120000,
         color: 'green',
         action: '时',
-        url: '/desktop/workbench',
+        url: '/api/desktop/workbench',
       },
       {
         title: '关于我们',
@@ -66,7 +66,7 @@
         total: 500000,
         color: 'blue',
         action: '日',
-        url: '/desktop/about',
+        url: '/api/desktop/about',
       },
       {
         title: '源码下载',

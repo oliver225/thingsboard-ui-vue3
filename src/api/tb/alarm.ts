@@ -1,8 +1,7 @@
-import { AlarmQueryParam, BasicModel, BasicQuery, Page } from "../model/baseModel";
-import { EntityId } from "/#/store";
-import { ALarmShowStatus, AlarmSeverity } from "/@/enums/alarmEnum";
-import { EntityType } from "/@/enums/entityTypeEnum";
-import { defHttp } from "/@/utils/http/axios";
+import { AlarmQueryParam, BasicModel, BasicQuery, Page } from '/@/api/model/baseModel';
+import { ALarmShowStatus, AlarmSeverity } from '/@/enums/alarmEnum';
+import { EntityType } from '/@/enums/entityTypeEnum';
+import { defHttp } from '/@/utils/http/axios';
 
 export interface Alarm extends BasicModel<EntityType.ALARM> {
   name?: string;
@@ -12,10 +11,10 @@ export interface Alarm extends BasicModel<EntityType.ALARM> {
   severity?: AlarmSeverity; //  严重程度
   acknowledged?: boolean; // 应答
   cleared?: boolean; //清理
-  propagate?: boolean;  // 传播
-  propagateToOwner?: boolean;  // 传播
-  propagateToTenant?: boolean;  // 传播
-  propagateRelationTypes?: Array<String>;
+  propagate?: boolean; // 传播
+  propagateToOwner?: boolean; // 传播
+  propagateToTenant?: boolean; // 传播
+  propagateRelationTypes?: Array<string>;
   startTs?: number;
   endTs?: number;
   ackTs?: number;
@@ -39,11 +38,10 @@ export interface AlarmInfo extends Alarm {
 }
 
 export interface AlarmComment extends BasicModel<any> {
-
   alarmId: EntityId<EntityType.ALARM>;
   userId?: EntityId<EntityType.USER>; //
   type: 'SYSTEM' | 'OTHER';
-  comment: { text?: string, subtype?: string; userId?: string };
+  comment: { text?: string; subtype?: string; userId?: string };
 }
 
 export interface AlarmCommentInfo extends AlarmComment {
@@ -64,11 +62,10 @@ export function getAlarmInfoById(alarmId: string) {
   });
 }
 
-
 export function saveAlarm(data: Alarm | any) {
   return defHttp.postJson<Alarm>({
     url: '/api/alarm',
-    data
+    data,
   });
 }
 
@@ -84,20 +81,17 @@ export function ackAlarm(alarmId: string) {
   });
 }
 
-
 export function clearAlarm(alarmId: string) {
   return defHttp.post<AlarmInfo>({
     url: `/api/alarm/${alarmId}/clear`,
   });
 }
 
-
 export function assignAlarm(alarmId: string, assigneeId: string) {
   return defHttp.post<Alarm>({
     url: `/api/alarm/${alarmId}/assign/${assigneeId}`,
   });
 }
-
 
 export function unAssignAlarm(alarmId: string) {
   return defHttp.delete<void>({
@@ -119,18 +113,21 @@ export function getAlarmInfoByEntity(params: AlarmQueryParam, entityType: string
   });
 }
 
-export function getHighestAlarmSeverity(entityType: string, entityId: string, params: { searchStatus?: string; status?: string; assigneeId?: string }) {
+export function getHighestAlarmSeverity(
+  entityType: string,
+  entityId: string,
+  params: { searchStatus?: string; status?: string; assigneeId?: string },
+) {
   return defHttp.get<AlarmSeverity>({
     url: `/api/alarm/highestSeverity/${entityType}/${entityId}`,
-    params
+    params,
   });
 }
-
 
 export function saveAlarmComment(data: AlarmComment | any, alarmId: string) {
   return defHttp.postJson<AlarmComment>({
     url: `/api/alarm/${alarmId}/comment`,
-    data
+    data,
   });
 }
 

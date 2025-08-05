@@ -128,7 +128,7 @@ import { ref, watch, defineComponent, reactive } from 'vue';
 import { Icon } from '/@/components/Icon';
 import { Form, Alert, Tooltip, Button, Input, Select, Checkbox, Collapse, Row, Col, InputNumber, InputPassword } from 'ant-design-vue';
 import { FormInstance } from 'ant-design-vue/lib/form';
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash-es';
 
 interface Configuration {
     credentials: { type: string },

@@ -92,7 +92,7 @@ import { ref, watch, defineComponent, reactive } from 'vue';
 import { Icon } from '/@/components/Icon';
 import { Form, Input, Button, Tooltip, InputNumber, Checkbox, Select } from 'ant-design-vue';
 import { FormInstance } from 'ant-design-vue/lib/form';
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash-es';
 
 interface Configuration {
     acks: string,

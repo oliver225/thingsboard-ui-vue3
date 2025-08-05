@@ -17,7 +17,6 @@
   import { PropType, computed, ref, unref, watch } from 'vue';
   import { Radio } from 'ant-design-vue';
   import { isString } from '/@/utils/is';
-  import { propTypes } from '/@/utils/propTypes';
   import { useAttrs } from '/@/hooks/core/useAttrs';
   import { useRuleFormItem } from '/@/hooks/component/useFormItem';
 

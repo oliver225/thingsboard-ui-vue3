@@ -24,7 +24,7 @@ import { Tooltip } from 'ant-design-vue';
 import { BasicModal } from '/@/components/Modal';
 import { propTypes } from '/@/utils/propTypes';
 import { CodeEditor } from '/@/components/CodeEditor';
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash-es';
 
 const emit = defineEmits(['update:value']);
 

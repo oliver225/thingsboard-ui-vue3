@@ -50,8 +50,8 @@
   import { router } from '/@/router';
   import { getWidgetTypeList, deleteWidgetType } from '/@/api/tb/widgetType';
   import { Checkbox } from 'ant-design-vue';
-  import { isEqual } from 'lodash';
-  import { SYS_TENANT_ID } from '/@/enums/constant';
+  import { isEqual } from 'lodash-es';
+  import { SYS_TENANT_ID } from '/#/constant';
   import { WIDGET_TYPE_OPTIONS } from '/@/enums/widgetTypeEnum';
 
   const { t } = useI18n('tb');

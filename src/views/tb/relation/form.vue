@@ -34,7 +34,7 @@
   import { EntityRelation, saveRelation } from '/@/api/tb/relation';
   import { Authority } from '/@/enums/authorityEnum';
   import { RelationTypeGroup } from '/@/enums/relationEnum';
-  import { isEmpty } from '/@/utils/is';
+  import { isEmpty } from 'lodash-es';
   import { usePermission } from '/@/hooks/web/usePermission';
   import { ENTITY_TYPE_OPTIONS, EntityType } from '/@/enums/entityTypeEnum';
   import { getTenantDeviceInfoList } from '/@/api/tb/device';

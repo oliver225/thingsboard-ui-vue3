@@ -65,7 +65,7 @@ import { useModal } from '/@/components/Modal';
 import { useDrawer } from '/@/components/Drawer';
 import { onBeforeRouteLeave } from 'vue-router';
 import { router } from '/@/router';
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash-es';
 import { sleep } from '/@/utils';
 import RuleChainNode from './node.vue';
 import { useI18n } from '/@/hooks/web/useI18n';

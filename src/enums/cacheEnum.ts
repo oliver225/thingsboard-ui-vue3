@@ -2,7 +2,6 @@ export const TOKEN_KEY = 'TOKEN__';
 export const REFRESH_TOKEN_KEY = 'REFRESH_TOKEN__';
 export const SESSION_TIMEOUT_KEY = 'SESSION_TIMEOUT__';
 export const USER_INFO_KEY = 'USER_INFO__';
-export const ROLES_KEY = 'ROLES__';
 export const AUTHORITY_KEY = 'AUTHORITY__';
 export const LOCK_INFO_KEY = 'LOCK_INFO__';
 export const PROJ_CFG_KEY = 'PROJ_CFG__';

@@ -42,7 +42,7 @@
 import { ref } from 'vue';
 import { Icon } from '/@/components/Icon';
 import { useI18n } from '/@/hooks/web/useI18n';
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash-es';
 import { copyToClipboard } from '/@/utils';
 import { BasicForm, FormSchema, useForm } from '/@/components/Form';
 import { PROVISION_TYPE_OPTIONS, ProvisionType } from '/@/enums/deviceEnum';

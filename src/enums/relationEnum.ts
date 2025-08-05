@@ -5,5 +5,4 @@ export enum RelationTypeGroup {
   RULE_NODE = 'RULE_NODE',
   EDGE = 'EDGE',
   EDGE_AUTO_ASSIGN_RULE_CHAIN = 'EDGE_AUTO_ASSIGN_RULE_CHAIN',
-
 }

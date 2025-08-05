@@ -16,7 +16,6 @@
 <script lang="ts" setup name="JeeSiteCheckboxGroup">
   import { PropType, computed, ref, unref, watch } from 'vue';
   import { Checkbox } from 'ant-design-vue';
-  import { isString } from '/@/utils/is';
   import { useRuleFormItem } from '/@/hooks/component/useFormItem';
   import { useAttrs } from '/@/hooks/core/useAttrs';
 

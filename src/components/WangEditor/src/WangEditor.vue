@@ -26,7 +26,6 @@
   import { isNumber } from '/@/utils/is';
   import { useLocale } from '/@/locales/useLocale';
   import { useGlobSetting } from '/@/hooks/setting';
-  import { uploadFile } from '/@/api/sys/upload';
   import { buildUUID } from '/@/utils/uuid';
 
   const editorProps = {
@@ -84,7 +83,7 @@
     emits: ['update:value', 'change'],
     setup(props, { emit, attrs }) {
       const { prefixCls } = useDesign('editor-container');
-      const { ctxAdminPath } = useGlobSetting();
+      const { ctxPath } = useGlobSetting();
 
       const containerWidth = computed(() => {
         const width = props.width;
@@ -109,19 +108,20 @@
           uploadImage: {
             onBeforeUpload: (file: File) => file,
             customUpload: async (file: File, insertFn: InsertFnType) => {
-              const { data } = await uploadFile(
-                {
-                  bizKey: props.bizKey,
-                  bizType: props.bizType + '_editor_image',
-                  uploadType: 'image',
-                  fileMd5: buildUUID(), // 专业版支持 MD5 校验
-                  fileName: file.name,
-                  file,
-                },
-                () => {},
-              );
+              // const { data } = await uploadFile(
+              //   {
+              //     bizKey: props.bizKey,
+              //     bizType: props.bizType + '_editor_image',
+              //     uploadType: 'image',
+              //     fileMd5: buildUUID(), // 专业版支持 MD5 校验
+              //     fileName: file.name,
+              //     file,
+              //   },
+              //   () => {},
+              // );
+              const data = {} as any;
               if (data.result == 'true' && data.fileUpload) {
-                const url = ctxAdminPath + '/file/download/' + data.fileUpload.id;
+                const url = ctxPath + '/file/download/' + data.fileUpload.id;
                 insertFn(url, data.fileUpload.fileName);
               }
             },

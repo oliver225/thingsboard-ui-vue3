@@ -52,10 +52,9 @@
   import { Function } from '/@/api/tb/deviceProfile';
   import { BasicColumn, BasicTable } from '/@/components/Table';
   import { BasicForm, FormSchema, useForm } from '/@/components/Form';
-  import { WsCmdType } from '/@/enums/wsCmdEnum';
-  import { DataType } from '/@/enums/thingsModelEnum';
+  import { WsCmdType } from '/@/enums/wsCmdTypeEnum';
+  import { isArray } from 'lodash-es';
   import dayjs from 'dayjs';
-  import { isArray } from '/@/utils/is';
 
   const { t } = useI18n('tb');
 
@@ -168,7 +167,11 @@
   });
 
   const { setOptions, resize } = useECharts(chartRef as Ref<HTMLDivElement>);
-  const { getAndIncrementCmdId, send: websocketSend, unsubscribe: websocketUnsubscribe } = useWebsocketStore();
+  const {
+    getAndIncrementCmdId,
+    send: websocketSend,
+    unsubscribe: websocketUnsubscribe,
+  } = useWebsocketStore();
 
   const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
     setModalProps({ loading: true });

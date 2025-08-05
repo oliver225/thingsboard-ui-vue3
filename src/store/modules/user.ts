@@ -2,7 +2,6 @@ import type { JwtPair, UserInfo } from '/#/store';
 import type { ErrorMessageMode } from '/#/axios';
 import { defineStore } from 'pinia';
 import { store } from '/@/store';
-import { Authority } from '../../enums/authorityEnum';
 import { PageEnum } from '/@/enums/pageEnum';
 import { TOKEN_KEY, USER_INFO_KEY, SESSION_TIMEOUT_KEY, REFRESH_TOKEN_KEY, AUTHORITY_KEY } from '/@/enums/cacheEnum';
 import { getAuthCache, setAuthCache } from '/@/utils/auth';
@@ -16,6 +15,7 @@ import { PAGE_NOT_FOUND_ROUTE } from '/@/router/routes/basic';
 import { useGlobSetting } from '/@/hooks/setting';
 import logoImg from '/@/assets/images/logo.png';
 import { mitt, Emitter } from '/@/utils/mitt';
+import { Authority } from '/@/enums/authorityEnum';
 
 const { showMessage, createConfirm } = useMessage();
 
@@ -89,7 +89,8 @@ export const useUserStore = defineStore('app-user', {
       if (info) {
         const { ctxPath } = useGlobSetting();
         let url = info.additionalInfo?.avatarUrl || '/ctxPath/static/images/user1.jpg';
-        info.additionalInfo.avatarUrl = url || logoImg;
+        const avatarUrl = url || logoImg;
+        info.additionalInfo = { ...info.additionalInfo, avatarUrl: avatarUrl };
         this.setAuthority(info.authority);
       }
       this.userInfo = info;
@@ -155,18 +156,6 @@ export const useUserStore = defineStore('app-user', {
         }
         await router.replace(decodeURIComponent(path as string));
       }
-      // if (res['modifyPasswordTip']) {
-      //   createConfirm({
-      //     content: res['modifyPasswordTip'],
-      //     maskClosable: false,
-      //     iconType: 'info',
-      //     cancelText: '取消',
-      //     okText: '确定',
-      //     onOk: () => {
-      //       router.replace('/account/modPwd');
-      //     },
-      //   });
-      // }
       return res || null;
     },
     async getUserInfoAction() {

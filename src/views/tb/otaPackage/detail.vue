@@ -60,7 +60,7 @@ import { useMessage } from '/@/hooks/web/useMessage';
 import { router } from '/@/router';
 import { copyToClipboard } from '/@/utils';
 import { Icon } from '/@/components/Icon';
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash-es';
 import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
 import { OtaPackageInfo, getOtaPackageInfoById } from '/@/api/tb/otaPackage';
 import { getDeviceProfileInfoById, DeviceProfileInfo } from '/@/api/tb/deviceProfile';

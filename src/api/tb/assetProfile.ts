@@ -1,7 +1,6 @@
-import { BasicModel, BasicQuery, Page } from "../model/baseModel";
-import { EntityId } from "/#/store";
-import { EntityType } from "/@/enums/entityTypeEnum";
-import { defHttp } from "/@/utils/http/axios";
+import { BasicModel, BasicQuery, Page } from '../model/baseModel';
+import { EntityType } from '/@/enums/entityTypeEnum';
+import { defHttp } from '/@/utils/http/axios';
 
 export interface AssetProfile extends BasicModel<EntityType.ASSET_PROFILE> {
   name?: string;
@@ -50,7 +49,7 @@ export function setDefaultAssetProfile(assetProfileId: string) {
 export function saveAssetProfile(data: AssetProfile | any) {
   return defHttp.postJson<AssetProfile>({
     url: '/api/assetProfile',
-    data
+    data,
   });
 }
 

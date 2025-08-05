@@ -1,3 +1,4 @@
+// 权限
 export enum Authority {
   // ADMIN (code 0)
   SYS_ADMIN = 'SYS_ADMIN',

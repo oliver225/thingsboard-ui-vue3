@@ -4,11 +4,7 @@
       <template #headerTop>
         <div class="flex">
           <div class="flex-1">
-            <Segmented
-              v-model:value="selectedScope"
-              :options="typeTabList"
-              @change="handleScopeChange"
-            />
+            <Segmented v-model:value="selectedScope" :options="typeTabList" @change="handleScopeChange" />
           </div>
           <Space :size="1" class="mx-4">
             <Tooltip title="添加属性" v-if="selectedScope != Scope.CLIENT_SCOPE">
@@ -20,20 +16,12 @@
               />
             </Tooltip>
             <Tooltip title="刷新数据" v-if="selectedScope != LATEST_TELEMETRY">
-              <Icon
-                icon="ant-design:redo-outlined"
-                :size="20"
-                class="cursor-pointer"
-                @click="fetchAttributes"
-              />
+              <Icon icon="ant-design:redo-outlined" :size="20" class="cursor-pointer" @click="fetchAttributes" />
             </Tooltip>
             <Tooltip title="查询名称">
               <Icon icon="ant-design:search-outlined" :size="20" class="cursor-pointer" />
             </Tooltip>
-            <Tooltip
-              title="查看图表"
-              v-if="selectedScope == LATEST_TELEMETRY && showChartView == false"
-            >
+            <Tooltip title="查看图表" v-if="selectedScope == LATEST_TELEMETRY && showChartView == false">
               <Icon
                 icon="ant-design:line-chart-outlined"
                 :size="20"
@@ -45,10 +33,7 @@
                 "
               />
             </Tooltip>
-            <Tooltip
-              title="查看表格"
-              v-if="selectedScope == LATEST_TELEMETRY && showChartView == true"
-            >
+            <Tooltip title="查看表格" v-if="selectedScope == LATEST_TELEMETRY && showChartView == true">
               <Icon
                 icon="ant-design:insert-row-below-outlined"
                 :size="20"
@@ -67,12 +52,7 @@
         </div>
       </template>
     </TableHeader>
-    <BasicTable
-      @register="registerTable"
-      :loading="loading"
-      :dataSource="dataSource"
-      v-show="!showChartView"
-    >
+    <BasicTable @register="registerTable" :loading="loading" :dataSource="dataSource" v-show="!showChartView">
       <template #valueColumn="{ record }">
         {{ formatValue(record) }}
         {{ record.property?.dataType?.specs?.unit || '' }}
@@ -92,11 +72,7 @@
     >
       <template #renderItem="{ item }">
         <List.Item v-bind:style="{ padding: '6px' }">
-          <TimeseriesChart
-            :entityType="props.entityType"
-            :entityId="props.entityId"
-            :kvEntity="item"
-          />
+          <TimeseriesChart :entityType="props.entityType" :entityId="props.entityId" :kvEntity="item" />
         </List.Item>
       </template>
     </List>
@@ -111,39 +87,24 @@
   });
 </script>
 <script lang="ts" setup>
-  import {
-    PropType,
-    defineComponent,
-    ref,
-    onMounted,
-    computed,
-    reactive,
-    watch,
-    onBeforeUnmount,
-  } from 'vue';
+  import { PropType, defineComponent, ref, onMounted, computed, reactive, watch, onBeforeUnmount } from 'vue';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { Icon } from '/@/components/Icon';
   import { Scope } from '/@/enums/telemetryEnum';
   import { Authority } from '/@/enums/authorityEnum';
-  import { EntityType } from '/@/enums/entityTypeEnum';
   import { useUserStore } from '/@/store/modules/user';
   import { useWebsocketStore } from '/@/store/modules/websocket';
   import { useModal } from '/@/components/Modal';
   import { Space, Divider, Tooltip, Segmented, List } from 'ant-design-vue';
   import { BasicTable, BasicColumn, useTable, TableHeader } from '/@/components/Table';
-  import {
-    getAttributesByScope,
-    deleteEntityAttributes,
-    getLatestTimeseries,
-  } from '/@/api/tb/telemetry';
+  import { getAttributesByScope, deleteEntityAttributes, getLatestTimeseries } from '/@/api/tb/telemetry';
   import TimeseriesChart from './timeseriesChart.vue';
   import TimeseriesModal from './timeseriesModal.vue';
   import AttributeModal from './attributeFrom.vue';
   import DeleteModal from './delete.vue';
-  import { DataType } from '/@/enums/thingsModelEnum';
   import { isNull } from '/@/utils/is';
-  import { WsCmdType } from '/@/enums/wsCmdEnum';
+  import { WsCmdType } from '/@/enums/wsCmdTypeEnum';
   const LATEST_TELEMETRY = 'LATEST_TELEMETRY';
 
   const props = defineProps({
@@ -162,11 +123,7 @@
   });
   const userStore = useUserStore();
 
-  const {
-    getAndIncrementCmdId,
-    send: websocketSend,
-    unsubscribe: websocketUnsubscribe,
-  } = useWebsocketStore();
+  const { getAndIncrementCmdId, send: websocketSend, unsubscribe: websocketUnsubscribe } = useWebsocketStore();
 
   const { t } = useI18n('tb');
   const { createConfirm, showMessage } = useMessage();
@@ -221,8 +178,7 @@
         icon: 'i-clarity:note-edit-line',
         title: t('编辑'),
         onClick: handledAttributeForm.bind(this, { ...record }),
-        ifShow:
-          selectedScope.value == Scope.SERVER_SCOPE || selectedScope.value == Scope.SHARED_SCOPE,
+        ifShow: selectedScope.value == Scope.SERVER_SCOPE || selectedScope.value == Scope.SHARED_SCOPE,
       },
       {
         icon: 'ant-design:line-chart-outlined',
@@ -299,16 +255,17 @@
 
   function formatValue(record: any) {
     const value = record.value;
-    const property = record.property;
-    if (property && property.dataType.type == DataType.bool) {
-      return value + '' == 'true'
-        ? `${property.dataType.specs.trueValue} (true)`
-        : `${property.dataType.specs.falseValue} (false)`;
-    } else if (property && property.dataType.type == DataType.enum) {
-      return property.dataType.specs[value] || value + '';
-    } else {
-      return value;
-    }
+    // const property = record.property;
+    // if (property && property.dataType.type == DataType.bool) {
+    //   return value + '' == 'true'
+    //     ? `${property.dataType.specs.trueValue} (true)`
+    //     : `${property.dataType.specs.falseValue} (false)`;
+    // } else if (property && property.dataType.type == DataType.enum) {
+    //   return property.dataType.specs[value] || value + '';
+    // } else {
+    //   return value;
+    // }
+    return value;
   }
 
   async function subClientScopeAttribute() {

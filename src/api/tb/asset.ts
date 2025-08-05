@@ -1,7 +1,6 @@
-import { BasicModel, BasicQuery, EntitySubtype, Page, RelationsSearchParameters } from "../model/baseModel";
-import { EntityId } from "/#/store";
-import { EntityType } from "/@/enums/entityTypeEnum";
-import { defHttp } from "/@/utils/http/axios";
+import { BasicModel, BasicQuery, EntitySubtype, Page, RelationsSearchParameters } from '../model/baseModel';
+import { EntityType } from '/@/enums/entityTypeEnum';
+import { defHttp } from '/@/utils/http/axios';
 
 export interface Asset extends BasicModel<EntityType.ASSET> {
   name?: string;
@@ -14,7 +13,6 @@ export interface Asset extends BasicModel<EntityType.ASSET> {
   customerId?: EntityId<EntityType.CUSTOMER>;
   additionalInfo?: { description: string };
 }
-
 
 export interface AssetInfo extends Asset {
   customerTitle?: string;
@@ -43,14 +41,14 @@ export function getAssetInfoById(assetId: string) {
 export function getTenantAssetByName(assetName: string) {
   return defHttp.get<Asset>({
     url: '/api/tenant/assets',
-    params: { assetName: assetName }
+    params: { assetName: assetName },
   });
 }
 
 export function saveAsset(data: Asset | any) {
   return defHttp.postJson<Asset>({
     url: '/api/asset',
-    data
+    data,
   });
 }
 
@@ -130,7 +128,7 @@ export function getAssetListByQuery(data: AssetSearchQuery | any) {
 export function getAssetTypes() {
   return defHttp.get<Array<EntitySubtype>>({
     url: '/api/asset/types',
-  })
+  });
 }
 
 export function assignAssetToEdge(edgeId: string, assetId: string) {
@@ -146,6 +144,4 @@ export function unAssignAssetFromEdge(edgeId: string, assetId: string) {
 }
 
 //TODO 没有写
-export function processAssetsBulkImport() {
-
-}
+export function processAssetsBulkImport() {}

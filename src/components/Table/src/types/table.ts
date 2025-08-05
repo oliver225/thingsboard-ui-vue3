@@ -6,9 +6,9 @@ import type { ColumnProps } from 'ant-design-vue/lib/table';
 
 import { ComponentType } from './componentType';
 import { VueNode } from '/@/utils/propTypes';
-import { Authority } from '../../../../enums/authorityEnum';
 import { ActionItem } from './tableAction';
 import { EditRecordRow } from '../components/editable';
+import { Authority } from '/@/enums/authorityEnum';
 
 export declare type SortOrder = 'ascend' | 'descend';
 
@@ -428,7 +428,6 @@ export interface BasicTableProps<T = any> {
   onExpandedRowsChange?: (expandedRows: string[] | number[]) => void;
 
   onColumnsChange?: (data: ColumnChangeParam[]) => void;
-
 }
 
 export type CellFormat =

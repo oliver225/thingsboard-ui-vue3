@@ -1,8 +1,7 @@
 import { BasicModel, BasicQuery, Page } from '../model/baseModel';
 import { DashboardInfo } from './dashboard';
-import { EntityId } from '/#/store';
-import { EntityType } from '/@/enums/entityTypeEnum';
 import { defHttp } from '/@/utils/http/axios';
+import { EntityType } from '/@/enums/entityTypeEnum';
 
 export interface Tenant extends BasicModel<EntityType.TENANT> {
   title?: string;
@@ -29,41 +28,41 @@ export interface TenantInfo extends Tenant {
 
 export function tenantSave(data?: Tenant | any) {
   return defHttp.postJson<Tenant>({
-    url: '/tenant',
+    url: '/api/tenant',
     data,
   });
 }
 
 export function tenantById(tenantId: string, params?: any) {
   return defHttp.get<Tenant>({
-    url: `/tenant/${tenantId}`,
+    url: `/api/tenant/${tenantId}`,
     params,
   });
 }
 
 export function tenantInfoById(tenantId: string, params?: any) {
   return defHttp.get<TenantInfo>({
-    url: `/tenant/info/${tenantId}`,
+    url: `/api/tenant/info/${tenantId}`,
     params,
   });
 }
 
 export function tenantDelete(tenantId: string) {
   return defHttp.delete<void>({
-    url: `/tenant/${tenantId}`,
+    url: `/api/tenant/${tenantId}`,
   });
 }
 
 export function tenantList(params: BasicQuery) {
   return defHttp.get<Page<Tenant>>({
-    url: `/tenants`,
+    url: `/api/tenants`,
     params,
   });
 }
 
 export function tenantInfoList(params: BasicQuery) {
   return defHttp.get<Page<TenantInfo>>({
-    url: `/tenantInfos`,
+    url: `/api/tenantInfos`,
     params,
   });
 }

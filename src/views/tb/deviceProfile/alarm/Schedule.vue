@@ -87,7 +87,7 @@ import { propTypes } from '/@/utils/propTypes';
 import { Schedule } from '/@/api/tb/deviceProfile';
 import dayjs from 'dayjs';
 import duration from "dayjs/plugin/duration";
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash-es';
 
 dayjs.extend(duration);
 const emit = defineEmits(['update:value']);

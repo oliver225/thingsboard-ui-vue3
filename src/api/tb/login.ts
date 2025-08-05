@@ -10,7 +10,7 @@ export interface LoginParams {
 export const loginApi = (params: LoginParams, mode: ErrorMessageMode = 'message') => {
   return defHttp.postJson<JwtPair>(
     {
-      url: '/auth/login',
+      url: '/api/auth/login',
       data: params,
       timeout: 20 * 1000,
     },
@@ -19,16 +19,16 @@ export const loginApi = (params: LoginParams, mode: ErrorMessageMode = 'message'
 };
 
 export const userInfoApi = (mode: ErrorMessageMode = 'message') =>
-  defHttp.get<UserInfo>({ url: '/auth/user', timeout: 10 * 1000 }, { errorMessageMode: mode });
+  defHttp.get<UserInfo>({ url: '/api/auth/user', timeout: 10 * 1000 }, { errorMessageMode: mode });
 
 export function refreshTokenApi(refreshToken: string, mode: ErrorMessageMode = 'none') {
   return defHttp.postJson<JwtPair>(
     {
-      url: '/auth/token',
+      url: '/api/auth/token',
       data: { refreshToken: refreshToken },
       timeout: 20 * 1000,
     },
     { errorMessageMode: mode },
   );
 }
-export const logoutApi = () => defHttp.post({ url: '/auth/logout' });
+export const logoutApi = () => defHttp.post({ url: '/api/auth/logout' });

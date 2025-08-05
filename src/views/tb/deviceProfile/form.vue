@@ -53,12 +53,11 @@ import { ref, unref, computed, nextTick } from 'vue';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { router } from '/@/router';
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash-es';
 import { Icon } from '/@/components/Icon'
 import { useUserStore } from '/@/store/modules/user';
 import { Select, Tag, Steps } from 'ant-design-vue';
 
-import { EntityType } from '/@/enums/entityTypeEnum';
 import TransportForm from './transport/transportForm.vue';
 import AlarmForm from './alarm/alarmForm.vue';
 import ProvisionForm from './provisionForm.vue';

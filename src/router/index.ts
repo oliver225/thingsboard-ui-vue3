@@ -41,17 +41,17 @@ export function resetRouter() {
 
 function initTabPage() {
   const { showMessage, showMessageModal } = useMessage();
-  const { ctxAdminPath } = useGlobSetting();
+  const { ctxPath } = useGlobSetting();
   const addFramePage = initFramePage();
   const go = useGo(router);
   window['tabPage'] = Object.assign(window['tabPage'] || {}, {
     addTabPage: async function (_$this: any, title: string, url: string) {
-      if (url && !String(url).startsWith(ctxAdminPath)) {
+      if (url && !String(url).startsWith(ctxPath)) {
         await go(url);
         return;
       }
       const idx = url.indexOf('?');
-      const path = (idx == -1 ? url : url.substring(0, idx)).replace(ctxAdminPath, '');
+      const path = (idx == -1 ? url : url.substring(0, idx)).replace(ctxPath, '');
       // const paramStr = idx == -1 ? '' : url.substring(idx + 1);
       // const params = (paramStr && paramStr != '' ? qs.parse(paramStr) : {});
       const name = encryptByMd5(url).substring(5, 15);

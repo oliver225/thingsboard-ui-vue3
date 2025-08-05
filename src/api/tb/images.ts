@@ -1,4 +1,3 @@
-import { url } from 'inspector';
 import { BasicQuery, Page } from '../model/baseModel';
 import { ResourceInfo } from './resourceLibrary';
 import { ContentTypeEnum } from '/@/enums/httpEnum';

@@ -4,33 +4,17 @@
       <div class="general-setting">
         <div class="text-lg font-bold my-4">发送邮件配置</div>
         <Form ref="formRef" :model="formState" layout="vertical">
-          <Form.Item
-            label="邮件来自"
-            :name="['jsonValue', 'mailFrom']"
-            :rules="[{ required: true }]"
-          >
+          <Form.Item label="邮件来自" :name="['jsonValue', 'mailFrom']" :rules="[{ required: true }]">
             <Input v-model:value="formState.jsonValue.mailFrom" />
           </Form.Item>
-          <Form.Item
-            label="SMTP供应商"
-            :name="['jsonValue', 'providerId']"
-            :rules="[{ required: true }]"
-          >
+          <Form.Item label="SMTP供应商" :name="['jsonValue', 'providerId']" :rules="[{ required: true }]">
             <Input v-model:value="formState.jsonValue.providerId" :disabled="true" />
           </Form.Item>
-          <CollapseContainer
-            title="连接设置"
-            :canExpan="false"
-            class="border border-solid border-neutral-300 mb-4"
-          >
+          <CollapseContainer title="连接设置" :canExpan="false" class="border border-solid border-neutral-300 mb-4">
             <div class="px-4">
               <Row :gutter="24">
                 <Col :span="24">
-                  <Form.Item
-                    label="SMTP协议"
-                    :name="['jsonValue', 'smtpProtocol']"
-                    :rules="[{ required: true }]"
-                  >
+                  <Form.Item label="SMTP协议" :name="['jsonValue', 'smtpProtocol']" :rules="[{ required: true }]">
                     <Select v-model:value="formState.jsonValue.smtpProtocol">
                       <Select.Option value="smtp">SMTP</Select.Option>
                       <Select.Option value="smtps">SMTPS</Select.Option>
@@ -38,20 +22,12 @@
                   </Form.Item>
                 </Col>
                 <Col :span="12">
-                  <Form.Item
-                    label="SMTP主机"
-                    :name="['jsonValue', 'smtpHost']"
-                    :rules="[{ required: true }]"
-                  >
+                  <Form.Item label="SMTP主机" :name="['jsonValue', 'smtpHost']" :rules="[{ required: true }]">
                     <Input v-model:value="formState.jsonValue.smtpHost" />
                   </Form.Item>
                 </Col>
                 <Col :span="12">
-                  <Form.Item
-                    label="SMTP端口"
-                    :name="['jsonValue', 'smtpPort']"
-                    :rules="[{ required: true }]"
-                  >
+                  <Form.Item label="SMTP端口" :name="['jsonValue', 'smtpPort']" :rules="[{ required: true }]">
                     <InputNumber
                       v-model:value="formState.jsonValue.smtpPort"
                       :min="1"
@@ -61,11 +37,7 @@
                   </Form.Item>
                 </Col>
                 <Col :span="24">
-                  <Form.Item
-                    label="超时时间(毫秒)"
-                    :name="['jsonValue', 'timeout']"
-                    :rules="[{ required: true }]"
-                  >
+                  <Form.Item label="超时时间(毫秒)" :name="['jsonValue', 'timeout']" :rules="[{ required: true }]">
                     <InputNumber
                       v-model:value="formState.jsonValue.timeout"
                       :min="0"
@@ -76,10 +48,7 @@
                 </Col>
                 <Col :span="24">
                   <Form.Item :name="['jsonValue', 'enableTls']">
-                    <Switch
-                      v-model:checked="formState.jsonValue.enableTls"
-                      @change="handleTlsEnableChange"
-                    />
+                    <Switch v-model:checked="formState.jsonValue.enableTls" @change="handleTlsEnableChange" />
                     <span class="ml-2 text-base font-bold"> 启用TLS </span>
                   </Form.Item>
                 </Col>
@@ -95,28 +64,17 @@
                 </Col>
                 <Col :span="24">
                   <Form.Item :name="['jsonValue', 'enableProxy']">
-                    <Switch
-                      v-model:checked="formState.jsonValue.enableProxy"
-                      @change="handleProxyEnableChange"
-                    />
+                    <Switch v-model:checked="formState.jsonValue.enableProxy" @change="handleProxyEnableChange" />
                     <span class="ml-2 text-base font-bold"> 启用代理 </span>
                   </Form.Item>
                 </Col>
                 <Col :span="12" v-if="formState.jsonValue.enableProxy == true">
-                  <Form.Item
-                    label="代理主机"
-                    :name="['jsonValue', 'proxyHost']"
-                    :rules="[{ required: true }]"
-                  >
+                  <Form.Item label="代理主机" :name="['jsonValue', 'proxyHost']" :rules="[{ required: true }]">
                     <Input v-model:value="formState.jsonValue.proxyHost" />
                   </Form.Item>
                 </Col>
                 <Col :span="12" v-if="formState.jsonValue.enableProxy == true">
-                  <Form.Item
-                    label="代理端口"
-                    :name="['jsonValue', 'proxyPort']"
-                    :rules="[{ required: true }]"
-                  >
+                  <Form.Item label="代理端口" :name="['jsonValue', 'proxyPort']" :rules="[{ required: true }]">
                     <InputNumber
                       v-model:value="formState.jsonValue.proxyPort"
                       :min="1"
@@ -138,11 +96,7 @@
               </Row>
             </div>
           </CollapseContainer>
-          <CollapseContainer
-            title="身份验证"
-            :canExpan="false"
-            class="border border-solid border-neutral-300 mb-4"
-          >
+          <CollapseContainer title="身份验证" :canExpan="false" class="border border-solid border-neutral-300 mb-4">
             <div class="px-4">
               <Form.Item label="用户名" :name="['jsonValue', 'username']">
                 <Input v-model:value="formState.jsonValue.username" />
@@ -175,16 +129,16 @@
 </template>
 <script lang="ts" setup name="ViewsTbSettingMailSetting">
   import { ref, onMounted, reactive } from 'vue';
-  import { EntityType } from '/@/enums/entityTypeEnum';
   import { Icon } from '/@/components/Icon';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { CollapseContainer } from '/@/components/Container';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { FormInstance } from 'ant-design-vue/lib/form';
-  import { getAdminSetting, saveAdminSetting, sendTestMail, AdminSetting} from '/@/api/tb/adminSetting';
-  import { Space, Spin, Row, Col, Switch, Input, Form, Select, InputNumber, InputPassword} from 'ant-design-vue';
+  import { getAdminSetting, saveAdminSetting, sendTestMail, AdminSetting } from '/@/api/tb/adminSetting';
+  import { Space, Spin, Row, Col, Switch, Input, Form, Select, InputNumber, InputPassword } from 'ant-design-vue';
   import { ScrollContainer } from '/@/components/Container/index';
   import { useWindowSizeFn } from '/@/hooks/event/useWindowSizeFn';
+import { EntityType } from '/@/enums/entityTypeEnum';
 
   const { t } = useI18n('tb');
   const { showMessage } = useMessage();

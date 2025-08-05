@@ -12,9 +12,7 @@
         <div class="flex flex-col">
           <span class="text-lg font-bold"
             >{{ getTitle.value || '· · · ·' }}
-            <Tag class="text-base font-normal" color="success" v-if="record.default == true"
-              >默认</Tag
-            >
+            <Tag class="text-base font-normal" color="success" v-if="record.default == true">默认</Tag>
           </span>
           <span class="text-sm">设备配置详情</span>
         </div>
@@ -74,18 +72,16 @@
           <TransportForm class="pointer-events-none" ref="transportFrom" />
         </div>
       </TabPane>
-      <TabPane key="TGINGMODEL">
+      <!-- <TabPane key="TGINGMODEL">
         <template #tab>
           <span> <Icon :icon="'ant-design:project-outlined'" /> 物模型 </span>
         </template>
         <ThingModelList ref="thingsModelList" :deviceProfileId="record?.id.id" />
-      </TabPane>
+      </TabPane> -->
       <TabPane key="ALARM">
         <template #tab
           ><span>
-            <Icon :icon="'ant-design:bell-outlined'" /> 报警配置({{
-              record.profileData?.alarms?.length || 0
-            }})
+            <Icon :icon="'ant-design:bell-outlined'" /> 报警配置({{ record.profileData?.alarms?.length || 0 }})
           </span>
         </template>
         <div class="border border-solid border-neutral-300 p-4">
@@ -125,11 +121,10 @@
   import AuditLog from '/@/views/tb/auditLog/list.vue';
   import { DescItem, Description, useDescription } from '/@/components/Description';
   import { router } from '/@/router';
-  import { EntityType } from '/@/enums/entityTypeEnum';
   import TransportForm from './transport/transportForm.vue';
   import AlarmForm from './alarm/alarmForm.vue';
   import ProvisionForm from './provisionForm.vue';
-  import ThingModelList from './thingModel/thingModelList.vue';
+  // import ThingModelList from './thingModel/thingModelList.vue';
   import { ProvisionType, TransportType } from '/@/enums/deviceEnum';
   import ImageUrlInput from '/@/views/tb/images/ImageUrlInput.vue';
 
@@ -207,14 +202,10 @@
         record.value.defaultRuleChain = await getRuleChainById(record.value.defaultRuleChainId.id);
       }
       if (record.value.defaultDashboardId?.id) {
-        record.value.defaultDashboard = await getDashboardInfoById(
-          record.value.defaultDashboardId.id,
-        );
+        record.value.defaultDashboard = await getDashboardInfoById(record.value.defaultDashboardId.id);
       }
       if (record.value.defaultEdgeRuleChainId?.id) {
-        record.value.defaultEdgeRuleChain = await getRuleChainById(
-          record.value.defaultEdgeRuleChainId.id,
-        );
+        record.value.defaultEdgeRuleChain = await getRuleChainById(record.value.defaultEdgeRuleChainId.id);
       }
       setDescProps({ data: record.value });
     } catch (error: any) {

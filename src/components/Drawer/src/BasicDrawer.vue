@@ -1,14 +1,11 @@
 <template>
   <Drawer v-bind="getBindValues" :closable="false" @close="onClose">
     <template #title v-if="!$slots.title">
-      <DrawerHeader
-        :title="getMergeProps.title"
-        :secondTitle="secondTitle"
-        :isDetail="isDetail"
-        :icon="titleIcon"
-        :showDetailBack="showDetailBack"
-        @close="onClose"
-      />
+      <DrawerHeader :title="getMergeProps.title" :isDetail="isDetail" :showDetailBack="showDetailBack" @close="onClose">
+        <template #titleToolbar>
+          <slot name="titleToolbar"></slot>
+        </template>
+      </DrawerHeader>
     </template>
     <template v-else #title>
       <slot name="title"></slot>
@@ -18,9 +15,6 @@
         <Icon icon="i-ant-design:close-outlined" class="anticon-close cursor-pointer" @click="onClose" />
       </Tooltip>
     </template>
-    <div :class="`${prefixCls}__toolbar`">
-      <slot name="titleToolbar"></slot>
-    </div>
     <div v-if="widthResize" class="ew-resize" @mousedown="onMousedown"></div>
     <ScrollContainer
       :style="getScrollContentStyle"

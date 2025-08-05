@@ -1,8 +1,7 @@
-import { BasicModel, BasicQuery, Page } from "../model/baseModel";
-import { EntityId } from "/#/store";
-import { EntityType } from "/@/enums/entityTypeEnum";
-import { defHttp } from "/@/utils/http/axios";
-import { DashboardInfo } from "./dashboard";
+import { BasicModel, BasicQuery, Page } from '../model/baseModel';
+import { defHttp } from '/@/utils/http/axios';
+import { DashboardInfo } from './dashboard';
+import { EntityType } from '/@/enums/entityTypeEnum';
 
 export interface Customer extends BasicModel<EntityType.CUSTOMER> {
   title?: string;
@@ -18,21 +17,22 @@ export interface Customer extends BasicModel<EntityType.CUSTOMER> {
   phone?: string;
   email?: string;
   additionalInfo?: {
-    isPublic?: boolean,
-    description?: string,
-    homeDashboardId?: DashboardInfo,
-    homeDashboardHideToolbar: boolean
-  }
+    isPublic?: boolean;
+    description?: string;
+    homeDashboardId?: DashboardInfo;
+    homeDashboardHideToolbar: boolean;
+  };
 }
 
 export interface CustomerShortInfo {
   title?: string;
-  isPublic?: boolean
+  isPublic?: boolean;
 }
 
 export function saveCustomer(data?: Customer | any) {
   return defHttp.postJson<Customer>({
-    url: '/api/customer', data
+    url: '/api/customer',
+    data,
   });
 }
 
@@ -56,7 +56,7 @@ export function getCustomerShortInfoById(customerId: string) {
 export function getTenantCustomer(customerTitle: string) {
   return defHttp.get<Customer>({
     url: `/api/tenant/customers`,
-    params: { customerTitle: customerTitle }
+    params: { customerTitle: customerTitle },
   });
 }
 
@@ -66,7 +66,6 @@ export function customerList(params: BasicQuery) {
     params,
   });
 }
-
 
 export function deleteCustomer(customerId: string) {
   return defHttp.delete<void>({

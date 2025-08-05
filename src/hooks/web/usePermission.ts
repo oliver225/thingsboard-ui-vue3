@@ -16,7 +16,7 @@ import { router, resetRouter } from '/@/router';
 
 import projectSetting from '/@/settings/projectSetting';
 import { PermissionModeEnum } from '/@/enums/appEnum';
-import { Authority } from '../../enums/authorityEnum';
+import { Authority } from '/@/enums/authorityEnum';
 
 import { intersection } from 'lodash-es';
 import { isArray } from '/@/utils/is';
@@ -113,10 +113,10 @@ export function usePermission() {
   }
 
   /**
-   * Change roles
-   * @param roles
+   * Change authority
+   * @param authority
    */
-  async function changeRole(authority: Authority): Promise<void> {
+  async function changeAuthority(authority: Authority): Promise<void> {
     if (projectSetting.permissionMode !== PermissionModeEnum.ROUTE_MAPPING) {
       throw new Error('Please switch PermissionModeEnum to ROUTE_MAPPING mode in the configuration to operate!');
     }
@@ -132,5 +132,5 @@ export function usePermission() {
     resume();
   }
 
-  return { changeRole, hasPermission, togglePermissionMode, refreshMenu };
+  return { changeAuthority, hasPermission, togglePermissionMode, refreshMenu };
 }

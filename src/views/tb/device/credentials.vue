@@ -80,7 +80,7 @@ import { BasicForm, FormSchema, useForm } from '/@/components/Form';
 import { CredentialsType } from '/@/enums/deviceEnum';
 import { usePermission } from '/@/hooks/web/usePermission';
 import { copyToClipboard } from '/@/utils';
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash-es';
 
 const emit = defineEmits(['success', 'register']);
 const { t } = useI18n('tb');

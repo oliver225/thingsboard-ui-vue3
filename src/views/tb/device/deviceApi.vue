@@ -5,9 +5,7 @@
         <Segmented v-model:value="apiType" :options="apiTypeList" @change="reload()" />
       </template>
       <template #caseSlot="{ column, record }">
-        <Button size="small" type="primary" @click="handelShowCasemModal(record)">
-          示例报文
-        </Button>
+        <Button size="small" type="primary" @click="handelShowCasemModal(record)"> 示例报文 </Button>
       </template>
     </BasicTable>
 
@@ -16,28 +14,18 @@
       <div class="pl-2 pb-2 text-lg font-bold">
         {{ showTopic.topic }}
       </div>
-      <CodeEditor
-        v-model:value="showTopic.case"
-        :mode="MODE.JSON"
-        class="border border-solid border-gray-400"
-      />
+      <CodeEditor v-model:value="showTopic.case" :mode="MODE.JSON" class="border border-solid border-gray-400" />
     </BasicModal>
   </div>
 </template>
 <script lang="ts" setup name="ViewsTbDeviceApi">
   import { BasicTable, BasicColumn, useTable } from '/@/components/Table';
-  import { EntityType } from '/@/enums/entityTypeEnum';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { Segmented, Button } from 'ant-design-vue';
   import { BasicModal } from '/@/components/Modal';
   import { CodeEditor, MODE } from '/@/components/CodeEditor';
   import { computed, ref, reactive } from 'vue';
-  import {
-    DeviceInfo,
-    getDeviceInfoById,
-    DeviceCredentials,
-    getDeviceCredentialsByDeviceId,
-  } from '/@/api/tb/device';
+  import { DeviceInfo, getDeviceInfoById, DeviceCredentials, getDeviceCredentialsByDeviceId } from '/@/api/tb/device';
   import { onMounted } from 'vue';
   import { CredentialsType } from '/@/enums/deviceEnum';
 

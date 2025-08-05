@@ -1,7 +1,7 @@
 import { LAYOUT } from '/@/router/constant';
 import { AppRouteModule } from '/@/router/types';
 import { t } from '/@/hooks/web/useI18n';
-import { Authority } from '../../../enums/authorityEnum';
+import { Authority } from '/@/enums/authorityEnum';
 import { usePermission } from '/@/hooks/web/usePermission';
 
 const tb: AppRouteModule = {

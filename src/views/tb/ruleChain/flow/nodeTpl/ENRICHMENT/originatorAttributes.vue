@@ -55,7 +55,7 @@ export default defineComponent({
 import { ref, watch, defineComponent, reactive } from 'vue';
 import { Form, Radio, Select, Checkbox } from 'ant-design-vue';
 import { FormInstance } from 'ant-design-vue/lib/form';
-import { isEmpty } from 'lodash';
+import { isEmpty } from 'lodash-es';
 
 interface Configuration {
     clientAttributeNames: [],

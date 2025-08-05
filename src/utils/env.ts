@@ -26,7 +26,10 @@ export function getAppEnvConfig() {
     );
   }
 
-  return ENV;
+  return {
+    VITE_PROXY: env.DEV ? env.VITE_PROXY : [],
+    ...ENV,
+  };
 }
 
 /**

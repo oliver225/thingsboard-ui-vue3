@@ -1,10 +1,8 @@
 import { BasicModel, BasicQuery, Page } from '../model/baseModel';
-import { EntityId } from '/#/store';
 import { AlarmSeverity } from '/@/enums/alarmEnum';
 import { ProvisionType, TransportType } from '/@/enums/deviceEnum';
-import { EntityType } from '/@/enums/entityTypeEnum';
-import { DataType } from '/@/enums/thingsModelEnum';
 import { defHttp } from '/@/utils/http/axios';
+import { EntityType } from '/@/enums/entityTypeEnum';
 
 export interface DynamicValue {
   sourceType: 'CURRENT_TENANT' | 'CURRENT_CUSTOMER' | 'CURRENT_USER' | 'CURRENT_DEVICE';
@@ -22,7 +20,7 @@ export interface Predicate {
   //STRING
   operation: 'EQUAL' | 'NOT_EQUAL' | 'STARTS_WITH' | 'ENDS_WITH' | 'CONTAINS' | 'NOT_CONTAINS' | 'IN' | 'NOT_IN';
   ignoreCase: boolean;
-  value: { defaultValue: any; userValue: Object; dynamicValue: DynamicValue };
+  value: { defaultValue: any; userValue: object; dynamicValue: DynamicValue };
   //NUMERIC
   //operation: 'EQUAL' | 'NOT_EQUAL' | 'GREATER' | 'LESS' | 'GREATER_OR_EQUAL' | 'LESS_OR_EQUAL';
   //BOOLEAN
@@ -40,7 +38,7 @@ export interface Spec {
 export interface ConditionItem {
   key: EntityKey;
   valueType: 'STRING' | 'NUMERIC' | 'BOOLEAN' | 'DATE_TIME';
-  value?: Object;
+  value?: object;
   predicate: Predicate;
 }
 

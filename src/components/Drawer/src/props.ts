@@ -1,4 +1,3 @@
-import { def } from '@vue/shared';
 import type { PropType } from 'vue';
 
 export const footerProps = {
@@ -27,10 +26,8 @@ export const footerProps = {
 export const basicProps = {
   isDetail: { type: Boolean },
   title: { type: String, default: '' },
-  titleIcon: { type: String },
-  secondTitle: { type: String, default: '' },
   loadingText: { type: String },
-  showDetailBack: { type: Boolean, default: false },
+  showDetailBack: { type: Boolean, default: true },
   open: { type: Boolean },
   loading: { type: Boolean },
   maskClosable: { type: Boolean, default: true },

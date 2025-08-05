@@ -1,8 +1,7 @@
-import { BasicModel, BasicQuery, Page } from "../model/baseModel";
-import { EntityId } from "/#/store";
-import { EntityType } from "/@/enums/entityTypeEnum";
-import { NotificationType } from "/@/enums/notificationEnum";
-import { defHttp } from "/@/utils/http/axios";
+import { BasicModel, BasicQuery, Page } from '../model/baseModel';
+import { NotificationType } from '/@/enums/notificationEnum';
+import { defHttp } from '/@/utils/http/axios';
+import { EntityType } from '/@/enums/entityTypeEnum';
 
 export interface NotificationRule extends BasicModel<EntityType.NOTIFICATION_RULE> {
   tenantId?: EntityId<EntityType.TENANT>;
@@ -10,7 +9,7 @@ export interface NotificationRule extends BasicModel<EntityType.NOTIFICATION_RUL
   templateId?: EntityId<EntityType.NOTIFICATION_TEMPLATE>;
   triggerType?: NotificationType;
   triggerConfig?: Recordable;
-  recipientsConfig?: { triggerType: NotificationType, targets?: [string], escalationTable?: Map<number, [string]> };
+  recipientsConfig?: { triggerType: NotificationType; targets?: [string]; escalationTable?: Map<number, [string]> };
   additionalConfig?: { description?: string };
 }
 export interface NotificationRuleInfo extends NotificationRule {
@@ -33,7 +32,8 @@ export function getNotificationRuleById(notificationRuleId: string) {
 
 export function saveNotificationRule(data?: NotificationRule | any) {
   return defHttp.postJson<NotificationRule>({
-    url: '/api/notification/rule', data
+    url: '/api/notification/rule',
+    data,
   });
 }
 

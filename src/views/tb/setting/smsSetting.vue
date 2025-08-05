@@ -11,28 +11,16 @@
             <Select.Option value="SMPP">SMPP</Select.Option>
           </Select>
         </Form.Item>
-        <Form.Item
-          label="阿里云访问秘钥ID"
-          :name="['jsonValue', 'accessKeyId']"
-          :rules="[{ required: true }]"
-        >
+        <Form.Item label="阿里云访问秘钥ID" :name="['jsonValue', 'accessKeyId']" :rules="[{ required: true }]">
           <Input v-model:value="formState.jsonValue.accessKeyId" />
         </Form.Item>
-        <Form.Item
-          label="阿里云访问秘钥"
-          :name="['jsonValue', 'accessKeySecret']"
-          :rules="[{ required: true }]"
-        >
+        <Form.Item label="阿里云访问秘钥" :name="['jsonValue', 'accessKeySecret']" :rules="[{ required: true }]">
           <InputPassword v-model:value="formState.jsonValue.accessKeySecret" />
         </Form.Item>
         <Form.Item label="短信签名" :name="['jsonValue', 'signName']" :rules="[{ required: true }]">
           <Input v-model:value="formState.jsonValue.signName" />
         </Form.Item>
-        <Form.Item
-          label="短信模板 Code"
-          :name="['jsonValue', 'templateCode']"
-          :rules="[{ required: true }]"
-        >
+        <Form.Item label="短信模板 Code" :name="['jsonValue', 'templateCode']" :rules="[{ required: true }]">
           <Input v-model:value="formState.jsonValue.templateCode" />
         </Form.Item>
       </Form>
@@ -63,10 +51,7 @@
           <Form.Item
             label="手机号码"
             name="numberTo"
-            :rules="[
-              { required: true },
-              { pattern: /^1[3-9]\d{9}$/, message: t('请填写正确的手机号码') },
-            ]"
+            :rules="[{ required: true }, { pattern: /^1[3-9]\d{9}$/, message: t('请填写正确的手机号码') }]"
           >
             <Input v-model:value="testSms.numberTo" />
           </Form.Item>

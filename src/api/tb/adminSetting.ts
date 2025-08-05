@@ -1,5 +1,4 @@
 import { BasicModel } from '../model/baseModel';
-import { EntityId } from '/#/store';
 import { EntityType } from '/@/enums/entityTypeEnum';
 import { defHttp } from '/@/utils/http/axios';
 

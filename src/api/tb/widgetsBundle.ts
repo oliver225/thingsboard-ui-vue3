@@ -1,7 +1,6 @@
-import { BasicModel, BasicQuery, Page } from "../model/baseModel";
-import { EntityId } from "/#/store";
-import { EntityType } from "/@/enums/entityTypeEnum";
-import { defHttp } from "/@/utils/http/axios";
+import { BasicModel, BasicQuery, Page } from '../model/baseModel';
+import { defHttp } from '/@/utils/http/axios';
+import { EntityType } from '/@/enums/entityTypeEnum';
 
 export interface WidgetsBundle extends BasicModel<EntityType.WIDGETS_BUNDLE> {
   name?: string;
@@ -15,7 +14,8 @@ export interface WidgetsBundle extends BasicModel<EntityType.WIDGETS_BUNDLE> {
 
 export function saveWidgetsBundle(data?: WidgetsBundle | any) {
   return defHttp.postJson<WidgetsBundle>({
-    url: '/api/widgetsBundle', data
+    url: '/api/widgetsBundle',
+    data,
   });
 }
 
@@ -24,7 +24,6 @@ export function getWidgetsBundleById(widgetsBundleId: string) {
     url: `/api/widgetsBundle/${widgetsBundleId}`,
   });
 }
-
 
 export function deleteWidgetsBundle(widgetsBundleId: string) {
   return defHttp.delete<void>({

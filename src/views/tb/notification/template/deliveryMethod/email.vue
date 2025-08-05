@@ -22,64 +22,55 @@
   </div>
 </template>
 <script lang="ts" setup name="DeliveryMethodEmailForm">
-import { ref, reactive } from 'vue';
-import { FormInstance } from 'ant-design-vue/lib/form';
-import { Checkbox, Form, Input } from 'ant-design-vue';
-import { useI18n } from '/@/hooks/web/useI18n';
-import { WangEditor } from '/@/components/WangEditor'
-import { Alert } from 'ant-design-vue';
+  import { ref, reactive } from 'vue';
+  import { FormInstance } from 'ant-design-vue/lib/form';
+  import { Checkbox, Form, Input } from 'ant-design-vue';
+  import { useI18n } from '/@/hooks/web/useI18n';
+  import { WangEditor } from '/@/components/WangEditor';
+  import { Alert } from 'ant-design-vue';
 
+  const emit = defineEmits(['success', 'register']);
+  const { t } = useI18n('tb');
 
+  const formRef = ref<FormInstance>();
 
-const emit = defineEmits(['success', 'register']);
-const { t } = useI18n('tb');
+  const formState = reactive<any>({
+    method: 'EMAIL',
+    enabled: true,
+    subject: '',
+    body: '',
+  });
 
+  async function setConfigFieldsValue(values: any) {
+    clear();
+    Object.keys(values).forEach((key) => {
+      formState[key] = values[key];
+    });
+  }
 
+  function clear() {
+    formState.method = 'EMAIL';
+    formState.enabled = true;
+    formState.subject = '';
+    formState.body = '';
+  }
 
-const formRef = ref<FormInstance>();
+  async function validate() {
+    return await formRef.value?.validate();
+  }
 
+  async function resetFields() {
+    return formRef.value?.resetFields();
+  }
 
-const formState = reactive<any>({
-  method: 'EMAIL',
-  enabled: true,
-  subject: '',
-  body: '',
-});
+  async function getFieldsValue() {
+    const data = await formRef.value?.validate();
+    return data;
+  }
 
-
-
-async function setConfigFieldsValue(values: any) {
-  clear();
-  Object.keys(values).forEach(key => {
-    formState[key] = values[key];
-  })
-}
-
-
-function clear() {
-  formState.method = 'EMAIL';
-  formState.enabled = true;
-  formState.subject = '';
-  formState.body = '';
-}
-
-
-async function validate() {
-  return await formRef.value?.validate();
-}
-
-
-async function resetFields() {
-  return formRef.value?.resetFields();
-}
-
-async function getFieldsValue() {
-  const data = await formRef.value?.validate();
-  return data;
-}
-
-defineExpose({ getFieldsValue, validate, resetFields, setFieldsValue: setConfigFieldsValue })
+  defineExpose({ getFieldsValue, validate, resetFields, setFieldsValue: setConfigFieldsValue });
 </script>
 <style lang="less">
-.delivery-method-sms {}
+  .delivery-method-sms {
+  }
 </style>
