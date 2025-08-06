@@ -1,7 +1,7 @@
 <template>
   <div class="relation-list">
     <BasicTable @register="registerTable">
-      <template #headerTop>
+      <template #headerTop v-if="isEmpty(props.entityType)">
         <div class="text-lg font-bold my-2">
           {{ t(getTitle.value) }}
         </div>

@@ -15,6 +15,9 @@
         <Icon icon="i-ant-design:close-outlined" class="anticon-close cursor-pointer" @click="onClose" />
       </Tooltip>
     </template>
+    <div ref="prependRef" v-if="$slots.prependContent">
+      <slot name="prependContent"></slot>
+    </div>
     <div v-if="widthResize" class="ew-resize" @mousedown="onMousedown"></div>
     <ScrollContainer
       :style="getScrollContentStyle"
@@ -45,6 +48,7 @@
   import { basicProps } from './props';
   import { useDesign } from '/@/hooks/web/useDesign';
   import { useAttrs } from '/@/hooks/core/useAttrs';
+  import { useBreakpoint } from '/@/hooks/event/useBreakpoint';
 
   defineOptions({
     inheritAttrs: false,
@@ -55,9 +59,11 @@
   const attrs = useAttrs();
   const openRef = ref(false);
   const propsRef = ref<Partial<Nullable<DrawerProps>>>(null);
+  const prependRef = ref<HTMLDivElement>();
 
   const { t } = useI18n();
   const { prefixVar, prefixCls } = useDesign('basic-drawer');
+  const { realWidthRef, screenEnum } = useBreakpoint();
 
   const drawerInstance: DrawerInstance = {
     setDrawerProps: setDrawerProps,
@@ -100,6 +106,10 @@
     } else {
       opt.class = unref(getWrapClassName);
     }
+    // 小屏幕直接全屏抽屉
+    if (unref(realWidthRef) < screenEnum.SM) {
+      opt.width = '100%';
+    }
     return opt as DrawerProps;
   });
 
@@ -126,11 +136,23 @@
     return `0px`;
   });
 
+  const getPrependContnetHeight = computed(() => {
+    if (prependRef.value) {
+      // const el = unref(prependRef) as HTMLDivElement;
+      // console.log('prependRef.value', el.clientHeight);
+      // return prependRef.value.clientHeight + 'px';
+      return `50px`;
+    }
+
+    return `0px`;
+  });
+
   const getScrollContentStyle = computed((): CSSProperties => {
     const footerHeight = unref(getFooterHeight);
+    const prependHeight = unref(getPrependContnetHeight);
     return {
       position: 'relative',
-      height: `calc(100% - ${footerHeight})`,
+      height: `calc(100% - ${prependHeight} - ${footerHeight})`,
     };
   });
 
@@ -249,6 +271,10 @@
     }
 
     .ant-drawer {
+      &-header {
+        background-color: var(--header-bg-color);
+        padding: 10px 16px;
+      }
       &-body {
         height: calc(100% - @header-height);
         padding: 0;
@@ -275,16 +301,12 @@
 
       &-title {
         font-weight: normal;
-
-        .anticon {
-          color: @primary-color;
-        }
+        color: #fff;
       }
 
       &-extra {
         .anticon-close {
-          opacity: 0.6;
-          color: @text-color-base;
+          color: #fff;
 
           &:hover {
             color: @error-color;

@@ -1,7 +1,7 @@
 <template>
-  <div class="alarm-list">
+  <div>
     <BasicTable @register="registerTable">
-      <template #headerTop>
+      <template #headerTop v-if="isEmpty(props.entityType)">
         <div class="text-lg font-bold my-2">
           {{ t(getTitle.value) }}
         </div>
@@ -236,7 +236,3 @@
     openModal(true, record);
   }
 </script>
-<style lang="less">
-  .alarm-list {
-  }
-</style>
