@@ -17,12 +17,7 @@
           <div> {{ convertBytesToSize(imageResource.descriptor?.size) }}</div>
         </Space>
         <div>
-          <Icon
-            icon="ant-design:close-outlined"
-            :size="24"
-            @click="handleClear"
-            v-if="disabled == false"
-          />
+          <Icon icon="ant-design:close-outlined" :size="24" @click="handleClear" v-if="disabled == false" />
         </div>
       </div>
       <div class="input-info-link" v-if="selectBtn === 'link'">

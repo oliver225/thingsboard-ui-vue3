@@ -1,76 +1,74 @@
 <template>
-  <BasicDrawer
-    v-bind="$attrs"
-    :showFooter="false"
-    @register="registerDrawer"
-    width="60%"
-    :rootClassName="'tb-detail-wrapper'"
-  >
+  <BasicDrawer v-bind="$attrs" :showFooter="false" @register="registerDrawer" width="60%">
     <template #title>
-      <div class="flex flex-row items-center">
-        <Icon :icon="getTitle.icon" class="pr-3 m-1 tb-detail-title-icon" />
+      <div class="flex items-center space-x-4">
+        <Icon :icon="getTitle.icon" :size="24" />
         <div class="flex flex-col">
-          <span class="text-lg font-bold"
-            >{{ getTitle.value || '· · · ·' }}
+          <span class="text-base font-semibold">
+            {{ getTitle.value || '· · · ·' }}
             <Tag class="text-base font-normal" color="success" v-if="record.default == true">默认</Tag>
           </span>
           <span class="text-sm">资产配置详情</span>
         </div>
       </div>
     </template>
-    <Tabs v-model:activeKey="tabActiveKey" class="tb-detail-menu">
-      <TabPane key="DETAIL">
-        <template #tab
-          ><span> <Icon :icon="'ant-design:appstore-outlined'" /> 详情 </span>
+    <template #prependContent>
+      <Tabs v-model:active-key="tabActiveKey" class="tb-detail-menu">
+        <TabPane v-for="tab in tabList" :key="tab.key">
+          <template #tab>
+            <Icon :icon="tab.icon" :size="16" />
+            {{ tab.label }}
+          </template>
+        </TabPane>
+      </Tabs>
+    </template>
+    <div v-show="tabActiveKey == DetailTabItemEnum.DETAIL.key">
+      <div class="space-x-4">
+        <a-button
+          type="primary"
+          @click="handleSetDefault"
+          v-if="!(record.name == 'TbServiceQueue' || record.default == true)"
+        >
+          <Icon :icon="'ant-design:flag-outlined'" />设为默认资产配置
+        </a-button>
+        <a-button type="primary success" @click="handleEditAssetProfile">
+          <Icon :icon="'i-clarity:note-edit-line'" />编辑资产配置
+        </a-button>
+        <a-button
+          type="primary"
+          danger
+          @click="handleDeleteAssetProfile"
+          v-if="!(record.name == 'TbServiceQueue' || record.default == true)"
+        >
+          <Icon :icon="'ant-design:delete-outlined'" />删除资产配置
+        </a-button>
+      </div>
+      <div class="space-x-4 my-4">
+        <a-button @click="handleCopyAssetProfileId">
+          <Icon :icon="'ant-design:copy-filled'" />
+          复制资产配置ID
+        </a-button>
+      </div>
+      <Description @register="register" size="default">
+        <template #defaultRuleChain="{ data }">
+          {{ data?.defaultRuleChain?.name }}
         </template>
-        <div class="space-x-4">
-          <a-button
-            type="primary"
-            @click="handleSetDefault"
-            v-if="!(record.name == 'TbServiceQueue' || record.default == true)"
-          >
-            <Icon :icon="'ant-design:flag-outlined'" />设为默认资产配置
-          </a-button>
-          <a-button type="primary success" @click="handleEditAssetProfile">
-            <Icon :icon="'i-clarity:note-edit-line'" />编辑资产配置
-          </a-button>
-          <a-button
-            type="primary"
-            danger
-            @click="handleDeleteAssetProfile"
-            v-if="!(record.name == 'TbServiceQueue' || record.default == true)"
-          >
-            <Icon :icon="'ant-design:delete-outlined'" />删除资产配置
-          </a-button>
-        </div>
-        <div class="space-x-4 my-4">
-          <a-button @click="handleCopyAssetProfileId">
-            <Icon :icon="'ant-design:copy-filled'" />
-            复制资产配置ID
-          </a-button>
-        </div>
-        <Description @register="register" size="default">
-          <template #defaultRuleChain="{ data }">
-            {{ data?.defaultRuleChain?.name }}
-          </template>
-          <template #defaultDashboard="{ data }">
-            {{ data?.defaultDashboard?.title }}
-          </template>
-          <template #defaultEdgeRuleChain="{ data }">
-            {{ data?.defaultEdgeRuleChain?.name }}
-          </template>
-          <template #image="{ data }">
-            <Image :src="data?.image" :width="300" />
-          </template>
-        </Description>
-      </TabPane>
-      <TabPane key="AUDIT_LOG" v-if="hasPermission(Authority.TENANT_ADMIN)">
-        <template #tab
-          ><span> <Icon :icon="'ant-design:bars-outlined'" /> 审计日志 </span>
+        <template #defaultDashboard="{ data }">
+          {{ data?.defaultDashboard?.title }}
         </template>
-        <AuditLog :entityType="EntityType.ASSET_PROFILE" :entityId="record?.id?.id" />
-      </TabPane>
-    </Tabs>
+        <template #defaultEdgeRuleChain="{ data }">
+          {{ data?.defaultEdgeRuleChain?.name }}
+        </template>
+        <template #image="{ data }">
+          <Image :src="data?.image" :width="300" />
+        </template>
+      </Description>
+    </div>
+    <AuditLog
+      v-if="tabActiveKey == DetailTabItemEnum.AUDIT_LOG.key"
+      :entityType="EntityType.ASSET_PROFILE"
+      :entityId="record?.id?.id"
+    />
   </BasicDrawer>
 </template>
 <script lang="ts" setup name="ViewsTbAssetProfileDetail">
@@ -80,6 +78,7 @@
   import { copyToClipboard } from '/@/utils';
   import { Tabs, TabPane, Image, Tag } from 'ant-design-vue';
   import { Icon } from '/@/components/Icon';
+  import { EntityType } from '/@/enums/entityTypeEnum';
   import { usePermission } from '/@/hooks/web/usePermission';
   import { getRuleChainById } from '/@/api/tb/ruleChain';
   import { getDashboardInfoById } from '/@/api/tb/dashboard';
@@ -90,6 +89,7 @@
   import AuditLog from '/@/views/tb/auditLog/list.vue';
   import { DescItem, Description, useDescription } from '/@/components/Description';
   import { router } from '/@/router';
+  import { DetailTabItemEnum } from '/@/enums/detailTabEnum';
 
   const userStore = useUserStore();
 
@@ -106,8 +106,11 @@
     value: record.value.name,
   }));
 
-  const tabActiveKey = ref('DETAIL');
+  const tabActiveKey = ref<string>(DetailTabItemEnum.DETAIL.key);
 
+  const tabList = hasPermission(Authority.TENANT_ADMIN)
+    ? [DetailTabItemEnum.DETAIL, DetailTabItemEnum.AUDIT_LOG]
+    : [DetailTabItemEnum.DETAIL];
   const descSchema: DescItem[] = [
     {
       label: t('资产配置名称'),

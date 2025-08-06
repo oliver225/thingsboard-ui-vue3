@@ -33,8 +33,7 @@
         :is="ruleChainTypes[formState.type]"
         :configuration="formState.configuration"
         :ruleChainId="formState.ruleChainId?.id"
-      >
-      </component>
+      />
 
       <Form.Item label="描述信息" :name="['additionalInfo', 'description']">
         <Textarea v-model:value="formState.additionalInfo.description" placeholder="输入节点描述信息" :rows="3" />

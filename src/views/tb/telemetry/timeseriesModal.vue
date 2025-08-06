@@ -25,7 +25,7 @@
       </span>
     </template>
 
-    <BasicForm @register="registerForm"> </BasicForm>
+    <BasicForm @register="registerForm" />
     <Card v-show="showChart">
       <div ref="chartRef" style="width: 100%; height: 400px"></div>
     </Card>
@@ -167,11 +167,7 @@
   });
 
   const { setOptions, resize } = useECharts(chartRef as Ref<HTMLDivElement>);
-  const {
-    getAndIncrementCmdId,
-    send: websocketSend,
-    unsubscribe: websocketUnsubscribe,
-  } = useWebsocketStore();
+  const { getAndIncrementCmdId, send: websocketSend, unsubscribe: websocketUnsubscribe } = useWebsocketStore();
 
   const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
     setModalProps({ loading: true });

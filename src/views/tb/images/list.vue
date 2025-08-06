@@ -23,9 +23,7 @@
             </template>
           </a-input>
           <template v-if="hasPermission(Authority.TENANT_ADMIN)">
-            <Checkbox v-model:checked="searchParam.includeSystemImages" @change="reload()">
-              包含系统图像
-            </Checkbox>
+            <Checkbox v-model:checked="searchParam.includeSystemImages" @change="reload()"> 包含系统图像 </Checkbox>
           </template>
         </div>
       </template>
@@ -39,9 +37,7 @@
           {{ record.title }}
         </Space>
       </template>
-      <template #resolution="{ record }">
-        {{ record.descriptor.width }}×{{ record.descriptor.height }}
-      </template>
+      <template #resolution="{ record }"> {{ record.descriptor.width }}×{{ record.descriptor.height }} </template>
       <template #descriptorSize="{ record }">
         <div v-if="record.descriptor.size">
           {{ convertBytesToSize(record.descriptor.size) }}

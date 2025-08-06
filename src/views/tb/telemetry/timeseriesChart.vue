@@ -35,7 +35,7 @@
         </Space>
       </template>
       <div>
-        <div ref="chartRef" :style="{ width, height }" v-if="showChart" />
+        <div ref="chartRef" :style="{ width, height }" v-if="showChart"> </div>
         <BasicTable
           :columns="tableColumns"
           :dataSource="series"

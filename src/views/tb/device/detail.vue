@@ -1,124 +1,115 @@
 <template>
-  <BasicDrawer
-    v-bind="$attrs"
-    :showFooter="false"
-    @register="registerDrawer"
-    width="60%"
-    :rootClassName="'tb-detail-wrapper'"
-  >
+  <BasicDrawer v-bind="$attrs" :showFooter="false" @register="registerDrawer" width="60%">
     <template #title>
-      <div class="flex flex-row items-center">
-        <Icon :icon="getTitle.icon" class="pr-3 m-1 tb-detail-title-icon" />
+      <div class="flex items-center space-x-4">
+        <Icon :icon="getTitle.icon" :size="24" />
         <div class="flex flex-col">
-          <span class="text-lg font-bold">{{ getTitle.value || '· · · ·' }}</span>
+          <span class="text-base font-semibold">{{ getTitle.value || '· · · ·' }}</span>
           <span class="text-sm">设备详情</span>
         </div>
       </div>
     </template>
-    <Tabs v-model:activeKey="tabActiveKey" class="tb-detail-menu">
-      <TabPane key="DETAIL">
-        <template #tab
-          ><span> <Icon :icon="'ant-design:appstore-outlined'" /> 详情 </span>
-        </template>
-        <div class="space-x-4">
-          <a-button
-            type="primary"
-            @click="handleAssignToPublic"
-            v-if="hasPermission(Authority.TENANT_ADMIN) && !!!record.customerTitle"
-          >
-            <Icon :icon="'ant-design:share-alt-outlined'" />设为公开
-          </a-button>
-          <a-button
-            type="primary"
-            @click="handleAssignCustomer"
-            v-if="hasPermission(Authority.TENANT_ADMIN) && !!!record.customerTitle"
-          >
-            <Icon :icon="'ant-design:contacts-outlined'" />分配客户
-          </a-button>
-          <a-button
-            type="primary"
-            @click="handleUnAssignFromCustomer"
-            v-if="hasPermission(Authority.TENANT_ADMIN) && !!record.customerTitle"
-          >
-            <Icon :icon="'ant-design:rollback-outlined'" />取消分配客户
-          </a-button>
-          <a-button type="primary" @click="handleCredentials">
-            <Icon :icon="'ant-design:safety-outlined'" />管理凭证
-          </a-button>
-          <a-button type="primary success" @click="handleEditDevice" v-if="hasPermission(Authority.TENANT_ADMIN)">
-            <Icon :icon="'i-clarity:note-edit-line'" />编辑设备
-          </a-button>
-          <a-button type="primary" danger @click="handleDeleteDevice" v-if="hasPermission(Authority.TENANT_ADMIN)">
-            <Icon :icon="'ant-design:delete-outlined'" />删除设备
-          </a-button>
-        </div>
-        <div class="space-x-4 my-4">
-          <a-button @click="handleCopyDeviceId">
-            <Icon :icon="'ant-design:copy-filled'" />
-            复制设备ID
-          </a-button>
-          <a-button @click="handleCopyAccessToken" v-if="credentials.credentialsType == CredentialsType.ACCESS_TOKEN">
-            <Icon :icon="'ant-design:safety-outlined'" />
-            复制访问令牌
-          </a-button>
-          <a-button @click="handleCopyMqttValue" v-if="credentials.credentialsType == CredentialsType.MQTT_BASIC">
-            <Icon :icon="'ant-design:safety-outlined'" />
-            复制MQTT 凭证
-          </a-button>
-        </div>
-        <Description @register="register" size="default">
-          <template #gateway="{ data }">
-            <Checkbox :checked="data.additionalInfo?.gateway || false" /> 是否网关
+    <template #prependContent>
+      <Tabs v-model:active-key="tabActiveKey" class="tb-detail-menu">
+        <TabPane v-for="tab in tabList" :key="tab.key">
+          <template #tab>
+            <Icon :icon="tab.icon" :size="16" />
+            {{ tab.label }}
           </template>
-        </Description>
-      </TabPane>
-      <TabPane key="TELEMETRY">
-        <template #tab
-          ><span> <Icon :icon="'ant-design:line-chart-outlined'" /> 数据 </span>
+        </TabPane>
+      </Tabs>
+    </template>
+    <div v-show="tabActiveKey == DetailTabItemEnum.DETAIL.key">
+      <div class="space-x-4">
+        <a-button
+          type="primary"
+          @click="handleAssignToPublic"
+          v-if="hasPermission(Authority.TENANT_ADMIN) && !!!record.customerTitle"
+        >
+          <Icon :icon="'ant-design:share-alt-outlined'" />设为公开
+        </a-button>
+        <a-button
+          type="primary"
+          @click="handleAssignCustomer"
+          v-if="hasPermission(Authority.TENANT_ADMIN) && !!!record.customerTitle"
+        >
+          <Icon :icon="'ant-design:contacts-outlined'" />分配客户
+        </a-button>
+        <a-button
+          type="primary"
+          @click="handleUnAssignFromCustomer"
+          v-if="hasPermission(Authority.TENANT_ADMIN) && !!record.customerTitle"
+        >
+          <Icon :icon="'ant-design:rollback-outlined'" />取消分配客户
+        </a-button>
+        <a-button type="primary" @click="handleCredentials">
+          <Icon :icon="'ant-design:safety-outlined'" />管理凭证
+        </a-button>
+        <a-button type="primary success" @click="handleEditDevice" v-if="hasPermission(Authority.TENANT_ADMIN)">
+          <Icon :icon="'i-clarity:note-edit-line'" />编辑设备
+        </a-button>
+        <a-button type="primary" danger @click="handleDeleteDevice" v-if="hasPermission(Authority.TENANT_ADMIN)">
+          <Icon :icon="'ant-design:delete-outlined'" />删除设备
+        </a-button>
+      </div>
+      <div class="space-x-4 my-4">
+        <a-button @click="handleCopyDeviceId">
+          <Icon :icon="'ant-design:copy-filled'" />
+          复制设备ID
+        </a-button>
+        <a-button @click="handleCopyAccessToken" v-if="credentials.credentialsType == CredentialsType.ACCESS_TOKEN">
+          <Icon :icon="'ant-design:safety-outlined'" />
+          复制访问令牌
+        </a-button>
+        <a-button @click="handleCopyMqttValue" v-if="credentials.credentialsType == CredentialsType.MQTT_BASIC">
+          <Icon :icon="'ant-design:safety-outlined'" />
+          复制MQTT 凭证
+        </a-button>
+      </div>
+      <Description @register="register" size="default">
+        <template #gateway="{ data }">
+          <Checkbox :checked="data.additionalInfo?.gateway || false" /> 是否网关
         </template>
-        <Telemetry v-if="tabActiveKey == 'TELEMETRY'" :entityType="EntityType.DEVICE" :entityId="record?.id?.id" />
-      </TabPane>
-      <!-- <TabPane key="TGINGMODEL">
-        <template #tab>
-          <span> <Icon :icon="'ant-design:project-outlined'" /> 物模型 </span>
-        </template>
-        <ThingModelList ref="thingsModelFrom" :deviceProfileId="record.deviceProfileId?.id" :readOnly="true" />
-      </TabPane> -->
-      <TabPane key="TOPIC">
-        <template #tab
-          ><span> <Icon :icon="'ant-design:api-outlined'" /> 连接API </span>
-        </template>
-        <DeviceAPI :entityType="EntityType.DEVICE" :entityId="record?.id?.id" />
-      </TabPane>
-      <TabPane key="ALARM">
-        <template #tab
-          ><span> <Icon :icon="'ant-design:alert-outlined'" /> 报警 </span>
-        </template>
-        <Alarm :entityType="EntityType.DEVICE" :entityId="record?.id?.id" />
-      </TabPane>
-      <TabPane key="EVENT">
-        <template #tab
-          ><span> <Icon :icon="'ant-design:info-circle-outlined'" /> 事件 </span>
-        </template>
-        <Event :entityType="EntityType.DEVICE" :entityId="record?.id?.id" />
-      </TabPane>
-      <TabPane key="RELATION">
-        <template #tab
-          ><span> <Icon :icon="'ant-design:radar-chart-outlined'" /> 关联 </span>
-        </template>
-        <Relation :entityType="EntityType.DEVICE" :entityId="record?.id?.id" />
-      </TabPane>
-      <TabPane key="AUDIT_LOG" v-if="hasPermission(Authority.TENANT_ADMIN)">
-        <template #tab
-          ><span> <Icon :icon="'ant-design:bars-outlined'" /> 审计日志 </span>
-        </template>
-        <AuditLog :entityType="EntityType.DEVICE" :entityId="record?.id?.id" />
-      </TabPane>
-    </Tabs>
+      </Description>
+    </div>
+    <DeviceAPI
+      v-if="tabActiveKey == DetailTabItemEnum.TOPIC.key"
+      :entityType="EntityType.DEVICE"
+      :entityId="record?.id?.id"
+    />
+
+    <Telemetry
+      v-if="tabActiveKey == DetailTabItemEnum.TELEMETRY.key"
+      :entityType="EntityType.DEVICE"
+      :entityId="record?.id?.id"
+    />
+
+    <Alarm
+      v-if="tabActiveKey == DetailTabItemEnum.ALARM.key"
+      :entityType="EntityType.DEVICE"
+      :entityId="record?.id?.id"
+    />
+
+    <Event
+      v-if="tabActiveKey == DetailTabItemEnum.EVENT.key"
+      :entityType="EntityType.DEVICE"
+      :entityId="record?.id?.id"
+    />
+    <Relation
+      v-if="tabActiveKey == DetailTabItemEnum.RELATION.key"
+      :entityType="EntityType.DEVICE"
+      :entityId="record?.id?.id"
+    />
+
+    <AuditLog
+      v-if="tabActiveKey == DetailTabItemEnum.AUDIT_LOG.key"
+      :entityType="EntityType.DEVICE"
+      :entityId="record?.id?.id"
+    />
   </BasicDrawer>
 </template>
 <script lang="ts" setup name="ViewsTbDeviceDetail">
-  import { ref, unref, computed, watch, nextTick } from 'vue';
+  import { ref, unref, computed } from 'vue';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { router } from '/@/router';
@@ -139,6 +130,7 @@
   import Event from '/@/views/tb/event/index.vue';
   import DeviceAPI from '/@/views/tb/device/deviceApi.vue';
   import { EntityType } from '/@/enums/entityTypeEnum';
+  import { DetailTabItemEnum } from '/@/enums/detailTabEnum';
 
   const userStore = useUserStore();
   const { hasPermission } = usePermission();
@@ -156,7 +148,6 @@
   const { t } = useI18n('tb');
   const { showMessage } = useMessage();
   const { meta } = unref(router.currentRoute);
-  const thingsModelFrom = ref<any>(null);
   const record = ref<DeviceInfo>({} as DeviceInfo);
   const credentials = ref<DeviceCredentials>({} as DeviceCredentials);
 
@@ -165,8 +156,25 @@
     value: record.value.name,
   }));
 
-  const tabActiveKey = ref('DETAIL');
+  const tabActiveKey = ref<string>(DetailTabItemEnum.DETAIL.key);
 
+  const tabList = hasPermission(Authority.TENANT_ADMIN)
+    ? [
+        DetailTabItemEnum.DETAIL,
+        DetailTabItemEnum.TELEMETRY,
+        DetailTabItemEnum.TOPIC,
+        DetailTabItemEnum.EVENT,
+        DetailTabItemEnum.RELATION,
+        DetailTabItemEnum.AUDIT_LOG,
+      ]
+    : [
+        DetailTabItemEnum.DETAIL,
+        DetailTabItemEnum.TELEMETRY,
+        DetailTabItemEnum.TOPIC,
+        DetailTabItemEnum.ALARM,
+        DetailTabItemEnum.EVENT,
+        DetailTabItemEnum.RELATION,
+      ];
   const descSchema: DescItem[] = [
     {
       label: t('设备名称'),

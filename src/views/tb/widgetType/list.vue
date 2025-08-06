@@ -6,9 +6,7 @@
       </template>
       <template #tableTitle>
         <div class="space-x-2">
-          <a-button type="primary" @click="handleForm({})">
-            <Icon icon="i-fluent:add-12-filled" /> 新增部件
-          </a-button>
+          <a-button type="primary" @click="handleForm({})"> <Icon icon="i-fluent:add-12-filled" /> 新增部件 </a-button>
           <a-input
             v-model:value="searchParam.textSearch"
             placeholder="输入搜索内容"
@@ -80,8 +78,7 @@
       key: 'widgetType',
       align: 'center',
       width: 180,
-      format: (text: any) =>
-        text ? WIDGET_TYPE_OPTIONS.find((item) => item.value === text)?.label || text : '',
+      format: (text: any) => (text ? WIDGET_TYPE_OPTIONS.find((item) => item.value === text)?.label || text : ''),
     },
     {
       title: '系统',

@@ -171,11 +171,11 @@
     rowKey: (record) => record.id.id,
     api: getOtaPackageList,
     beforeFetch: wrapFetchParams,
-    defSort: { sortProperty: 'createdTime', sortOrder: 'DESC' },
     columns: tableColumns,
     actionColumn: actionColumn,
     showTableSetting: true,
     useSearchForm: false,
+    canResize: true,
   });
 
   function wrapFetchParams(param: any) {

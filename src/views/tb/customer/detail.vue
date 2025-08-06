@@ -1,80 +1,76 @@
 <template>
-  <BasicDrawer
-    v-bind="$attrs"
-    :showFooter="false"
-    @register="registerDrawer"
-    width="60%"
-    :rootClassName="'tb-detail-wrapper'"
-  >
+  <BasicDrawer v-bind="$attrs" :showFooter="false" @register="registerDrawer" width="60%">
     <template #title>
-      <div class="flex flex-row items-center">
-        <Icon :icon="getTitle.icon" class="pr-3 m-1 tb-detail-title-icon" />
+      <div class="flex items-center space-x-4">
+        <Icon :icon="getTitle.icon" :size="24" />
         <div class="flex flex-col">
-          <span class="text-lg font-bold">{{ getTitle.value || '· · · ·' }}</span>
+          <span class="text-base font-semibold">{{ getTitle.value || '· · · ·' }}</span>
           <span class="text-sm">客户详情</span>
         </div>
       </div>
     </template>
-    <Tabs v-model:activeKey="tabActiveKey" class="tb-detail-menu">
-      <TabPane key="DETAIL">
-        <template #tab
-          ><span> <Icon :icon="'ant-design:appstore-outlined'" /> 详情 </span>
-        </template>
-        <div class="space-x-4">
-          <a-button type="primary" @click="handleCustomerUser" v-if="record.title != 'Public'">
-            <Icon :icon="'ant-design:team-outlined'" />客户用户
-          </a-button>
-          <a-button type="primary success" @click="handleEditCustomer" v-if="record.title != 'Public'">
-            <Icon :icon="'i-clarity:note-edit-line'" />编辑客户
-          </a-button>
-          <a-button type="primary" danger @click="handleDeleteCustomer" v-if="record.title != 'Public'">
-            <Icon :icon="'ant-design:delete-outlined'" />删除客户
-          </a-button>
-        </div>
-        <div class="space-x-4 my-4">
-          <a-button @click="handleCopyCustomerId">
-            <Icon :icon="'ant-design:copy-filled'" />
-            复制客户ID
-          </a-button>
-        </div>
-        <Description @register="register" size="default">
-          <template #state="{ data }">
-            {{ areaList.province_list[data.state] }}/ {{ areaList.city_list[data.city] }}/
-            {{ areaList.county_list[data.country] }}
+    <template #prependContent>
+      <Tabs v-model:active-key="tabActiveKey" class="tb-detail-menu">
+        <TabPane v-for="tab in tabList" :key="tab.key">
+          <template #tab>
+            <Icon :icon="tab.icon" :size="16" />
+            {{ tab.label }}
           </template>
-        </Description>
-      </TabPane>
-      <TabPane key="TELEMETRY">
-        <template #tab
-          ><span> <Icon :icon="'ant-design:line-chart-outlined'" /> 数据 </span>
+        </TabPane>
+      </Tabs>
+    </template>
+    <div v-show="tabActiveKey == DetailTabItemEnum.DETAIL.key">
+      <div class="space-x-4">
+        <a-button type="primary" @click="handleCustomerUser" v-if="record.title != 'Public'">
+          <Icon :icon="'ant-design:team-outlined'" />客户用户
+        </a-button>
+        <a-button type="primary success" @click="handleEditCustomer" v-if="record.title != 'Public'">
+          <Icon :icon="'i-clarity:note-edit-line'" />编辑客户
+        </a-button>
+        <a-button type="primary" danger @click="handleDeleteCustomer" v-if="record.title != 'Public'">
+          <Icon :icon="'ant-design:delete-outlined'" />删除客户
+        </a-button>
+      </div>
+      <div class="space-x-4 my-4">
+        <a-button @click="handleCopyCustomerId">
+          <Icon :icon="'ant-design:copy-filled'" />
+          复制客户ID
+        </a-button>
+      </div>
+      <Description @register="register" size="default">
+        <template #state="{ data }">
+          {{ areaList.province_list[data.state] }}/ {{ areaList.city_list[data.city] }}/
+          {{ areaList.county_list[data.country] }}
         </template>
-        <Telemetry v-if="tabActiveKey == 'TELEMETRY'" :entityType="EntityType.CUSTOMER" :entityId="record?.id?.id" />
-      </TabPane>
-      <TabPane key="ALARM">
-        <template #tab
-          ><span> <Icon :icon="'ant-design:alert-outlined'" /> 报警 </span>
-        </template>
-        <Alarm :entityType="EntityType.CUSTOMER" :entityId="record?.id?.id" />
-      </TabPane>
-      <TabPane key="EVENT">
-        <template #tab
-          ><span> <Icon :icon="'ant-design:info-circle-outlined'" /> 事件 </span>
-        </template>
-        <Event :entityType="EntityType.CUSTOMER" :entityId="record?.id?.id" />
-      </TabPane>
-      <TabPane key="RELATION">
-        <template #tab
-          ><span> <Icon :icon="'ant-design:radar-chart-outlined'" /> 关联 </span>
-        </template>
-        <Relation :entityType="EntityType.CUSTOMER" :entityId="record?.id?.id" />
-      </TabPane>
-      <TabPane key="AUDIT_LOG">
-        <template #tab
-          ><span> <Icon :icon="'ant-design:bars-outlined'" /> 审计日志 </span>
-        </template>
-        <AuditLog :entityType="EntityType.CUSTOMER" :entityId="record?.id?.id" />
-      </TabPane>
-    </Tabs>
+      </Description>
+    </div>
+    <Telemetry
+      v-if="tabActiveKey == DetailTabItemEnum.TELEMETRY.key"
+      :entityType="EntityType.CUSTOMER"
+      :entityId="record?.id?.id"
+    />
+    <Alarm
+      v-if="tabActiveKey == DetailTabItemEnum.ALARM.key"
+      :entityType="EntityType.CUSTOMER"
+      :entityId="record?.id?.id"
+    />
+
+    <Event
+      v-if="tabActiveKey == DetailTabItemEnum.EVENT.key"
+      :entityType="EntityType.CUSTOMER"
+      :entityId="record?.id?.id"
+    />
+    <Relation
+      v-if="tabActiveKey == DetailTabItemEnum.RELATION.key"
+      :entityType="EntityType.CUSTOMER"
+      :entityId="record?.id?.id"
+    />
+
+    <AuditLog
+      v-if="tabActiveKey == DetailTabItemEnum.AUDIT_LOG.key"
+      :entityType="EntityType.CUSTOMER"
+      :entityId="record?.id?.id"
+    />
   </BasicDrawer>
 </template>
 <script lang="ts" setup name="ViewsTbCustomerDetail">
@@ -94,6 +90,8 @@
   import Alarm from '/@/views/tb/alarm/list.vue';
   import Relation from '/@/views/tb/relation/list.vue';
   import Event from '/@/views/tb/event/index.vue';
+  import { EntityType } from '/@/enums/entityTypeEnum';
+  import { DetailTabItemEnum } from '/@/enums/detailTabEnum';
 
   const emit = defineEmits(['edit', 'delete', 'user', 'register']);
 
@@ -107,7 +105,16 @@
     value: record.value.title,
   }));
 
-  const tabActiveKey = ref('DETAIL');
+  const tabActiveKey = ref<string>(DetailTabItemEnum.DETAIL.key);
+
+  const tabList = [
+    DetailTabItemEnum.DETAIL,
+    DetailTabItemEnum.TELEMETRY,
+    DetailTabItemEnum.ALARM,
+    DetailTabItemEnum.EVENT,
+    DetailTabItemEnum.RELATION,
+    DetailTabItemEnum.AUDIT_LOG,
+  ];
 
   const descSchema: DescItem[] = [
     {

@@ -1,11 +1,5 @@
 <template>
-  <BasicModal
-    v-bind="$attrs"
-    :footer="null"
-    :can-fullscreen="false"
-    width="800px"
-    @register="registerModal"
-  >
+  <BasicModal v-bind="$attrs" :footer="null" :can-fullscreen="false" width="800px" @register="registerModal">
     <BasicTable @register="registerTable">
       <template #headerTop>
         <div class="text-lg font-bold my-2">
@@ -29,9 +23,7 @@
             </template>
           </Input>
           <template v-if="hasPermission(Authority.TENANT_ADMIN)">
-            <Checkbox v-model:checked="searchParam.includeSystemImages" @change="reload()">
-              包含系统图像
-            </Checkbox>
+            <Checkbox v-model:checked="searchParam.includeSystemImages" @change="reload()"> 包含系统图像 </Checkbox>
           </template>
         </div>
       </template>

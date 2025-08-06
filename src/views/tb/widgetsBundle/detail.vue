@@ -1,16 +1,10 @@
 <template>
-  <BasicDrawer
-    v-bind="$attrs"
-    :showFooter="false"
-    @register="registerDrawer"
-    width="60%"
-    :rootClassName="'tb-detail-wrapper'"
-  >
+  <BasicDrawer v-bind="$attrs" :showFooter="false" @register="registerDrawer" width="60%">
     <template #title>
-      <div class="flex flex-row items-center">
-        <Icon :icon="getTitle.icon" class="pr-3 m-1 drawer-title-icon" />
+      <div class="flex items-center space-x-4">
+        <Icon :icon="getTitle.icon" :size="24" />
         <div class="flex flex-col">
-          <span class="text-lg font-bold">{{ getTitle.value || '· · · ·' }}</span>
+          <span class="text-base font-semibold">{{ getTitle.value || '· · · ·' }}</span>
           <span class="text-sm">部件包详情</span>
         </div>
       </div>
@@ -36,7 +30,7 @@
           复制部件包ID
         </a-button>
       </div>
-      <Description @register="register" size="default"> </Description>
+      <Description @register="register" size="default" />
     </div>
   </BasicDrawer>
 </template>

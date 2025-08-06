@@ -23,8 +23,7 @@
             :options="entityTypeOptions"
             style="width: 130px"
             @change="reload()"
-          >
-          </Select>
+          />
           <RangePicker
             v-model:value="searchParam.timeRange"
             style="width: 300px"
@@ -46,18 +45,18 @@
 </script>
 <script lang="ts" setup>
   import { defineComponent, ref, reactive, unref, computed } from 'vue';
+  import { Icon } from '/@/components/Icon';
   import { RangePicker, Select, Tooltip } from 'ant-design-vue';
   import { BasicTable, BasicColumn, useTable } from '/@/components/Table';
-  import { useI18n } from '/@/hooks/web/useI18n';
-  import { Icon } from '/@/components/Icon';
-  import { EVENT_TYPE_OPTIONS, EventType } from '/@/enums/eventEnum';
-  import { Authority } from '/@/enums/authorityEnum';
   import { usePermission } from '/@/hooks/web/usePermission';
-  import { clearEvents, getEvents, EventFilter } from '/@/api/tb/events';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { useUserStore } from '/@/store/modules/user';
-  import dayjs from 'dayjs';
+  import { Authority } from '/@/enums/authorityEnum';
   import { EntityType } from '/@/enums/entityTypeEnum';
+  import { EVENT_TYPE_OPTIONS, EventType } from '/@/enums/eventEnum';
+  import { clearEvents, getEvents, EventFilter } from '/@/api/tb/events';
+  import { useI18n } from '/@/hooks/web/useI18n';
+  import dayjs from 'dayjs';
 
   const userStore = useUserStore();
   const { hasPermission } = usePermission();

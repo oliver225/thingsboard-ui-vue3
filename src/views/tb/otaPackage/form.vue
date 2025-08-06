@@ -33,8 +33,7 @@
           v-model:value="formState.deviceProfileId.id"
           :options="deviceProfileOptions"
           placeholder="请选择设备配置"
-        >
-        </Select>
+        />
       </Form.Item>
       <Form.Item
         label="包类型"
@@ -54,8 +53,7 @@
             { label: '上传二进制文件', value: false },
             { label: '使用外部URL', value: true },
           ]"
-        >
-        </RadioGroup>
+        />
       </Form.Item>
       <template v-if="formState.isURL == true">
         <Form.Item label="直接URL" name="url" :rules="[{ required: true, message: '请输入直接URL' }]">
@@ -79,7 +77,7 @@
           <Row :gutter="20">
             <Col :span="10">
               <Form.Item label="校验和算法" name="checksumAlgorithm">
-                <Select v-model:value="formState.checksumAlgorithm" :options="CHECK_SUM_ALGORITHM_OPTIONS"> </Select>
+                <Select v-model:value="formState.checksumAlgorithm" :options="CHECK_SUM_ALGORITHM_OPTIONS" />
               </Form.Item>
             </Col>
             <Col :span="14">
@@ -109,7 +107,7 @@
   import { useI18n } from '/@/hooks/web/useI18n';
   import { router } from '/@/router';
   import { CHECK_SUM_ALGORITHM, CHECK_SUM_ALGORITHM_OPTIONS } from '/@/enums/otaPackageEnum';
-import { EntityType } from '/@/enums/entityTypeEnum';
+  import { EntityType } from '/@/enums/entityTypeEnum';
 
   const emit = defineEmits(['success', 'register']);
 

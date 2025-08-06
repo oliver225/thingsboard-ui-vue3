@@ -1,95 +1,92 @@
 <template>
-  <BasicDrawer
-    v-bind="$attrs"
-    :showFooter="false"
-    @register="registerDrawer"
-    width="60%"
-    :rootClassName="'tb-detail-wrapper'"
-  >
+  <BasicDrawer v-bind="$attrs" :showFooter="false" @register="registerDrawer" width="60%">
     <template #title>
-      <div class="flex flex-row items-center">
-        <Icon :icon="getTitle.icon" class="pr-3 m-1 tb-detail-title-icon" />
+      <div class="flex items-center space-x-4">
+        <Icon :icon="getTitle.icon" :size="24" />
         <div class="flex flex-col">
-          <span class="text-lg font-bold">{{ getTitle.value || '· · · ·' }}</span>
+          <span class="text-base font-semibold">{{ getTitle.value || '· · · ·' }}</span>
           <span class="text-sm">资产详情</span>
         </div>
       </div>
     </template>
+    <template #prependContent>
+      <Tabs v-model:active-key="tabActiveKey" class="tb-detail-menu">
+        <TabPane v-for="tab in tabList" :key="tab.key">
+          <template #tab>
+            <Icon :icon="tab.icon" :size="16" />
+            {{ tab.label }}
+          </template>
+        </TabPane>
+      </Tabs>
+    </template>
+    <div v-show="tabActiveKey == DetailTabItemEnum.DETAIL.key">
+      <div class="space-x-4">
+        <a-button
+          type="primary"
+          @click="handleAssignToPublic"
+          v-if="hasPermission(Authority.TENANT_ADMIN) && !!!record.customerTitle"
+        >
+          <Icon :icon="'ant-design:share-alt-outlined'" />设为公开
+        </a-button>
+        <a-button
+          type="primary"
+          @click="handleAssignCustomer"
+          v-if="hasPermission(Authority.TENANT_ADMIN) && !!!record.customerTitle"
+        >
+          <Icon :icon="'ant-design:contacts-outlined'" />分配客户
+        </a-button>
+        <a-button
+          type="primary"
+          @click="handleUnAssignFromCustomer"
+          v-if="hasPermission(Authority.TENANT_ADMIN) && !!record.customerTitle"
+        >
+          <Icon :icon="'ant-design:rollback-outlined'" />取消分配客户
+        </a-button>
 
-    <Tabs v-model:activeKey="tabActiveKey" class="tb-detail-menu">
-      <TabPane key="DETAIL">
-        <template #tab
-          ><span> <Icon :icon="'ant-design:appstore-outlined'" /> 详情 </span>
-        </template>
-        <div class="space-x-4">
-          <a-button
-            type="primary"
-            @click="handleAssignToPublic"
-            v-if="hasPermission(Authority.TENANT_ADMIN) && !!!record.customerTitle"
-          >
-            <Icon :icon="'ant-design:share-alt-outlined'" />设为公开
-          </a-button>
-          <a-button
-            type="primary"
-            @click="handleAssignCustomer"
-            v-if="hasPermission(Authority.TENANT_ADMIN) && !!!record.customerTitle"
-          >
-            <Icon :icon="'ant-design:contacts-outlined'" />分配客户
-          </a-button>
-          <a-button
-            type="primary"
-            @click="handleUnAssignFromCustomer"
-            v-if="hasPermission(Authority.TENANT_ADMIN) && !!record.customerTitle"
-          >
-            <Icon :icon="'ant-design:rollback-outlined'" />取消分配客户
-          </a-button>
+        <a-button type="primary success" @click="handleEditAsset" v-if="hasPermission(Authority.TENANT_ADMIN)">
+          <Icon :icon="'i-clarity:note-edit-line'" />编辑资产
+        </a-button>
+        <a-button type="primary" danger @click="handleDeleteAsset" v-if="hasPermission(Authority.TENANT_ADMIN)">
+          <Icon :icon="'ant-design:delete-outlined'" />删除资产
+        </a-button>
+      </div>
+      <div class="space-x-4 my-4">
+        <a-button @click="handleCopyAssetId">
+          <Icon :icon="'ant-design:copy-filled'" />
+          复制资产ID
+        </a-button>
+      </div>
+      <Description @register="register" size="default" />
+    </div>
 
-          <a-button type="primary success" @click="handleEditAsset" v-if="hasPermission(Authority.TENANT_ADMIN)">
-            <Icon :icon="'i-clarity:note-edit-line'" />编辑资产
-          </a-button>
-          <a-button type="primary" danger @click="handleDeleteAsset" v-if="hasPermission(Authority.TENANT_ADMIN)">
-            <Icon :icon="'ant-design:delete-outlined'" />删除资产
-          </a-button>
-        </div>
-        <div class="space-x-4 my-4">
-          <a-button @click="handleCopyAssetId">
-            <Icon :icon="'ant-design:copy-filled'" />
-            复制资产ID
-          </a-button>
-        </div>
-        <Description @register="register" size="default"> </Description>
-      </TabPane>
-      <TabPane key="TELEMETRY">
-        <template #tab
-          ><span> <Icon :icon="'ant-design:line-chart-outlined'" /> 数据 </span>
-        </template>
-        <Telemetry :entityType="EntityType.ASSET" :entityId="record?.id?.id" />
-      </TabPane>
-      <TabPane key="ALARM">
-        <template #tab
-          ><span> <Icon :icon="'ant-design:alert-outlined'" /> 报警 </span>
-        </template>
-        <Alarm :entityType="EntityType.ASSET" :entityId="record?.id?.id" />
-      </TabPane>
-      <TabPane key="EVENT">
-        <template #tab
-          ><span> <Icon :icon="'ant-design:info-circle-outlined'" /> 事件 </span>
-        </template>
-        <Event :entityType="EntityType.ASSET" :entityId="record?.id?.id" />
-      </TabPane>
-      <TabPane key="RELATION">
-        <template #tab
-          ><span> <Icon :icon="'ant-design:radar-chart-outlined'" /> 关联 </span>
-        </template>
-        <Relation :entityType="EntityType.ASSET" :entityId="record?.id?.id" />
-      </TabPane>
-      <TabPane key="AUDIT_LOG" v-if="hasPermission(Authority.TENANT_ADMIN)">
-        <template #tab
-          ><span> <Icon :icon="'ant-design:bars-outlined'" /> 审计日志 </span>
-        </template>
-        <AuditLog :entityType="EntityType.ASSET" :entityId="record?.id?.id" />
-      </TabPane>
-    </Tabs>
+    <Telemetry
+      v-if="tabActiveKey == DetailTabItemEnum.TELEMETRY.key"
+      :entityType="EntityType.ASSET"
+      :entityId="record?.id?.id"
+    />
+
+    <Alarm
+      v-if="tabActiveKey == DetailTabItemEnum.ALARM.key"
+      :entityType="EntityType.ASSET"
+      :entityId="record?.id?.id"
+    />
+
+    <Event
+      v-if="tabActiveKey == DetailTabItemEnum.EVENT.key"
+      :entityType="EntityType.ASSET"
+      :entityId="record?.id?.id"
+    />
+    <Relation
+      v-if="tabActiveKey == DetailTabItemEnum.RELATION.key"
+      :entityType="EntityType.ASSET"
+      :entityId="record?.id?.id"
+    />
+
+    <AuditLog
+      v-if="tabActiveKey == DetailTabItemEnum.AUDIT_LOG.key"
+      :entityType="EntityType.ASSET"
+      :entityId="record?.id?.id"
+    />
   </BasicDrawer>
 </template>
 <script lang="ts" setup name="ViewsTbAssetDetail">
@@ -102,6 +99,7 @@
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
   import { AssetInfo, getAssetInfoById } from '/@/api/tb/asset';
   import { Tabs, TabPane } from 'ant-design-vue';
+  import { EntityType } from '/@/enums/entityTypeEnum';
   import { DescItem, Description, useDescription } from '/@/components/Description';
   import { useUserStore } from '/@/store/modules/user';
   import { Authority } from '/@/enums/authorityEnum';
@@ -111,8 +109,7 @@
   import Relation from '/@/views/tb/relation/list.vue';
   import Event from '/@/views/tb/event/index.vue';
   import { usePermission } from '/@/hooks/web/usePermission';
-
-
+  import { DetailTabItemEnum } from '/@/enums/detailTabEnum';
   const userStore = useUserStore();
   const { hasPermission } = usePermission();
 
@@ -135,8 +132,24 @@
     value: record.value.name,
   }));
 
-  const tabActiveKey = ref('DETAIL');
+  const tabActiveKey = ref<string>(DetailTabItemEnum.DETAIL.key);
 
+  const tabList = hasPermission(Authority.TENANT_ADMIN)
+    ? [
+        DetailTabItemEnum.DETAIL,
+        DetailTabItemEnum.TELEMETRY,
+        DetailTabItemEnum.ALARM,
+        DetailTabItemEnum.EVENT,
+        DetailTabItemEnum.RELATION,
+        DetailTabItemEnum.AUDIT_LOG,
+      ]
+    : [
+        DetailTabItemEnum.DETAIL,
+        DetailTabItemEnum.TELEMETRY,
+        DetailTabItemEnum.ALARM,
+        DetailTabItemEnum.EVENT,
+        DetailTabItemEnum.RELATION,
+      ];
   const descSchema: DescItem[] = [
     {
       label: t('资产名称'),

@@ -1,108 +1,87 @@
 <template>
-  <BasicDrawer
-    v-bind="$attrs"
-    :showFooter="false"
-    @register="registerDrawer"
-    width="60%"
-    :rootClassName="'tb-detail-wrapper'"
-  >
+  <BasicDrawer v-bind="$attrs" :showFooter="false" @register="registerDrawer" width="60%">
     <template #title>
-      <div class="flex flex-row items-center">
-        <Icon :icon="getTitle.icon" class="pr-3 m-1 tb-detail-title-icon" />
+      <div class="flex items-center space-x-4">
+        <Icon :icon="getTitle.icon" :size="24" />
         <div class="flex flex-col">
-          <span class="text-lg font-bold"
-            >{{ getTitle.value || '· · · ·' }}
+          <span class="text-base font-semibold">
+            {{ getTitle.value || '· · · ·' }}
             <Tag class="text-base font-normal" color="success" v-if="record.default == true">默认</Tag>
           </span>
-          <span class="text-sm">设备配置详情</span>
+          <span class="text-sm">产品详情</span>
         </div>
       </div>
     </template>
-    <Tabs v-model:activeKey="tabActiveKey" class="tb-detail-menu">
-      <TabPane key="DETAIL">
-        <template #tab
-          ><span> <Icon :icon="'ant-design:appstore-outlined'" /> 详情 </span>
-        </template>
-        <div class="space-x-4">
-          <a-button
-            type="primary"
-            @click="handleSetDefault"
-            v-if="!(record.name == 'TbServiceQueue' || record.default == true)"
-          >
-            <Icon :icon="'ant-design:flag-outlined'" />设为默认设备配置
-          </a-button>
-          <a-button type="primary success" @click="handleEditDeviceProfile">
-            <Icon :icon="'i-clarity:note-edit-line'" />编辑设备配置
-          </a-button>
-          <a-button
-            type="primary"
-            danger
-            @click="handleDeleteDeviceProfile"
-            v-if="!(record.name == 'TbServiceQueue' || record.default == true)"
-          >
-            <Icon :icon="'ant-design:delete-outlined'" />删除设备配置
-          </a-button>
-        </div>
-        <div class="space-x-4 my-4">
-          <a-button @click="handleCopyDeviceProfileId">
-            <Icon :icon="'ant-design:copy-filled'" />
-            复制设备配置ID
-          </a-button>
-        </div>
-        <Description @register="register" size="default">
-          <template #defaultRuleChain="{ data }">
-            {{ data?.defaultRuleChain?.name }}
+    <template #prependContent>
+      <Tabs v-model:active-key="tabActiveKey" class="tb-detail-menu">
+        <TabPane v-for="tab in tabList" :key="tab.key">
+          <template #tab>
+            <Icon :icon="tab.icon" :size="16" />
+            {{ tab.label }}
           </template>
-          <template #defaultDashboard="{ data }">
-            {{ data?.defaultDashboard?.title }}
-          </template>
-          <template #defaultEdgeRuleChain="{ data }">
-            {{ data?.defaultEdgeRuleChain?.name }}
-          </template>
-          <template #image="{ data }">
-            <ImageUrlInput v-model:value="data.image" :disabled="true" />
-          </template>
-        </Description>
-      </TabPane>
-      <TabPane key="TRANSPORT">
-        <template #tab
-          ><span> <Icon :icon="'ant-design:cloud-upload-outlined'" /> 传输配置 </span>
+        </TabPane>
+      </Tabs>
+    </template>
+    <div v-show="tabActiveKey == DetailTabItemEnum.DETAIL.key">
+      <div class="space-x-4">
+        <a-button
+          type="primary"
+          @click="handleSetDefault"
+          v-if="!(record.name == 'TbServiceQueue' || record.default == true)"
+        >
+          <Icon :icon="'ant-design:flag-outlined'" />设为默认设备配置
+        </a-button>
+        <a-button type="primary success" @click="handleEditDeviceProfile">
+          <Icon :icon="'i-clarity:note-edit-line'" />编辑设备配置
+        </a-button>
+        <a-button
+          type="primary"
+          danger
+          @click="handleDeleteDeviceProfile"
+          v-if="!(record.name == 'TbServiceQueue' || record.default == true)"
+        >
+          <Icon :icon="'ant-design:delete-outlined'" />删除设备配置
+        </a-button>
+      </div>
+      <div class="space-x-4 my-4">
+        <a-button @click="handleCopyDeviceProfileId">
+          <Icon :icon="'ant-design:copy-filled'" />
+          复制设备配置ID
+        </a-button>
+      </div>
+      <Description @register="register" size="default">
+        <template #defaultRuleChain="{ data }">
+          {{ data?.defaultRuleChain?.name }}
         </template>
-        <div class="border border-solid border-neutral-300 p-4">
-          <TransportForm class="pointer-events-none" ref="transportFrom" />
-        </div>
-      </TabPane>
-      <!-- <TabPane key="TGINGMODEL">
-        <template #tab>
-          <span> <Icon :icon="'ant-design:project-outlined'" /> 物模型 </span>
+        <template #defaultDashboard="{ data }">
+          {{ data?.defaultDashboard?.title }}
         </template>
-        <ThingModelList ref="thingsModelList" :deviceProfileId="record?.id.id" />
-      </TabPane> -->
-      <TabPane key="ALARM">
-        <template #tab
-          ><span>
-            <Icon :icon="'ant-design:bell-outlined'" /> 报警配置({{ record.profileData?.alarms?.length || 0 }})
-          </span>
+        <template #defaultEdgeRuleChain="{ data }">
+          {{ data?.defaultEdgeRuleChain?.name }}
         </template>
-        <div class="border border-solid border-neutral-300 p-4">
-          <AlarmForm class="pointer-events-none" ref="alarmFrom" />
-        </div>
-      </TabPane>
-      <TabPane key="PROVISION">
-        <template #tab
-          ><span> <Icon :icon="'ant-design:file-protect-outlined'" /> 设备预配置 </span>
+        <template #image="{ data }">
+          <Image :src="data?.image" :width="300" />
         </template>
-        <div class="border border-solid border-neutral-300 p-4">
-          <ProvisionForm class="pointer-events-none" ref="provisionFrom" />
-        </div>
-      </TabPane>
-      <TabPane key="AUDIT_LOG" v-if="hasPermission(Authority.TENANT_ADMIN)">
-        <template #tab
-          ><span> <Icon :icon="'ant-design:bars-outlined'" /> 审计日志 </span>
-        </template>
-        <AuditLog :entityType="EntityType.DEVICE_PROFILE" :entityId="record?.id?.id" />
-      </TabPane>
-    </Tabs>
+      </Description>
+    </div>
+
+    <div v-if="tabActiveKey == 'TRANSPORT'" class="border border-solid border-neutral-300 p-4">
+      <TransportForm class="pointer-events-none" ref="transportFrom" />
+    </div>
+
+    <div v-if="tabActiveKey == DetailTabItemEnum.ALARM.key" class="border border-solid border-neutral-300 p-4">
+      <AlarmForm class="pointer-events-none" ref="alarmFrom" />
+    </div>
+
+    <div v-if="tabActiveKey == 'PROVISION'" class="border border-solid border-neutral-300 p-4">
+      <ProvisionForm class="pointer-events-none" ref="provisionFrom" />
+    </div>
+
+    <AuditLog
+      v-if="tabActiveKey == DetailTabItemEnum.AUDIT_LOG.key"
+      :entityType="EntityType.DEVICE_PROFILE"
+      :entityId="record?.id?.id"
+    />
   </BasicDrawer>
 </template>
 <script lang="ts" setup name="ViewsTbDeviceProfileDetail">
@@ -112,6 +91,7 @@
   import { copyToClipboard } from '/@/utils';
   import { Tabs, TabPane, Image, Tag } from 'ant-design-vue';
   import { Icon } from '/@/components/Icon';
+  import { EntityType } from '/@/enums/entityTypeEnum';
   import { getRuleChainById } from '/@/api/tb/ruleChain';
   import { usePermission } from '/@/hooks/web/usePermission';
   import { getDashboardInfoById } from '/@/api/tb/dashboard';
@@ -127,6 +107,7 @@
   // import ThingModelList from './thingModel/thingModelList.vue';
   import { ProvisionType, TransportType } from '/@/enums/deviceEnum';
   import ImageUrlInput from '/@/views/tb/images/ImageUrlInput.vue';
+  import { DetailTabItemEnum } from '/@/enums/detailTabEnum';
 
   const emit = defineEmits(['edit', 'delete', 'default', 'register']);
   const { hasPermission } = usePermission();
@@ -141,8 +122,29 @@
     value: record.value.name,
   }));
 
-  const tabActiveKey = ref('DETAIL');
+  const tabActiveKey = ref<string>(DetailTabItemEnum.DETAIL.key);
 
+  const tabList = hasPermission(Authority.TENANT_ADMIN)
+    ? [
+        DetailTabItemEnum.DETAIL,
+        { key: 'TRANSPORT', label: '传输配置', icon: 'ant-design:cloud-upload-outlined' },
+        DetailTabItemEnum.TGINGMODEL,
+        {
+          ...DetailTabItemEnum.ALARM,
+          label: `${DetailTabItemEnum.ALARM.label}(${record.value.profileData?.alarms?.length || 0})`,
+        },
+        { key: 'PROVISION', label: '设备预配置', icon: 'ant-design:file-protect-outlined' },
+        DetailTabItemEnum.AUDIT_LOG,
+      ]
+    : [
+        DetailTabItemEnum.DETAIL,
+        { key: 'TRANSPORT', label: '传输配置', icon: 'ant-design:cloud-upload-outlined' },
+        {
+          ...DetailTabItemEnum.ALARM,
+          label: `${DetailTabItemEnum.ALARM.label}(${record.value.profileData?.alarms?.length || 0})`,
+        },
+        { key: 'PROVISION', label: '设备预配置', icon: 'ant-design:file-protect-outlined' },
+      ];
   const transportFrom = ref<any>(null);
   const thingsModelList = ref<any>(null);
   const alarmFrom = ref<any>(null);
@@ -275,14 +277,4 @@
     closeDrawer();
   }
 </script>
-<style lang="less">
-  .detail-info-card {
-    // .jeesite-basic-table {
-    //   padding: 0;
-
-    //   .jeesite-basic-table-header__header-top {
-    //     display: none;
-    //   }
-    // }
-  }
-</style>
+<style lang="less"></style>

@@ -88,7 +88,7 @@
   import { router } from '/@/router';
   import { Tag, Segmented, Tooltip } from 'ant-design-vue';
   import { findRelationInfoListByFrom, findRelationInfoListByTo, deleteRelation } from '/@/api/tb/relation';
-  import { ENTITY_TYPE_OPTIONS } from '/@/enums/entityTypeEnum';
+  import { ENTITY_TYPE_OPTIONS, EntityType } from '/@/enums/entityTypeEnum';
   import { Authority } from '/@/enums/authorityEnum';
   import { usePermission } from '/@/hooks/web/usePermission';
   import InputForm from './form.vue';
