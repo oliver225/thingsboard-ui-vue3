@@ -1,0 +1,135 @@
+<script setup lang="ts">
+  import { use } from 'echarts';
+  import type { ToolbarType } from '../types';
+
+  // import { preferences, usePreferences } from '@vben/preferences';
+
+  // import { Copyright } from '/@/components/Copyright';
+  import AuthenticationFormView from './form.vue';
+  import SloganIcon from './icons/slogan.vue';
+  import { AppLocalePicker, AppDarkModeToggle } from '/@/components/Application';
+
+  // import Toolbar from './toolbar.vue';
+  import { useAppStore } from '/@/store/modules/app';
+  import { computed } from 'vue';
+
+  interface Props {
+    appName?: string;
+    logo?: string;
+    pageTitle?: string;
+    pageDescription?: string;
+    sloganImage?: string;
+    toolbar?: boolean;
+    copyright?: boolean;
+    toolbarList?: ToolbarType[];
+    clickLogo?: () => void;
+  }
+
+  withDefaults(defineProps<Props>(), {
+    appName: '',
+    copyright: true,
+    logo: '',
+    pageDescription: '',
+    pageTitle: '',
+    sloganImage: '',
+    toolbar: true,
+    toolbarList: () => ['color', 'language', 'layout', 'theme'],
+    clickLogo: () => {},
+  });
+
+  const { getDarkMode } = useAppStore();
+
+  const { authPanelCenter, authPanelLeft, authPanelRight, isDark } = {
+    authPanelCenter: false,
+    authPanelLeft: false,
+    authPanelRight: true,
+    isDark: computed(() => getDarkMode == 'dark'),
+  };
+</script>
+
+<template>
+  <div :class="[isDark ? 'dark' : '']" class="flex min-h-full flex-1 select-none overflow-x-hidden">
+    <template v-if="toolbar">
+      <slot name="toolbar">
+        <div class="flex-center absolute right-2 top-4 z-10">
+          <AppLocalePicker :showText="false" />
+          <AppDarkModeToggle />
+        </div>
+      </slot>
+    </template>
+    <!-- 左侧认证面板 -->
+    <AuthenticationFormView v-if="authPanelLeft" class="min-h-full w-2/5 flex-1" transition-name="slide-left">
+      <template v-if="copyright" #copyright>
+        <slot name="copyright">
+          <!-- <Copyright v-if="preferences.copyright.enable" v-bind="preferences.copyright" /> -->
+        </slot>
+      </template>
+    </AuthenticationFormView>
+
+    <!-- 头部 Logo 和应用名称 -->
+    <div v-if="logo || appName" class="absolute left-0 top-0 z-10 flex flex-1" @click="clickLogo">
+      <div class="text-foreground lg:text-foreground ml-4 mt-4 flex flex-1 items-center sm:left-6 sm:top-6">
+        <img v-if="logo" :alt="appName" :src="logo" class="mr-2" width="42" />
+        <p v-if="appName" class="m-0 text-xl font-medium">
+          {{ appName }}
+        </p>
+      </div>
+    </div>
+
+    <!-- 系统介绍 -->
+    <div v-if="!authPanelCenter" class="relative hidden w-0 flex-1 lg:block">
+      <div class="bg-background-deep absolute inset-0 h-full w-full dark:bg-[#070709]">
+        <div class="login-background absolute left-0 top-0 size-full"></div>
+        <div class="flex-col-center -enter-x mr-20 h-full">
+          <template v-if="sloganImage">
+            <img :alt="appName" :src="sloganImage" class="h-64 w-2/5" />
+          </template>
+          <SloganIcon v-else :alt="appName" class="h-64 w-2/5" />
+          <div class="text-foreground mt-6 font-sans lg:text-2xl">
+            {{ pageTitle }}
+          </div>
+          <div class="dark:text-muted-foreground mt-2">
+            {{ pageDescription }}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 中心认证面板 -->
+    <div v-if="authPanelCenter" class="flex-center relative w-full">
+      <div class="login-background absolute left-0 top-0 size-full"></div>
+      <AuthenticationFormView
+        class="md:bg-background shadow-primary/5 shadow-float w-full rounded-3xl pb-20 md:w-2/3 lg:w-1/2 xl:w-[36%]"
+      >
+        <template v-if="copyright" #copyright>
+          <slot name="copyright">
+            <!-- <Copyright v-if="preferences.copyright.enable" v-bind="preferences.copyright" /> -->
+          </slot>
+        </template>
+      </AuthenticationFormView>
+    </div>
+
+    <!-- 右侧认证面板 -->
+    <AuthenticationFormView v-if="authPanelRight" class="min-h-full w-[34%] flex-1">
+      <template v-if="copyright" #copyright>
+        <slot name="copyright">
+          <!-- <Copyright v-if="preferences.copyright.enable" v-bind="preferences.copyright" /> -->
+        </slot>
+      </template>
+    </AuthenticationFormView>
+  </div>
+</template>
+
+<style lang="less">
+  .login-background {
+    background: linear-gradient(154deg, #07070915 30%, fade(@primary-color, 30%) 48%, #07070915 64%);
+    filter: blur(100px);
+  }
+
+  .dark {
+    .login-background {
+      background: linear-gradient(154deg, #07070915 30%, fade(@primary-color, 20%) 48%, #07070915 64%);
+      filter: blur(100px);
+    }
+  }
+</style>

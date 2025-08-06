@@ -32,15 +32,6 @@ const account: AppRouteModule = {
         title: t('sys.account.modifyPwd'),
       },
     },
-    {
-      path: 'modPwdQuestion',
-      name: 'AccountModPwdQuestion',
-      component: () => import('/@/layouts/views/account/modPwdQuestion.vue'),
-      meta: {
-        icon: 'i-ant-design:key-outlined',
-        title: t('sys.account.modifyPqa'),
-      },
-    },
   ],
 };
 

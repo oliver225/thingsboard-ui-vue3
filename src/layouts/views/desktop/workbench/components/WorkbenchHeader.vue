@@ -26,7 +26,7 @@
   import { computed } from 'vue';
   import { Avatar } from 'ant-design-vue';
   import { useUserStore } from '/@/store/modules/user';
-  import headerImg from '/@/assets/images/header.jpg';
+  import headerImg from '/@/assets/images/avatar.jpg';
 
   const userStore = useUserStore();
   const userinfo = computed(() => userStore.getUserInfo);

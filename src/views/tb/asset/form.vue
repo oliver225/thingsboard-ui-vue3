@@ -11,7 +11,7 @@
       <Icon :icon="getTitle.icon" class="pr-1 m-1" />
       <span> {{ getTitle.value }} </span>
     </template>
-    <BasicForm @register="registerForm"> </BasicForm>
+    <BasicForm @register="registerForm" />
   </BasicModal>
 </template>
 <script lang="ts" setup name="ViewsTbAssetForm">
@@ -31,7 +31,7 @@
   import { isEmpty } from 'lodash-es';
   import { Authority } from '/@/enums/authorityEnum';
   import { NULL_UUID } from '/#/constant';
-import { EntityType } from '/@/enums/entityTypeEnum';
+  import { EntityType } from '/@/enums/entityTypeEnum';
 
   const emit = defineEmits(['success', 'register']);
 

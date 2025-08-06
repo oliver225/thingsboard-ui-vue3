@@ -5,6 +5,7 @@ import { PAGE_NOT_FOUND_ROUTE, REDIRECT_ROUTE } from '/@/router/routes/basic';
 import { mainOutRoutes } from './mainOut';
 import { PageEnum } from '/@/enums/pageEnum';
 import { t } from '/@/hooks/web/useI18n';
+import { AUTH_LAYOUT } from '../constant';
 
 const modules = import.meta.glob('./modules/**/*.ts', { eager: true });
 
@@ -27,14 +28,14 @@ export const RootRoute: AppRouteRecordRaw = {
   },
 };
 
-export const LoginRoute: AppRouteRecordRaw = {
-  path: '/login',
-  name: 'Login',
-  component: () => import('/@/layouts/views/login/Login.vue'),
-  meta: {
-    title: t('routes.basic.login'),
-  },
-};
+// export const LoginRoute: AppRouteRecordRaw = {
+//   path: '/login',
+//   name: 'Login',
+//   component: () => import('/@/layouts/views/login/Login.vue'),
+//   meta: {
+//     title: t('routes.basic.login'),
+//   },
+// };
 
 const ModPwdRoute: AppRouteModule = {
   path: '/modPwd',
@@ -44,6 +45,67 @@ const ModPwdRoute: AppRouteModule = {
     icon: 'i-ant-design:key-outlined',
     title: t('sys.account.modifyPwd'),
   },
+};
+
+const LoginRoute: AppRouteModule = {
+  component: AUTH_LAYOUT,
+  meta: {
+    hideInTab: true,
+    title: 'Authentication',
+  },
+  name: 'Authentication',
+  path: '/auth',
+  redirect: PageEnum.BASE_LOGIN,
+  children: [
+    {
+      name: 'Login',
+      path: 'login',
+      component: () => import('/@/layouts/views/login/login.vue'),
+      meta: {
+        title: t('page.auth.login'),
+      },
+    },
+    {
+      name: 'CodeLogin',
+      path: 'code-login',
+      component: () => import('/@/layouts/views/login/codeLogin.vue'),
+      meta: {
+        title: t('page.auth.codeLogin'),
+      },
+    },
+    {
+      name: 'QrCodeLogin',
+      path: 'qrcode-login',
+      component: () => import('/@/layouts/views/login/QrcodeLogin.vue'),
+      meta: {
+        title: t('page.auth.qrcodeLogin'),
+      },
+    },
+    {
+      name: 'ForgetPassword',
+      path: 'forget-password',
+      component: () => import('/@/layouts/views/login/ForgetPassword.vue'),
+      meta: {
+        title: t('page.auth.forgetPassword'),
+      },
+    },
+    {
+      name: 'Register',
+      path: 'register',
+      component: () => import('/@/layouts/views/login/register.vue'),
+      meta: {
+        title: t('page.auth.register'),
+      },
+    },
+    {
+      name: 'CreatePassword',
+      path: 'create-password',
+      component: () => import('/@/layouts/views/login/CreatePassword.vue'),
+      meta: {
+        title: t('page.auth.createPassword'),
+      },
+    },
+  ],
 };
 
 // Basic routing without permission
