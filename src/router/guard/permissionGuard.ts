@@ -1,6 +1,6 @@
 import type { Router, RouteRecordRaw } from 'vue-router';
 import { usePermissionStoreWithOut } from '/@/store/modules/permission';
-import { RootRoute } from '/@/router/routes';
+import { LoginRoute, RootRoute } from '/@/router/routes';
 import { PageEnum } from '/@/enums/pageEnum';
 import { useUserStoreWithOut } from '/@/store/modules/user';
 import { PAGE_NOT_FOUND_ROUTE } from '/@/router/routes/basic';
@@ -11,7 +11,8 @@ const LOGIN_PATH = PageEnum.BASE_LOGIN;
 const MOD_PWD_PAGE = PageEnum.MOD_PWD_PAGE;
 
 // 白名单路由列表，无需权限即可访问的页面
-const whitePathList: PageEnum[] = [LOGIN_PATH, MOD_PWD_PAGE];
+const whitePathList: PageEnum[] = [LOGIN_PATH, MOD_PWD_PAGE, ...LoginRoute.children?.map((item) => item.path)];
+console.log('白名单路由列表：', whitePathList);
 
 export function createPermissionGuard(router: Router) {
   const userStore = useUserStoreWithOut();

@@ -47,7 +47,7 @@ const ModPwdRoute: AppRouteModule = {
   },
 };
 
-const LoginRoute: AppRouteModule = {
+export const LoginRoute: AppRouteModule = {
   component: AUTH_LAYOUT,
   meta: {
     hideInTab: true,
@@ -59,7 +59,7 @@ const LoginRoute: AppRouteModule = {
   children: [
     {
       name: 'Login',
-      path: 'login',
+      path: '/auth/login',
       component: () => import('/@/layouts/views/login/login.vue'),
       meta: {
         title: t('page.auth.login'),
@@ -67,7 +67,7 @@ const LoginRoute: AppRouteModule = {
     },
     {
       name: 'CodeLogin',
-      path: 'code-login',
+      path: '/auth/code-login',
       component: () => import('/@/layouts/views/login/codeLogin.vue'),
       meta: {
         title: t('page.auth.codeLogin'),
@@ -75,23 +75,23 @@ const LoginRoute: AppRouteModule = {
     },
     {
       name: 'QrCodeLogin',
-      path: 'qrcode-login',
-      component: () => import('/@/layouts/views/login/QrcodeLogin.vue'),
+      path: '/auth/qrcode-login',
+      component: () => import('/@/layouts/views/login/qrcodeLogin.vue'),
       meta: {
         title: t('page.auth.qrcodeLogin'),
       },
     },
     {
       name: 'ForgetPassword',
-      path: 'forget-password',
-      component: () => import('/@/layouts/views/login/ForgetPassword.vue'),
+      path: '/auth/forget-password',
+      component: () => import('/@/layouts/views/login/forgetPassword.vue'),
       meta: {
         title: t('page.auth.forgetPassword'),
       },
     },
     {
       name: 'Register',
-      path: 'register',
+      path: '/auth/register',
       component: () => import('/@/layouts/views/login/register.vue'),
       meta: {
         title: t('page.auth.register'),
@@ -99,8 +99,8 @@ const LoginRoute: AppRouteModule = {
     },
     {
       name: 'CreatePassword',
-      path: 'create-password',
-      component: () => import('/@/layouts/views/login/CreatePassword.vue'),
+      path: '/auth/create-password',
+      component: () => import('/@/layouts/views/login/createPassword.vue'),
       meta: {
         title: t('page.auth.createPassword'),
       },

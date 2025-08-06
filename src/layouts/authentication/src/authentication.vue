@@ -1,15 +1,11 @@
 <script setup lang="ts">
-  import { use } from 'echarts';
   import type { ToolbarType } from '../types';
-
-  // import { preferences, usePreferences } from '@vben/preferences';
 
   // import { Copyright } from '/@/components/Copyright';
   import AuthenticationFormView from './form.vue';
   import SloganIcon from './icons/slogan.vue';
   import { AppLocalePicker, AppDarkModeToggle } from '/@/components/Application';
 
-  // import Toolbar from './toolbar.vue';
   import { useAppStore } from '/@/store/modules/app';
   import { computed } from 'vue';
 
@@ -51,9 +47,9 @@
   <div :class="[isDark ? 'dark' : '']" class="flex min-h-full flex-1 select-none overflow-x-hidden">
     <template v-if="toolbar">
       <slot name="toolbar">
-        <div class="flex-center absolute right-2 top-4 z-10">
-          <AppLocalePicker :showText="false" />
+        <div class="flex-center absolute right-4 top-4 z-10 space-x-2">
           <AppDarkModeToggle />
+          <AppLocalePicker :showText="false" />
         </div>
       </slot>
     </template>
@@ -85,7 +81,7 @@
             <img :alt="appName" :src="sloganImage" class="h-64 w-2/5" />
           </template>
           <SloganIcon v-else :alt="appName" class="h-64 w-2/5" />
-          <div class="text-foreground mt-6 font-sans lg:text-2xl">
+          <div class="text-1xl text-foreground mt-6 font-sans lg:text-2xl">
             {{ pageTitle }}
           </div>
           <div class="dark:text-muted-foreground mt-2">
