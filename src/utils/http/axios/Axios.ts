@@ -105,7 +105,9 @@ export class VAxios {
     // Response result interceptor error capture
     responseInterceptorsCatch &&
       isFunction(responseInterceptorsCatch) &&
-      this.axiosInstance.interceptors.response.use(undefined, responseInterceptorsCatch);
+      this.axiosInstance.interceptors.response.use(undefined, (error) =>
+        responseInterceptorsCatch(error, this.axiosInstance),
+      );
   }
 
   /**

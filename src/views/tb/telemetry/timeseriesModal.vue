@@ -4,11 +4,7 @@
     :footer="false"
     @register="registerModal"
     width="60%"
-    @height-change="
-      (height) => {
-        modalHeight = height;
-      }
-    "
+    @height-change="(height) => (modalHeight = height)"
     @cancel="handleClose"
   >
     <template #title>

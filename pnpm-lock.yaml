@@ -47,6 +47,15 @@ importers:
       '@antv/x6-vue-shape':
         specifier: 2.1.2
         version: 2.1.2(@antv/x6@2.18.1)(vue@3.5.13(typescript@5.8.2))
+      '@svgdotjs/svg.filter.js':
+        specifier: ^3.0.9
+        version: 3.0.9
+      '@svgdotjs/svg.js':
+        specifier: ^3.2.4
+        version: 3.2.4
+      '@svgdotjs/svg.panzoom.js':
+        specifier: ^2.1.2
+        version: 2.1.2
       '@unocss/preset-wind3':
         specifier: 66.0.0
         version: 66.0.0
@@ -1438,6 +1447,16 @@ packages:
     engines: {node: ^18.12 || >=20.9}
     peerDependencies:
       stylelint: ^16.8.0
+
+  '@svgdotjs/svg.filter.js@3.0.9':
+    resolution: {integrity: sha512-/69XMRCDoam2HgC4ldHIaDgeQf1ViHIsa0Ld4uWgiXtZ+E24DWHe/9Ib6kbNiZ7WRIdlVokUDR1Fg0kjIpkfbw==}
+    engines: {node: '>= 0.8.0'}
+
+  '@svgdotjs/svg.js@3.2.4':
+    resolution: {integrity: sha512-BjJ/7vWNowlX3Z8O4ywT58DqbNRyYlkk6Yz/D13aB7hGmfQTvGX4Tkgtm/ApYlu9M7lCQi15xUEidqMUmdMYwg==}
+
+  '@svgdotjs/svg.panzoom.js@2.1.2':
+    resolution: {integrity: sha512-0Nzo2TRlTebW3pzfAPtHx8Ye7Y3kuMEkK7hwVJi0SgQUB/vstjg7fvCJxB++EqsuDEetP0/SC+4CpLMVm6Lh2g==}
 
   '@transloadit/prettier-bytes@0.0.7':
     resolution: {integrity: sha512-VeJbUb0wEKbcwaSlj5n+LscBl9IPgLPkHVGBkh00cztv6X4L/TJXK58LzFuBKX7/GAfiGhIwH67YTLTlzvIzBA==}
@@ -5727,6 +5746,16 @@ snapshots:
       postcss-value-parser: 4.2.0
       style-search: 0.1.0
       stylelint: 16.17.0(typescript@5.8.2)
+
+  '@svgdotjs/svg.filter.js@3.0.9':
+    dependencies:
+      '@svgdotjs/svg.js': 3.2.4
+
+  '@svgdotjs/svg.js@3.2.4': {}
+
+  '@svgdotjs/svg.panzoom.js@2.1.2':
+    dependencies:
+      '@svgdotjs/svg.js': 3.2.4
 
   '@transloadit/prettier-bytes@0.0.7': {}
 

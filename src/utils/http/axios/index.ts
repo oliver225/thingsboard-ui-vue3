@@ -1,7 +1,7 @@
 // axios配置  可自行根据项目进行更改，只需更改该文件即可，其他文件可以不动
 // The axios configuration can be changed according to the project, just change the file, other files can be left unchanged
 
-import type { AxiosResponse } from 'axios';
+import type { AxiosInstance, AxiosResponse } from 'axios';
 import type { RequestOptions, Result } from '/#/axios';
 import type { AxiosTransform, CreateAxiosOptions } from './axiosTransform';
 import { VAxios } from './Axios';
@@ -18,6 +18,8 @@ import { joinTimestamp, formatRequestDate } from './helper';
 import { useUserStoreWithOut } from '/@/store/modules/user';
 import { router } from '/@/router';
 import { PageEnum } from '/@/enums/pageEnum';
+import { refreshTokenApi } from '/@/api/tb/login';
+import { isExpired } from '../../jwt';
 
 const globSetting = useGlobSetting();
 const urlPrefix = globSetting.urlPrefix;
@@ -133,12 +135,14 @@ const transform: AxiosTransform = {
   /**
    * @description: 响应错误处理
    */
-  responseInterceptorsCatch: (error: any) => {
+  responseInterceptorsCatch: (error: any, instance: AxiosInstance) => {
     const { t } = useI18n();
     const errorLogStore = useErrorLogStoreWithOut();
     errorLogStore.addAjaxErrorInfo(error);
     const { response, code, message, config } = error || {};
     const errorMessageMode = config?.requestOptions?.errorMessageMode || 'none';
+    const status: number = response?.status ?? 0;
+    const errorCode: number = response?.data?.errorCode ?? 0;
     const msg: string = response?.data?.message ?? '';
     const err: string = error?.toString?.() ?? '';
     let errMessage = '';
@@ -150,6 +154,21 @@ const transform: AxiosTransform = {
         errMessage = t('sys.api.networkExceptionMsg');
       } else if (code === 'ERR_BAD_RESPONSE') {
         errMessage = t('sys.api.apiRequestFailed');
+      }
+
+      if (status == 401 && errorCode == 11) {
+        console.log('Token 到期,刷新获取新的token');
+        const userStore = useUserStoreWithOut();
+        const refreshToken = userStore.getRefreshToken;
+        if (refreshToken && !isExpired(refreshToken)) {
+          userStore.setToken(undefined);
+          return refreshTokenApi(refreshToken).then((jwtToken) => {
+            userStore.setToken(jwtToken);
+            return instance.request(config);
+          });
+        } else {
+          errMessage = error?.response?.data?.message || '登录过期,请重新登陆。。。';
+        }
       }
 
       if (errMessage) {
