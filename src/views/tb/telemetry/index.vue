@@ -357,7 +357,6 @@
         key: key,
         value: data.data[key][0][1],
         lastUpdateTs: data.data[key][0][0],
-        property: isNull(data.properties) ? null : data.properties[key],
       };
     });
   }

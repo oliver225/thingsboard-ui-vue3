@@ -119,28 +119,28 @@ export interface DeviceProfileInfo {
   defaultDashboardId?: EntityId<EntityType.DASHBOARD>;
 }
 
-export interface Function {
-  type?: 'property' | 'service' | 'event';
-  name?: string;
-  identifier?: string;
-  accessMode?: 'r' | 'rw';
-  dataType?: {
-    type?: DataType;
-    specs?: {
-      min?: number;
-      max: number;
-      step?: number;
-      unit?: string;
-      unitName?: string;
-      length?: number;
-      size?: number;
-    };
-  };
-  desc?: '';
-  outputData?: Array<Function>;
-  inputData?: Array<Function>;
-  callType: 'async' | 'sync';
-}
+// export interface Function {
+//   type?: 'property' | 'service' | 'event';
+//   name?: string;
+//   identifier?: string;
+//   accessMode?: 'r' | 'rw';
+//   dataType?: {
+//     type?: DataType;
+//     specs?: {
+//       min?: number;
+//       max: number;
+//       step?: number;
+//       unit?: string;
+//       unitName?: string;
+//       length?: number;
+//       size?: number;
+//     };
+//   };
+//   desc?: '';
+//   outputData?: Array<Function>;
+//   inputData?: Array<Function>;
+//   callType: 'async' | 'sync';
+// }
 
 export function getDeviceProfileById(deviceProfileId: string) {
   return defHttp.get<DeviceProfile>({

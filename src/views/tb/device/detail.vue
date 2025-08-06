@@ -163,6 +163,7 @@
         DetailTabItemEnum.DETAIL,
         DetailTabItemEnum.TELEMETRY,
         DetailTabItemEnum.TOPIC,
+        DetailTabItemEnum.CALCULATED,
         DetailTabItemEnum.EVENT,
         DetailTabItemEnum.RELATION,
         DetailTabItemEnum.AUDIT_LOG,

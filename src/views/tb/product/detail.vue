@@ -129,6 +129,7 @@
         DetailTabItemEnum.DETAIL,
         { key: 'TRANSPORT', label: '传输配置', icon: 'ant-design:cloud-upload-outlined' },
         DetailTabItemEnum.TGINGMODEL,
+        DetailTabItemEnum.CALCULATED,
         {
           ...DetailTabItemEnum.ALARM,
           label: `${DetailTabItemEnum.ALARM.label}(${record.value.profileData?.alarms?.length || 0})`,

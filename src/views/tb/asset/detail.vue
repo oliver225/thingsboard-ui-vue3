@@ -138,6 +138,7 @@
     ? [
         DetailTabItemEnum.DETAIL,
         DetailTabItemEnum.TELEMETRY,
+        DetailTabItemEnum.CALCULATED,
         DetailTabItemEnum.ALARM,
         DetailTabItemEnum.EVENT,
         DetailTabItemEnum.RELATION,

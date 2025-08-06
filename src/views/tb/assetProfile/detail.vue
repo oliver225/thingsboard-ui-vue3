@@ -109,7 +109,7 @@
   const tabActiveKey = ref<string>(DetailTabItemEnum.DETAIL.key);
 
   const tabList = hasPermission(Authority.TENANT_ADMIN)
-    ? [DetailTabItemEnum.DETAIL, DetailTabItemEnum.AUDIT_LOG]
+    ? [DetailTabItemEnum.DETAIL, DetailTabItemEnum.CALCULATED, DetailTabItemEnum.AUDIT_LOG]
     : [DetailTabItemEnum.DETAIL];
   const descSchema: DescItem[] = [
     {

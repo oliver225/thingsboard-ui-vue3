@@ -45,7 +45,6 @@
   import { useECharts } from '/@/hooks/web/useECharts';
   import { useWebsocketStore } from '/@/store/modules/websocket';
   import { TelemetryQuery, TsData } from '/@/api/tb/telemetry';
-  import { Function } from '/@/api/tb/deviceProfile';
   import { BasicColumn, BasicTable } from '/@/components/Table';
   import { BasicForm, FormSchema, useForm } from '/@/components/Form';
   import { WsCmdType } from '/@/enums/wsCmdTypeEnum';
@@ -60,7 +59,6 @@
   const series = ref<Array<TsData>>([]);
   const LATEST_CMD_ID = ref(0);
 
-  const property = ref<Function>();
   const record = ref<TelemetryQuery>();
   const showChart = ref(true);
 
@@ -168,19 +166,9 @@
   const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
     setModalProps({ loading: true });
     showChart.value = false;
-    property.value = data.property;
     record.value = { ...data, keys: data.keys };
     await resetFields();
     setFieldsValue(record.value);
-    if (property.value && property.value.dataType) {
-      if (
-        property.value.dataType.type === DataType.int ||
-        property.value.dataType.type === DataType.float ||
-        property.value.dataType.type === DataType.double
-      ) {
-        showChart.value = true;
-      }
-    }
 
     LATEST_CMD_ID.value = getAndIncrementCmdId();
     sendInitQuery();

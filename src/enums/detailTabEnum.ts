@@ -25,6 +25,11 @@ export const DetailTabItemEnum = {
     label: '连接API',
     icon: 'ant-design:api-outlined',
   },
+  CALCULATED: {
+    key: 'CALCULATED',
+    label: '计算属性',
+    icon: 'ant-design:calculator-outlined',
+  },
   ALARM: {
     key: 'ALARM',
     label: '告警',
