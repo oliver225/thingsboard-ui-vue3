@@ -67,9 +67,9 @@
   import { isArray } from 'lodash-es';
   import { AGGREGATION_OPTIONS, Aggregation } from '/@/enums/telemetryEnum';
   import { getTimeseries, TelemetryQuery } from '/@/api/tb/telemetry';
-  import { Function } from '/@/api/tb/deviceProfile';
   import { WsCmdType } from '/@/enums/wsCmdTypeEnum';
   import { BasicColumn, BasicTable } from '/@/components/Table';
+  import { EntityType } from '/@/enums/entityTypeEnum';
 
   const { t } = useI18n('tb');
   const { showMessage } = useMessage();
