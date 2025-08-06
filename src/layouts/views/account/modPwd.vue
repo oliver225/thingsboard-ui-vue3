@@ -141,7 +141,6 @@
   import { PasswordPolicy } from '/@/api/tb/adminSetting';
   import { changePassword } from '/@/api/tb/auth';
   import dayjs from 'dayjs';
-  import { size } from 'lodash-es';
 
   const { t } = useI18n();
   const { showMessage } = useMessage();

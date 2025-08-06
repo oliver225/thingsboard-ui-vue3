@@ -40,7 +40,7 @@
   import { CollapseContainer } from '/@/components/Container';
   import { CropperAvatar } from '/@/components/Cropper';
   import { UserInfo } from '/#/store';
-  import AvatarImg from '/@/assets/images/avatar1.jpg';
+  import AvatarImg from '/@/assets/images/avatar.jpg';
   import { useUserStore } from '/@/store/modules/user';
   import { saveUser, userInfoApi } from '/@/api/tb/user';
   import { uploadImage } from '/@/api/tb/images';
