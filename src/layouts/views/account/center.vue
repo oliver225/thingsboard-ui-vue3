@@ -13,7 +13,10 @@
           <Tabs.TabPane key="2" :tab="t('sys.account.securityTab')">
             <SecureSettings />
           </Tabs.TabPane>
-          <Tabs.TabPane key="3" :tab="t('sys.account.bindingTab')">
+          <Tabs.TabPane key="3" :tab="t('通知设置')">
+            <NotifictionSetting />
+          </Tabs.TabPane>
+          <Tabs.TabPane key="4" :tab="t('sys.account.bindingTab')">
             <Oauth2Binder />
           </Tabs.TabPane>
         </Tabs>
@@ -30,6 +33,7 @@
 
   import UserInfo from './userInfo.vue';
   import SecureSettings from './secureSettings.vue';
+  import NotifictionSetting from './notifictionSetting.vue';
   import Oauth2Binder from './oauth2Binder.vue';
 
   const { t } = useI18n();
