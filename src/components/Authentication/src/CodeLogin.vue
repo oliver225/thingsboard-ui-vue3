@@ -1,29 +1,22 @@
 <template>
   <div>
     <Title>
-      <slot name="title"> {{ title || t('authentication.welcomeBack') }} 📲 </slot>
+      <slot name="title"> {{ title || t('sys.login.welcomeBack') }} 📲 </slot>
       <template #desc>
-        <span class="text-muted-foreground">
+        <span class="text-secondary">
           <slot name="subTitle">
-            {{ subTitle || t('authentication.codeSubtitle') }}
+            {{ subTitle || t('sys.login.loginSubtitle') }}
           </slot>
         </span>
       </template>
     </Title>
     <BasicForm @register="registerForm" />
-    <Button
-      :class="{
-        'cursor-wait': loading,
-      }"
-      :loading="loading"
-      class="w-full"
-      @click="handleSubmit"
-    >
+    <Button type="primary" size="large" :loading="loading" class="w-full" @click="handleSubmit">
       <slot name="submitButtonText">
-        {{ submitButtonText || t('common.login') }}
+        {{ submitButtonText || t('sys.login.loginButton') }}
       </slot>
     </Button>
-    <Button class="mt-4 w-full" variant="outline" @click="goToLogin()">
+    <Button class="mt-4 w-full" size="large" @click="goToLogin()">
       {{ t('common.back') }}
     </Button>
   </div>
@@ -84,12 +77,11 @@
 
   const [registerForm, formApi] = useForm(
     reactive({
-      commonConfig: {
-        hideLabel: true,
-        hideRequiredMark: true,
-      },
+      labelWidth: 1,
       schemas: computed(() => props.formSchema),
-      showDefaultActions: false,
+      baseColProps: { lg: 24, md: 24 },
+
+      showActionButtonGroup: false,
     }),
   );
 

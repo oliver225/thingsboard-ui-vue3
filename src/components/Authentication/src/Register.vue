@@ -1,33 +1,25 @@
 <template>
   <div>
     <Title>
-      <slot name="title"> {{ title || $t('authentication.createAnAccount') }} 🚀 </slot>
+      <slot name="title"> {{ title || $t('sys.login.registerButton') }} 🚀 </slot>
       <template #desc>
         <slot name="subTitle">
-          {{ subTitle || $t('authentication.signUpSubtitle') }}
+          {{ subTitle || $t('sys.login.signUpSubtitle') }}
         </slot>
       </template>
     </Title>
     <BasicForm @register="registerForm" />
 
-    <Button
-      :class="{
-        'cursor-wait': loading,
-      }"
-      :loading="loading"
-      aria-label="register"
-      class="mt-2 w-full"
-      @click="handleSubmit"
-    >
+    <Button :loading="loading" type="primary" size="large" class="mt-2 w-full" @click="handleSubmit">
       <slot name="submitButtonText">
-        {{ submitButtonText || $t('authentication.signUp') }}
+        {{ submitButtonText || $t('sys.login.signUpFormTitle') }}
       </slot>
     </Button>
     <div class="mt-4 text-center text-sm">
-      {{ $t('authentication.alreadyHaveAccount') }}
-      <span class="vben-link text-sm font-normal" @click="goToLogin()">
-        {{ $t('authentication.goToLogin') }}
-      </span>
+      {{ $t('sys.login.alreadyHaveAccount') }}
+      <Button type="link" @click="goToLogin()">
+        {{ $t('sys.login.goToLogin') }}
+      </Button>
     </div>
   </div>
 </template>
@@ -87,12 +79,11 @@
 
   const [registerForm, formApi] = useForm(
     reactive({
-      commonConfig: {
-        hideLabel: true,
-        hideRequiredMark: true,
-      },
+      labelWidth: 1,
       schemas: computed(() => props.formSchema),
-      showDefaultActions: false,
+      baseColProps: { lg: 24, md: 24 },
+
+      showActionButtonGroup: false,
     }),
   );
 

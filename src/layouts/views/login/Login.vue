@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-  import { computed, markRaw, ref } from 'vue';
+  import { computed, ref } from 'vue';
   import { useUserStore } from '/@/store/modules/user';
   import { AuthenticationLogin } from '/@/components/Authentication';
   import { useI18n } from '/@/hooks/web/useI18n';
@@ -16,23 +16,22 @@
     return [
       {
         component: 'Input',
+        field: 'username',
+        label: t('sys.login.account'),
         componentProps: {
-          placeholder: t('authentication.usernameTip'),
+          placeholder: t('sys.login.accountPlaceholder'),
           size: 'large',
         },
-
-        field: 'username',
-        label: t('authentication.username'),
         required: true,
       },
       {
         component: 'InputPassword',
+        field: 'password',
+        label: t('sys.login.password'),
         componentProps: {
-          placeholder: t('authentication.password'),
+          placeholder: t('sys.login.passwordPlaceholder'),
           size: 'large',
         },
-        field: 'password',
-        label: t('authentication.password'),
         required: true,
       },
     ];

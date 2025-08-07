@@ -35,16 +35,26 @@
 <template>
   <div class="w-full sm:mx-auto md:max-w-md">
     <div class="mt-4 flex items-center justify-between">
-      <span class="border-input w-[35%] border-b dark:border-gray-600"></span>
-      <span class="text-muted-foreground text-center text-xs uppercase">
-        {{ $t('authentication.techSupport') }}
+      <span class="w-[35%] border-b border-b-solid border-gray-300 dark:border-gray-600"></span>
+      <span class="text-secondary text-center text-xs uppercase">
+        {{ $t('sys.login.techSupport') }}
       </span>
-      <span class="border-input w-[35%] border-b dark:border-gray-600"></span>
+      <span class="w-[35%] border-b border-b-solid border-gray-300 dark:border-gray-600"></span>
     </div>
 
     <div class="mx-20 mt-4 flex flex-wrap justify-between">
-      <Icon class="cursor-pointer" icon="i-ant-design:wechat-outlined" :size="28" @click="handleClickWeChat" />
-      <Icon class="cursor-pointer" icon="i-ant-design:github-outlined" :size="28" @click="handleClickGithub" />
+      <Icon
+        class="cursor-pointer dark:color-white"
+        icon="i-ant-design:wechat-outlined"
+        :size="28"
+        @click="handleClickWeChat"
+      />
+      <Icon
+        class="cursor-pointer dark:color-white"
+        icon="i-ant-design:github-outlined"
+        :size="28"
+        @click="handleClickGithub"
+      />
       <Icon class="cursor-pointer p-0.4" icon="icons/gitee.png" :size="28" @click="handleClickGitee" />
     </div>
   </div>

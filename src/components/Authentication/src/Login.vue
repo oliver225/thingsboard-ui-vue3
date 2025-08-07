@@ -3,12 +3,12 @@
     <slot name="title">
       <Title>
         <slot name="title">
-          {{ title || `${t('authentication.welcomeBack')} 👋🏻` }}
+          {{ title || `${t('sys.login.welcomeBack')} 👋🏻` }}
         </slot>
         <template #desc>
-          <span class="text-muted-foreground">
+          <span class="text-secondary">
             <slot name="subTitle">
-              {{ subTitle || t('authentication.loginSubtitle') }}
+              {{ subTitle || t('sys.login.loginSubtitle') }}
             </slot>
           </span>
         </template>
@@ -20,24 +20,24 @@
     <div v-if="showRememberMe || showForgetPassword" class="mb-6 flex justify-between">
       <div class="flex-center">
         <Checkbox v-if="showRememberMe" v-model:checked="rememberMe" name="rememberMe">
-          {{ t('authentication.rememberMe') }}
+          {{ t('sys.login.rememberMe') }}
         </Checkbox>
       </div>
 
-      <span v-if="showForgetPassword" class="vben-link text-sm font-normal" @click="handleGo(forgetPasswordPath)">
-        {{ t('authentication.forgetPassword') }}
-      </span>
+      <Button type="link" v-if="showForgetPassword" @click="handleGo(forgetPasswordPath)">
+        {{ t('sys.login.forgetPassword') }}
+      </Button>
     </div>
     <Button type="primary" size="large" :loading="loading" class="w-full" @click="handleSubmit">
-      {{ submitButtonText || t('common.login') }}
+      {{ submitButtonText || t('sys.login.loginButton') }}
     </Button>
 
     <div v-if="showCodeLogin || showQrcodeLogin" class="mb-2 mt-4 flex items-center justify-between">
       <Button v-if="showCodeLogin" class="w-1/2" variant="outline" @click="handleGo(codeLoginPath)">
-        {{ t('authentication.mobileLogin') }}
+        {{ t('sys.login.mobileSignInFormTitle') }}
       </Button>
       <Button v-if="showQrcodeLogin" class="ml-4 w-1/2" variant="outline" @click="handleGo(qrCodeLoginPath)">
-        {{ t('authentication.qrcodeLogin') }}
+        {{ t('sys.login.qrSignInFormTitle') }}
       </Button>
     </div>
 
@@ -48,10 +48,10 @@
 
     <slot name="to-register">
       <div v-if="showRegister" class="mt-3 text-center text-sm">
-        {{ t('authentication.accountTip') }}
-        <span class="vben-link text-sm font-normal" @click="handleGo(registerPath)">
-          {{ t('authentication.createAccount') }}
-        </span>
+        <span> {{ t('sys.login.accountTip') }} </span>
+        <Button type="link" @click="handleGo(registerPath)">
+          {{ t('sys.login.registerButton') }}
+        </Button>
       </div>
     </slot>
   </div>
@@ -66,8 +66,8 @@
   import ThirdPartyLogin from './ThirdPartyLogin.vue';
   import { Button, Checkbox } from 'ant-design-vue';
 
-  const { t } = useI18n('tb');
-  const { showMessage } = useMessage();
+  const { t } = useI18n();
+  const { showMessage, notification } = useMessage();
 
   interface Props {
     formSchema?: FormSchema[];

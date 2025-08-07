@@ -16,11 +16,12 @@
       {
         component: 'Input',
         componentProps: {
-          placeholder: t('authentication.mobile'),
+          placeholder: t('sys.login.mobilePlaceholder'),
           size: 'large',
         },
         field: 'phoneNumber',
-        label: t('authentication.mobile'),
+        label: t('sys.login.mobile'),
+        required: true,
       },
       {
         component: 'Input',
@@ -30,11 +31,11 @@
             const text = countdown > 0 ? t('authentication.sendText', [countdown]) : $t('authentication.sendCode');
             return text;
           },
-          placeholder: t('authentication.code'),
+          placeholder: t('sys.login.smsCode'),
           size: 'large',
         },
         field: 'code',
-        label: t('authentication.code'),
+        label: t('sys.login.validCode'),
       },
     ];
   });

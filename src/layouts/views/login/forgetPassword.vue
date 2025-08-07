@@ -1,35 +1,44 @@
 <script lang="ts" setup>
-  import type { VbenFormSchema } from '@vben/common-ui';
-  import type { Recordable } from '@vben/types';
-
   import { computed, ref } from 'vue';
-
-  import { AuthenticationForgetPassword, z } from '@vben/common-ui';
-  import { $t } from '@vben/locales';
+  import { FormSchema } from '/@/components/Form';
+  import { useI18n } from '/@/hooks/web/useI18n';
+  import { AuthenticationForgetPassword } from '/@/components/Authentication';
+  const { t } = useI18n();
 
   defineOptions({ name: 'ForgetPassword' });
 
   const loading = ref(false);
 
-  const formSchema = computed((): VbenFormSchema[] => {
+  const formSchema = computed((): FormSchema[] => {
     return [
       {
-        component: 'VbenInput',
+        component: 'Select',
+        field: 'validType',
+        defaultValue: 'email',
+        label: t('sys.login.account'),
         componentProps: {
-          placeholder: 'example@example.com',
+          options: [
+            { label: '使用电子邮箱找回您的密码', value: 'email' },
+            { label: '使用手机号码找回您的密码', value: 'mobile' },
+          ],
+          disabled: true,
+          size: 'large',
         },
-        fieldName: 'email',
-        label: $t('authentication.email'),
-        rules: z
-          .string()
-          .min(1, { message: $t('authentication.emailTip') })
-          .email($t('authentication.emailValidErrorTip')),
+      },
+      {
+        component: 'Input',
+        field: 'email',
+        label: t('sys.login.email'),
+        componentProps: {
+          placeholder: t('sys.login.emailPlaceholder'),
+          size: 'large',
+        },
+        rules: [{ required: true }, { type: 'email', message: '请输入正确的邮箱地址' }],
       },
     ];
   });
 
   function handleSubmit(value: Recordable<any>) {
-    // eslint-disable-next-line no-console
     console.log('reset email:', value);
   }
 </script>

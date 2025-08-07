@@ -67,6 +67,14 @@ export default {
     placeholder: 'Please enter the lock screen password or user password',
   },
   login: {
+    welcomeBack: 'Welcome Back',
+    loginSubtitle: 'Enter account information to log in',
+    qrcodeSubtitle: 'Use mobile phone scan code login',
+    forgetPasswordSubtitle: 'Enter your email to get the reset password link',
+    alreadyHaveAccount: 'Already have an account?',
+
+    techSupport: 'Technical Support',
+
     backSignIn: 'Back sign in',
     mobileSignInFormTitle: 'Mobile sign in',
     qrSignInFormTitle: 'Qr code sign in',
@@ -83,6 +91,8 @@ export default {
     forgetPassword: 'Forget Password?',
     otherSignIn: 'Sign in with',
     requestResetPassword: 'Request password reset',
+    accountTip: "Don't have an account?",
+    goToLogin: 'Go To Login',
 
     // notify
     loginSuccessTitle: 'Login successful',

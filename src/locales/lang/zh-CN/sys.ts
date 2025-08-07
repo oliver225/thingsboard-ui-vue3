@@ -67,6 +67,15 @@ export default {
     placeholder: '请输入锁屏密码或者用户密码',
   },
   login: {
+    welcomeBack: '欢迎回来',
+    loginSubtitle: '请输入账户信息开始登录',
+    qrcodeSubtitle: '使用手机扫描二维码登录',
+    forgetPasswordSubtitle: '请输入您的电子邮件,我们将向您发送重置密码的连接',
+    signUpSubtitle: '',
+    alreadyHaveAccount: '已经有账户了?',
+
+    techSupport: '技术支持',
+
     backSignIn: '返回',
     signInFormTitle: '登录',
     mobileSignInFormTitle: '手机登录',
@@ -78,11 +87,13 @@ export default {
     scanSign: `扫码后点击"确认"，即可完成登录`,
 
     loginButton: '登录',
-    registerButton: '注册',
+    registerButton: '创建账号',
     rememberMe: '记住我',
     forgetPassword: '忘记密码?',
     otherSignIn: '其他登录方式',
     requestResetPassword: '请求重置密码',
+    accountTip: '还没有账号?',
+    goToLogin: '去登录',
 
     // notify
     loginSuccessTitle: '登录成功',

@@ -35,11 +35,12 @@
 
   const { getDarkMode } = useAppStore();
 
-  const { authPanelCenter, authPanelLeft, authPanelRight, isDark } = {
+  const isDark = computed(() => getDarkMode === 'dark');
+
+  const { authPanelCenter, authPanelLeft, authPanelRight } = {
     authPanelCenter: false,
     authPanelLeft: false,
     authPanelRight: true,
-    isDark: computed(() => getDarkMode == 'dark'),
   };
 </script>
 
@@ -47,7 +48,7 @@
   <div :class="[isDark ? 'dark' : '']" class="flex min-h-full flex-1 select-none overflow-x-hidden">
     <template v-if="toolbar">
       <slot name="toolbar">
-        <div class="flex-center absolute right-4 top-4 z-10 space-x-2">
+        <div class="flex-center absolute right-8 top-4 z-10 space-x-2">
           <AppDarkModeToggle />
           <AppLocalePicker :showText="false" />
         </div>
@@ -80,8 +81,8 @@
           <template v-if="sloganImage">
             <img :alt="appName" :src="sloganImage" class="h-64 w-2/5" />
           </template>
-          <SloganIcon v-else :alt="appName" class="h-64 w-2/5" />
-          <div class="text-1xl text-foreground mt-6 font-sans lg:text-2xl">
+          <SloganIcon v-else :alt="appName" class="animate-float h-64 w-2/5" />
+          <div class="text-2xl text-foreground mt-6 font-sans lg:text-3xl">
             {{ pageTitle }}
           </div>
           <div class="dark:text-muted-foreground mt-2">

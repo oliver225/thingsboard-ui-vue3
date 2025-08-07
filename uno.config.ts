@@ -10,6 +10,22 @@ export default defineConfig({
       exclude: ['.git', '.idea', '.turbo', 'node_modules', 'public'],
     },
   },
+  theme: {
+    animation: {
+      keyframes: {
+        float: '{0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); }}',
+      },
+      durations: {
+        float: '3s',
+      },
+      timingFns: {
+        float: 'ease-in-out',
+      },
+      counts: {
+        float: 'infinite',
+      },
+    },
+  },
   presets: [
     presetWind3(),
     presetTypography(),

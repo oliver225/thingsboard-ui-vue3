@@ -1,11 +1,11 @@
 <template>
   <div>
     <Title>
-      <slot name="title"> {{ title || t('authentication.welcomeBack') }} 📱 </slot>
+      <slot name="title"> {{ title || t('sys.login.welcomeBack') }} 📱 </slot>
       <template #desc>
-        <span class="text-muted-foreground">
+        <span class="text-secondary">
           <slot name="subTitle">
-            {{ subTitle || t('authentication.qrcodeSubtitle') }}
+            {{ subTitle || t('sys.login.qrcodeSubtitle') }}
           </slot>
         </span>
       </template>
@@ -14,16 +14,16 @@
     <div class="flex-col-center mt-6">
       <QrCode :value="text" class="w-1/2" />
       <!-- <img :src="qrcode" alt="qrcode" class="w-1/2" /> -->
-      <p class="text-muted-foreground mt-4 text-sm">
+      <p class="text-secondary mt-4 text-sm">
         <slot name="description">
-          {{ description || t('authentication.qrcodePrompt') }}
+          {{ description || t('sys.login.scanSign') }}
         </slot>
       </p>
     </div>
 
-    <VbenButton class="mt-4 w-full" variant="outline" @click="goToLogin()">
+    <Button class="mt-4 w-full" size="large" @click="goToLogin()">
       {{ t('common.back') }}
-    </VbenButton>
+    </Button>
   </div>
 </template>
 <script setup lang="ts">
@@ -31,6 +31,7 @@
   import { useRouter } from 'vue-router';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { QrCode } from '/@/components/Qrcode';
+  import { Button } from 'ant-design-vue';
   // import { useQRCode } from '@vueuse/integrations/useQRCode';
 
   import Title from './AuthTitle.vue';

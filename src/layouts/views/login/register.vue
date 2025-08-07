@@ -1,81 +1,65 @@
 <script lang="ts" setup>
-  import type { VbenFormSchema } from '@vben/common-ui';
-  import type { Recordable } from '@vben/types';
-
   import { computed, h, ref } from 'vue';
-
-  import { AuthenticationRegister, z } from '@vben/common-ui';
-  import { $t } from '@vben/locales';
+  import { AuthenticationRegister } from '/@/components/Authentication';
+  import { FormSchema } from '/@/components/Form';
+  import { useI18n } from '/@/hooks/web/useI18n';
 
   defineOptions({ name: 'Register' });
 
   const loading = ref(false);
+  const { t } = useI18n();
 
-  const formSchema = computed((): VbenFormSchema[] => {
+  const formSchema = computed((): FormSchema[] => {
     return [
       {
-        component: 'VbenInput',
+        component: 'Input',
+        field: 'username',
         componentProps: {
-          placeholder: $t('authentication.usernameTip'),
+          placeholder: t('sys.login.accountPlaceholder'),
+          size: 'large',
         },
-        fieldName: 'username',
-        label: $t('authentication.username'),
-        rules: z.string().min(1, { message: $t('authentication.usernameTip') }),
+        label: t('sys.login.account'),
       },
       {
-        component: 'VbenInputPassword',
+        component: 'InputPassword',
+        field: 'password',
         componentProps: {
-          passwordStrength: true,
-          placeholder: $t('authentication.password'),
+          placeholder: t('sys.login.passwordPlaceholder'),
+          size: 'large',
         },
-        fieldName: 'password',
-        label: $t('authentication.password'),
+        label: t('sys.login.password'),
         renderComponentContent() {
           return {
-            strengthText: () => $t('authentication.passwordStrength'),
+            strengthText: () => t('authentication.passwordStrength'),
           };
         },
-        rules: z.string().min(1, { message: $t('authentication.passwordTip') }),
       },
       {
-        component: 'VbenInputPassword',
+        component: 'InputPassword',
+        field: 'confirmPassword',
         componentProps: {
-          placeholder: $t('authentication.confirmPassword'),
+          placeholder: t('sys.login.confirmPassword'),
+          size: 'large',
         },
-        dependencies: {
-          rules(values) {
-            const { password } = values;
-            return z
-              .string({ required_error: $t('authentication.passwordTip') })
-              .min(1, { message: $t('authentication.passwordTip') })
-              .refine((value) => value === password, {
-                message: $t('authentication.confirmPasswordTip'),
-              });
-          },
-          triggerFields: ['password'],
-        },
-        fieldName: 'confirmPassword',
-        label: $t('authentication.confirmPassword'),
+
+        label: t('sys.login.confirmPassword'),
       },
       {
-        component: 'VbenCheckbox',
-        fieldName: 'agreePolicy',
+        component: 'Checkbox',
+        field: 'agreePolicy',
         renderComponentContent: () => ({
+          size: 'large',
           default: () =>
             h('span', [
-              $t('authentication.agree'),
               h(
                 'a',
                 {
                   class: 'vben-link ml-1 ',
                   href: '',
                 },
-                `${$t('authentication.privacyPolicy')} & ${$t('authentication.terms')}`,
+                `${t('sys.login.policy')} `,
               ),
             ]),
-        }),
-        rules: z.boolean().refine((value) => !!value, {
-          message: $t('authentication.agreeTip'),
         }),
       },
     ];

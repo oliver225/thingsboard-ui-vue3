@@ -7,15 +7,15 @@
   const { title } = useGlobSetting();
 
   const appName = title;
-  const logo = '/as';
+  const logo = '/resource/img/logo.png';
 </script>
 
 <template>
   <AuthPageLayout
     :app-name="appName"
     :logo="logo"
-    :page-description="t('基于 Vue3 的Thingsboard 前端应用')"
     :page-title="t('Thingsboard Iot Platform')"
+    :page-description="t('基于 Vue3 的Thingsboard 前端应用（ThingsBoard v4.1.0）')"
   >
     <!-- 自定义工具栏 -->
     <!-- <template #toolbar></template> -->

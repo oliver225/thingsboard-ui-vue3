@@ -1,29 +1,24 @@
 <template>
   <div>
     <Title>
-      <slot name="title"> {{ title || t('authentication.forgetPassword') }} 🤦🏻‍♂️ </slot>
+      <slot name="title"> {{ title || t('sys.login.forgetPassword') }} 🤦🏻‍♂️ </slot>
       <template #desc>
-        <slot name="subTitle">
-          {{ subTitle || t('authentication.forgetPasswordSubtitle') }}
-        </slot>
+        <span class="text-secondary">
+          <slot name="subTitle">
+            {{ subTitle || t('sys.login.forgetPasswordSubtitle') }}
+          </slot>
+        </span>
       </template>
     </Title>
     <BasicForm @register="registerForm" />
 
     <div>
-      <Button
-        :class="{
-          'cursor-wait': loading,
-        }"
-        aria-label="submit"
-        class="mt-2 w-full"
-        @click="handleSubmit"
-      >
+      <Button type="primary" size="large" class="mt-2 w-full" @click="handleSubmit">
         <slot name="submitButtonText">
-          {{ submitButtonText || t('authentication.sendResetLink') }}
+          {{ submitButtonText || t('sys.login.forgetFormTitle') }}
         </slot>
       </Button>
-      <Button class="mt-4 w-full" variant="outline" @click="goToLogin()">
+      <Button class="mt-4 w-full" size="large" @click="goToLogin()">
         {{ t('common.back') }}
       </Button>
     </div>
@@ -83,12 +78,11 @@
 
   const [registerForm, formApi] = useForm(
     reactive({
-      commonConfig: {
-        hideLabel: true,
-        hideRequiredMark: true,
-      },
+      labelWidth: 1,
       schemas: computed(() => props.formSchema),
-      showDefaultActions: false,
+      baseColProps: { lg: 24, md: 24 },
+
+      showActionButtonGroup: false,
     }),
   );
 
