@@ -86,7 +86,7 @@ Thingsboard UI Vue3 是 Thingsboard 的前端适配版本。作为一个免费�
 ![规则引擎](images/rule_chain_20240305160850.png)
 
 ## 预览图片
-
+![登录页](images/login_page.png)
 ![租户仪表盘](images/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240219165338.png)
 ![租户仪表盘](images/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240219164906.png)
 ![租户仪表盘](images/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240219164934.png)
