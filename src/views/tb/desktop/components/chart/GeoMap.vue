@@ -1,17 +1,17 @@
 <template>
-  <div id="tianditu-container" :style="{ height, width }"></div>
+  <div id="bMap-container" :style="{ height, width }"></div>
 </template>
 <script lang="ts" setup>
   import { isArray } from 'lodash-es';
-  import { useTianditu } from '/@/hooks/web/useTianditu';
+  import { useBMap } from '/@/hooks/web/useBMap.js';
   import { ref, watchEffect, onMounted } from 'vue';
+  import styleJson from './bmapStyle.json';
   import { useWebsocketStore } from '/@/store/modules/websocket';
   import { EntityType } from '/@/enums/entityTypeEnum';
   import { onUnmounted } from 'vue';
   import dayjs from 'dayjs';
   import { watch } from 'vue';
   import { WsCmdType } from '/@/enums/wsCmdTypeEnum';
-
   const props = defineProps({
     width: {
       type: String as PropType<string>,
@@ -27,53 +27,43 @@
     },
     zoom: { type: Number, default: 8 },
   });
-
   const DEVICE_POSITION_COUNT_CMD_ID = ref(0);
-
   const positionDeviceList = ref<Array<any>>([]);
-
   let mapInstance: any = undefined;
-
   const { getAndIncrementCmdId, send, unsubscribe } = useWebsocketStore();
-  const { success, geocoder, T } = useTianditu('6ebfd5932adb4ce17a850dd486f0a246');
-
+  const { success, BMapGL } = useBMap('I8y4JKYWxnOA1lIW4VYJFfuR2JKanf0I');
   watchEffect(() => {
     if (success.value == true) {
-      initMap();
+      initBMap();
+      sendQueryPacket();
     }
   });
-
   watch(
     () => props.center,
-    async () => {
-      if (mapInstance) {
-        const centerPoint = await getMapCenter();
-        mapInstance.centerAndZoom(centerPoint, props.zoom);
+    () => {
+      let centerPoint = props.center;
+      if (isArray(props.center)) {
+        centerPoint = new BMapGL.value.Point(props.center[0], props.center[1]);
       }
+      mapInstance.centerAndZoom(centerPoint, props.zoom);
     },
   );
-
-  async function initMap() {
-    if (T.value) {
-      const centerPoint = await getMapCenter();
-      mapInstance = new T.value.Map('tianditu-container'); // 创建Map实例
+  function initBMap() {
+    if (BMapGL.value) {
+      mapInstance = new BMapGL.value.Map('bMap-container', {
+        enableRotate: false,
+        enableTilt: false,
+      }); // 创建Map实例
+      let centerPoint = props.center;
+      if (isArray(props.center)) {
+        centerPoint = new BMapGL.value.Point(props.center[0], props.center[1]);
+      }
       if (mapInstance) {
         mapInstance.centerAndZoom(centerPoint, props.zoom);
-        mapInstance.enableScrollWheelZoom(); // 启用滚轮放大缩小
-        sendQueryPacket();
+        mapInstance.enableScrollWheelZoom(true); // 开启鼠标滚轮缩放
+        mapInstance.setMapStyleV2({ styleJson: styleJson });
       }
     }
-  }
-
-  async function getMapCenter() {
-    let centerPoint = undefined;
-    if (isArray(props.center)) {
-      centerPoint = new T.value.LngLat(props.center[0], props.center[1]);
-    } else {
-      const location = await geocoder(props.center);
-      centerPoint = new T.value.LngLat(location.lon, location.lat);
-    }
-    return centerPoint;
   }
 
   function sendQueryPacket() {
@@ -148,15 +138,13 @@
   }
 
   function renderPosition() {
-    if (mapInstance && T.value) {
+    if (mapInstance && BMapGL.value) {
       mapInstance.clearOverLays();
       positionDeviceList.value.forEach((item) => {
-        const point = new T.value.LngLat(item.longitude, item.latitude);
-        const marker = new T.value.Marker(point);
+        const point = new BMapGL.value.LngLat(item.longitude, item.latitude);
+        const marker = new BMapGL.value.Marker(point);
 
         mapInstance.addOverLay(marker);
-
-        const infoWindow = new T.value.InfoWindow();
 
         let info =
           `<div style="display:flex;justify-content:space-between;margin:0 6px 0 1px"><strong>名称：</strong><span>${item.name}</span></div>` +
@@ -166,11 +154,16 @@
           info +
           `<div style="display:flex;justify-content:space-between;margin:0 6px 0 1px"><strong>活动时间：</strong><span>${dayjs(item.lastActivityTime).format('YYYY-MM-DD HH:mm:ss')}</span></div>`;
 
-        infoWindow.setContent(info);
-
+        const infoWindow = new BMapGL.value.InfoWindow(info, {
+          width: 240,
+          height: 130,
+          title: `<strong>${item.name}</strong>`,
+        });
         marker.addEventListener('click', function () {
-          marker.openInfoWindow(infoWindow);
-        }); // 将标注添加到地图中
+          mapInstance.openInfoWindow(infoWindow, point);
+          // 开启信息窗口
+        });
+        mapInstance.addOverlay(marker);
       });
     }
   }
