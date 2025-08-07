@@ -7,13 +7,24 @@ const desktop: AppRouteModule = {
   path: '/desktop',
   name: 'Desktop',
   component: LAYOUT,
-  redirect: '/desktop/analysis',
+  redirect: '/desktop/dashboard',
   meta: {
     orderNo: 10,
     icon: 'i-ant-design:home-outlined',
     title: t('routes.dashboard.dashboard'),
   },
   children: [
+    {
+      path: 'dashboard',
+      name: 'DesktopDashboard',
+      component: () => import('/@/views/tb/desktop/index.vue'),
+      meta: {
+        // affix: true,
+        icon: 'i-ant-design:home-outlined',
+        tabIcon: 'i-ant-design:home-outlined',
+        title: t('routes.dashboard.analysis'),
+      },
+    },
     {
       path: 'analysis',
       name: 'Analysis',

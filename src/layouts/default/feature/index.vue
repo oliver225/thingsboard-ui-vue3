@@ -10,7 +10,7 @@
   import { SettingButtonPositionEnum } from '/@/enums/appEnum';
   import { createAsyncComponent } from '/@/utils/factory/createAsyncComponent';
 
-  import SessionTimeoutLogin from '../../views/login_b/SessionTimeoutLogin.vue';
+  import SessionTimeoutLogin from '/@/layouts/views/login/SessionTimeoutLogin.vue';
   import { useFullContent } from '/@/hooks/web/useFullContent';
   export default defineComponent({
     name: 'LayoutFeatures',

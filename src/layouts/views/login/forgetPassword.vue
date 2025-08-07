@@ -1,3 +1,7 @@
+<template>
+  <AuthenticationForgetPassword :form-schema="formSchema" :loading="loading" @submit="handleSubmit" />
+</template>
+
 <script lang="ts" setup>
   import { computed, ref } from 'vue';
   import { FormSchema } from '/@/components/Form';
@@ -42,7 +46,3 @@
     console.log('reset email:', value);
   }
 </script>
-
-<template>
-  <AuthenticationForgetPassword :form-schema="formSchema" :loading="loading" @submit="handleSubmit" />
-</template>

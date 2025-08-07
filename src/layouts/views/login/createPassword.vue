@@ -1,3 +1,44 @@
+<template>
+  <div>
+    <div class="mb-7 sm:mx-auto sm:w-full sm:max-w-md">
+      <h2 class="text-foreground mb-3 text-3xl font-bold leading-9 tracking-tight lg:text-4xl">
+        {{ $t('page.auth.createPassword') }} 🚀
+      </h2>
+
+      <p class="text-muted-foreground lg:text-md text-sm">
+        {{ $t('创建密码 激活账户') }}
+      </p>
+    </div>
+    <Form />
+    <div class="flex items-center justify-between space-x-8">
+      <VbenButton
+        :class="{
+          'cursor-wait': loading,
+        }"
+        :loading="loading"
+        aria-label="register"
+        class="mt-2 w-full"
+        @click="handleSubmit"
+      >
+        <slot name="submitButtonText">
+          {{ $t('page.auth.createPassword') }}
+        </slot>
+      </VbenButton>
+      <VbenButton variant="outline" :loading="loading" class="mt-2 w-full" @click="goToLogin()">
+        <slot name="submitButtonText">
+          {{ $t('common.cancel') }}
+        </slot>
+      </VbenButton>
+    </div>
+
+    <div class="mt-4 text-center text-sm">
+      {{ $t('authentication.alreadyHaveAccount') }}
+      <span class="vben-link text-sm font-normal" @click="goToLogin()">
+        {{ $t('authentication.goToLogin') }}
+      </span>
+    </div>
+  </div>
+</template>
 <script setup lang="ts">
   import type { AuthApi } from '#/api';
 
@@ -134,45 +175,3 @@
     router.push({ path: '/auth/login' });
   }
 </script>
-
-<template>
-  <div>
-    <div class="mb-7 sm:mx-auto sm:w-full sm:max-w-md">
-      <h2 class="text-foreground mb-3 text-3xl font-bold leading-9 tracking-tight lg:text-4xl">
-        {{ $t('page.auth.createPassword') }} 🚀
-      </h2>
-
-      <p class="text-muted-foreground lg:text-md text-sm">
-        {{ $t('创建密码 激活账户') }}
-      </p>
-    </div>
-    <Form />
-    <div class="flex items-center justify-between space-x-8">
-      <VbenButton
-        :class="{
-          'cursor-wait': loading,
-        }"
-        :loading="loading"
-        aria-label="register"
-        class="mt-2 w-full"
-        @click="handleSubmit"
-      >
-        <slot name="submitButtonText">
-          {{ $t('page.auth.createPassword') }}
-        </slot>
-      </VbenButton>
-      <VbenButton variant="outline" :loading="loading" class="mt-2 w-full" @click="goToLogin()">
-        <slot name="submitButtonText">
-          {{ $t('common.cancel') }}
-        </slot>
-      </VbenButton>
-    </div>
-
-    <div class="mt-4 text-center text-sm">
-      {{ $t('authentication.alreadyHaveAccount') }}
-      <span class="vben-link text-sm font-normal" @click="goToLogin()">
-        {{ $t('authentication.goToLogin') }}
-      </span>
-    </div>
-  </div>
-</template>

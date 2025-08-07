@@ -62,7 +62,7 @@ export const LoginRoute: AppRouteModule = {
       path: '/auth/login',
       component: () => import('/@/layouts/views/login/login.vue'),
       meta: {
-        title: t('page.auth.login'),
+        title: t('routes.basic.login'),
       },
     },
     {
@@ -70,7 +70,7 @@ export const LoginRoute: AppRouteModule = {
       path: '/auth/code-login',
       component: () => import('/@/layouts/views/login/codeLogin.vue'),
       meta: {
-        title: t('page.auth.codeLogin'),
+        title: t('routes.basic.codeLogin'),
       },
     },
     {
@@ -78,7 +78,7 @@ export const LoginRoute: AppRouteModule = {
       path: '/auth/qrcode-login',
       component: () => import('/@/layouts/views/login/qrcodeLogin.vue'),
       meta: {
-        title: t('page.auth.qrcodeLogin'),
+        title: t('routes.basic.qrcodeLogin'),
       },
     },
     {
@@ -86,7 +86,7 @@ export const LoginRoute: AppRouteModule = {
       path: '/auth/forget-password',
       component: () => import('/@/layouts/views/login/forgetPassword.vue'),
       meta: {
-        title: t('page.auth.forgetPassword'),
+        title: t('routes.basic.forgetPassword'),
       },
     },
     {
@@ -94,7 +94,7 @@ export const LoginRoute: AppRouteModule = {
       path: '/auth/register',
       component: () => import('/@/layouts/views/login/register.vue'),
       meta: {
-        title: t('page.auth.register'),
+        title: t('routes.basic.register'),
       },
     },
     {
@@ -102,7 +102,7 @@ export const LoginRoute: AppRouteModule = {
       path: '/auth/create-password',
       component: () => import('/@/layouts/views/login/createPassword.vue'),
       meta: {
-        title: t('page.auth.createPassword'),
+        title: t('routes.basic.createPassword'),
       },
     },
   ],

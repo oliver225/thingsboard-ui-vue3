@@ -1,3 +1,11 @@
+<template>
+  <AuthenticationRegister
+    sub-title="业务逻辑有待实现"
+    :form-schema="formSchema"
+    :loading="loading"
+    @submit="handleSubmit"
+  />
+</template>
 <script lang="ts" setup>
   import { computed, h, ref } from 'vue';
   import { AuthenticationRegister } from '/@/components/Authentication';
@@ -70,12 +78,3 @@
     console.log('register submit:', value);
   }
 </script>
-
-<template>
-  <AuthenticationRegister
-    sub-title="业务逻辑有待实现"
-    :form-schema="formSchema"
-    :loading="loading"
-    @submit="handleSubmit"
-  />
-</template>

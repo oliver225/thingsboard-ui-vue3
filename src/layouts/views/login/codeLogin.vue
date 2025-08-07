@@ -1,3 +1,11 @@
+<template>
+  <AuthenticationCodeLogin
+    sub-title="业务逻辑有待实现"
+    :form-schema="formSchema"
+    :loading="loading"
+    @submit="handleLogin"
+  />
+</template>
 <script lang="ts" setup>
   import { computed, ref } from 'vue';
   import { AuthenticationCodeLogin } from '/@/components/Authentication';
@@ -49,12 +57,3 @@
     console.log(values);
   }
 </script>
-
-<template>
-  <AuthenticationCodeLogin
-    sub-title="业务逻辑有待实现"
-    :form-schema="formSchema"
-    :loading="loading"
-    @submit="handleLogin"
-  />
-</template>

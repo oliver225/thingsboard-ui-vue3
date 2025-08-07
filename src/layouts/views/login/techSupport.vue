@@ -1,37 +1,3 @@
-<script setup lang="ts">
-  import { h } from 'vue';
-
-  import { useI18n } from '/@/hooks/web/useI18n';
-  import { GITHUB_URL } from '/@/settings/siteSetting';
-  import Icon from '/@/components/Icon';
-  import { useMessage } from '/@/hooks/web/useMessage';
-
-  defineOptions({
-    name: 'TechSupport',
-  });
-
-  const { t } = useI18n();
-  const { showMessageModal } = useMessage();
-
-  function handleClickWeChat() {
-    showMessageModal({
-      title: '',
-      content: () =>
-        h('img', {
-          src: '/resource/img/weixin.jpg',
-          alt: 'WeChat QR Code',
-          class: 'w-82',
-        }),
-    });
-  }
-  function handleClickGithub() {
-    window.open(GITHUB_URL, '_blank');
-  }
-  function handleClickGitee() {
-    window.open(GITHUB_URL, '_blank');
-  }
-</script>
-
 <template>
   <div class="w-full sm:mx-auto md:max-w-md">
     <div class="mt-4 flex items-center justify-between">
@@ -59,3 +25,36 @@
     </div>
   </div>
 </template>
+<script setup lang="ts">
+  import { h } from 'vue';
+
+  import { useI18n } from '/@/hooks/web/useI18n';
+  import { GITEE_URL, GITHUB_URL } from '/@/settings/siteSetting';
+  import Icon from '/@/components/Icon';
+  import { useMessage } from '/@/hooks/web/useMessage';
+
+  defineOptions({
+    name: 'TechSupport',
+  });
+
+  const { t } = useI18n();
+  const { showMessageModal } = useMessage();
+
+  function handleClickWeChat() {
+    showMessageModal({
+      title: '',
+      content: () =>
+        h('img', {
+          src: '/resource/img/weixin.jpg',
+          alt: 'WeChat QR Code',
+          class: 'w-82',
+        }),
+    });
+  }
+  function handleClickGithub() {
+    window.open(GITHUB_URL, '_blank');
+  }
+  function handleClickGitee() {
+    window.open(GITEE_URL, '_blank');
+  }
+</script>

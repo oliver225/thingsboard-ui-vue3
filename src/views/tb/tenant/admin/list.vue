@@ -2,9 +2,7 @@
   <div class="tenant-admin-list">
     <BasicTable @register="registerTable">
       <template #headerTop>
-        <div class="text-lg font-bold my-2">
-          {{ t(getTitle.value) }} ( {{ tenantInfo.title }})
-        </div>
+        <div class="text-lg font-bold my-2"> {{ t(getTitle.value) }} ( {{ tenantInfo.title }}) </div>
       </template>
       <template #tableTitle>
         <div class="space-x-2">
@@ -31,12 +29,7 @@
       </template>
     </BasicTable>
     <InputForm @register="registerModal" @success="handleSuccess" />
-    <DetailDrawer
-      @register="registerDrawer"
-      @edit="handleForm"
-      @delete="handleDelete"
-      @login="handleLoginUser"
-    />
+    <DetailDrawer @register="registerDrawer" @edit="handleForm" @delete="handleDelete" @login="handleLoginUser" />
   </div>
 </template>
 <script lang="ts">
@@ -171,6 +164,7 @@
     try {
       const jwtPair = await getUserToken(record.id.id);
       userStore.setToken(jwtPair);
+      userStore.setSessionTimeout(false);
 
       const userInfo = await userStore.getUserInfoAction();
 
