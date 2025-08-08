@@ -31,7 +31,9 @@
   const positionDeviceList = ref<Array<any>>([]);
   let mapInstance: any = undefined;
   const { getAndIncrementCmdId, send, unsubscribe } = useWebsocketStore();
-  const { success, BMapGL } = useBMap('I8y4JKYWxnOA1lIW4VYJFfuR2JKanf0I');
+  // const { success, BMapGL } = useBMap('I8y4JKYWxnOA1lIW4VYJFfuR2JKanf0I23');
+  const success = ref(false);
+  const BMapGL = {};
   watchEffect(() => {
     if (success.value == true) {
       initBMap();
