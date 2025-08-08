@@ -1,6 +1,6 @@
 <template>
   <div :class="prefixCls">
-    <Popover title="" trigger="click" :overlayClassName="`${prefixCls}__overlay`" @click="handlePopoverClick">
+    <Popover title="" trigger="hover" :overlayClassName="`${prefixCls}__overlay`" @click="handlePopoverClick">
       <Badge :count="count" dot :numberStyle="numberStyle">
         <BellOutlined />
       </Badge>

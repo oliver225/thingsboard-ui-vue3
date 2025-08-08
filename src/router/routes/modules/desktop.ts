@@ -10,6 +10,7 @@ const desktop: AppRouteModule = {
   redirect: '/desktop/dashboard',
   meta: {
     orderNo: 10,
+    hideMenu: true,
     icon: 'i-ant-design:home-outlined',
     title: t('routes.dashboard.dashboard'),
   },
@@ -20,8 +21,8 @@ const desktop: AppRouteModule = {
       component: () => import('/@/views/tb/desktop/index.vue'),
       meta: {
         // affix: true,
-        icon: 'i-ant-design:home-outlined',
-        tabIcon: 'i-ant-design:home-outlined',
+        icon: 'i-ant-design:dashboard-outlined',
+        tabIcon: 'i-ant-design:dashboard-outlined',
         title: t('routes.dashboard.analysis'),
       },
     },

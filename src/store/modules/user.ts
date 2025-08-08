@@ -80,6 +80,9 @@ export const useUserStore = defineStore('app-user', {
       this.lastUpdateTime = new Date().getTime();
       setAuthCache(TOKEN_KEY, token?.token);
       setAuthCache(REFRESH_TOKEN_KEY, token?.refreshToken);
+      // 设置thingsboard 平台原生的 token 方便IFRAME 访问
+      localStorage.setItem('jwt_token', token?.token || '');
+      localStorage.setItem('refresh_token', token?.refreshToken || '');
     },
     setSessionTimeout(flag: boolean) {
       this.sessionTimeout = flag;
@@ -88,7 +91,7 @@ export const useUserStore = defineStore('app-user', {
     setUserInfo(info: UserInfo | null) {
       if (info) {
         const { ctxPath } = useGlobSetting();
-        let url = info.additionalInfo?.avatarUrl || '/ctxPath/static/images/user1.jpg';
+        let url = info.additionalInfo?.avatarUrl || '/resource/img/avatar.jpg';
         const avatarUrl = url || logoImg;
         info.additionalInfo = { ...info.additionalInfo, avatarUrl: avatarUrl };
         this.setAuthority(info.authority);

@@ -82,7 +82,7 @@ export default {
     signUpFormTitle: 'Sign up',
     forgetFormTitle: 'Reset password',
 
-    policy: 'I agree to the Thingsboard Privacy Policy',
+    policy: 'I agree to the  Privacy Policy',
     scanSign: `scanning the code to complete the login`,
 
     loginButton: 'Sign in',

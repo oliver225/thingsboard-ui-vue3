@@ -2,7 +2,7 @@ import { BasicQuery, Page } from '../model/baseModel';
 import { JwtPair, UserInfo } from '/#/store';
 import { defHttp } from '/@/utils/http/axios';
 
-export const userInfoApi = () => defHttp.get<UserInfo>({ url: '/auth/user', timeout: 10 * 1000 });
+export const userInfoApi = () => defHttp.get<UserInfo>({ url: '/api/auth/user', timeout: 10 * 1000 });
 
 export function getUserById(userId: string) {
   return defHttp.get<UserInfo>({

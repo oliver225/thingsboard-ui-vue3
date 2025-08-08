@@ -1,4 +1,4 @@
-import { LAYOUT } from '/@/router/constant';
+import { LAYOUT, IFRAME_BLANK } from '/@/router/constant';
 import { AppRouteModule } from '/@/router/types';
 import { t } from '/@/hooks/web/useI18n';
 import { Authority } from '/@/enums/authorityEnum';
@@ -20,6 +20,21 @@ const tb: AppRouteModule = {
     orderNo: 1,
   },
   children: [
+    {
+      path: '/home',
+      name: 'TbHome',
+      component: IFRAME_BLANK,
+      meta: {
+        icon: 'ant-design:home-outlined',
+        tabIcon: 'ant-design:home-outlined',
+        title: t('tb.home'),
+        frameSrc: 'http://localhost:8080/home',
+      },
+      props: {
+        offsetX: -254,
+        offsetY: -70,
+      },
+    },
     {
       path: '/tenant',
       name: 'Tenant',

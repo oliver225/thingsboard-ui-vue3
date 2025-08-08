@@ -83,7 +83,7 @@ export default {
     signUpFormTitle: '注册',
     forgetFormTitle: '重置密码',
 
-    policy: '我同意 thingsboard 隐私政策',
+    policy: '我同意 XXX 隐私政策',
     scanSign: `扫码后点击"确认"，即可完成登录`,
 
     loginButton: '登录',

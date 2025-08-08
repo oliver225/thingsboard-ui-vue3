@@ -1,4 +1,5 @@
 export default {
+  home: 'Home',
   deviceIn: 'Device Access',
   tenant: 'Tenant',
   customer: 'Customer',

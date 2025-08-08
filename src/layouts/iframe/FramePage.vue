@@ -6,12 +6,14 @@
 <template>
   <div :class="prefixCls" :style="getWrapStyle">
     <Spin :spinning="loading" size="large" :style="getWrapStyle">
-      <iframe
-        :src="frameSrc"
-        :class="`${prefixCls}__main ${props.frame?.name}`"
-        ref="frameRef"
-        @load="hideLoading"
-      ></iframe>
+      <div class="overflow-hidden">
+        <iframe
+          :src="frameSrc"
+          :class="`${prefixCls}__main ${props.frame?.name}`"
+          ref="frameRef"
+          @load="hideLoading"
+        ></iframe>
+      </div>
     </Spin>
   </div>
 </template>
@@ -40,13 +42,11 @@
   const { prefixCls } = useDesign('iframe-page');
   useWindowSizeFn(calcHeight, 150, { immediate: true });
 
-  // const frameSrc = ref(props.frame?.meta?.frameSrc);
   const frameSrc = ref<string>();
 
   watch(
     () => router.currentRoute.value.query,
     () => {
-      // jee site iframe query
       let src = props.frame?.meta?.frameSrc || '';
       let search = window.location.search;
       if (search && search != '') {
@@ -63,7 +63,6 @@
   watch(
     () => router.currentRoute.value.name,
     () => {
-      // jee site iframe refresh
       let params = router.currentRoute.value.params;
       if (params && params.path == props.frame?.path) {
         let src = props.frame?.meta?.frameSrc;
@@ -73,7 +72,7 @@
     },
   );
 
-  const padding = 13; // jee site default padding
+  const padding = 13;
 
   const getWrapStyle = computed((): CSSProperties => {
     return {
@@ -86,16 +85,24 @@
     if (!iframe) {
       return;
     }
+
+    const offsetX = props.frame?.props?.default.offsetX || 0;
+    const offsetY = props.frame?.props?.default.offsetY || 0;
+    iframe.style.transform = `translate(${offsetX}px, ${offsetY}px)`;
+
+    if (offsetX != 0) {
+      iframe.style.width = `calc(100% + ${-offsetX}px)`;
+    }
     if (props.fullHeight) {
       const clientHeight = document.documentElement.clientHeight - 6;
-      iframe.style.height = `${clientHeight}px`;
+      iframe.style.height = `${clientHeight - offsetY}px`;
       return;
     }
     const top = headerHeightRef.value + padding;
     topRef.value = top;
     heightRef.value = window.innerHeight - top;
     const clientHeight = document.documentElement.clientHeight - top;
-    iframe.style.height = `${clientHeight - padding}px`;
+    iframe.style.height = `${clientHeight - padding - offsetY}px`;
   }
 
   function hideLoading() {

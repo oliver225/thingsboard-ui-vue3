@@ -18,9 +18,17 @@
   <Dropdown v-else placement="bottom" :overlayClassName="`${prefixCls}-dropdown-overlay`">
     <span :class="[prefixCls, `${prefixCls}--${props.theme}`]" class="flex">
       <img :class="`${prefixCls}__header`" :src="getUserInfo.avatarUrl" />
-      <span :class="`${prefixCls}__info hidden md:block`">
-        <span :class="`${prefixCls}__name`" class="truncate">
-          {{ getUserInfo.firstName || '未命名' }}
+      <span :class="`${prefixCls}__info  hidden md:block`">
+        <span :class="`${prefixCls}__name`" class="truncate flex flex-col">
+          <span :class="`${prefixCls}__name__title`">
+            {{ getUserInfo.firstName || '未命名' }}
+            <span :class="`${prefixCls}__name__tag`">
+              {{ AUTHORITY_OPTIONS.filter((item) => item.value === getUserInfo.authority)[0]?.label }}
+            </span>
+          </span>
+          <span :class="`${prefixCls}__name__subTitle`">
+            {{ getUserInfo.email }}
+          </span>
         </span>
       </span>
     </span>
@@ -50,7 +58,7 @@
 </template>
 <script lang="ts">
   import { defineComponent, computed, ref, onMounted } from 'vue';
-  import { Dropdown, Menu } from 'ant-design-vue';
+  import { Dropdown, Menu, Tag } from 'ant-design-vue';
   import { DOC_URL } from '/@/settings/siteSetting';
   import { useUserStore } from '/@/store/modules/user';
   import { useHeaderSetting } from '/@/hooks/setting/useHeaderSetting';
@@ -60,6 +68,7 @@
   import { useGo } from '/@/hooks/web/usePage';
   import { propTypes } from '/@/utils/propTypes';
   import { openWindow } from '/@/utils';
+  import { AUTHORITY_OPTIONS } from '/@/enums/authorityEnum';
   import { Icon } from '/@/components/Icon';
   import MenuItem from './DropMenuItem.vue';
   import LockAction from '../lock/LockModal.vue';
@@ -80,6 +89,7 @@
       MenuDivider: Menu.Divider,
       LockAction,
       Icon,
+      Tag,
     },
     props,
     setup(props: any) {
@@ -162,6 +172,7 @@
       }
 
       return {
+        AUTHORITY_OPTIONS,
         prefixCls,
         t,
         getUserInfo,
@@ -193,8 +204,8 @@
     align-items: center;
 
     img {
-      width: 24px;
-      height: 24px;
+      width: 38px;
+      height: 38px;
       margin-right: 10px;
       background: #eee;
     }
@@ -205,6 +216,24 @@
 
     &__name {
       font-size: 14px;
+      line-height: 1.25rem;
+    }
+    &__name__tag {
+      color: #fff;
+      font-size: 10px;
+      padding: 0 4px;
+      background-color: @success-color;
+      border-radius: 4px;
+      margin-left: 6px;
+    }
+
+    &__name__title {
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+    }
+    &__name__subTitle {
+      font-size: 12px;
     }
 
     &--dark {
@@ -327,8 +356,8 @@
       justify-content: center;
 
       img {
-        width: 25px;
-        height: 25px;
+        width: 38px;
+        height: 38px;
         margin: 0;
       }
 

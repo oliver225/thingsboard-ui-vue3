@@ -1,4 +1,5 @@
 export default {
+  home: '首页',
   deviceIn: '设备接入',
   tenant: '租户',
   customer: '客户',

@@ -133,8 +133,11 @@
       record.value.firstName = data.firstName;
       record.value.lastName = data.lastName;
       record.value.phone = data.phone;
-      record.value.additionalInfo.description = data.additionalInfo.description;
-      record.value.additionalInfo.lang = localeSetting.locale;
+      record.value.additionalInfo = {
+        ...record.value.additionalInfo,
+        description: data.additionalInfo.description,
+        lang: localeSetting.locale,
+      };
       // console.log('submit', data);
       const res = await saveUser(record.value);
       const userInfoRes = await userInfoApi();

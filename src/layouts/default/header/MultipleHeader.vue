@@ -20,7 +20,7 @@
   import { useLayoutHeight } from '../content/useContentViewHeight';
   import { useMultipleTabStore } from '/@/store/modules/multipleTab';
 
-  const HEADER_HEIGHT = 48;
+  const HEADER_HEIGHT = 52;
   const TABS_HEIGHT = 32;
   const TABS_HEIGHT_LARGE = 37;
 
