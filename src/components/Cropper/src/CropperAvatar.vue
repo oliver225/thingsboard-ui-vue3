@@ -28,7 +28,7 @@
   import CopperModal from './CopperModal.vue';
   import { useDesign } from '/@/hooks/web/useDesign';
   import { useModal } from '/@/components/Modal';
-  // import { useMessage } from '/@/hooks/web/useMessage';
+  import { useMessage } from '/@/hooks/web/useMessage';
   import { useI18n } from '/@/hooks/web/useI18n';
   import type { ButtonProps } from '/@/components/Button';
   import { Icon } from '/@/components/Icon';
@@ -43,7 +43,9 @@
       btnProps: { type: Object as PropType<ButtonProps> },
       btnText: { type: String, default: '' },
       uploadApi: {
-        type: Function as PropType<({ file, name }: { file: Blob; name: string }) => Promise<void>>,
+        type: Function as PropType<
+          ({ file, name, filename }: { file: Blob; name: string; filename: string }) => Promise<any>
+        >,
       },
     },
     emits: ['update:value', 'change'],
@@ -75,10 +77,9 @@
         },
       );
 
-      function handleUploadSuccess({ source }) {
+      function handleUploadSuccess({ source, data }) {
         sourceValue.value = source;
-        emit('change', source);
-        // createMessage.success(t('component.cropper.uploadSuccess'));
+        emit('change', { source, data });
       }
 
       expose({ openModal: openModal.bind(null, true), closeModal });

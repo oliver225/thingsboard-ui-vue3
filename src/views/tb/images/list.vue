@@ -1,5 +1,5 @@
 <template>
-  <div class="image-list">
+  <div>
     <BasicTable @register="registerTable">
       <template #headerTop>
         <div class="text-lg font-bold my-2">
@@ -29,12 +29,12 @@
       </template>
       <template #firstColumn="{ record }">
         <Space>
-          <div class="h-10 w-10 bg-white flex justify-center">
-            <div class="cursor-pointer h-10 w-full content-center" @click="handleDetail(record)">
-              <img :src="record.publicLink" :alt="record.name" class="w-full" />
-            </div>
+          <div class="cursor-pointer h-10 w-10 overflow-hidden mr-6" @click="handleDetail(record)">
+            <img class="img-content-clip" :src="record.publicLink" :alt="record.name" />
           </div>
-          {{ record.title }}
+          <span>
+            {{ record.title }}
+          </span>
         </Space>
       </template>
       <template #resolution="{ record }"> {{ record.descriptor.width }}×{{ record.descriptor.height }} </template>
@@ -320,8 +320,3 @@
     openUploadModal(true, record);
   }
 </script>
-
-<style lang="less">
-  .image-list {
-  }
-</style>

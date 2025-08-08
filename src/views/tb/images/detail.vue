@@ -25,8 +25,8 @@
           更新图片
         </a-button>
       </div>
-      <div class="h-100 bg-white flex justify-center my-2">
-        <img :src="record.preview" :alt="record.name" class="h-full p-2" />
+      <div class="h-100 my-2">
+        <img :src="record.preview" :alt="record.name" class="img-content-clip" />
       </div>
       <div class="px-1">
         <Space :size="1">

@@ -42,7 +42,7 @@
 
       const getSetting = computed((): TableSetting => {
         return {
-          redo: false,
+          redo: true,
           size: true,
           setting: true,
           fullScreen: false,

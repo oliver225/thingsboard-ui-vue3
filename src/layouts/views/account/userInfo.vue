@@ -17,7 +17,7 @@
             :btnText="t('sys.account.changeAvatar')"
             :btnProps="{ preIcon: 'i-ant-design:cloud-upload-outlined' }"
             @change="updateAvatar"
-            :uploadApi="({ file, name }) => uploadImage(file, name)"
+            :uploadApi="({ file, name, filename }) => uploadImage(file, name)"
             width="150"
           />
         </div>
@@ -121,9 +121,13 @@
     return avatarUrl || AvatarImg;
   });
 
-  function updateAvatar(source: string, data: any) {
-    record.value.additionalInfo.avatarUrl = data.publicLink;
-    avatarBase64.value = source;
+  function updateAvatar(parmas: any) {
+    const { source, data } = parmas;
+    if (data?.publicLink) {
+      console.log(data.publicLink);
+      record.value.additionalInfo = { ...record.value.additionalInfo, avatarUrl: data.publicLink };
+      avatarBase64.value = source;
+    }
   }
 
   async function handleSubmit() {
