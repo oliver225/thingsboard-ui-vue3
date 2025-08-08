@@ -985,4 +985,8 @@ export default [
   'i-fa:wpforms',
   'i-svg:sun',
   'i-svg:moon',
+  'mdi:account-key-outline',
+  'mdi:account-off-outline',
+  'mdi:account-check-outline',
+  'mdi:account-file-text',
 ];

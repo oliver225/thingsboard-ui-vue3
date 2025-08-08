@@ -38,6 +38,12 @@ export function deleteUser(userId: string) {
   });
 }
 
+export function setUserCredentialsEnabled(userId: string, enabled = true) {
+  return defHttp.post<void>({
+    url: `/api/user/${userId}/userCredentialsEnabled?userCredentialsEnabled=${enabled}`,
+  });
+}
+
 export function getTenantAdmins(params: BasicQuery, tenantId: string) {
   return defHttp.get<Page<UserInfo>>({
     url: `/api/tenant/${tenantId}/users`,
@@ -55,6 +61,17 @@ export function getActivationLink(userId: string) {
   return defHttp.get<string>({
     url: `/api/user/${userId}/activationLink`,
   });
+}
+
+export async function getProxyActivationLink(userId: string) {
+  const activationLink = await getActivationLink(userId);
+  // 创建 URL 对象
+  const activeLinkURL = new URL(activationLink);
+  // 获取 location对象
+  const { protocol, hostname, port } = window.location;
+  // 生成前端代理地址
+  const proxyActivationLink = `${protocol}//${hostname}${port ? `:${port}` : ''}/auth/create-password${activeLinkURL.search}`;
+  return proxyActivationLink;
 }
 
 export function sendActivationEmail(email: string) {

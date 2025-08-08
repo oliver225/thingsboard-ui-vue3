@@ -9,9 +9,10 @@
     <div :class="`${prefixCls}__entry`">
       <div :class="`${prefixCls}__header`">
         <img :src="avatar" :class="`${prefixCls}__header-img`" />
-        <p :class="`${prefixCls}__header-name`">
-          {{ getRealName }}
-        </p>
+        <div :class="`${prefixCls}__header-name`">
+          <p>{{ firstName }}</p>
+          <p>{{ email }}</p>
+        </div>
       </div>
 
       <BasicForm @register="registerForm" />
@@ -44,7 +45,8 @@
       const userStore = useUserStore();
       const lockStore = useLockStore();
 
-      const getRealName = computed(() => userStore.getUserInfo?.userName);
+      const firstName = computed(() => userStore.getUserInfo?.firstName);
+      const email = computed(() => userStore.getUserInfo?.email);
       const [register, { closeModal }] = useModalInner();
 
       const [registerForm, { validateFields, resetFields }] = useForm({
@@ -74,14 +76,15 @@
       }
 
       const avatar = computed(() => {
-        const { avatarUrl } = userStore.getUserInfo;
+        const { avatarUrl } = userStore.getUserInfo.additionalInfo;
         return avatarUrl;
       });
 
       return {
         t,
         prefixCls,
-        getRealName,
+        firstName,
+        email,
         register,
         registerForm,
         handleLock,
@@ -95,18 +98,15 @@
 
   .@{prefix-cls} {
     &__entry {
-      position: relative;
-      //height: 240px;
-      padding: 130px 30px 30px;
+      display: flex;
+      flex-direction: column;
+      padding: 0 30px 30px;
       border-radius: 10px;
     }
 
     &__header {
-      position: absolute;
-      top: 0;
-      left: calc(50% - 45px);
-      width: auto;
       text-align: center;
+      margin-bottom: 5px;
 
       &-img {
         width: 70px;
@@ -115,6 +115,9 @@
 
       &-name {
         margin-top: 5px;
+        p {
+          margin-bottom: 1px;
+        }
       }
     }
 

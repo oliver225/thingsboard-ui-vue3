@@ -18,7 +18,7 @@
   import { BasicForm, FormSchema, useForm } from '/@/components/Form';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { Customer, getCustomerById, saveCustomer } from '/@/api/tb/customer';
-import { EntityType } from '/@/enums/entityTypeEnum';
+  import { EntityType } from '/@/enums/entityTypeEnum';
 
   const emit = defineEmits(['success', 'register']);
 

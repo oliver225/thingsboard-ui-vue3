@@ -2,171 +2,139 @@
   <div>
     <div class="mb-7 sm:mx-auto sm:w-full sm:max-w-md">
       <h2 class="text-foreground mb-3 text-3xl font-bold leading-9 tracking-tight lg:text-4xl">
-        {{ $t('page.auth.createPassword') }} 🚀
+        {{ t('sys.login.createPassword') }} 🚀
       </h2>
 
-      <p class="text-muted-foreground lg:text-md text-sm">
-        {{ $t('创建密码 激活账户') }}
+      <p class="text-secondary lg:text-md text-sm">
+        {{ t('创建密码 激活账户') }}
       </p>
     </div>
-    <Form />
-    <div class="flex items-center justify-between space-x-8">
-      <VbenButton
-        :class="{
-          'cursor-wait': loading,
-        }"
-        :loading="loading"
-        aria-label="register"
-        class="mt-2 w-full"
-        @click="handleSubmit"
-      >
-        <slot name="submitButtonText">
-          {{ $t('page.auth.createPassword') }}
-        </slot>
-      </VbenButton>
-      <VbenButton variant="outline" :loading="loading" class="mt-2 w-full" @click="goToLogin()">
-        <slot name="submitButtonText">
-          {{ $t('common.cancel') }}
-        </slot>
-      </VbenButton>
-    </div>
-
+    <Form class="enter-x p-4" :model="formData" ref="formRef" :rules="formRules">
+      <FormItem name="activateToken" class="enter-x">
+        <Input :hidden="true" size="large" v-model:value="formData.activateToken" />
+      </FormItem>
+      <FormItem name="password" class="enter-x">
+        <StrengthMeter size="large" v-model:value="formData.password" :placeholder="t('sys.login.password')" />
+      </FormItem>
+      <FormItem name="confirmPassword" class="enter-x">
+        <InputPassword
+          size="large"
+          visibilityToggle
+          v-model:value="formData.confirmPassword"
+          :placeholder="t('sys.login.confirmPassword')"
+          autocomplete="off"
+        />
+      </FormItem>
+    </Form>
+    <Button type="primary" class="enter-x" size="large" block @click="handleCreatePassword" :loading="loading">
+      {{ t('sys.login.createPassword') }}
+    </Button>
     <div class="mt-4 text-center text-sm">
-      {{ $t('authentication.alreadyHaveAccount') }}
-      <span class="vben-link text-sm font-normal" @click="goToLogin()">
-        {{ $t('authentication.goToLogin') }}
-      </span>
+      {{ $t('sys.login.alreadyHaveAccount') }}
+      <Button type="link" @click="goToLogin()">
+        {{ $t('sys.login.goToLogin') }}
+      </Button>
     </div>
   </div>
 </template>
 <script setup lang="ts">
-  import type { AuthApi } from '#/api';
-
   import { onMounted, reactive, ref } from 'vue';
-  import { useRouter } from 'vue-router';
+  import { Form, Input, Button } from 'ant-design-vue';
+  import { router } from '/@/router';
+  import { useUserStore } from '/@/store/modules/user';
+  import { StrengthMeter } from '/@/components/StrengthMeter';
 
-  import { alert } from '@vben/common-ui';
-  import { $t } from '@vben/locales';
+  import { useI18n } from '/@/hooks/web/useI18n';
+  import { useMessage } from '/@/hooks/web/useMessage';
+  import { activateUser } from '/@/api/tb/auth';
+  import type { Rule, RuleObject } from 'ant-design-vue/es/form';
 
-  import { VbenButton } from '@vben-core/shadcn-ui';
-
-  import { message } from 'ant-design-vue';
-
-  import { useVbenForm, z } from '#/adapter/form';
-  import { activateUser } from '#/api';
-  import { useAuthStore } from '#/store';
+  const { t } = useI18n();
+  const { showMessage, createConfirm, notification } = useMessage();
+  const userStore = useUserStore();
 
   defineOptions({
     name: 'CreatePasswordPage',
   });
-  const authStore = useAuthStore();
+
+  const FormItem = Form.Item;
+  const InputPassword = Input.Password;
+
+  const formRef = ref();
 
   const loading = ref(false);
 
-  const [Form, formApi] = useVbenForm(
-    reactive({
-      commonConfig: {
-        hideLabel: true,
-        hideRequiredMark: true,
-      },
-      schema: [
-        {
-          component: 'Input',
-          dependencies: {
-            show: false,
-            triggerFields: ['activateToken'],
-          },
-          fieldName: 'activateToken',
-          rules: 'required',
-        },
-        {
-          component: 'VbenInputPassword',
-          componentProps: {
-            passwordStrength: true,
-            placeholder: $t('authentication.password'),
-          },
-          fieldName: 'password',
-          label: $t('authentication.password'),
-          renderComponentContent() {
-            return {
-              strengthText: () => $t('authentication.passwordStrength'),
-            };
-          },
-          rules: z.string().min(1, { message: $t('authentication.passwordTip') }),
-        },
-        {
-          component: 'VbenInputPassword',
-          componentProps: {
-            placeholder: $t('authentication.confirmPassword'),
-          },
-          dependencies: {
-            rules(values) {
-              const { password } = values;
-              return z
-                .string({ required_error: $t('authentication.passwordTip') })
-                .min(1, { message: $t('authentication.passwordTip') })
-                .refine((value) => value === password, {
-                  message: $t('authentication.confirmPasswordTip'),
-                });
-            },
-            triggerFields: ['password'],
-          },
-          fieldName: 'confirmPassword',
-          label: $t('authentication.confirmPassword'),
-        },
-      ],
-      showDefaultActions: false,
-    }),
-  );
+  const formData = reactive({
+    activateToken: '',
+    password: '',
+    confirmPassword: '',
+  });
 
-  const router = useRouter();
+  function validateConfirmPassword(_: RuleObject, value: string) {
+    if (!value) {
+      return Promise.reject(t('sys.login.passwordPlaceholder'));
+    }
+    if (value !== formData.password) {
+      return Promise.reject(t('sys.login.diffPwd'));
+    }
+    return Promise.resolve();
+  }
+
+  const formRules: Record<string, Rule[]> = {
+    password: [
+      { required: true, message: t('sys.login.passwordPlaceholder'), trigger: 'blur' },
+      { min: 6, trigger: 'blur' },
+    ],
+    confirmPassword: [{ validator: validateConfirmPassword, trigger: 'change' }],
+  };
 
   onMounted(() => {
     const routerQuery = router.currentRoute.value.query;
     if ('activateToken' in routerQuery) {
-      formApi.setValues({ activateToken: routerQuery.activateToken });
+      formData.activateToken = routerQuery.activateToken as string;
     } else {
-      alert({
-        icon: 'error',
-        overlayBlur: 50,
-        title: $t('页面错误'),
-        content: $t('当前激活连接错误，请重新获取！'),
-        confirmText: $t('返回登录'),
-        beforeClose: () => {
+      createConfirm({
+        maskClosable: false,
+        iconType: 'error',
+        title: '页面错误',
+        content: '当前激活连接错误，请重新获取！',
+        okText: '去登录',
+        maskStyle: { backdropFilter: 'blur(50px)' },
+        onOk: () => {
           goToLogin();
-          return true;
+        },
+        onCancel: () => {
+          goToLogin();
         },
       });
     }
   });
 
-  async function handleSubmit() {
-    const { valid } = await formApi.validate();
-    const values = await formApi.getValues();
-    if (valid) {
-      message.loading({
-        content: `${$t('page.submit.loading')}`,
-        duration: 0,
-        key: 'is-form-submitting',
-      });
+  async function handleCreatePassword() {
+    const data = await formRef.value.validate();
+    if (data) {
+      loading.value = true;
       try {
-        const data = {
-          ...values,
-        } as AuthApi.ActivateUserParams;
-
-        const jwtPawir = await activateUser(data);
-        message.success({
-          content: `${$t('page.auth.createPasswordSuccess')}`,
-          duration: 2,
-          key: 'is-form-submitting',
-        });
-        await authStore.tokenLogin(jwtPawir);
+        const jwtPawir = await activateUser({ ...data, activateToken: formData.activateToken });
+        showMessage(`创建密码成功！`, 'success');
+        userStore.setToken(jwtPawir);
+        userStore.setSessionTimeout(false);
+        const userInfo = await userStore.getUserInfoAction();
+        if (userInfo) {
+          await userStore.afterLoginAction(userInfo, true);
+          notification.success({
+            message: t('sys.login.loginSuccessTitle'),
+            description: `${t('创建密码成功，开始使用吧')}: ${userInfo.firstName || userInfo.email}`,
+            duration: 3,
+          });
+        }
       } catch (error: any) {
-        message.error({
-          content: error.message || `${$t('page.submit.error')}`,
-          duration: 2,
-          key: 'is-form-submitting',
-        });
+        if (error && error.errorFields) {
+          showMessage(t('common.validateError'));
+        }
+        console.log('error', error);
+      } finally {
+        loading.value = false;
       }
     }
   }

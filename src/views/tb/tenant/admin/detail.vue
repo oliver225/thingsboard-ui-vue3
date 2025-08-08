@@ -24,14 +24,42 @@
         <a-button type="primary" @click="handleAdminLogin">
           <Icon :icon="'ant-design:login-outlined'" />以管理员身份登录
         </a-button>
-        <a-button type="primary" @click="handleShowActivationLink">
-          <Icon :icon="'ant-design:login-outlined'" />显示激活链接
+        <a-button
+          v-show="record.additionalInfo?.userActivated == false"
+          type="primary"
+          @click="handleShowActivationLink"
+        >
+          <Icon :icon="'mdi:account-key-outline'" />显示激活链接
         </a-button>
-        <a-button type="primary" @click="handleSendActivationEmail">
-          <Icon :icon="'ant-design:login-outlined'" />重新发送激活邮件
+        <a-button
+          v-show="record.additionalInfo?.userActivated == false"
+          type="primary"
+          @click="handleSendActivationEmail"
+        >
+          <Icon :icon="'mdi:account-file-text'" />重新发送激活邮件
         </a-button>
+
         <a-button type="primary success" @click="handleEditUser">
           <Icon :icon="'i-clarity:note-edit-line'" />编辑管理员
+        </a-button>
+        <a-button
+          type="primary"
+          danger
+          v-show="record?.additionalInfo?.userCredentialsEnabled === true"
+          @click="handleDisableAccount"
+        >
+          <Icon :icon="'mdi:account-off-outline'" />
+          停用账户
+        </a-button>
+        <a-button
+          type="primary"
+          class="bg-green-500 hover:!bg-green-600"
+          v-show="
+            record?.additionalInfo?.userActivated !== false && record?.additionalInfo?.userCredentialsEnabled === false
+          "
+          @click="handleEnableAccount"
+        >
+          <Icon :icon="'mdi:account-check-outline'" />启用账户
         </a-button>
         <a-button type="primary" danger @click="handleDeleteUser">
           <Icon :icon="'ant-design:delete-outlined'" />删除管理员
@@ -74,7 +102,7 @@
   import { Icon } from '/@/components/Icon';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
   import { getDashboardInfoById } from '/@/api/tb/dashboard';
-  import { getUserById, getActivationLink, sendActivationEmail } from '/@/api/tb/user';
+  import { getUserById, sendActivationEmail, setUserCredentialsEnabled, getProxyActivationLink } from '/@/api/tb/user';
   import { Tabs, TabPane, Checkbox } from 'ant-design-vue';
   import { EntityType } from '/@/enums/entityTypeEnum';
   import { DescItem, Description, useDescription } from '/@/components/Description';
@@ -197,9 +225,45 @@
     closeDrawer();
   }
 
+  async function handleDisableAccount() {
+    const modalFunc = createConfirm({
+      iconType: 'error',
+      title: `确定停用管理员用户[${record.value.firstName || record.value.email}]吗？`,
+      content: '停用后，管理员账户将不可用。',
+      centered: false,
+      okText: '停用',
+      okButtonProps: {
+        type: 'primary',
+        danger: true,
+      },
+      onCancel: () => modalFunc.destroy(),
+      onOk: async () => {
+        try {
+          await setUserCredentialsEnabled(record?.value?.id.id, false);
+          showMessage('停用管理员用户成功！');
+        } catch (error: any) {
+          console.log(error);
+        } finally {
+          record.value = await getUserById(record?.value?.id.id);
+        }
+      },
+    });
+  }
+
+  async function handleEnableAccount() {
+    if (record?.value?.id.id) {
+      try {
+        await setUserCredentialsEnabled(record?.value?.id.id, true);
+        showMessage('启用管理员用户成功！');
+      } finally {
+        record.value = await getUserById(record?.value?.id.id);
+      }
+    }
+  }
+
   async function handleShowActivationLink() {
     try {
-      const activationLink = await getActivationLink(record.value.id.id);
+      const activationLink = await getProxyActivationLink(record.value.id.id);
       createConfirm({
         iconType: 'success',
         icon: () => h(Icon, { icon: 'ant-design:info-circle-filled', style: { color: 'blue' } }),

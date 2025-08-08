@@ -75,6 +75,7 @@ export default {
 
     techSupport: 'Technical Support',
 
+    createPassword: 'Create Password',
     backSignIn: 'Back sign in',
     mobileSignInFormTitle: 'Mobile sign in',
     qrSignInFormTitle: 'Qr code sign in',

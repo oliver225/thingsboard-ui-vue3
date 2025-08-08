@@ -76,6 +76,7 @@ export default {
 
     techSupport: '技术支持',
 
+    createPassword: '创建密码',
     backSignIn: '返回',
     signInFormTitle: '登录',
     mobileSignInFormTitle: '手机登录',
