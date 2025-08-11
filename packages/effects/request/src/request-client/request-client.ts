@@ -99,12 +99,8 @@ class RequestClient {
   /**
    * GET请求方法
    */
-  public get<T = any>(
-    url: string,
-    params?: any,
-    config?: RequestClientConfig,
-  ): Promise<T> {
-    return this.request<T>(url, { ...config, params, method: 'GET' });
+  public get<T = any>(url: string, config?: RequestClientConfig): Promise<T> {
+    return this.request<T>(url, { ...config, method: 'GET' });
   }
 
   /**

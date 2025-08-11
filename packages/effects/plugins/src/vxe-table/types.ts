@@ -40,8 +40,6 @@ export interface VxeGridProps<
   T extends Record<string, any> = any,
   D extends BaseFormComponentType = BaseFormComponentType,
 > {
-  topTitle?: string;
-  topTitleHelp?: string;
   /**
    * 标题
    */

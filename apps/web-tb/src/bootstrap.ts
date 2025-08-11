@@ -56,10 +56,6 @@ async function bootstrap(namespace: string) {
   // 配置路由及路由守卫
   app.use(router);
 
-  // 配置@tanstack/vue-query
-  const { VueQueryPlugin } = await import('@tanstack/vue-query');
-  app.use(VueQueryPlugin);
-
   // 配置Motion插件
   const { MotionPlugin } = await import('@vben/plugins/motion');
   app.use(MotionPlugin);

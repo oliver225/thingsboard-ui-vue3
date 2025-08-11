@@ -12,8 +12,4 @@ export const MdiGoogle = createIconifyIcon('mdi:google');
 
 export const MdiQqchat = createIconifyIcon('mdi:qqchat');
 
-export const MdiPlus = createIconifyIcon('mdi:plus');
-
-export const MdiDownLoad = createIconifyIcon('mdi:download');
-
-export const MaterialMore = createIconifyIcon('material-symbols:more-horiz');
+export const RiDingding = createIconifyIcon('ri:dingding-fill');

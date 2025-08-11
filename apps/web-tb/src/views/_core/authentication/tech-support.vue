@@ -2,11 +2,12 @@
 import { h } from 'vue';
 
 import { alert } from '@vben/common-ui';
-import { TBV_GITEE_URL, TBV_GITHUB_URL } from '@vben/constants';
 import { MdiGithub, MdiGoogle, MdiWechat } from '@vben/icons';
 import { $t } from '@vben/locales';
 
 import { VbenIconButton } from '@vben-core/shadcn-ui';
+
+import { TBV_GITEE_URL, TBV_GITHUB_URL } from '#/constants';
 
 defineOptions({
   name: 'TechSupport',
@@ -37,7 +38,7 @@ function handleClickGitee() {
     <div class="mt-4 flex items-center justify-between">
       <span class="border-input w-[35%] border-b dark:border-gray-600"></span>
       <span class="text-muted-foreground text-center text-xs uppercase">
-        {{ $t('authentication.techSupport') }}
+        {{ $t('page.auth.techSupport') }}
       </span>
       <span class="border-input w-[35%] border-b dark:border-gray-600"></span>
     </div>

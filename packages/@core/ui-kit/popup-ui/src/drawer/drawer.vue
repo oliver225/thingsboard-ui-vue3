@@ -34,7 +34,7 @@ import {
 } from '@vben-core/shadcn-ui';
 import { ELEMENT_ID_MAIN_CONTENT } from '@vben-core/shared/constants';
 import { globalShareState } from '@vben-core/shared/global-state';
-import { cn, isNumber, isString } from '@vben-core/shared/utils';
+import { cn } from '@vben-core/shared/utils';
 
 interface Props extends DrawerProps {
   drawerApi?: ExtendedDrawerApi;
@@ -47,7 +47,6 @@ const props = withDefaults(defineProps<Props>(), {
   drawerApi: undefined,
   submitting: false,
   zIndex: 1000,
-  width: 520,
 });
 
 const components = globalShareState.getComponents();
@@ -89,7 +88,6 @@ const {
   title,
   titleTooltip,
   zIndex,
-  width,
 } = usePriorityValues(props, state);
 
 // watch(
@@ -176,16 +174,6 @@ function handleClosed() {
 const getForceMount = computed(() => {
   return !unref(destroyOnClose) && unref(hasOpened);
 });
-const getWidthStyle = computed(() => {
-  const innerWidth = unref(width);
-  if (isNumber(innerWidth)) {
-    return { width: `${innerWidth}px` };
-  }
-  if (isString(innerWidth)) {
-    return { width: innerWidth };
-  }
-  return { width: '520px' };
-});
 </script>
 <template>
   <Sheet
@@ -201,9 +189,6 @@ const getWidthStyle = computed(() => {
           'max-h-[100vh]': placement === 'bottom' || placement === 'top',
           hidden: isClosed,
         })
-      "
-      :style="
-        placement === 'left' || placement === 'right' ? getWidthStyle : {}
       "
       :modal="modal"
       :open="state?.isOpen"
@@ -226,7 +211,6 @@ const getWidthStyle = computed(() => {
           cn(
             '!flex flex-row items-center justify-between border-b px-6 py-5',
             headerClass,
-            'drawer-header',
             {
               'px-4 py-3': closable,
               'pl-2': closable && closeIconPlacement === 'left',
@@ -296,7 +280,6 @@ const getWidthStyle = computed(() => {
           <SheetDescription />
         </VisuallyHidden>
       </template>
-      <slot name="prepend-content"></slot>
       <div
         ref="wrapperRef"
         :class="
@@ -347,9 +330,3 @@ const getWidthStyle = computed(() => {
     </SheetContent>
   </Sheet>
 </template>
-<style lang="scss">
-.drawer-header {
-  color: hsl(var(--primary));
-  background: hsl(var(--primary) / 15%);
-}
-</style>

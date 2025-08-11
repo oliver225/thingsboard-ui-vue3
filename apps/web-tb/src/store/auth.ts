@@ -1,30 +1,21 @@
 import type { Recordable, UserInfo } from '@vben/types';
 
-import type { AuthApi } from '#/api';
-
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { LOGIN_PATH } from '@vben/constants';
 import { preferences } from '@vben/preferences';
-import {
-  resetAllStores,
-  useAccessStore,
-  useTabbarStore,
-  useUserStore,
-} from '@vben/stores';
+import { resetAllStores, useAccessStore, useUserStore } from '@vben/stores';
 
 import { notification } from 'ant-design-vue';
 import { defineStore } from 'pinia';
 
-import { getUserInfoApi, loginApi, logoutApi } from '#/api';
+import { getAccessCodesApi, getUserInfoApi, loginApi, logoutApi } from '#/api';
 import { $t } from '#/locales';
 
 export const useAuthStore = defineStore('auth', () => {
   const accessStore = useAccessStore();
   const userStore = useUserStore();
-  const tabbarStore = useTabbarStore();
-
   const router = useRouter();
 
   const loginLoading = ref(false);
@@ -42,22 +33,22 @@ export const useAuthStore = defineStore('auth', () => {
     let userInfo: null | UserInfo = null;
     try {
       loginLoading.value = true;
-      const { refreshToken, token } = await loginApi({
-        username: params.username,
-        password: params.password,
-      });
+      const { accessToken } = await loginApi(params);
 
       // 如果成功获取到 accessToken
-      if (token) {
-        accessStore.setAccessToken(token);
-        accessStore.setRefreshToken(refreshToken);
+      if (accessToken) {
+        accessStore.setAccessToken(accessToken);
 
         // 获取用户信息并存储到 accessStore 中
+        const [fetchUserInfoResult, accessCodes] = await Promise.all([
+          fetchUserInfo(),
+          getAccessCodesApi(),
+        ]);
 
-        userInfo = await fetchUserInfo();
+        userInfo = fetchUserInfoResult;
 
         userStore.setUserInfo(userInfo);
-        accessStore.setAccessCodes([userInfo.authority]);
+        accessStore.setAccessCodes(accessCodes);
 
         if (accessStore.loginExpired) {
           accessStore.setLoginExpired(false);
@@ -65,59 +56,13 @@ export const useAuthStore = defineStore('auth', () => {
           onSuccess
             ? await onSuccess?.()
             : await router.push(
-                userInfo.additionalInfo?.homePath ||
-                  preferences.app.defaultHomePath,
+                userInfo.homePath || preferences.app.defaultHomePath,
               );
         }
 
-        if (userInfo?.firstName || userInfo.lastName || userInfo?.email) {
+        if (userInfo?.realName) {
           notification.success({
-            description: `${$t('authentication.loginSuccessDesc')}:${userInfo?.firstName ?? userInfo.email} `,
-            duration: 3,
-            message: $t('authentication.loginSuccess'),
-          });
-        }
-      }
-    } finally {
-      loginLoading.value = false;
-    }
-
-    return {
-      userInfo,
-    };
-  }
-
-  async function tokenLogin(token: AuthApi.LoginResult) {
-    // 异步处理用户登录操作并获取 accessToken
-    let userInfo: null | UserInfo = null;
-    try {
-      loginLoading.value = true;
-
-      // 如果成功获取到 accessToken
-      if (token) {
-        accessStore.setAccessToken(token.token);
-        accessStore.setRefreshToken(token.refreshToken);
-
-        // 获取用户信息并存储到 accessStore 中
-
-        userInfo = await fetchUserInfo();
-
-        userStore.setUserInfo(userInfo);
-        accessStore.setAccessCodes([userInfo.authority]);
-
-        if (accessStore.loginExpired) {
-          accessStore.setLoginExpired(false);
-        } else {
-          await tabbarStore.closeAllTabs(router);
-          await router.push(
-            userInfo.additionalInfo?.homePath ||
-              preferences.app.defaultHomePath,
-          );
-        }
-
-        if (userInfo?.firstName || userInfo.lastName || userInfo?.email) {
-          notification.success({
-            description: `${$t('authentication.loginSuccessDesc')}:${userInfo?.firstName ?? userInfo.email} `,
+            description: `${$t('authentication.loginSuccessDesc')}:${userInfo?.realName}`,
             duration: 3,
             message: $t('authentication.loginSuccess'),
           });
@@ -155,7 +100,6 @@ export const useAuthStore = defineStore('auth', () => {
   async function fetchUserInfo() {
     let userInfo: null | UserInfo = null;
     userInfo = await getUserInfoApi();
-    userInfo.roles = [userInfo.authority];
     userStore.setUserInfo(userInfo);
     return userInfo;
   }
@@ -166,7 +110,6 @@ export const useAuthStore = defineStore('auth', () => {
 
   return {
     $reset,
-    tokenLogin,
     authLogin,
     fetchUserInfo,
     loginLoading,

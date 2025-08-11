@@ -8,13 +8,7 @@ import type { Component } from 'vue';
 import type { BaseFormComponentType } from '@vben/common-ui';
 import type { Recordable } from '@vben/types';
 
-import {
-  defineAsyncComponent,
-  defineComponent,
-  getCurrentInstance,
-  h,
-  ref,
-} from 'vue';
+import { defineAsyncComponent, defineComponent, h, ref } from 'vue';
 
 import { ApiComponent, globalShareState, IconPicker } from '@vben/common-ui';
 import { $t } from '@vben/locales';
@@ -25,9 +19,6 @@ const AutoComplete = defineAsyncComponent(
   () => import('ant-design-vue/es/auto-complete'),
 );
 const Button = defineAsyncComponent(() => import('ant-design-vue/es/button'));
-const Cascader = defineAsyncComponent(
-  () => import('ant-design-vue/es/cascader'),
-);
 const Checkbox = defineAsyncComponent(
   () => import('ant-design-vue/es/checkbox'),
 );
@@ -85,16 +76,15 @@ const withDefaultPlaceholder = <T extends Component>(
         $t(`ui.placeholder.${type}`);
       // 透传组件暴露的方法
       const innerRef = ref();
-      const publicApi: Recordable<any> = {};
-      expose(publicApi);
-      const instance = getCurrentInstance();
-      instance?.proxy?.$nextTick(() => {
-        for (const key in innerRef.value) {
-          if (typeof innerRef.value[key] === 'function') {
-            publicApi[key] = innerRef.value[key];
-          }
-        }
-      });
+      expose(
+        new Proxy(
+          {},
+          {
+            get: (_target, key) => innerRef.value?.[key],
+            has: (_target, key) => key in (innerRef.value || {}),
+          },
+        ),
+      );
       return () =>
         h(
           component,
@@ -110,7 +100,6 @@ export type ComponentType =
   | 'ApiSelect'
   | 'ApiTreeSelect'
   | 'AutoComplete'
-  | 'Cascader'
   | 'Checkbox'
   | 'CheckboxGroup'
   | 'DatePicker'
@@ -169,21 +158,6 @@ async function initComponentAdapter() {
       },
     ),
     AutoComplete,
-    Cascader: (props, { attrs, slots }) => {
-      return h(
-        Cascader,
-        {
-          ...props,
-          attrs,
-          placeholder:
-            props?.placeholder ||
-            attrs?.placeholder ||
-            $t(`ui.placeholder.select`),
-          class: 'w-full',
-        },
-        slots,
-      );
-    },
     Checkbox,
     CheckboxGroup,
     DatePicker,

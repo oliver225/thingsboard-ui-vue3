@@ -1,6 +1,6 @@
 {
   "name": "@vben/web-tb",
-  "version": "4.0.1",
+  "version": "4.1.0",
   "homepage": "https://github.com/oliver225/thingsboard-ui-vue",
   "bugs": "https://github.com/oliver225/thingsboard-ui-vuen/issues",
   "repository": {
@@ -26,7 +26,19 @@
     "#/*": "./src/*"
   },
   "dependencies": {
-    "@tanstack/vue-query": "catalog:",
+    "@antv/x6": "catalog:",
+    "@antv/x6-plugin-clipboard": "catalog:",
+    "@antv/x6-plugin-history": "catalog:",
+    "@antv/x6-plugin-keyboard": "catalog:",
+    "@antv/x6-plugin-minimap": "catalog:",
+    "@antv/x6-plugin-scroller": "catalog:",
+    "@antv/x6-plugin-selection": "catalog:",
+    "@antv/x6-plugin-snapline": "catalog:",
+    "@antv/x6-plugin-stencil": "catalog:",
+    "@antv/x6-vue-shape": "catalog:",
+    "@svgdotjs/svg.filter.js": "catalog:",
+    "@svgdotjs/svg.js": "catalog:",
+    "@svgdotjs/svg.panzoom.js": "catalog:",
     "@vant/area-data": "catalog:",
     "@vben-core/shadcn-ui": "workspace:*",
     "@vben/access": "workspace:*",
@@ -46,13 +58,9 @@
     "@vueuse/core": "catalog:",
     "ant-design-vue": "catalog:",
     "dayjs": "catalog:",
-    "lodash-es": "catalog:",
+    "jwt-decode": "catalog:",
     "pinia": "catalog:",
-    "prismjs": "catalog:",
     "vue": "catalog:",
     "vue-router": "catalog:"
-  },
-  "devDependencies": {
-    "vite-plugin-prismjs": "catalog:"
   }
 }

@@ -5,44 +5,11 @@
     "codeLogin": "验证码登录",
     "qrcodeLogin": "二维码登录",
     "forgetPassword": "忘记密码",
-    "createPassword": "创建密码",
-    "createPasswordSuccess": "创建密码成功！"
+    "techSupport": "技术支持"
   },
   "dashboard": {
     "title": "概览",
     "analytics": "分析页",
     "workspace": "工作台"
-  },
-  "tabs": {
-    "detail": "详情",
-    "telemetry": "数据",
-    "alarm": "告警",
-    "event": "事件",
-    "relation": "关联",
-    "auditLog": "审计日志"
-  },
-  "search": {
-    "placeholder": "请输入搜索内容"
-  },
-  "submit": {
-    "title": "提交",
-    "success": "提交成功！",
-    "loading": "正在提交中...",
-    "error": "提交失败，请稍后再试"
-  },
-  "remove": {
-    "title": "删除",
-    "success": "删除成功！",
-    "loading": "正在删除中...",
-    "error": "删除失败，请稍后再试"
-  },
-  "detail": {
-    "title": "详情"
-  },
-  "refresh": {
-    "title": "刷新"
-  },
-  "action": {
-    "title": "操作"
   }
 }

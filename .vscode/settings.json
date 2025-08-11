@@ -12,8 +12,6 @@
 
   // editor
   "editor.tabSize": 2,
-  "editor.folding": true,
-  "editor.foldingStrategy": "auto",
   "editor.detectIndentation": false,
   "editor.cursorBlinking": "expand",
   "editor.largeFileOptimizations": true,
@@ -89,20 +87,20 @@
   },
 
   "files.exclude": {
-    // "**/.eslintcache": true,
-    // "**/bower_components": true,
-    // "**/.turbo": true,
-    // "**/.idea": true,
-    // "**/.vitepress": true,
-    // "**/tmp": true,
-    // "**/.git": true,
-    // "**/.svn": true,
-    // "**/.hg": true,
-    // "**/CVS": true,
-    // "**/.stylelintcache": true,
-    // "**/.DS_Store": true,
-    // "**/vite.config.mts.*": true,
-    // "**/tea.yaml": true
+    "**/.eslintcache": true,
+    "**/bower_components": true,
+    "**/.turbo": true,
+    "**/.idea": true,
+    "**/.vitepress": true,
+    "**/tmp": true,
+    "**/.git": true,
+    "**/.svn": true,
+    "**/.hg": true,
+    "**/CVS": true,
+    "**/.stylelintcache": true,
+    "**/.DS_Store": true,
+    "**/vite.config.mts.*": true,
+    "**/tea.yaml": true
   },
   "files.watcherExclude": {
     "**/.git/objects/**": true,

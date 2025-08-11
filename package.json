@@ -1,6 +1,6 @@
 {
   "name": "vben-admin-monorepo",
-  "version": "5.5.7",
+  "version": "5.5.8",
   "private": true,
   "keywords": [
     "monorepo",
@@ -29,7 +29,6 @@
     "build:analyze": "turbo build:analyze",
     "build:tb": "pnpm run build --filter=@vben/web-tb",
     "build:docker": "./scripts/deploy/build-local-docker-image.sh",
-    "build:docs": "pnpm run build --filter=@vben/docs",
     "build:play": "pnpm run build --filter=@vben/playground",
     "changeset": "pnpm exec changeset",
     "check": "pnpm run check:circular && pnpm run check:dep && pnpm run check:type && pnpm check:cspell",
@@ -78,6 +77,7 @@
     "cspell": "catalog:",
     "happy-dom": "catalog:",
     "is-ci": "catalog:",
+    "lefthook": "catalog:",
     "playwright": "catalog:",
     "rimraf": "catalog:",
     "tailwindcss": "catalog:",
@@ -93,7 +93,7 @@
     "node": ">=20.10.0",
     "pnpm": ">=9.12.0"
   },
-  "packageManager": "pnpm@10.10.0",
+  "packageManager": "pnpm@10.12.4",
   "pnpm": {
     "peerDependencyRules": {
       "allowedVersions": {

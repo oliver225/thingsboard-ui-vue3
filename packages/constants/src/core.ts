@@ -1,5 +1,3 @@
-import { EntityType } from './tb/entityType';
-
 /**
  * @zh_CN 登录页面 url 地址
  */
@@ -23,17 +21,3 @@ export const SUPPORT_LANGUAGES: LanguageOption[] = [
     value: 'en-US',
   },
 ];
-
-export const TBV_GITEE_URL = 'https://gitee.com/oliver225/thingsboard-ui-vue3';
-
-export const NULL_UUID = '13814000-1dd2-11b2-8080-808080808080';
-
-export interface EntityId<T> {
-  entityType?: T;
-  id: string;
-}
-
-export const SYS_TENANT_ID: EntityId<EntityType.TENANT> = {
-  entityType: EntityType.TENANT,
-  id: NULL_UUID,
-};

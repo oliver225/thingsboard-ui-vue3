@@ -4,9 +4,7 @@ import { h } from 'vue';
 
 import { setupVbenVxeTable, useVbenVxeGrid } from '@vben/plugins/vxe-table';
 
-import { Button, Checkbox, Image } from 'ant-design-vue';
-
-import { TableAction } from '#/components/Table';
+import { Button, Image } from 'ant-design-vue';
 
 import { useVbenForm } from './form';
 
@@ -15,68 +13,29 @@ setupVbenVxeTable({
     vxeUI.setConfig({
       grid: {
         align: 'center',
-        size: 'medium',
-        // border: true,
-        height: 'auto',
-        keepSource: true,
-        round: true,
-        showOverflow: true,
+        border: false,
         columnConfig: {
           resizable: true,
+        },
+        minHeight: 180,
+        formConfig: {
+          // 全局禁用vxe-table的表单配置，使用formOptions
+          enabled: false,
         },
         proxyConfig: {
           autoLoad: true,
           response: {
-            result: 'data',
-            total: 'totalElements',
-            list: '',
+            result: 'items',
+            total: 'total',
+            list: 'items',
           },
-          seq: true,
           showActiveMsg: true,
           showResponseMsg: false,
         },
-        sortConfig: {
-          defaultSort: { field: 'createdTime', order: 'desc' },
-          remote: true,
-        },
-        toolbarConfig: {
-          custom: true,
-          export: false,
-          // // import: true,
-          // refresh: { code: 'query' },
-        },
+        round: true,
+        showOverflow: true,
+        size: 'small',
       } as VxeTableGridOptions,
-    });
-
-    vxeUI.renderer.add('CellActions', {
-      renderTableDefault(renderOpts, params) {
-        const { column, $table } = params;
-        const { props, options } = renderOpts;
-
-        return h(TableAction, {
-          params,
-          align: column.align ?? 'center',
-          options: options ?? [],
-          el: $table.getEl(),
-          ...props,
-        });
-      },
-    });
-
-    vxeUI.renderer.add('CellCheckbox', {
-      renderTableDefault(renderOpts, params) {
-        const { props } = renderOpts;
-        const { column, row } = params;
-        return h(Checkbox, {
-          checked: props?.convert
-            ? props.convert(row[column.field])
-            : row[column.field],
-          onClick: (e: Event) => {
-            e.stopPropagation();
-            e.preventDefault();
-          },
-        });
-      },
     });
 
     // 表格配置项可以用 cellRender: { name: 'CellImage' },

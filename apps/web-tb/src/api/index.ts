@@ -1,1 +1,1 @@
-export * from './tb';
+export * from './core';

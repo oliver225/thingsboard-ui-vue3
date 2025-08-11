@@ -1,16 +1,8 @@
 {
   "folders": [
     {
-      "name": "@vben/backend-mock",
-      "path": "apps/backend-mock",
-    },
-    {
-      "name": "@vben/web-antd",
-      "path": "apps/web-antd",
-    },
-    {
-      "name": "@vben/docs",
-      "path": "docs",
+      "name": "@vben/web-tb",
+      "path": "apps/web-tb",
     },
     {
       "name": "@vben/commitlint-config",
