@@ -1,5 +1,9 @@
 import type { RequestClient } from './request-client';
-import type { MakeErrorMessageFn, ResponseInterceptorConfig } from './types';
+import type {
+  MakeErrorMessageFn,
+  RequestResponse,
+  ResponseInterceptorConfig,
+} from './types';
 
 import { $t } from '@vben/locales';
 import { isFunction } from '@vben/utils';
@@ -48,12 +52,14 @@ export const authenticateResponseInterceptor = ({
   client,
   doReAuthenticate,
   doRefreshToken,
+  enableRefreshFunc,
   enableRefreshToken,
   formatToken,
 }: {
   client: RequestClient;
   doReAuthenticate: () => Promise<void>;
   doRefreshToken: () => Promise<string>;
+  enableRefreshFunc: (response: RequestResponse) => boolean;
   enableRefreshToken: boolean;
   formatToken: (token: string) => null | string;
 }): ResponseInterceptorConfig => {
@@ -61,7 +67,7 @@ export const authenticateResponseInterceptor = ({
     rejected: async (error) => {
       const { config, response } = error;
       // 如果不是 401 错误，直接抛出异常
-      if (response?.status !== 401) {
+      if (!enableRefreshFunc(response)) {
         throw error;
       }
       // 判断是否启用了 refreshToken 功能

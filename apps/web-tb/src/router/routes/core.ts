@@ -90,6 +90,15 @@ const coreRoutes: RouteRecordRaw[] = [
           title: $t('page.auth.register'),
         },
       },
+      {
+        name: 'CreatePassword',
+        path: 'create-password',
+        component: () =>
+          import('#/views/_core/authentication/create-password.vue'),
+        meta: {
+          title: $t('page.auth.createPassword'),
+        },
+      },
     ],
   },
 ];

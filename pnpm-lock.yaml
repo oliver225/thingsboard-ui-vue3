@@ -682,6 +682,9 @@ importers:
       '@svgdotjs/svg.panzoom.js':
         specifier: 'catalog:'
         version: 2.1.2
+      '@tanstack/vue-query':
+        specifier: 'catalog:'
+        version: 5.81.5(vue@3.5.17(typescript@5.8.3))
       '@vant/area-data':
         specifier: 'catalog:'
         version: 2.0.0

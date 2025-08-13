@@ -11,7 +11,7 @@ export const overridesPreferences = defineOverridesPreferences({
     accessMode: 'frontend',
     name: import.meta.env.VITE_APP_TITLE,
     enableRefreshToken: true,
-    defaultHomePath: '/home',
+    // defaultHomePath: '/home',
     layout: 'header-sidebar-nav',
   },
   logo: {
@@ -21,7 +21,7 @@ export const overridesPreferences = defineOverridesPreferences({
   },
   copyright: {
     enable: false,
-    companyName: 'oliver',
+    companyName: 'Thignsboard UI Vue3',
     date: `2024-${new Date().getFullYear()}`,
     icp: '',
     icpLink: '',

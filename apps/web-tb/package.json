@@ -39,6 +39,7 @@
     "@svgdotjs/svg.filter.js": "catalog:",
     "@svgdotjs/svg.js": "catalog:",
     "@svgdotjs/svg.panzoom.js": "catalog:",
+    "@tanstack/vue-query": "catalog:",
     "@vant/area-data": "catalog:",
     "@vben-core/shadcn-ui": "workspace:*",
     "@vben/access": "workspace:*",

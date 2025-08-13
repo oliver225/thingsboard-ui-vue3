@@ -1,0 +1,72 @@
+import type { BasicQuery, Page } from '#/api/model';
+import type {
+  EntityType,
+  ProcessingStrategyType,
+  SubmitStrategyType,
+} from '#/constants';
+import type { EntityId } from '#/types';
+
+import { requestClient } from '#/api/request';
+
+export interface Queue {
+  id: EntityId<EntityType.QUEUE>;
+  tenantId: EntityId<EntityType.TENANT>;
+  name?: string;
+  topic?: string;
+  pollInterval?: number;
+  partitions?: number;
+  consumerPerPartition?: boolean;
+  packProcessingTimeout?: number;
+  submitStrategy: {
+    batchSize?: number;
+    type?: SubmitStrategyType;
+  };
+  processingStrategy: {
+    failurePercentage?: number;
+    maxPauseBetweenRetries?: number;
+    pauseBetweenRetries?: number;
+    retries?: number;
+    type?: ProcessingStrategyType;
+  };
+  additionalInfo: { description?: string };
+  createdTime?: number;
+}
+
+export function saveQueueApi(
+  serviceType:
+    | 'JS_EXECUTOR'
+    | 'TB_CORE'
+    | 'TB_RULE_ENGINE'
+    | 'TB_TRANSPORT'
+    | 'TB_VC_EXECUTOR',
+  data?: any | Queue,
+) {
+  return requestClient.post<Queue>(`/api/queues`, data, {
+    params: { serviceType },
+  });
+}
+
+export function queueListApi(
+  params: BasicQuery,
+  serviceType:
+    | 'JS_EXECUTOR'
+    | 'TB_CORE'
+    | 'TB_RULE_ENGINE'
+    | 'TB_TRANSPORT'
+    | 'TB_VC_EXECUTOR' = 'TB_RULE_ENGINE',
+) {
+  return requestClient.get<Page<Queue>>(`/api/queues`, {
+    params: { serviceType, ...params },
+  });
+}
+
+export function getQueueByNameApi(queueName: string) {
+  return requestClient.get<Queue>(`/queues/name/${queueName}`);
+}
+export function getQueueByIdApi(queueId: string) {
+  return requestClient.get<Queue>(`/queues/${queueId}`);
+}
+
+export function deleteQueueApi(queueId: string) {
+  return requestClient.delete(`/queues/${queueId}`);
+}

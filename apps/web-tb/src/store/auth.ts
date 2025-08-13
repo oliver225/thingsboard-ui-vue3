@@ -1,22 +1,31 @@
-import type { Recordable, UserInfo } from '@vben/types';
+import type { Recordable } from '@vben/types';
+
+import type { AuthApi } from '#/api';
+import type { UserInfo } from '#/types';
 
 import { ref } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { LOGIN_PATH } from '@vben/constants';
 import { preferences } from '@vben/preferences';
-import { resetAllStores, useAccessStore, useUserStore } from '@vben/stores';
+import {
+  resetAllStores,
+  useAccessStore,
+  useTabbarStore,
+  useUserStore,
+} from '@vben/stores';
 
-import { notification } from 'ant-design-vue';
+import { message, notification } from 'ant-design-vue';
 import { defineStore } from 'pinia';
 
-import { getAccessCodesApi, getUserInfoApi, loginApi, logoutApi } from '#/api';
+import { getUserInfoApi, loginApi, logoutApi } from '#/api';
 import { $t } from '#/locales';
 
 export const useAuthStore = defineStore('auth', () => {
   const accessStore = useAccessStore();
   const userStore = useUserStore();
   const router = useRouter();
+  const tabbarStore = useTabbarStore();
 
   const loginLoading = ref(false);
 
@@ -33,22 +42,20 @@ export const useAuthStore = defineStore('auth', () => {
     let userInfo: null | UserInfo = null;
     try {
       loginLoading.value = true;
-      const { accessToken } = await loginApi(params);
-
+      const { refreshToken, token } = await loginApi({
+        username: params.username,
+        password: params.password,
+      });
       // 如果成功获取到 accessToken
-      if (accessToken) {
-        accessStore.setAccessToken(accessToken);
-
+      if (token) {
+        accessStore.setAccessToken(token);
+        accessStore.setRefreshToken(refreshToken);
         // 获取用户信息并存储到 accessStore 中
-        const [fetchUserInfoResult, accessCodes] = await Promise.all([
-          fetchUserInfo(),
-          getAccessCodesApi(),
-        ]);
 
-        userInfo = fetchUserInfoResult;
+        userInfo = await fetchUserInfo();
 
         userStore.setUserInfo(userInfo);
-        accessStore.setAccessCodes(accessCodes);
+        accessStore.setAccessCodes([userInfo.authority]);
 
         if (accessStore.loginExpired) {
           accessStore.setLoginExpired(false);
@@ -56,13 +63,14 @@ export const useAuthStore = defineStore('auth', () => {
           onSuccess
             ? await onSuccess?.()
             : await router.push(
-                userInfo.homePath || preferences.app.defaultHomePath,
+                userInfo.additionalInfo?.homePath ||
+                  preferences.app.defaultHomePath,
               );
         }
 
-        if (userInfo?.realName) {
+        if (userInfo?.firstName || userInfo?.email) {
           notification.success({
-            description: `${$t('authentication.loginSuccessDesc')}:${userInfo?.realName}`,
+            description: `${$t('authentication.loginSuccessDesc')}:${userInfo?.firstName || userInfo?.email}`,
             duration: 3,
             message: $t('authentication.loginSuccess'),
           });
@@ -77,14 +85,60 @@ export const useAuthStore = defineStore('auth', () => {
     };
   }
 
+  async function tokenLogin(token: AuthApi.JwtPair) {
+    // 异步处理用户登录操作并获取 accessToken
+    let userInfo: null | UserInfo = null;
+    try {
+      loginLoading.value = true;
+
+      // 如果成功获取到 accessToken
+      if (token) {
+        accessStore.setAccessToken(token.token);
+        accessStore.setRefreshToken(token.refreshToken);
+
+        // 获取用户信息并存储到 accessStore 中
+
+        userInfo = await fetchUserInfo();
+
+        userStore.setUserInfo(userInfo);
+        accessStore.setAccessCodes([userInfo.authority]);
+
+        if (accessStore.loginExpired) {
+          accessStore.setLoginExpired(false);
+        } else {
+          await tabbarStore.closeAllTabs(router);
+          await router.push(
+            userInfo.additionalInfo?.homePath ||
+              preferences.app.defaultHomePath,
+          );
+        }
+
+        if (userInfo?.firstName || userInfo?.email) {
+          notification.success({
+            description: `${$t('authentication.loginSuccessDesc')}:${userInfo?.firstName ?? userInfo.email} `,
+            duration: 3,
+            message: $t('authentication.loginSuccess'),
+          });
+        }
+      }
+    } finally {
+      loginLoading.value = false;
+    }
+
+    return {
+      userInfo,
+    };
+  }
   async function logout(redirect: boolean = true) {
     try {
       await logoutApi();
     } catch {
       // 不做任何处理
+      message.error($t('authentication.logoutFailed'));
+    } finally {
+      resetAllStores();
+      accessStore.setLoginExpired(false);
     }
-    resetAllStores();
-    accessStore.setLoginExpired(false);
 
     // 回登录页带上当前路由地址
     await router.replace({
@@ -111,6 +165,7 @@ export const useAuthStore = defineStore('auth', () => {
   return {
     $reset,
     authLogin,
+    tokenLogin,
     fetchUserInfo,
     loginLoading,
     logout,
