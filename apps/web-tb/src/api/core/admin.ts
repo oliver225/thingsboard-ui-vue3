@@ -1,7 +1,6 @@
 import type { Recordable } from '@vben/types';
 
 import type { EntityType } from '#/constants';
-import type { EntityId } from '#/types';
 
 import { requestClient } from '#/api/request';
 

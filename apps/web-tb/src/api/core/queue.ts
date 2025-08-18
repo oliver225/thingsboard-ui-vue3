@@ -4,7 +4,6 @@ import type {
   ProcessingStrategyType,
   SubmitStrategyType,
 } from '#/constants';
-import type { EntityId } from '#/types';
 
 import { requestClient } from '#/api/request';
 

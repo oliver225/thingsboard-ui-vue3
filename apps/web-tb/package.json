@@ -40,6 +40,7 @@
     "@svgdotjs/svg.js": "catalog:",
     "@svgdotjs/svg.panzoom.js": "catalog:",
     "@tanstack/vue-query": "catalog:",
+    "@types/lodash-es": "^4.17.12",
     "@vant/area-data": "catalog:",
     "@vben-core/shadcn-ui": "workspace:*",
     "@vben/access": "workspace:*",
@@ -60,8 +61,11 @@
     "ant-design-vue": "catalog:",
     "dayjs": "catalog:",
     "jwt-decode": "catalog:",
+    "lodash-es": "4.17.21",
     "pinia": "catalog:",
+    "sortablejs": "1.15.6",
     "vue": "catalog:",
-    "vue-router": "catalog:"
+    "vue-router": "catalog:",
+    "vue-types": "^6.0.0"
   }
 }

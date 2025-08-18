@@ -91,7 +91,9 @@ const menus = computed(() => [
 ]);
 
 const avatar = computed(() => {
-  return userStore.userInfo?.avatar ?? preferences.app.defaultAvatar;
+  return (
+    userStore.userInfo?.additionalInfo?.avatar ?? preferences.app.defaultAvatar
+  );
 });
 
 async function handleLogout() {
@@ -128,9 +130,9 @@ watch(
       <UserDropdown
         :avatar
         :menus
-        :text="userStore.userInfo?.realName"
-        description="ann.vben@gmail.com"
-        tag-text="Pro"
+        :text="userStore.userInfo?.firstName"
+        :description="userStore.userInfo?.email"
+        :tag-text="userStore.userInfo?.authority"
         @logout="handleLogout"
       />
     </template>

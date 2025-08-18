@@ -1,0 +1,18 @@
+{
+  "title": "租户配置",
+  "detail": "租户配置详情",
+  "removeContent": "确认后，租户配置和所有相关数据将不可恢复!",
+  "form": {
+    "name": "名称",
+    "default": "默认",
+    "isolatedTbRuleEngine": "独立规则引擎",
+    "description": "说明",
+    "createdTime": "创建时间"
+  },
+  "button": {
+    "add": "添加租户配置",
+    "edit": "编辑租户配置",
+    "remove": "删除租户配置",
+    "copyId": "复制租户配置ID"
+  }
+}

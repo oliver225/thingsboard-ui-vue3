@@ -3,8 +3,11 @@ import type { VxeTableGridOptions } from '@vben/plugins/vxe-table';
 import { h } from 'vue';
 
 import { setupVbenVxeTable, useVbenVxeGrid } from '@vben/plugins/vxe-table';
+import { isFunction } from '@vben/utils';
 
 import { Button, Image } from 'ant-design-vue';
+
+import { TableAction } from '#/components/Table';
 
 import { useVbenForm } from './form';
 
@@ -13,28 +16,45 @@ setupVbenVxeTable({
     vxeUI.setConfig({
       grid: {
         align: 'center',
-        border: false,
+        size: 'medium',
+        border: true,
+        stripe: true, // 斑马纹，
+        round: true,
+        minHeight: 180,
+        showOverflow: true,
         columnConfig: {
           resizable: true,
         },
-        minHeight: 180,
-        formConfig: {
-          // 全局禁用vxe-table的表单配置，使用formOptions
-          enabled: false,
+        rowConfig: {
+          id: 'id.id',
         },
         proxyConfig: {
           autoLoad: true,
           response: {
-            result: 'items',
-            total: 'total',
-            list: 'items',
+            result: 'data',
+            total: 'totalElements',
+            list: '',
           },
+          seq: true,
           showActiveMsg: true,
           showResponseMsg: false,
         },
-        round: true,
-        showOverflow: true,
-        size: 'small',
+        sortConfig: {
+          defaultSort: { field: 'createdTime', order: 'desc' },
+          remote: true,
+        },
+        remoteConfig: {
+          queryMethod: 'query',
+        },
+
+        toolbarConfig: {
+          custom: true,
+          export: true,
+          refresh: { code: 'query' },
+        },
+        exportConfig: {
+          filename: 'export',
+        },
       } as VxeTableGridOptions,
     });
 
@@ -55,6 +75,28 @@ setupVbenVxeTable({
           { size: 'small', type: 'link' },
           { default: () => props?.text },
         );
+      },
+    });
+
+    // 操作按钮列
+    vxeUI.renderer.add('CellAction', {
+      renderTableDefault(renderOpts, params) {
+        const { row, column } = params;
+        const { props } = renderOpts;
+        const actions =
+          props?.actions && isFunction(props?.actions)
+            ? props.actions(row, column)
+            : props?.actions;
+        const dropDownActions =
+          props?.dropDownActions && isFunction(props?.dropDownActions)
+            ? props.dropDownActions(row, column)
+            : props?.dropDownActions;
+        return h(TableAction, {
+          ...props,
+          align: column.align ?? 'center',
+          actions,
+          dropDownActions,
+        });
       },
     });
 

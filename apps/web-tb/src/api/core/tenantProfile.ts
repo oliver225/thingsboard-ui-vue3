@@ -2,7 +2,6 @@ import type { Queue } from './queue';
 
 import type { BasicQuery, EntityInfo, Page } from '#/api/model';
 import type { EntityType } from '#/constants';
-import type { EntityId } from '#/types';
 
 import { requestClient } from '#/api/request';
 

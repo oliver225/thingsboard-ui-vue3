@@ -43,7 +43,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
   title: `${$t('tenantProfile.detail')}`,
   overlayBlur: 0,
   footer: false,
-  width: '50%',
+  class: ['w-1/2'],
 
   async onOpenChange(isOpen: boolean) {
     drawerApi.setState({ loading: true });
@@ -68,14 +68,14 @@ function reset() {
 
 function handleEdit() {
   drawerApi.close();
-  emits('edit', { row: record.value });
+  emits('edit', { ...record.value });
 }
 function handleDelete() {
-  emits('delete', { row: record.value });
+  emits('delete', { ...record.value });
   drawerApi.close();
 }
 function handleDefault() {
-  emits('default', { row: record.value });
+  emits('default', { ...record.value });
   drawerApi.close();
 }
 
@@ -94,7 +94,7 @@ function handleCopyId() {
     </template>
     <template #title>
       <div class="flex items-center gap-2">
-        <IconifyIcon class="size-10" icon="mdi:account-box-multiple" />
+        <IconifyIcon class="size-8" icon="mdi:account-box-multiple" />
         <div>
           <p class="text-foreground text-lg font-semibold">
             {{ record?.name }}

@@ -51,6 +51,8 @@ import './style.css';
 
 interface Props extends VxeGridProps {
   api: ExtendedVxeGridApi;
+  tableHeaderTitle: string | undefined;
+  tableHeaderTitleHelp: string | undefined;
 }
 
 const props = withDefaults(defineProps<Props>(), {});
@@ -62,6 +64,7 @@ const TOOLBAR_TOOLS = 'toolbar-tools';
 const TABLE_TITLE = 'table-title';
 
 const gridRef = useTemplateRef<VxeGridInstance>('gridRef');
+const tableHeaderRef = useTemplateRef<HTMLDivElement>('tableHeaderRef');
 
 const state = props.api?.useStore?.();
 
@@ -71,6 +74,8 @@ const {
   gridClass,
   gridEvents,
   formOptions,
+  tableHeaderTitle,
+  tableHeaderTitleHelp,
   tableTitle,
   tableTitleHelp,
   showSearchForm,
@@ -360,6 +365,21 @@ onUnmounted(() => {
 
 <template>
   <div :class="cn('bg-card h-full rounded-md', className)">
+    <div
+      ref="tableHeaderRef"
+      class="px-3 pt-3"
+      v-if="tableHeaderTitle || tableHeaderTitleHelp || $slots['table-header']"
+    >
+      <div>
+        <p v-if="tableHeaderTitle" class="mb-2 text-lg font-semibold">
+          {{ tableHeaderTitle }}
+        </p>
+        <p v-if="tableHeaderTitleHelp" class="text-muted-foreground">
+          {{ tableHeaderTitleHelp }}
+        </p>
+      </div>
+      <slot v-if="$slots['table-header']" name="table-header"></slot>
+    </div>
     <VxeGrid
       ref="gridRef"
       :class="

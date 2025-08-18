@@ -280,6 +280,7 @@ const getForceMount = computed(() => {
           <SheetDescription />
         </VisuallyHidden>
       </template>
+      <slot name="prepend-content"></slot>
       <div
         ref="wrapperRef"
         :class="

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { VxeGridProps } from '#/adapter/vxe-table';
-import type { TenantInfo } from '#/api';
+import type { TenantApi } from '#/api';
 
 import { reactive, watch } from 'vue';
 
@@ -12,6 +12,7 @@ import { message } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import { tenantDeleteApi, tenantInfoListApi } from '#/api';
+import { ToolBar, TopAction } from '#/components/Table';
 import { router } from '#/router';
 
 import Detail from './detail.vue';
@@ -118,7 +119,7 @@ const tableAction = {
   ],
 };
 
-const gridOptions: VxeGridProps<TenantInfo> = {
+const gridOptions: VxeGridProps<TenantApi.TenantInfo> = {
   columns: [
     { title: '序号', type: 'seq', width: 60 },
     { field: 'title', sortable: true, title: $t('tenant.form.title') },

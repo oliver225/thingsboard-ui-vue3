@@ -1,3 +1,5 @@
+import { isObject } from '@vben/utils';
+
 import { message } from 'ant-design-vue';
 
 /**
@@ -17,4 +19,14 @@ export function copyToClipboard(
   document.execCommand('copy');
   message.success(msg);
   input.remove();
+}
+
+export function deepMerge<T = any>(src: any = {}, target: any = {}): T {
+  let key: string;
+  for (key in target) {
+    src[key] = isObject(src[key])
+      ? deepMerge(src[key], target[key])
+      : (src[key] = target[key]);
+  }
+  return src;
 }

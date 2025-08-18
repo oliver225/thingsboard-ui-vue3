@@ -685,6 +685,9 @@ importers:
       '@tanstack/vue-query':
         specifier: 'catalog:'
         version: 5.81.5(vue@3.5.17(typescript@5.8.3))
+      '@types/lodash-es':
+        specifier: ^4.17.12
+        version: 4.17.12
       '@vant/area-data':
         specifier: 'catalog:'
         version: 2.0.0
@@ -745,15 +748,24 @@ importers:
       jwt-decode:
         specifier: 'catalog:'
         version: 4.0.0
+      lodash-es:
+        specifier: 4.17.21
+        version: 4.17.21
       pinia:
         specifier: ^3.0.3
         version: 3.0.3(typescript@5.8.3)(vue@3.5.17(typescript@5.8.3))
+      sortablejs:
+        specifier: ^1.15.6
+        version: 1.15.6
       vue:
         specifier: ^3.5.17
         version: 3.5.17(typescript@5.8.3)
       vue-router:
         specifier: 'catalog:'
         version: 4.5.1(vue@3.5.17(typescript@5.8.3))
+      vue-types:
+        specifier: ^6.0.0
+        version: 6.0.0(vue@3.5.17(typescript@5.8.3))
 
   internal/lint-configs/commitlint-config:
     dependencies:
@@ -4424,6 +4436,9 @@ packages:
 
   '@types/json-schema@7.0.15':
     resolution: {integrity: sha512-5+fP8P8MFNC+AyZCDxrB2pkZFPGzqQWUzpSeuuVLvm8VMcorNYavBqoFcxK8bQz4Qsbn4oUEEem4wDLfcysGHA==}
+
+  '@types/lodash-es@4.17.12':
+    resolution: {integrity: sha512-0NgftHUcV4v34VhXm8QBSftKVXtbkBG3ViCjs6+eJ5a6y6Mi/jiFGPc1sC7QK+9BFhWrURE3EOggmWaSxL9OzQ==}
 
   '@types/lodash.clonedeep@4.5.9':
     resolution: {integrity: sha512-19429mWC+FyaAhOLzsS8kZUsI+/GmBAQ0HFiCPsKGU+7pBXOQWhyrY6xNNDwUSX8SMZMJvuFVMF9O5dQOlQK9Q==}
@@ -10648,6 +10663,15 @@ packages:
     peerDependencies:
       vue: ^3.5.17
 
+  vue-types@6.0.0:
+    resolution: {integrity: sha512-fBgCA4nrBrB8SCU/AN40tFq8HUxLGBvU2ds7a5+SEDse6dYc+TJyvy8mWiwwL8oWIC/aGS/8nTqmhwxApgU5eA==}
+    engines: {node: '>=14.0.0'}
+    peerDependencies:
+      vue: ^3.5.17
+    peerDependenciesMeta:
+      vue:
+        optional: true
+
   vue@3.5.17:
     resolution: {integrity: sha512-LbHV3xPN9BeljML+Xctq4lbz2lVHCR6DtbpTf5XIO6gugpXUN49j2QQPcMj086r9+AkJ0FfUT8xjulKKBkkr9g==}
     peerDependencies:
@@ -13866,6 +13890,10 @@ snapshots:
   '@types/json-bigint@1.0.4': {}
 
   '@types/json-schema@7.0.15': {}
+
+  '@types/lodash-es@4.17.12':
+    dependencies:
+      '@types/lodash': 4.17.16
 
   '@types/lodash.clonedeep@4.5.9':
     dependencies:
@@ -20762,6 +20790,10 @@ snapshots:
   vue-types@3.0.2(vue@3.5.17(typescript@5.8.3)):
     dependencies:
       is-plain-object: 3.0.1
+      vue: 3.5.17(typescript@5.8.3)
+
+  vue-types@6.0.0(vue@3.5.17(typescript@5.8.3)):
+    optionalDependencies:
       vue: 3.5.17(typescript@5.8.3)
 
   vue@3.5.17(typescript@5.8.3):

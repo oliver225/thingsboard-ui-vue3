@@ -235,7 +235,7 @@ function handleDeleteRateItem(index: number) {
       border-radius: 4px;
       padding: 1px 6px;
       margin: auto 4px;
-      color: @primary-color;
+      // color: @primary-color;
       font-weight: 500;
     }
 
@@ -276,7 +276,7 @@ function handleDeleteRateItem(index: number) {
       border-radius: 4px;
       padding: 1px 6px;
       margin: auto 4px;
-      color: @primary-color;
+      // color: @primary-color;
       font-weight: 500;
     }
 

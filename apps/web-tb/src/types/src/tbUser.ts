@@ -2,11 +2,6 @@ import type { BasicUserInfo } from '@vben/types';
 
 import type { Authority, EntityType } from '#/constants';
 
-interface EntityId<T> {
-  entityType?: T;
-  id: string;
-}
-
 /** 用户信息 */
 interface UserInfo extends BasicUserInfo {
   id: EntityId<EntityType.USER>;
@@ -32,4 +27,4 @@ interface UserInfo extends BasicUserInfo {
   createdTime: number;
 }
 
-export type { EntityId, UserInfo };
+export type { UserInfo };

@@ -1,13 +1,15 @@
 <script lang="ts" setup>
-import type { VxeGridProps } from '#/adapter/vxe-table';
+import type { Recordable } from '@vben/types';
+
+import type { VxeGridPropTypes } from '#/adapter/vxe-table';
 import type { TenantProfile } from '#/api';
+import type { ActionItem } from '#/components/Table';
 
 import { reactive, watch } from 'vue';
 
 import { confirm, Page, useVbenDrawer, useVbenModal } from '@vben/common-ui';
 import { $t } from '@vben/locales';
 
-import { areaList } from '@vant/area-data';
 import { message } from 'ant-design-vue';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
@@ -16,6 +18,7 @@ import {
   setTenantProfileDefaultApi,
   tenantProfileListApi,
 } from '#/api';
+import { TableTopAction } from '#/components/Table';
 
 import Detail from './detail.vue';
 import Form from './form.vue';
@@ -62,154 +65,145 @@ const [FormModal, formModalApi] = useVbenModal({
   connectedComponent: Form,
 });
 
-function handleDetail({ _column, _$table, row }: any) {
-  detailDrawerApi.setData({ id: row?.id?.id }).open();
+function handleDetail(record: any | TenantProfile) {
+  detailDrawerApi.setData({ id: record?.id?.id }).open();
 }
 
 async function handleSuccess() {
   await reload();
 }
-function handleForm({ _column, _$table, row }: any) {
+function handleForm(record: any | TenantProfile) {
   formModalApi
     .setState({
-      title: row?.id?.id
+      title: record?.id?.id
         ? `${$t('tenantProfile.button.edit')}`
         : `${$t('tenantProfile.button.add')}`,
     })
-    .setData({ id: row?.id?.id })
+    .setData({ id: record?.id?.id })
     .open();
 }
 
-function handleDelete({ _column, _$table, row }: any) {
+function handleDelete(record: any | TenantProfile) {
   confirm({
-    title: `${$t('tenantProfile.button.remove')}[${row.name}]`,
+    title: `${$t('tenantProfile.button.remove')}[${record.name}]`,
     content: `${$t('tenantProfile.removeContent')}`,
     icon: 'error',
     confirmText: `${$t('page.remove.title')}`,
     beforeClose({ isConfirm }) {
-      return isConfirm ? deleteTenantProfileApi(row.id.id) : true;
+      return isConfirm ? deleteTenantProfileApi(record.id.id) : true;
     },
   }).then(async () => {
-    message.success(`${$t('tenantProfile.button.remove')}[${row.name}]成功！`);
+    message.success(
+      `${$t('tenantProfile.button.remove')}[${record.name}]成功！`,
+    );
     await reload();
   });
 }
 
-function handleDefault({ _column, _$table, row }: any) {
+function handleDefault(record: any | TenantProfile) {
   confirm({
-    title: `设为默认租户配置[${row.name}]`,
+    title: `设为默认租户配置[${record.name}]`,
     content: `${$t('此租户配置将被标记为默认配置，并将用于未指定配置的新租户。')}`,
     icon: 'warning',
     beforeClose({ isConfirm }) {
-      return isConfirm ? setTenantProfileDefaultApi(row.id.id) : true;
+      return isConfirm ? setTenantProfileDefaultApi(record.id.id) : true;
     },
   }).then(async () => {
-    message.success(`设为默认租户配置[${row.name}]成功！`);
+    message.success(`设为默认租户配置[${record.name}]成功！`);
     await reload();
   });
 }
 
 const tableAction = {
-  actions: [
-    {
-      label: `${$t('设为默认')}`,
-      tooltip: `${$t('设置该租户配置为默认')}`,
-      icon: 'mdi:flag',
-      disabled: ({ row }: any) => row.default,
-      onClick: handleDefault,
-    },
+  actions: (record: Recordable<any>): ActionItem[] => [
     {
       label: `${$t('page.detail.title')}`,
       tooltip: `${$t('page.detail.title')}`,
       icon: 'ant-design:appstore-outlined',
-      onClick: handleDetail,
+      onClick: handleDetail.bind(this, { ...record }),
+    },
+    {
+      label: `${$t('设为默认')}`,
+      tooltip: `${$t('设置该租户配置为默认')}`,
+      icon: 'mdi:flag',
+      disabled: record.default === true,
+      onClick: handleDefault.bind(this, { ...record }),
     },
     {
       label: `${$t('page.remove.title')}`,
       tooltip: `${$t('page.remove.title')}`,
       icon: 'ant-design:delete-outlined',
-      danger: true,
-      onClick: handleDelete,
+      color: 'destructive',
+      onClick: handleDelete.bind(this, { ...record }),
     },
   ],
 };
 
-const gridOptions: VxeGridProps<TenantProfile> = {
-  columns: [
-    { title: '序号', type: 'seq', width: 60 },
-    {
-      field: 'name',
-      title: $t('tenantProfile.form.name'),
-      sortable: true,
-    },
-    {
-      field: 'description',
-      title: $t('tenantProfile.form.description'),
-    },
-    {
-      field: 'isolatedTbRuleEngine',
-      title: $t('tenantProfile.form.isolatedTbRuleEngine'),
-      width: 100,
-      cellRender: { name: 'CellCheckbox' },
-    },
-    {
-      field: 'default',
-      title: $t('tenantProfile.form.default'),
-      width: 100,
-      cellRender: { name: 'CellCheckbox' },
-    },
-    {
-      field: 'createdTime',
-      sortable: true,
-      formatter: 'formatDateTime',
-      width: 160,
-      title: $t('tenant.form.createdTime'),
-    },
-    {
-      title: $t('page.action.title'),
-      field: 'action',
-      align: 'center',
-      fixed: 'right',
-      cellRender: {
-        name: 'CellActions',
-        props: tableAction,
-      },
-      width: 180,
-    },
-  ],
-
-  proxyConfig: {
-    ajax: {
-      query: fetch,
-    },
-    sort: true,
+const tableColumns: VxeGridPropTypes.Columns<TenantProfile> = [
+  { title: '序号', type: 'seq', width: 60 },
+  {
+    field: 'name',
+    title: $t('tenantProfile.form.name'),
+    sortable: true,
   },
-};
+  {
+    field: 'description',
+    title: $t('tenantProfile.form.description'),
+  },
+  {
+    field: 'isolatedTbRuleEngine',
+    title: $t('tenantProfile.form.isolatedTbRuleEngine'),
+    width: 100,
+    cellRender: { name: 'CellCheckbox' },
+  },
+  {
+    field: 'default',
+    title: $t('tenantProfile.form.default'),
+    width: 100,
+    cellRender: { name: 'CellCheckbox' },
+  },
+  {
+    field: 'createdTime',
+    sortable: true,
+    formatter: 'formatDateTime',
+    width: 160,
+    title: $t('tenant.form.createdTime'),
+  },
+  {
+    title: $t('page.action.title'),
+    field: 'action',
+    align: 'center',
+    fixed: 'right',
+    cellRender: {
+      name: 'CellAction',
+      props: tableAction,
+    },
+    width: 180,
+  },
+];
 
 const [Grid, gridApi] = useVbenVxeGrid({
-  gridOptions,
+  gridOptions: {
+    columns: tableColumns,
+    proxyConfig: {
+      ajax: {
+        query: fetch,
+      },
+      sort: true,
+    },
+  },
 });
 </script>
 
 <template>
   <Page auto-content-height>
-    <Grid
-      :top-title="$t('tenantProfile.title')"
-      top-title-help="包含一个租户相关的配置信息。"
-    >
-      <template #toolbar-tools>
-        <ToolBar :api="gridApi" />
-      </template>
+    <Grid :table-header-title="$t('tenantProfile.title')">
       <template #toolbar-actions>
-        <TopAction
+        <TableTopAction
           :btn-title="$t('tenantProfile.button.add')"
           v-model:search-text="searchParam.textSearch"
           @btn-click="handleForm({})"
         />
-      </template>
-
-      <template #citySolt="{ row }">
-        <span v-if="row.city"> {{ areaList.city_list[row.city] }}</span>
       </template>
     </Grid>
     <FormModal @success="handleSuccess" />
