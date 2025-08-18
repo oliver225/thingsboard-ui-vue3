@@ -31,89 +31,6 @@ const searchParam = reactive({
   textSearch: '',
 });
 
-watch(
-  () => searchParam.textSearch,
-  () => {
-    if (gridApi) {
-      gridApi.query();
-    }
-  },
-);
-
-async function reload() {
-  searchParam.textSearch = '';
-  if (gridApi) {
-    await gridApi.query();
-  }
-}
-
-async function fetch({ page, sort }: any) {
-  return await tenantProfileListApi({
-    page: page.currentPage - 1,
-    pageSize: page.pageSize,
-    sortProperty: sort.field,
-    sortOrder: sort.order,
-    ...searchParam,
-  });
-}
-
-const [DetailDrawer, detailDrawerApi] = useVbenDrawer({
-  connectedComponent: Detail,
-});
-
-const [FormModal, formModalApi] = useVbenModal({
-  connectedComponent: Form,
-});
-
-function handleDetail(record: any | TenantProfile) {
-  detailDrawerApi.setData({ id: record?.id?.id }).open();
-}
-
-async function handleSuccess() {
-  await reload();
-}
-function handleForm(record: any | TenantProfile) {
-  formModalApi
-    .setState({
-      title: record?.id?.id
-        ? `${$t('tenantProfile.button.edit')}`
-        : `${$t('tenantProfile.button.add')}`,
-    })
-    .setData({ id: record?.id?.id })
-    .open();
-}
-
-function handleDelete(record: any | TenantProfile) {
-  confirm({
-    title: `${$t('tenantProfile.button.remove')}[${record.name}]`,
-    content: `${$t('tenantProfile.removeContent')}`,
-    icon: 'error',
-    confirmText: `${$t('page.remove.title')}`,
-    beforeClose({ isConfirm }) {
-      return isConfirm ? deleteTenantProfileApi(record.id.id) : true;
-    },
-  }).then(async () => {
-    message.success(
-      `${$t('tenantProfile.button.remove')}[${record.name}]成功！`,
-    );
-    await reload();
-  });
-}
-
-function handleDefault(record: any | TenantProfile) {
-  confirm({
-    title: `设为默认租户配置[${record.name}]`,
-    content: `${$t('此租户配置将被标记为默认配置，并将用于未指定配置的新租户。')}`,
-    icon: 'warning',
-    beforeClose({ isConfirm }) {
-      return isConfirm ? setTenantProfileDefaultApi(record.id.id) : true;
-    },
-  }).then(async () => {
-    message.success(`设为默认租户配置[${record.name}]成功！`);
-    await reload();
-  });
-}
-
 const tableAction = {
   actions: (record: Recordable<any>): ActionItem[] => [
     {
@@ -193,6 +110,89 @@ const [Grid, gridApi] = useVbenVxeGrid({
     },
   },
 });
+
+const [DetailDrawer, detailDrawerApi] = useVbenDrawer({
+  connectedComponent: Detail,
+});
+
+const [FormModal, formModalApi] = useVbenModal({
+  connectedComponent: Form,
+});
+
+watch(
+  () => searchParam.textSearch,
+  () => {
+    if (gridApi) {
+      gridApi.query();
+    }
+  },
+);
+
+async function reload() {
+  searchParam.textSearch = '';
+  if (gridApi) {
+    await gridApi.query();
+  }
+}
+
+async function fetch({ page, sort }: any) {
+  return await tenantProfileListApi({
+    page: page.currentPage - 1,
+    pageSize: page.pageSize,
+    sortProperty: sort.field,
+    sortOrder: sort.order,
+    ...searchParam,
+  });
+}
+
+function handleDetail(record: any | TenantProfile) {
+  detailDrawerApi.setData({ id: record?.id?.id }).open();
+}
+
+async function handleSuccess() {
+  await reload();
+}
+function handleForm(record: any | TenantProfile) {
+  formModalApi
+    .setState({
+      title: record?.id?.id
+        ? `${$t('tenantProfile.button.edit')}`
+        : `${$t('tenantProfile.button.add')}`,
+    })
+    .setData({ id: record?.id?.id })
+    .open();
+}
+
+function handleDelete(record: any | TenantProfile) {
+  confirm({
+    title: `${$t('tenantProfile.button.remove')}[${record.name}]`,
+    content: `${$t('tenantProfile.removeContent')}`,
+    icon: 'error',
+    confirmText: `${$t('page.remove.title')}`,
+    beforeClose({ isConfirm }) {
+      return isConfirm ? deleteTenantProfileApi(record.id.id) : true;
+    },
+  }).then(async () => {
+    message.success(
+      `${$t('tenantProfile.button.remove')}[${record.name}]成功！`,
+    );
+    await reload();
+  });
+}
+
+function handleDefault(record: any | TenantProfile) {
+  confirm({
+    title: `设为默认租户配置[${record.name}]`,
+    content: `${$t('此租户配置将被标记为默认配置，并将用于未指定配置的新租户。')}`,
+    icon: 'warning',
+    beforeClose({ isConfirm }) {
+      return isConfirm ? setTenantProfileDefaultApi(record.id.id) : true;
+    },
+  }).then(async () => {
+    message.success(`设为默认租户配置[${record.name}]成功！`);
+    await reload();
+  });
+}
 </script>
 
 <template>
