@@ -9,8 +9,8 @@
         line-height: 1.6rem;
         display: flex;
         .iconify {
-          width: 20px;
-          height: 20px;
+          width: 18px;
+          height: 18px;
           margin-right: 8px;
         }
       }
@@ -28,4 +28,9 @@
   overflow: clip;
   object-fit: contain;
   overflow-clip-margin: content-box;
+}
+
+.drawer-header {
+  color: hsl(var(--primary));
+  background: hsl(var(--primary) / 25%);
 }

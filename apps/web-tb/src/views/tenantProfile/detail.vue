@@ -86,7 +86,7 @@ function handleCopyId() {
 }
 </script>
 <template>
-  <Drawer>
+  <Drawer header-class="drawer-header">
     <template #extra>
       <VbenIconButton class="mr-2">
         <IconifyIcon class="size-4" icon="mdi:help-circle" />
