@@ -3,7 +3,7 @@ import type { UserInfo } from '#/types';
 
 import { h, ref } from 'vue';
 
-import { alert, useVbenDrawer } from '@vben/common-ui';
+import { confirm, useVbenDrawer } from '@vben/common-ui';
 import { IconifyIcon } from '@vben/icons';
 import { $t } from '@vben/locales';
 
@@ -55,7 +55,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
   title: `${$t('用户详情')}`,
   overlayBlur: 0,
   footer: false,
-  width: '50%',
+  class: ['w-1/2'],
 
   async onOpenChange(isOpen: boolean) {
     drawerApi.setState({ loading: true });
@@ -77,25 +77,20 @@ function reset() {
 
 function handleLoginUser() {
   drawerApi.close();
-  emits('login', { row: record.value });
+  emits('login', { ...record.value });
 }
 function handleEdit() {
   drawerApi.close();
-  emits('edit', { row: record.value });
+  emits('edit', { ...record.value });
 }
 function handleDelete() {
   drawerApi.close();
-  emits('delete', { row: record.value });
+  emits('delete', { ...record.value });
 }
 
 function handleCopyId() {
   if (record?.value?.id) {
     copyToClipboard(record?.value?.id.id);
-    message.success({
-      content: `${$t('复制成功！')}`,
-      duration: 2,
-      key: 'is-form-submitting',
-    });
   }
 }
 
@@ -132,20 +127,32 @@ async function handlShowActivationLink() {
   if (record?.value?.id.id) {
     const activationLink = await getActivationLink(record?.value?.id.id);
 
-    alert({
+    confirm({
       content: h(
         'a',
-        { href: activationLink, target: '_blank', class: 'text-blue-500' },
+        {
+          href: activationLink,
+          target: '_blank',
+          class: 'text-blue-500',
+        },
         `${activationLink}`,
       ),
       icon: 'success',
       title: '用户激活链接',
+      cancelText: '确认',
+      confirmText: '复制链接',
+      beforeClose: ({ isConfirm }) => {
+        if (isConfirm) {
+          copyToClipboard(activationLink);
+        }
+        return true;
+      },
     });
   }
 }
 </script>
 <template>
-  <Drawer>
+  <Drawer header-class="drawer-header">
     <template #extra>
       <VbenIconButton class="mr-2">
         <IconifyIcon class="size-4" icon="mdi:help-circle" />
@@ -153,7 +160,7 @@ async function handlShowActivationLink() {
     </template>
     <template #title>
       <div class="flex items-center gap-2">
-        <IconifyIcon class="size-10" icon="mdi:account-circle-outline" />
+        <IconifyIcon class="size-8" icon="mdi:account-circle-outline" />
         <div>
           <p class="text-foreground text-lg font-semibold">
             {{ record?.email }}

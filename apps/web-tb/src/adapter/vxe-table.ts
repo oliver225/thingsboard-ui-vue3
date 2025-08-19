@@ -5,7 +5,7 @@ import { h } from 'vue';
 import { setupVbenVxeTable, useVbenVxeGrid } from '@vben/plugins/vxe-table';
 import { isFunction } from '@vben/utils';
 
-import { Button, Image } from 'ant-design-vue';
+import { Button, Checkbox, Image } from 'ant-design-vue';
 
 import { TableAction } from '#/components/Table';
 
@@ -36,6 +36,7 @@ setupVbenVxeTable({
             list: '',
           },
           seq: true,
+          sort: true,
           showActiveMsg: true,
           showResponseMsg: false,
         },
@@ -75,6 +76,25 @@ setupVbenVxeTable({
           { size: 'small', type: 'link' },
           { default: () => props?.text },
         );
+      },
+    });
+
+    // 表格配置项可以用 cellRender: { name: 'CellCheckbox' },
+    vxeUI.renderer.add('CellCheckbox', {
+      renderTableDefault(renderOpts, params) {
+        const { props } = renderOpts;
+        const { column, row } = params;
+        return h(Checkbox, {
+          checked:
+            props?.convert && isFunction(props?.convert)
+              ? props.convert(row[column.field])
+              : row[column.field],
+          onClick: (e: Event) => {
+            e.stopPropagation();
+            e.preventDefault();
+          },
+          class: 'pointer-events-none',
+        });
       },
     });
 

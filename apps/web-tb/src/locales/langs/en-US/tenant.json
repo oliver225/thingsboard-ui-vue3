@@ -16,10 +16,11 @@
     "createdTime": "Created time"
   },
   "button": {
-    "tenantAdmin": "Manage tenant admins",
-    "addTenant": "Add tenant",
-    "editTenant": "Edit tenant",
-    "removeTenant": "Remove tenant",
-    "copyTenantId": "Copy tenant Id"
+    "tenantAdmin": "Manage Tenant Admins",
+    "addTenant": "Add Tenant",
+    "addTenantAdmin": "Add Tenant Admin",
+    "editTenant": "Edit Tenant",
+    "removeTenant": "Remove Tenant",
+    "copyTenantId": "Copy Tenant Id"
   }
 }

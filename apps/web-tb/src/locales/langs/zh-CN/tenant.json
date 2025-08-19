@@ -18,6 +18,7 @@
   "button": {
     "tenantAdmin": "租户管理员",
     "addTenant": "添加租户",
+    "addTenantAdmin": "添加租户管理员",
     "editTenant": "编辑租户",
     "removeTenant": "删除租户",
     "copyTenantId": "复制租户ID"

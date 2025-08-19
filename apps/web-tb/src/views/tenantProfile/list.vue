@@ -106,7 +106,6 @@ const [Grid, gridApi] = useVbenVxeGrid({
       ajax: {
         query: fetch,
       },
-      sort: true,
     },
   },
 });

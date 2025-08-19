@@ -3,13 +3,14 @@ import type { UserInfo } from '#/types';
 
 import { h, ref } from 'vue';
 
-import { alert, useVbenModal } from '@vben/common-ui';
+import { confirm, useVbenModal } from '@vben/common-ui';
 import { $t } from '@vben/locales';
 
 import { message } from 'ant-design-vue';
 
 import { useVbenForm, z } from '#/adapter/form';
 import { getActivationLink, getUserByIdApi, saveUserApi } from '#/api';
+import { copyToClipboard } from '#/utils';
 
 defineOptions({
   name: 'TenantAdminFormModel',
@@ -139,7 +140,7 @@ async function onSubmit(values: Record<string, any>) {
     emits('success', res);
     if (!record.value?.id?.id && values.sendActivationMail === false) {
       const activationLink = await getActivationLink(res.id.id);
-      alert({
+      confirm({
         content: h(
           'a',
           { href: activationLink, target: '_blank', class: 'text-blue-500' },
@@ -147,6 +148,14 @@ async function onSubmit(values: Record<string, any>) {
         ),
         icon: 'success',
         title: '用户激活链接',
+        cancelText: '确认',
+        confirmText: '复制链接',
+        beforeClose: ({ isConfirm }) => {
+          if (isConfirm) {
+            copyToClipboard(activationLink);
+          }
+          return true;
+        },
       });
     }
     modalApi.close();
