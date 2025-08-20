@@ -136,17 +136,17 @@ const routes: RouteRecordRaw[] = [
       },
     ],
   },
-  // {
-  //   meta: {
-  //     icon: 'mdi:cog-outline',
-  //     title: $t('设置'),
-  //     order: 50,
-  //     authority: [Authority.SYS_ADMIN],
-  //   },
-  //   name: 'Settings',
-  //   path: '/settings/:type',
-  //   component: () => import('#/views/setting/index.vue'),
-  // },
+  {
+    meta: {
+      icon: 'mdi:cog-outline',
+      title: $t('设置'),
+      order: 50,
+      authority: [Authority.SYS_ADMIN],
+    },
+    name: 'Settings',
+    path: '/settings',
+    component: () => import('#/views/settings/index.vue'),
+  },
 ];
 
 export default routes;

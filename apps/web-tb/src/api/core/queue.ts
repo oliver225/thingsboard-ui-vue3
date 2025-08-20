@@ -40,7 +40,7 @@ export function saveQueueApi(
     | 'TB_VC_EXECUTOR',
   data?: any | Queue,
 ) {
-  return requestClient.post<Queue>(`/api/queues`, data, {
+  return requestClient.post<Queue>(`/queues`, data, {
     params: { serviceType },
   });
 }
@@ -54,7 +54,7 @@ export function queueListApi(
     | 'TB_TRANSPORT'
     | 'TB_VC_EXECUTOR' = 'TB_RULE_ENGINE',
 ) {
-  return requestClient.get<Page<Queue>>(`/api/queues`, {
+  return requestClient.get<Page<Queue>>(`/queues`, {
     params: { serviceType, ...params },
   });
 }
