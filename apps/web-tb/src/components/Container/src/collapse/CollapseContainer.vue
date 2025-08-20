@@ -110,8 +110,10 @@ function handleExpand() {
     height: 32px;
     justify-content: space-between;
     align-items: center;
+    border-top-left-radius: var(--radius);
+    border-top-right-radius: var(--radius);
     border-bottom: 1px solid hsl(var(--border));
-    background-color: hsl(var(--border) / 0.8);
+    background-color: hsl(var(--border) / 0.4);
   }
 
   &__footer {
