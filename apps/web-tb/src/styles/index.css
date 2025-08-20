@@ -34,3 +34,13 @@
   color: hsl(var(--primary));
   background: hsl(var(--primary) / 25%);
 }
+
+.ant-segmented-item-selected {
+  background-color: hsl(var(--primary)) !important;
+  color: white !important;
+}
+
+.ant-segmented-item-label {
+  text-overflow: clip !important;
+  margin: 0 80px !important;
+}

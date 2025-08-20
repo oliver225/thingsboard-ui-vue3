@@ -8,6 +8,13 @@ export const REGULAR_HTML_ENCODE =
   /["&'<>\u0000-\u0020\u007F-\u00FF\u0100-\u2700]/g;
 
 /**
+ * @description:  Set ui mount node
+ */
+export function getPopupContainer(node?: HTMLElement): HTMLElement {
+  return (node?.parentNode as HTMLElement) ?? document.body;
+}
+
+/**
  * 复制文本
  *
  * @param value 点击复制的内容

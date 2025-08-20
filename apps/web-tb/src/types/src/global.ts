@@ -24,4 +24,6 @@ declare global {
     entityType?: T;
     id: string;
   }
+
+  type RefType<T> = null | T;
 }

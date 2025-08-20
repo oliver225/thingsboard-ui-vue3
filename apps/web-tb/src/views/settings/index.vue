@@ -8,6 +8,9 @@ import { TabPane, Tabs } from 'ant-design-vue';
 
 import { router } from '#/router';
 import QueueList from '#/views/queue/list.vue';
+import Connectivity from '#/views/settings/connectivity.vue';
+import General from '#/views/settings/general.vue';
+import MailSetting from '#/views/settings/mailSetting.vue';
 
 defineOptions({
   name: 'SettingsIndex',
@@ -22,7 +25,7 @@ tabActiveKey.value = (settingType as string) || 'general';
 <template>
   <Page auto-content-height>
     <div
-      class="bg-background h-[calc(var(--vben-content-height)-30px)] overflow-hidden rounded-[var(--radius)] py-4"
+      class="bg-background h-[calc(var(--vben-content-height)-30px)] overflow-hidden rounded-[var(--radius)] py-4 pr-4"
     >
       <Tabs
         v-model:active-key="tabActiveKey"
@@ -37,7 +40,11 @@ tabActiveKey.value = (settingType as string) || 'general';
               <span>基本设置</span>
             </div>
           </template>
-          <div></div>
+          <div
+            class="h-[calc(var(--vben-content-height)-60px)] overflow-y-auto"
+          >
+            <General />
+          </div>
         </TabPane>
         <TabPane key="connectivity">
           <template #tab>
@@ -46,7 +53,11 @@ tabActiveKey.value = (settingType as string) || 'general';
               <span>设备连接</span>
             </div>
           </template>
-          <div></div>
+          <div
+            class="h-[calc(var(--vben-content-height)-60px)] overflow-y-auto"
+          >
+            <Connectivity />
+          </div>
         </TabPane>
         <TabPane key="mail">
           <template #tab>
@@ -55,7 +66,11 @@ tabActiveKey.value = (settingType as string) || 'general';
               <span>邮件配置</span>
             </div>
           </template>
-          <div></div>
+          <div
+            class="h-[calc(var(--vben-content-height)-60px)] overflow-y-auto"
+          >
+            <MailSetting />
+          </div>
         </TabPane>
         <TabPane key="sms">
           <template #tab>
@@ -64,7 +79,6 @@ tabActiveKey.value = (settingType as string) || 'general';
               <span>短信配置</span>
             </div>
           </template>
-          <div></div>
         </TabPane>
         <TabPane key="queues">
           <template #tab>
@@ -73,7 +87,9 @@ tabActiveKey.value = (settingType as string) || 'general';
               <span>队列设置</span>
             </div>
           </template>
-          <QueueList style="margin-top: -40px" />
+          <QueueList
+            style="margin-top: -40px; margin-right: -20px; margin-left: -20px"
+          />
         </TabPane>
       </Tabs>
     </div>
