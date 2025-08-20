@@ -20,6 +20,7 @@ setupVbenVxeTable({
         border: true,
         stripe: true, // 斑马纹，
         round: true,
+        height: 'auto',
         minHeight: 180,
         showOverflow: true,
         columnConfig: {

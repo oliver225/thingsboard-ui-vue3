@@ -78,7 +78,7 @@ const tableColumns: VxeGridPropTypes.Columns<UserInfo> = [
   },
   { field: 'phone', title: $t('tenant.form.phone') },
   {
-    title: $t('账户状态'),
+    title: $t('备注'),
     field: 'additionalInfo.description',
   },
   {

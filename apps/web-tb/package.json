@@ -63,9 +63,9 @@
     "jwt-decode": "catalog:",
     "lodash-es": "4.17.21",
     "pinia": "catalog:",
-    "sortablejs": "1.15.6",
+    "prismjs": "1.30.0",
     "vue": "catalog:",
     "vue-router": "catalog:",
-    "vue-types": "^6.0.0"
+    "vue-types": "6.0.0"
   }
 }

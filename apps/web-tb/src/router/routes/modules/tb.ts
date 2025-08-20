@@ -104,38 +104,38 @@ const routes: RouteRecordRaw[] = [
       },
     ],
   },
-  // {
-  //   meta: {
-  //     icon: 'mdi:folder-open',
-  //     order: 30,
-  //     title: $t('资源'),
-  //     authority: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN],
-  //   },
-  //   name: 'Resource',
-  //   path: '/resources',
-  //   children: [
-  //     {
-  //       meta: {
-  //         icon: 'mdi:image-multiple-outline',
-  //         title: $t('图像库'),
-  //         authority: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN],
-  //       },
-  //       name: 'ImageList',
-  //       path: '/resources/images',
-  //       component: () => import('#/views/image/list.vue'),
-  //     },
-  //     {
-  //       meta: {
-  //         icon: 'mdi:format-textbox',
-  //         title: $t('SCADA符号库'),
-  //         authority: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN],
-  //       },
-  //       name: 'ScadaSymbolList',
-  //       path: '/resources/scadaSymbols',
-  //       component: () => import('#/views/scadaSymbol/list.vue'),
-  //     },
-  //   ],
-  // },
+  {
+    meta: {
+      icon: 'mdi:folder-open',
+      order: 30,
+      title: $t('资源'),
+      authority: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN],
+    },
+    name: 'Resource',
+    path: '/resources',
+    children: [
+      {
+        meta: {
+          icon: 'mdi:image-multiple-outline',
+          title: $t('图像库'),
+          authority: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN],
+        },
+        name: 'ImageList',
+        path: '/resources/images',
+        component: () => import('#/views/image/list.vue'),
+      },
+      {
+        meta: {
+          icon: 'mdi:cube-scan',
+          title: $t('组态库'),
+          authority: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN],
+        },
+        name: 'ScadaSymbolList',
+        path: '/resources/scada-symbols',
+        component: () => import('#/views/scada-symbol/list.vue'),
+      },
+    ],
+  },
   // {
   //   meta: {
   //     icon: 'mdi:cog-outline',
