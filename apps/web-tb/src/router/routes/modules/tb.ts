@@ -99,7 +99,7 @@ const routes: RouteRecordRaw[] = [
           authority: [Authority.SYS_ADMIN],
         },
         name: 'TenantProfileDetail',
-        path: '/TenantProfile/:id',
+        path: '/tenantProfile/:tenantProfileId',
         component: () => import('#/views/tenantProfile/detail.vue'),
       },
     ],
