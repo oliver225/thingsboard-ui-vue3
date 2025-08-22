@@ -25,10 +25,13 @@ import {
 import { getAdminSettingsApi, saveAdminSettingsApi, sendTestMail } from '#/api';
 import { CollapseContainer } from '#/components/Container';
 import { EntityType } from '#/constants';
+import { useAuthStore } from '#/store';
 
 defineOptions({
   name: 'GeneralSettings',
 });
+const authStore = useAuthStore();
+
 const formRef = ref<FormInstance>();
 
 const record = ref<AdminSetting>({} as AdminSetting);
@@ -36,7 +39,7 @@ const record = ref<AdminSetting>({} as AdminSetting);
 const loading = ref(false);
 
 const formState = reactive<AdminSetting>({
-  tenantId: { entityType: EntityType.TENANT, id: '' },
+  tenantId: authStore.getUserInfo().tenantId,
   key: 'mail',
   jsonValue: {
     mailFrom: '',
@@ -115,7 +118,7 @@ async function handleSubmit() {
     await saveAdminSettingsApi({ ...record.value, ...data });
     fetchData();
     message.success({
-      content: `${$t('保存通用配置成功！')}`,
+      content: `${$t('保存发送邮件配置成功！')}`,
       duration: 2,
       key: 'is-form-submitting',
     });

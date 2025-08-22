@@ -23,10 +23,14 @@ import {
 
 import { getAdminSettingsApi, saveAdminSettingsApi } from '#/api';
 import { EntityType } from '#/constants';
+import { useAuthStore } from '#/store';
 
 defineOptions({
   name: 'GeneralSettings',
 });
+
+const authStore = useAuthStore();
+
 const formRef = ref<FormInstance>();
 
 const record = ref<AdminSetting>({} as AdminSetting);
@@ -36,7 +40,7 @@ const loading = ref(false);
 const type = ref('HTTP(s)');
 
 const formState = reactive<AdminSetting>({
-  tenantId: { entityType: EntityType.TENANT, id: '' },
+  tenantId: authStore.getUserInfo().tenantId,
   key: 'connectivity',
   jsonValue: {
     http: { enabled: true, host: '', port: '8080' },
@@ -122,7 +126,6 @@ async function handleSubmit() {
           <Segmented
             block
             v-model:value="type"
-            size="large"
             :options="['HTTP(s)', 'MQTT(s)', 'COAP(s)']"
           />
           <Alert

@@ -11,6 +11,7 @@ import QueueList from '#/views/queue/list.vue';
 import Connectivity from '#/views/settings/connectivity.vue';
 import General from '#/views/settings/general.vue';
 import MailSetting from '#/views/settings/mailSetting.vue';
+import SmsSetting from '#/views/settings/smsSetting.vue';
 
 defineOptions({
   name: 'SettingsIndex',
@@ -25,7 +26,7 @@ tabActiveKey.value = (settingType as string) || 'general';
 <template>
   <Page auto-content-height>
     <div
-      class="bg-background h-[calc(var(--vben-content-height)-30px)] overflow-hidden rounded-[var(--radius)] py-4 pr-4"
+      class="bg-background h-[calc(var(--vben-content-height)-32px)] overflow-hidden rounded-[var(--radius)] py-4 pr-4"
     >
       <Tabs
         v-model:active-key="tabActiveKey"
@@ -76,7 +77,20 @@ tabActiveKey.value = (settingType as string) || 'general';
           <template #tab>
             <div class="flex items-center gap-2">
               <IconifyIcon icon="ant-design:message-outlined" class="size-4" />
-              <span>短信配置</span>
+              <span>短信服务商</span>
+            </div>
+          </template>
+          <div
+            class="h-[calc(var(--vben-content-height)-60px)] overflow-y-auto"
+          >
+            <SmsSetting />
+          </div>
+        </TabPane>
+        <TabPane key="wechat">
+          <template #tab>
+            <div class="flex items-center gap-2">
+              <IconifyIcon icon="ant-design:wechat-outlined" class="size-4" />
+              <span>微信公众平台</span>
             </div>
           </template>
         </TabPane>

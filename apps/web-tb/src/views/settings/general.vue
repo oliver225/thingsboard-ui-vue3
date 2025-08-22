@@ -13,10 +13,14 @@ import { Button, Form, Input, message, Switch } from 'ant-design-vue';
 
 import { getAdminSettingsApi, saveAdminSettingsApi } from '#/api';
 import { EntityType } from '#/constants';
+import { useAuthStore } from '#/store';
 
 defineOptions({
   name: 'GeneralSettings',
 });
+
+const authStore = useAuthStore();
+
 const formRef = ref<FormInstance>();
 
 const record = ref<AdminSetting>({} as AdminSetting);
@@ -24,7 +28,7 @@ const record = ref<AdminSetting>({} as AdminSetting);
 const loading = ref(false);
 
 const formState = reactive<AdminSetting>({
-  tenantId: { entityType: EntityType.TENANT, id: '' },
+  tenantId: authStore.getUserInfo().tenantId,
   key: 'general',
   jsonValue: {
     baseUrl: '',

@@ -158,6 +158,11 @@ export const useAuthStore = defineStore('auth', () => {
     return userInfo;
   }
 
+  function getUserInfo() {
+    const userInfo = userStore.userInfo as UserInfo;
+    return userInfo;
+  }
+
   function $reset() {
     loginLoading.value = false;
   }
@@ -169,5 +174,6 @@ export const useAuthStore = defineStore('auth', () => {
     fetchUserInfo,
     loginLoading,
     logout,
+    getUserInfo,
   };
 });
