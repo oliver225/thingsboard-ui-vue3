@@ -147,6 +147,17 @@ const routes: RouteRecordRaw[] = [
     path: '/settings',
     component: () => import('#/views/settings/index.vue'),
   },
+  {
+    meta: {
+      icon: 'mdi:security',
+      title: $t('安全'),
+      order: 60,
+      authority: [Authority.SYS_ADMIN],
+    },
+    name: 'SecuritySettings',
+    path: '/security-settings',
+    component: () => import('#/views/security-settings/index.vue'),
+  },
 ];
 
 export default routes;

@@ -7,14 +7,12 @@ import { IconifyIcon } from '@vben/icons';
 import { TabPane, Tabs } from 'ant-design-vue';
 
 import { router } from '#/router';
-import QueueList from '#/views/queue/list.vue';
-import Connectivity from '#/views/settings/connectivity.vue';
-import General from '#/views/settings/general.vue';
-import MailSetting from '#/views/settings/mailSetting.vue';
-import SmsSetting from '#/views/settings/smsSetting.vue';
+
+import JwtSetting from './jwtSetting.vue';
+import SecuritySettings from './securitySetting.vue';
 
 defineOptions({
-  name: 'SettingsIndex',
+  name: 'SecuritySettingsIndex',
 });
 
 const tabActiveKey = ref('general');
@@ -37,74 +35,57 @@ tabActiveKey.value = (settingType as string) || 'general';
         <TabPane key="general">
           <template #tab>
             <div class="flex items-center gap-2">
-              <IconifyIcon icon="ant-design:global-outlined" class="size-4" />
-              <span>基本设置</span>
+              <IconifyIcon icon="mdi:security" class="size-4" />
+              <span>安全设置</span>
             </div>
           </template>
           <div
             class="h-[calc(var(--vben-content-height)-60px)] overflow-y-auto"
           >
-            <General />
+            <SecuritySettings />
           </div>
         </TabPane>
-        <TabPane key="connectivity">
+        <TabPane key="jwt">
           <template #tab>
             <div class="flex items-center gap-2">
-              <IconifyIcon icon="ant-design:api-outlined" class="size-4" />
-              <span>设备连接</span>
+              <IconifyIcon icon="ant-design:trophy-outlined" class="size-4" />
+              <span>JWT 设置</span>
             </div>
           </template>
           <div
             class="h-[calc(var(--vben-content-height)-60px)] overflow-y-auto"
           >
-            <Connectivity />
+            <JwtSetting />
           </div>
         </TabPane>
-        <TabPane key="mail">
+        <TabPane key="2fa">
           <template #tab>
             <div class="flex items-center gap-2">
-              <IconifyIcon icon="ant-design:mail-outlined" class="size-4" />
-              <span>邮件配置</span>
+              <IconifyIcon
+                icon="mdi:two-factor-authentication"
+                class="size-4"
+              />
+              <span>双因素认证</span>
             </div>
           </template>
           <div
             class="h-[calc(var(--vben-content-height)-60px)] overflow-y-auto"
           >
-            <MailSetting />
+            开发中
           </div>
         </TabPane>
-        <TabPane key="sms">
+        <TabPane key="oauth2">
           <template #tab>
             <div class="flex items-center gap-2">
-              <IconifyIcon icon="ant-design:message-outlined" class="size-4" />
-              <span>短信服务商</span>
+              <IconifyIcon icon="mdi:shield-account" class="size-4" />
+              <span>OAuth2</span>
             </div>
           </template>
           <div
             class="h-[calc(var(--vben-content-height)-60px)] overflow-y-auto"
           >
-            <SmsSetting />
+            开发中
           </div>
-        </TabPane>
-        <TabPane key="wechat">
-          <template #tab>
-            <div class="flex items-center gap-2">
-              <IconifyIcon icon="ant-design:wechat-outlined" class="size-4" />
-              <span>微信公众平台</span>
-            </div>
-          </template>
-          开发中
-        </TabPane>
-        <TabPane key="queues">
-          <template #tab>
-            <div class="flex items-center gap-2">
-              <IconifyIcon icon="ant-design:branches-outlined" class="size-4" />
-              <span>队列设置</span>
-            </div>
-          </template>
-          <QueueList
-            style="margin-top: -40px; margin-right: -20px; margin-left: -20px"
-          />
         </TabPane>
       </Tabs>
     </div>

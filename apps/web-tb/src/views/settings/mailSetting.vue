@@ -198,7 +198,7 @@ async function handleSendTestMail() {
         <CollapseContainer
           title="连接设置"
           :can-expan="true"
-          class="mb-4 border border-solid border-neutral-300"
+          class="mb-4 border border-solid border-[hsl(var(--border))]"
         >
           <div class="px-4">
             <Row :gutter="24">
@@ -326,7 +326,7 @@ async function handleSendTestMail() {
         <CollapseContainer
           title="身份验证"
           :can-expan="false"
-          class="mb-4 border border-solid border-neutral-300"
+          class="mb-4 border border-solid border-[hsl(var(--border))]"
         >
           <div class="px-4">
             <Form.Item label="用户名" :name="['jsonValue', 'username']">
