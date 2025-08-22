@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import type { DashboardInfo } from '#/api';
 import type { UserInfo } from '#/types';
 
 import { h, ref } from 'vue';
@@ -9,7 +10,12 @@ import { $t } from '@vben/locales';
 import { message } from 'ant-design-vue';
 
 import { useVbenForm, z } from '#/adapter/form';
-import { getActivationLink, getUserByIdApi, saveUserApi } from '#/api';
+import {
+  getActivationLink,
+  getUserByIdApi,
+  saveUserApi,
+  tenantDashboardList,
+} from '#/api';
 import { copyToClipboard } from '#/utils';
 
 defineOptions({
@@ -18,6 +24,8 @@ defineOptions({
 const emits = defineEmits(['success']);
 
 const record = ref<null | UserInfo>(null);
+
+const dashboardSelectOptions = ref<DashboardInfo[]>([]);
 
 const [Form, formApi] = useVbenForm({
   schema: [
@@ -59,6 +67,72 @@ const [Form, formApi] = useVbenForm({
         message: $t('请输入正确的手机号码'),
       }),
     },
+    {
+      label: $t('默认面板'),
+      fieldName: 'additionalInfo.defaultDashboardId',
+      component: 'Select',
+      componentProps: {
+        allowClear: true,
+        options: dashboardSelectOptions.value.map((item) => ({
+          label: item.title,
+          value: item.id.id,
+        })),
+        class: 'w-full',
+      },
+      dependencies: {
+        if: () => !!record.value?.id?.id,
+        triggerFields: ['additionalInfo'],
+      },
+    },
+    {
+      label: '',
+      fieldName: 'additionalInfo.defaultDashboardFullscreen',
+      component: 'Checkbox',
+      defaultValue: false,
+      hideLabel: true,
+      renderComponentContent: () => {
+        return {
+          default: () => ['始终全屏'],
+        };
+      },
+      dependencies: {
+        if: () => !!record.value?.id?.id,
+        triggerFields: ['additionalInfo'],
+      },
+    },
+    {
+      label: $t('首页仪表板'),
+      fieldName: 'additionalInfo.homeDashboardId',
+      component: 'Select',
+      componentProps: {
+        allowClear: true,
+        options: dashboardSelectOptions.value.map((item) => ({
+          label: item.title,
+          value: item.id.id,
+        })),
+        class: 'w-full',
+      },
+      dependencies: {
+        if: () => !!record.value?.id?.id,
+        triggerFields: ['additionalInfo'],
+      },
+    },
+    {
+      label: '',
+      fieldName: 'additionalInfo.homeDashboardHideToolbar',
+      component: 'Checkbox',
+      defaultValue: true,
+      renderComponentContent: () => {
+        return {
+          default: () => ['隐藏首页仪表板工具栏'],
+        };
+      },
+      hideLabel: true,
+      dependencies: {
+        if: () => !!record.value?.id?.id,
+        triggerFields: ['additionalInfo'],
+      },
+    },
 
     {
       label: $t('tenant.form.description'),
@@ -91,7 +165,6 @@ const [Form, formApi] = useVbenForm({
     componentProps: {
       class: 'w-full',
     },
-    // labelClass: 'w-2/10',
   },
 });
 
@@ -100,15 +173,46 @@ const [Modal, modalApi] = useVbenModal({
   confirmText: `${$t('page.submit.title')}`,
   async onOpenChange(isOpen: boolean) {
     modalApi.setState({ loading: true });
+    reset();
     if (isOpen) {
-      reset();
       const data = modalApi.getData<Record<string, any>>();
       record.value = { ...data } as UserInfo;
       if (data?.id?.id) {
         record.value = await getUserByIdApi(data.id?.id);
+        // 获取租户的Dashboard
+        const result = await tenantDashboardList(
+          {
+            pageSize: 1000,
+            page: 0,
+            sortProperty: 'title',
+            sortOrder: 'ASC',
+          },
+          record.value.tenantId.id,
+        );
+        dashboardSelectOptions.value = result.data || [];
       }
       formApi.setValues(record.value);
     }
+    formApi.updateSchema([
+      {
+        fieldName: 'additionalInfo.defaultDashboardId',
+        componentProps: {
+          options: dashboardSelectOptions.value.map((item) => ({
+            label: item.title,
+            value: item.id.id,
+          })),
+        },
+      },
+      {
+        fieldName: 'additionalInfo.homeDashboardId',
+        componentProps: {
+          options: dashboardSelectOptions.value.map((item) => ({
+            label: item.title,
+            value: item.id.id,
+          })),
+        },
+      },
+    ]);
     modalApi.setState({ loading: false });
   },
   onCancel() {
@@ -122,6 +226,7 @@ const [Modal, modalApi] = useVbenModal({
 function reset() {
   formApi.resetForm();
   record.value = null;
+  dashboardSelectOptions.value = [];
 }
 
 async function onSubmit(values: Record<string, any>) {

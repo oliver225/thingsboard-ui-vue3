@@ -122,6 +122,13 @@ const [FormModal, formModalApi] = useVbenModal({
 });
 
 watch(
+  () => router.currentRoute.value.params.tenantId,
+  () => {
+    gridApi?.query();
+  },
+);
+
+watch(
   () => searchParam.textSearch,
   () => {
     gridApi?.query();
@@ -130,7 +137,7 @@ watch(
 
 async function reload() {
   searchParam.textSearch = '';
-  gridApi?.reload();
+  await gridApi?.query();
 }
 
 async function fetch({ page, sort }: any) {

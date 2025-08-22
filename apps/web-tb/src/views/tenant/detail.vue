@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import type { TenantInfo } from '#/api';
+import type { DashboardInfo, TenantInfo } from '#/api';
 
 import { ref } from 'vue';
 
@@ -10,9 +10,9 @@ import { $t } from '@vben/locales';
 import { VbenIconButton } from '@vben-core/shadcn-ui';
 
 import { areaList } from '@vant/area-data';
-import { Button, Descriptions, TabPane, Tabs } from 'ant-design-vue';
+import { Button, Checkbox, Descriptions, TabPane, Tabs } from 'ant-design-vue';
 
-import { getTenantInfoByIdApi } from '#/api';
+import { getDashboardInfoById, getTenantInfoByIdApi } from '#/api';
 import { copyToClipboard } from '#/utils';
 
 defineOptions({
@@ -21,6 +21,7 @@ defineOptions({
 const emits = defineEmits(['edit', 'delete', 'admin']);
 
 const record = ref<null | TenantInfo>(null);
+const homeDashboard = ref<DashboardInfo | null>(null);
 const tabActiveKey = ref('DETAIL');
 const tabList = [
   {
@@ -59,13 +60,17 @@ const [Drawer, drawerApi] = useVbenDrawer({
   async onOpenChange(isOpen: boolean) {
     drawerApi.setState({ loading: true });
     reset();
-
     if (isOpen) {
       const { data, id } = drawerApi.getData<Record<string, any>>();
       if (id) {
         record.value = await getTenantInfoByIdApi(id);
       } else if (data) {
         record.value = data;
+      }
+      if (record.value?.additionalInfo?.homeDashboardId) {
+        homeDashboard.value = await getDashboardInfoById(
+          record.value.additionalInfo.homeDashboardId,
+        );
       }
     }
     drawerApi.setState({ loading: false });
@@ -74,6 +79,7 @@ const [Drawer, drawerApi] = useVbenDrawer({
 
 function reset() {
   record.value = null;
+  homeDashboard.value = null;
   tabActiveKey.value = 'DETAIL';
 }
 
@@ -164,6 +170,16 @@ function handleCopyId() {
         </Descriptions.Item>
         <Descriptions.Item :label="$t('tenant.form.email')">
           {{ record?.email }}
+        </Descriptions.Item>
+        <Descriptions.Item :label="$t('首页仪表盘')">
+          {{ homeDashboard?.title }}
+        </Descriptions.Item>
+        <Descriptions.Item>
+          <Checkbox
+            :checked="record?.additionalInfo?.homeDashboardHideToolbar ?? true"
+          >
+            隐藏首页仪表板工具栏
+          </Checkbox>
         </Descriptions.Item>
         <Descriptions.Item :label="$t('tenant.form.area')" :span="2">
           <span v-if="record?.state">

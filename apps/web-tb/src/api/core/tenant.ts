@@ -19,7 +19,7 @@ export interface Tenant {
   additionalInfo?: {
     description?: string;
     homeDashboardHideToolbar: boolean;
-    homeDashboardId?: any;
+    homeDashboardId?: string;
   };
   createdTime?: number;
 }

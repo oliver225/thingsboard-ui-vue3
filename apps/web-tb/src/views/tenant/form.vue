@@ -1,7 +1,7 @@
 <script lang="ts" setup>
 import type { Recordable } from '@vben/types';
 
-import type { TenantInfo } from '#/api';
+import type { DashboardInfo, TenantInfo } from '#/api';
 
 import { ref } from 'vue';
 
@@ -15,6 +15,7 @@ import { message } from 'ant-design-vue';
 import { useVbenForm, z } from '#/adapter/form';
 import {
   getTenantInfoByIdApi,
+  tenantDashboardList,
   tenantProfileInfoListApi,
   tenantSaveApi,
 } from '#/api';
@@ -23,9 +24,12 @@ import { EntityType } from '#/constants';
 defineOptions({
   name: 'TenantFormModel',
 });
+
 const emits = defineEmits(['success']);
 
 const record = ref<null | TenantInfo>(null);
+
+const dashboardSelectOptions = ref<DashboardInfo[]>([]);
 
 const { promise: fetchtenantProfileInfoFn } = useQuery({
   experimental_prefetchInRender: true,
@@ -107,6 +111,39 @@ const [Form, formApi] = useVbenForm({
       formItemClass: 'col-span-2',
     },
     {
+      label: $t('首页仪表盘'),
+      fieldName: 'additionalInfo.homeDashboardId',
+      component: 'Select',
+      componentProps: {
+        allowClear: true,
+        options: dashboardSelectOptions.value.map((item) => ({
+          label: item.title,
+          value: item.id.id,
+        })),
+        class: 'w-full',
+      },
+      dependencies: {
+        if: () => !!record.value?.id?.id,
+        triggerFields: ['additionalInfo'],
+      },
+    },
+    {
+      label: '',
+      fieldName: 'additionalInfo.homeDashboardHideToolbar',
+      component: 'Checkbox',
+      defaultValue: true,
+      hideLabel: true,
+      renderComponentContent: () => {
+        return {
+          default: () => ['隐藏首页仪表板工具栏'],
+        };
+      },
+      dependencies: {
+        if: () => !!record.value?.id?.id,
+        triggerFields: ['additionalInfo'],
+      },
+    },
+    {
       label: $t('tenant.form.area'),
       fieldName: 'areaList',
       component: 'Cascader',
@@ -154,11 +191,22 @@ const [Modal, modalApi] = useVbenModal({
   confirmText: `${$t('page.submit.title')}`,
   async onOpenChange(isOpen: boolean) {
     modalApi.setState({ loading: true });
+    reset();
     if (isOpen) {
-      reset();
       const { data, id } = modalApi.getData<Record<string, any>>();
       if (id) {
         record.value = await getTenantInfoByIdApi(id);
+        // 获取租户的Dashboard
+        const result = await tenantDashboardList(
+          {
+            pageSize: 1000,
+            page: 0,
+            sortProperty: 'title',
+            sortOrder: 'ASC',
+          },
+          id,
+        );
+        dashboardSelectOptions.value = result.data || [];
       } else if (data) {
         record.value = data;
       }
@@ -170,6 +218,17 @@ const [Modal, modalApi] = useVbenModal({
         ];
         formApi.setValues(record.value);
       }
+      formApi.updateSchema([
+        {
+          fieldName: 'additionalInfo.homeDashboardId',
+          componentProps: {
+            options: dashboardSelectOptions.value.map((item) => ({
+              label: item.title,
+              value: item.id.id,
+            })),
+          },
+        },
+      ]);
     }
     modalApi.setState({ loading: false });
   },
@@ -183,6 +242,7 @@ const [Modal, modalApi] = useVbenModal({
 
 function reset() {
   formApi.resetForm();
+  dashboardSelectOptions.value = [];
   record.value = null;
 }
 

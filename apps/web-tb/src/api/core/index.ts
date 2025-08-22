@@ -1,5 +1,6 @@
 export * from './admin';
 export * from './auth';
+export * from './dashboard';
 export * from './image';
 export * from './queue';
 export * from './resources-library';

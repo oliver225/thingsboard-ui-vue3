@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import type { DashboardInfo } from '#/api';
 import type { UserInfo } from '#/types';
 
 import { h, ref } from 'vue';
@@ -11,6 +12,7 @@ import { VbenIconButton } from '@vben-core/shadcn-ui';
 
 import {
   Button,
+  Checkbox,
   Descriptions,
   message,
   TabPane,
@@ -20,6 +22,7 @@ import {
 
 import {
   getActivationLink,
+  getDashboardInfoById,
   getUserByIdApi,
   setUserCredentialsEnabled,
 } from '#/api';
@@ -30,6 +33,8 @@ defineOptions({
   name: 'TenantAdminDetailDrawer',
 });
 const emits = defineEmits(['edit', 'delete', 'login']);
+const defaultDashboard = ref<DashboardInfo | null>(null);
+const homeDashboard = ref<DashboardInfo | null>(null);
 
 const record = ref<null | UserInfo>(null);
 const tabActiveKey = ref('DETAIL');
@@ -59,11 +64,21 @@ const [Drawer, drawerApi] = useVbenDrawer({
 
   async onOpenChange(isOpen: boolean) {
     drawerApi.setState({ loading: true });
+    reset();
     if (isOpen) {
-      reset();
       const { id } = drawerApi.getData<Record<string, any>>();
       if (id) {
         record.value = await getUserByIdApi(id);
+      }
+      if (record.value?.additionalInfo?.homeDashboardId) {
+        homeDashboard.value = await getDashboardInfoById(
+          record.value.additionalInfo.homeDashboardId,
+        );
+      }
+      if (record.value?.additionalInfo?.defaultDashboardId) {
+        defaultDashboard.value = await getDashboardInfoById(
+          record.value.additionalInfo.defaultDashboardId,
+        );
       }
     }
     drawerApi.setState({ loading: false });
@@ -72,6 +87,8 @@ const [Drawer, drawerApi] = useVbenDrawer({
 
 function reset() {
   record.value = null;
+  homeDashboard.value = null;
+  defaultDashboard.value = null;
   tabActiveKey.value = 'DETAIL';
 }
 
@@ -274,6 +291,28 @@ async function handlShowActivationLink() {
           >
             账户已禁用
           </Tag>
+        </Descriptions.Item>
+        <Descriptions.Item :label="$t('默认面板')">
+          {{ defaultDashboard?.title }}
+        </Descriptions.Item>
+        <Descriptions.Item>
+          <Checkbox
+            :checked="
+              record?.additionalInfo?.defaultDashboardFullscreen ?? false
+            "
+          >
+            始终全屏
+          </Checkbox>
+        </Descriptions.Item>
+        <Descriptions.Item :label="$t('首页仪表板')">
+          {{ homeDashboard?.title }}
+        </Descriptions.Item>
+        <Descriptions.Item>
+          <Checkbox
+            :checked="record?.additionalInfo?.homeDashboardHideToolbar ?? true"
+          >
+            隐藏首页仪表板工具栏
+          </Checkbox>
         </Descriptions.Item>
         <Descriptions.Item :label="$t('tenant.form.description')" :span="2">
           {{ record?.additionalInfo?.description }}
