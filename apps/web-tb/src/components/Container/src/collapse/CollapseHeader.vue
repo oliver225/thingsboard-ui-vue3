@@ -1,7 +1,7 @@
 <script lang="ts">
 import { defineComponent } from 'vue';
 
-import { BasicArrow, BasicTitle } from '#/components/Basic';
+import { BasicArrow } from '#/components/Basic';
 
 const props = {
   prefixCls: { type: String },
@@ -15,7 +15,7 @@ const props = {
 };
 
 export default defineComponent({
-  components: { BasicArrow, BasicTitle },
+  components: { BasicArrow },
   inheritAttrs: false,
   props,
   emits: ['expand'],
@@ -23,14 +23,12 @@ export default defineComponent({
 </script>
 <template>
   <div :class="[`${prefixCls}__header px-2 py-5`, $attrs.class]">
-    <BasicTitle :help-message="helpMessage" normal>
-      <template v-if="title">
-        {{ title }}
-      </template>
-      <template v-else>
-        <slot name="title"></slot>
-      </template>
-    </BasicTitle>
+    <template v-if="title">
+      {{ title }}
+    </template>
+    <template v-else>
+      <slot name="title"></slot>
+    </template>
     <div :class="`${prefixCls}__action`">
       <slot name="action"></slot>
       <BasicArrow v-if="canExpan" up :expand="show" @click="$emit('expand')" />

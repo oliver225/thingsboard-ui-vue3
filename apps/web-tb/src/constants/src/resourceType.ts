@@ -10,5 +10,5 @@ export const RESOURCE_TYPE_OPTIONS = [
   { value: ResourceType.LWM2M_MODEL, label: 'LWM2M模型' },
   { value: ResourceType.PKCS_12, label: 'PKCS #12' },
   { value: ResourceType.JKS, label: 'JSK' },
-  { value: ResourceType.JS_MODULE, label: 'JS 模块' },
+  // { value: ResourceType.JS_MODULE, label: 'JS 模块' },
 ];

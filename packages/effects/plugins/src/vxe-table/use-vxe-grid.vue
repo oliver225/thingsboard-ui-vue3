@@ -1,3 +1,4 @@
+<!-- eslint-disable vue/require-default-prop -->
 <script lang="ts" setup>
 import type {
   VxeGridDefines,
@@ -52,8 +53,8 @@ import './style.css';
 
 interface Props extends VxeGridProps {
   api: ExtendedVxeGridApi;
-  tableHeaderTitle: string | undefined;
-  tableHeaderTitleHelp: string | undefined;
+  tableHeaderTitle?: string;
+  tableHeaderTitleHelp?: string;
 }
 
 const props = withDefaults(defineProps<Props>(), {});

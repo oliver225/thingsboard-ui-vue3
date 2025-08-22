@@ -89,7 +89,7 @@ export function saveResourceApi(data?: any | Resource) {
 }
 
 export function getResourceByIdApi(resourceId: string) {
-  return requestClient.get<Resource>(`/api/resource/${resourceId}`);
+  return requestClient.get<Resource>(`/resource/${resourceId}`);
 }
 
 export function getResourceInfoByIdApi(resourceId: string) {

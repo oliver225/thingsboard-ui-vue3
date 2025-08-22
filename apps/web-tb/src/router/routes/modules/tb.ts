@@ -117,6 +117,7 @@ const routes: RouteRecordRaw[] = [
       {
         meta: {
           icon: 'mdi:image-multiple-outline',
+          order: 10,
           title: $t('图像库'),
           authority: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN],
         },
@@ -127,12 +128,24 @@ const routes: RouteRecordRaw[] = [
       {
         meta: {
           icon: 'mdi:cube-scan',
+          order: 20,
           title: $t('组态库'),
           authority: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN],
         },
         name: 'ScadaSymbolList',
         path: '/resources/scada-symbols',
         component: () => import('#/views/scada-symbol/list.vue'),
+      },
+      {
+        meta: {
+          icon: 'mdi:sale-outline',
+          order: 30,
+          title: $t('资源库'),
+          authority: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN],
+        },
+        name: 'resourcesLibrary',
+        path: '/resources/resources-library',
+        component: () => import('#/views/resources-library/list.vue'),
       },
     ],
   },
