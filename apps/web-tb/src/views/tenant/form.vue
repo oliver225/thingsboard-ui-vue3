@@ -124,11 +124,10 @@ const [Form, formApi] = useVbenForm({
       },
       dependencies: {
         if: () => !!record.value?.id?.id,
-        triggerFields: ['additionalInfo'],
+        triggerFields: ['additionalInfo.homeDashboardId'],
       },
     },
     {
-      label: '',
       fieldName: 'additionalInfo.homeDashboardHideToolbar',
       component: 'Checkbox',
       defaultValue: true,
@@ -140,7 +139,7 @@ const [Form, formApi] = useVbenForm({
       },
       dependencies: {
         if: () => !!record.value?.id?.id,
-        triggerFields: ['additionalInfo'],
+        triggerFields: ['additionalInfo.homeDashboardHideToolbar'],
       },
     },
     {

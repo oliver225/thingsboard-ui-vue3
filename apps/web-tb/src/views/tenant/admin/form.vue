@@ -81,11 +81,10 @@ const [Form, formApi] = useVbenForm({
       },
       dependencies: {
         if: () => !!record.value?.id?.id,
-        triggerFields: ['additionalInfo'],
+        triggerFields: ['additionalInfo.defaultDashboardId'],
       },
     },
     {
-      label: '',
       fieldName: 'additionalInfo.defaultDashboardFullscreen',
       component: 'Checkbox',
       defaultValue: false,
@@ -97,7 +96,7 @@ const [Form, formApi] = useVbenForm({
       },
       dependencies: {
         if: () => !!record.value?.id?.id,
-        triggerFields: ['additionalInfo'],
+        triggerFields: ['additionalInfo.defaultDashboardFullscreen'],
       },
     },
     {
@@ -114,23 +113,22 @@ const [Form, formApi] = useVbenForm({
       },
       dependencies: {
         if: () => !!record.value?.id?.id,
-        triggerFields: ['additionalInfo'],
+        triggerFields: ['additionalInfo.homeDashboardId'],
       },
     },
     {
-      label: '',
       fieldName: 'additionalInfo.homeDashboardHideToolbar',
       component: 'Checkbox',
       defaultValue: true,
+      hideLabel: true,
       renderComponentContent: () => {
         return {
           default: () => ['隐藏首页仪表板工具栏'],
         };
       },
-      hideLabel: true,
       dependencies: {
         if: () => !!record.value?.id?.id,
-        triggerFields: ['additionalInfo'],
+        triggerFields: ['additionalInfo.homeDashboardHideToolbar'],
       },
     },
 
