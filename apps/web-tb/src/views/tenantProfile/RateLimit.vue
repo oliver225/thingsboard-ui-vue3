@@ -1,78 +1,60 @@
-<script lang="ts" setup>
+<!-- eslint-disable vue/no-required-prop-with-default -->
+<script lang="ts" setup name="RateLimit">
 import { ref, watchEffect } from 'vue';
 
 import { IconifyIcon } from '@vben/icons';
 
-import { VbenIconButton } from '@vben-core/shadcn-ui';
+import { Button, Card, InputNumber } from 'ant-design-vue';
+import { isEmpty } from 'lodash-es';
 
-import { Card, InputNumber, Modal } from 'ant-design-vue';
+interface Props {
+  value: string;
+  edit: boolean;
+}
 
-defineOptions({
-  name: 'TenantProfileRateLimit',
-});
-
-const props = withDefaults(defineProps<{ edit?: boolean; value: string }>(), {
+const props = withDefaults(defineProps<Props>(), {
+  value: '',
   edit: true,
 });
 
 const emit = defineEmits(['update:value']);
 
-interface RateLimitItem {
-  quantity: number;
-  second: number;
-}
-
 const modalVisible = ref(false);
 
-const rateList = ref<Array<RateLimitItem>>([]);
+const rateList = ref<Array<any>>([]);
 
 watchEffect(() => {
   resolveRateLimit(props.value);
 });
 
 function resolveRateLimit(rateLimit: string) {
-  if (!rateLimit?.trim()) {
-    rateList.value = [];
+  rateList.value = [];
+  if (isEmpty(rateLimit)) {
     return;
   }
-  const parsedData: RateLimitItem[] = rateLimit
-    .split(',')
-    .map((item) => {
-      const [quantityStr, secondStr] = item.split(':');
-      const quantity = Number.parseInt(quantityStr || '', 10);
-      const second = Number.parseInt(secondStr || '', 10);
-
-      if (
-        Number.isNaN(quantity) ||
-        quantity <= 0 ||
-        Number.isNaN(second) ||
-        second <= 0
-      ) {
-        return null;
-      }
-
-      return { quantity, second };
-    })
-    .filter((item): item is RateLimitItem => item !== null);
-
-  rateList.value = parsedData;
+  rateLimit.split(',').forEach((item) => {
+    const datum = item.split(':');
+    if (datum.length === 2) {
+      rateList.value.push({
+        quantity: Number.parseInt(datum[0]),
+        second: Number.parseInt(datum[1]),
+      });
+    }
+  });
 }
 
 function updateRateLimitValue() {
-  const validItems = rateList.value?.filter(
-    (item) => item.quantity > 0 && item.second > 0,
-  );
-
-  if (!validItems || validItems.length === 0) {
+  if (isEmpty(rateList.value) || rateList.value.length === 0) {
     emit('update:value', undefined);
     return;
   }
-
-  const rateLimitString = validItems
-    .map(({ quantity, second }) => `${quantity}:${second}`)
-    .join(',');
-
-  emit('update:value', rateLimitString);
+  emit(
+    'update:value',
+    rateList.value
+      .filter((item) => item.quantity > 0 && item.second > 0)
+      .map((item) => `${item.quantity}:${item.second}`)
+      .join(','),
+  );
 }
 
 function handleOK() {
@@ -85,7 +67,7 @@ function handleClose() {
 }
 
 function handleEditRateLimit() {
-  if (props.edit === true) {
+  if (props.edit == true) {
     modalVisible.value = true;
   }
 }
@@ -112,31 +94,17 @@ function handleDeleteRateItem(index: number) {
     </div>
 
     <div>
-      <VbenIconButton
-        v-tippy="{
-          content: '删除限制',
-          theme: 'dark',
-        }"
+      <IconifyIcon
         v-if="edit === true"
-      >
-        <IconifyIcon
-          class="size-6"
-          icon="ant-design:plus-circle-outlined"
-          color="blue"
-          @click="handleEditRateLimit()"
-        />
-      </VbenIconButton>
-      <!-- <Tooltip title="添加限制" class="mx-4" v-if="edit === true">
-        <Icon
-          class="cursor-pointer"
-          icon="ant-design:plus-circle-outlined"
-          :size="24"
-          color="blue"
-          @click="handleEditRateLimit()"
-        />
-      </Tooltip> -->
+        class="mx-4 cursor-pointer"
+        v-tippy="{ theme: 'auto', content: '添加限制' }"
+        icon="ant-design:plus-circle-outlined"
+        :size="24"
+        color="blue"
+        @click="handleEditRateLimit()"
+      />
     </div>
-    <Modal
+    <BasicModal
       :open="modalVisible"
       title="编辑速率限制"
       width="50%"
@@ -159,36 +127,19 @@ function handleDeleteRateItem(index: number) {
               addon-after="秒"
               :style="{ width: '100%' }"
             />
-
-            <VbenIconButton
-              v-tippy="{
-                content: '删除限制',
-                theme: 'dark',
-              }"
-            >
-              <IconifyIcon
-                class="size-6"
-                icon="ant-design:minus-circle-outlined"
-                color="red"
-                @click="handleDeleteRateItem(index)"
-              />
-            </VbenIconButton>
-            <!-- 
-            <Tooltip title="删除限制">
-              <Icon
-                class="cursor-pointer"
-                icon="ant-design:minus-circle-outlined"
-                :size="24"
-                color="red"
-                @click="handleDeleteRateItem(index)"
-              />
-            </Tooltip> -->
+            <IconifyIcon
+              class="cursor-pointer"
+              v-tippy="{ theme: 'auto', content: '删除限制' }"
+              icon="ant-design:minus-circle-outlined"
+              :size="24"
+              color="red"
+              @click="handleDeleteRateItem(index)"
+            />
           </div>
         </div>
-        <a-button type="primary" @click="handleAddRateItem">
-          <IconifyIcon class="size-6" icon="i-fluent:add-12-filled" />
-          添加限制
-        </a-button>
+        <Button type="primary" @click="handleAddRateItem">
+          <IconifyIcon icon="i-fluent:add-12-filled" />添加限制
+        </Button>
         <div class="h-8"></div>
 
         <Card title="预览" size="small">
@@ -210,7 +161,7 @@ function handleDeleteRateItem(index: number) {
           </div>
         </Card>
       </div>
-    </Modal>
+    </BasicModal>
   </div>
 </template>
 <style lang="less">
@@ -235,7 +186,7 @@ function handleDeleteRateItem(index: number) {
       border-radius: 4px;
       padding: 1px 6px;
       margin: auto 4px;
-      // color: @primary-color;
+      color: @primary-color;
       font-weight: 500;
     }
 
@@ -276,7 +227,7 @@ function handleDeleteRateItem(index: number) {
       border-radius: 4px;
       padding: 1px 6px;
       margin: auto 4px;
-      // color: @primary-color;
+      color: @primary-color;
       font-weight: 500;
     }
 
