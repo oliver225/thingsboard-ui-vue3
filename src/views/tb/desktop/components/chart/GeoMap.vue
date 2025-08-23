@@ -33,7 +33,7 @@
   const { getAndIncrementCmdId, send, unsubscribe } = useWebsocketStore();
   // const { success, BMapGL } = useBMap('I8y4JKYWxnOA1lIW4VYJFfuR2JKanf0I23');
   const success = ref(false);
-  const BMapGL = {};
+  const BMapGL = ref<any>(null);
   watchEffect(() => {
     if (success.value == true) {
       initBMap();
@@ -47,7 +47,9 @@
       if (isArray(props.center)) {
         centerPoint = new BMapGL.value.Point(props.center[0], props.center[1]);
       }
-      mapInstance.centerAndZoom(centerPoint, props.zoom);
+      if (mapInstance) {
+        mapInstance.centerAndZoom(centerPoint, props.zoom);
+      }
     },
   );
   function initBMap() {
@@ -79,8 +81,8 @@
             type: WsCmdType.ENTITY_DATA,
             latestCmd: {
               keys: [
-                { type: 'TIME_SERIES', key: 'lat' },
-                { type: 'TIME_SERIES', key: 'lng' },
+                { type: 'TIMESERIES', key: 'latitude' },
+                { type: 'TIMESERIES', key: 'longitude' },
                 { type: 'ATTRIBUTE', key: 'active' },
                 { type: 'ATTRIBUTE', key: 'lastActivityTime' },
               ],
@@ -94,7 +96,7 @@
               keyFilters: [
                 {
                   valueType: 'NUMERIC',
-                  key: { key: 'lat', type: 'TIME_SERIES' },
+                  key: { key: 'latitude', type: 'TIMESERIES' },
                   predicate: { operation: 'GREATER', type: 'NUMERIC', value: { defaultValue: 0 } },
                 },
               ],
@@ -108,8 +110,8 @@
                 sortOrder: { direction: 'DESC', key: { type: 'ENTITY_FIELD', key: 'createdTime' } },
               },
               latestValues: [
-                { type: 'TIME_SERIES', key: 'lat' },
-                { type: 'TIME_SERIES', key: 'lng' },
+                { type: 'TIMESERIES', key: 'latitude' },
+                { type: 'TIMESERIES', key: 'longitude' },
                 { type: 'ATTRIBUTE', key: 'active' },
                 { type: 'ATTRIBUTE', key: 'lastActivityTime' },
               ],
@@ -119,6 +121,32 @@
       },
       onMessage,
     );
+    //测试
+    positionDeviceList.value.push({
+      name: '测试设备1',
+      label: '测试标签',
+      active: true,
+      lastActivityTime: Date.now(),
+      latitude: 31.331706,
+      longitude: 121.472644,
+    });
+    positionDeviceList.value.push({
+      name: '测试设备2',
+      label: '测试标签',
+      active: true,
+      lastActivityTime: Date.now(),
+      latitude: 32.331706,
+      longitude: 122.472644,
+    });
+    positionDeviceList.value.push({
+      name: '测试设备2',
+      label: '测试标签',
+      active: true,
+      lastActivityTime: Date.now(),
+      latitude: 30.331706,
+      longitude: 120.472644,
+    });
+    renderPosition();
   }
 
   function onMessage(data: any) {
@@ -130,8 +158,8 @@
             label: item.latest.ENTITY_FIELD.label.value,
             active: item.latest.ATTRIBUTE.active.value == 'true',
             lastActivityTime: Number.parseInt(item.latest.ATTRIBUTE.lastActivityTime.value),
-            latitude: Number.parseFloat(item.latest.TIME_SERIES.lat.value),
-            longitude: Number.parseFloat(item.latest.TIME_SERIES.lng.value),
+            latitude: Number.parseFloat(item.latest.TIME_SERIES.latitude.value),
+            longitude: Number.parseFloat(item.latest.TIME_SERIES.latitude.value),
           };
         }),
       );
@@ -141,12 +169,12 @@
 
   function renderPosition() {
     if (mapInstance && BMapGL.value) {
-      mapInstance.clearOverLays();
+      mapInstance.clearOverlays(); // 清除已有覆盖物
       positionDeviceList.value.forEach((item) => {
-        const point = new BMapGL.value.LngLat(item.longitude, item.latitude);
+        const point = new BMapGL.value.Point(item.longitude, item.latitude); // 正确的坐标顺序
         const marker = new BMapGL.value.Marker(point);
 
-        mapInstance.addOverLay(marker);
+        mapInstance.addOverlay(marker); // 只调用一次
 
         let info =
           `<div style="display:flex;justify-content:space-between;margin:0 6px 0 1px"><strong>名称：</strong><span>${item.name}</span></div>` +
@@ -161,11 +189,10 @@
           height: 130,
           title: `<strong>${item.name}</strong>`,
         });
+
         marker.addEventListener('click', function () {
           mapInstance.openInfoWindow(infoWindow, point);
-          // 开启信息窗口
         });
-        mapInstance.addOverlay(marker);
       });
     }
   }
