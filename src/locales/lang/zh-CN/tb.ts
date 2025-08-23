@@ -31,7 +31,7 @@ export default {
   entityView: '实体视图',
   ota: 'OTA升级',
   images: '图像库',
-  scadaSymbols: 'SCADA 符号集',
+  scadaSymbols: '组态库',
   tabs: {
     detail: '详情',
     telemetry: '数据',

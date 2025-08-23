@@ -3,11 +3,12 @@
   import { useGlobSetting } from '/@/hooks/setting';
 
   import { useI18n } from '/@/hooks/web/useI18n';
+  import { publicPath } from '/@/utils/env';
   const { t } = useI18n('tb');
   const { title } = useGlobSetting();
 
   const appName = title;
-  const logo = '/resource/img/logo.png';
+  const logo = `${publicPath}/resource/img/logo.png`;
 </script>
 
 <template>

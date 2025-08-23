@@ -40,7 +40,7 @@ Thingsboard UI Vue3 是 Thingsboard 的前端适配版本。作为一个免费�
 
 
 ## 预览地址
-  thingsboard:   http://thingsboard.yantsing.com/
+  thingsboard:   http://thingsboard.yantsing.com/vue/
    
    用户名：1069035666@qq.com (我的邮箱)
 

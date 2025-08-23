@@ -16,6 +16,8 @@ import { useGlobSetting } from '/@/hooks/setting';
 import logoImg from '/@/assets/images/logo.png';
 import { mitt, Emitter } from '/@/utils/mitt';
 import { Authority } from '/@/enums/authorityEnum';
+import { getExpiration } from '/@/utils/jwt';
+import { publicPath } from '/@/utils/env';
 
 const { showMessage, createConfirm } = useMessage();
 
@@ -81,8 +83,14 @@ export const useUserStore = defineStore('app-user', {
       setAuthCache(TOKEN_KEY, token?.token);
       setAuthCache(REFRESH_TOKEN_KEY, token?.refreshToken);
       // 设置thingsboard 平台原生的 token 方便IFRAME 访问
-      localStorage.setItem('jwt_token', token?.token || '');
-      localStorage.setItem('refresh_token', token?.refreshToken || '');
+      if (token?.token) {
+        localStorage.setItem('jwt_token', token.token);
+        localStorage.setItem('jwt_token_expiration', getExpiration(token.token)?.getTime().toString() || '');
+      }
+      if (token?.refreshToken) {
+        localStorage.setItem('refresh_token', token.refreshToken);
+        localStorage.setItem('refresh_token_expiration', getExpiration(token.refreshToken)?.getTime().toString() || '');
+      }
     },
     setSessionTimeout(flag: boolean) {
       this.sessionTimeout = flag;
@@ -91,7 +99,7 @@ export const useUserStore = defineStore('app-user', {
     setUserInfo(info: UserInfo | null) {
       if (info) {
         const { ctxPath } = useGlobSetting();
-        let url = info.additionalInfo?.avatarUrl || '/resource/img/avatar.jpg';
+        let url = info.additionalInfo?.avatarUrl || `${publicPath}/resource/img/avatar.jpg`;
         const avatarUrl = url || logoImg;
         info.additionalInfo = { ...info.additionalInfo, avatarUrl: avatarUrl };
         this.setAuthority(info.authority);

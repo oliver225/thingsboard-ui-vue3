@@ -9,7 +9,7 @@
       <template #tableTitle>
         <div class="space-x-2">
           <a-button type="primary" @click="handleUpload({})">
-            <Icon icon="ant-design:upload-outlined" /> 上传图片
+            <Icon icon="ant-design:upload-outlined" /> 上传图像
           </a-button>
           <a-input
             v-model:value="searchParam.textSearch"

@@ -32,6 +32,7 @@
   import { GITEE_URL, GITHUB_URL } from '/@/settings/siteSetting';
   import Icon from '/@/components/Icon';
   import { useMessage } from '/@/hooks/web/useMessage';
+import { publicPath } from '/@/utils/env';
 
   defineOptions({
     name: 'TechSupport',
@@ -45,7 +46,7 @@
       title: '',
       content: () =>
         h('img', {
-          src: '/resource/img/weixin.jpg',
+          src: `${publicPath}/resource/img/weixin.jpg`,
           alt: 'WeChat QR Code',
           class: 'w-82',
         }),

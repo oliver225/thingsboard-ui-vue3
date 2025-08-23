@@ -8,9 +8,7 @@
       </template>
       <template #tableTitle>
         <div class="space-x-2">
-          <a-button type="primary" @click="handleForm({})">
-            <Icon icon="i-fluent:add-12-filled" /> 新增产品
-          </a-button>
+          <a-button type="primary" @click="handleForm({})"> <Icon icon="i-fluent:add-12-filled" /> 新增产品 </a-button>
           <a-input
             v-model:value="searchParam.textSearch"
             placeholder="输入搜索内容"
@@ -27,10 +25,7 @@
       <template #firstColumn="{ record }">
         <Space>
           <div class="h-10 w-10 bg-white flex justify-center">
-            <div
-              class="cursor-pointer h-10 w-full content-center"
-              @click="handleDetail({ id: record.id })"
-            >
+            <div class="cursor-pointer h-10 w-full content-center" @click="handleDetail({ id: record.id })">
               <img :src="getImageUrl(record.image)" :alt="record.name" class="w-full" />
             </div>
           </div>
@@ -53,12 +48,7 @@
       </template>
     </BasicTable>
     <InputForm @register="registerModal" @success="handleSuccess" />
-    <DetailDrawer
-      @register="registerDrawer"
-      @edit="handleForm"
-      @delete="handleDelete"
-      @default="handleSetDefault"
-    />
+    <DetailDrawer @register="registerDrawer" @edit="handleForm" @delete="handleDelete" @default="handleSetDefault" />
   </div>
 </template>
 <script lang="ts">
@@ -75,18 +65,15 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import { Icon } from '/@/components/Icon';
   import { Checkbox, Space } from 'ant-design-vue';
-  import {
-    deviceProfileList,
-    deleteDeviceProfile,
-    setDefaultDeviceProfile,
-  } from '/@/api/tb/deviceProfile';
+  import { deviceProfileList, deleteDeviceProfile, setDefaultDeviceProfile } from '/@/api/tb/deviceProfile';
   import InputForm from './form.vue';
   import DetailDrawer from './detail.vue';
   import { TRANSPORT_TYPE_OPTIONS } from '/@/enums/deviceEnum';
   import { tbImagePrefix } from '/@/api/tb/images';
   import ImageCard from './imageCard.vue';
+  import { publicPath } from '/@/utils/env';
 
-  const defaultImage = '/resource/img/logo.png';
+  const defaultImage = `${publicPath}/resource/img/logo.png`;
 
   const { t } = useI18n('tb');
   const { createConfirm, showMessage } = useMessage();
@@ -124,8 +111,7 @@
       key: 'transportType',
       align: 'center',
       width: 100,
-      format: (text: any) =>
-        text ? TRANSPORT_TYPE_OPTIONS.find((item) => item.value === text)?.label || text : '',
+      format: (text: any) => (text ? TRANSPORT_TYPE_OPTIONS.find((item) => item.value === text)?.label || text : ''),
     },
     {
       title: '描述信息',

@@ -12,12 +12,7 @@
       </div>
       <template #actions>
         <Tooltip :title="'设为默认'">
-          <Icon
-            icon="i-ant-design:flag-outlined"
-            :size="16"
-            color="black"
-            @click="handleSetDefault"
-          />
+          <Icon icon="i-ant-design:flag-outlined" :size="16" color="black" @click="handleSetDefault" />
         </Tooltip>
         <Tooltip :title="'编辑产品'">
           <Icon icon="i-ant-design:edit-outlined" :size="16" color="green" @click="handleEdit" />
@@ -35,8 +30,9 @@
   import { Card, Tooltip } from 'ant-design-vue';
   import { tbImagePrefix } from '/@/api/tb/images';
   import { Icon } from '/@/components/Icon';
+  import { publicPath } from '/@/utils/env';
 
-  const defaultImage = '/resource/img/logo.png';
+  const defaultImage = `${publicPath}/resource/img/logo.png`;
 
   const props = defineProps({
     value: {
