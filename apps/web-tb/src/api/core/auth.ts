@@ -1,6 +1,8 @@
+import type { RequestResponse } from '@vben/request';
+
 import type { UserInfo } from '#/types';
 
-import { requestClient } from '#/api/request';
+import { baseRequestClient, requestClient } from '#/api/request';
 
 export namespace AuthApi {
   /** 登录接口参数 */
@@ -42,7 +44,7 @@ export async function getUserInfoApi() {
  * 刷新accessToken
  */
 export async function refreshTokenApi(refreshToken: string) {
-  return requestClient.post<AuthApi.JwtPair>(
+  return baseRequestClient.post<RequestResponse<AuthApi.JwtPair>>(
     '/auth/token',
     { refreshToken },
     {

@@ -14,7 +14,7 @@ export interface Configuration {
   maxUsers: number;
   maxCustomers: number;
   maxRuleChains: number;
-  // maxEdges: number;
+  maxEdges: number;
 
   maxREExecutions: number;
   maxTransportMessages: number;
@@ -49,13 +49,13 @@ export interface Configuration {
   maxWsSubscriptionsPerRegularUser: number;
   wsMsgQueueLimitPerSession: number;
 
-  // maxCalculatedFieldsPerEntity: number;
-  // maxArgumentsPerCF: number;
-  // maxDataPointsPerRollingArg: number;
-  // maxStateSizeInKBytes: number;
-  // maxSingleValueArgumentSizeInKBytes: number;
-  // warnThreshold: number;
-  // maxDebugModeDurationMinutes: number;
+  maxCalculatedFieldsPerEntity: number;
+  maxArgumentsPerCF: number;
+  maxDataPointsPerRollingArg: number;
+  maxStateSizeInKBytes: number;
+  maxSingleValueArgumentSizeInKBytes: number;
+  warnThreshold: number;
+  maxDebugModeDurationMinutes: number;
 
   transportTenantMsgRateLimit?: string;
   transportDeviceMsgRateLimit?: string;

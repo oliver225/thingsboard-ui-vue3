@@ -51,13 +51,14 @@ function createRequestClient(baseURL: string, options?: RequestClientOptions) {
   async function doRefreshToken() {
     const accessStore = useAccessStore();
     const resp = await refreshTokenApi(accessStore.refreshToken as string);
-    if (!resp || !resp.token) {
+    if (!resp || resp.status !== 200 || !resp.data.token) {
       // 如果没有返回新的 token，直接抛出异常
       throw new Error('Failed to refresh token');
     }
-    const newToken = resp.token;
+    const newToken = resp.data.token;
+    const refreshToken = resp.data.refreshToken;
     accessStore.setAccessToken(newToken);
-    accessStore.setRefreshToken(resp.refreshToken);
+    accessStore.setRefreshToken(refreshToken);
     return newToken;
   }
 

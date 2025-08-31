@@ -59,7 +59,7 @@ export const authenticateResponseInterceptor = ({
   client: RequestClient;
   doReAuthenticate: () => Promise<void>;
   doRefreshToken: () => Promise<string>;
-  enableRefreshFunc: (response: RequestResponse) => boolean;
+  enableRefreshFunc?: (response: RequestResponse) => boolean;
   enableRefreshToken: boolean;
   formatToken: (token: string) => null | string;
 }): ResponseInterceptorConfig => {
@@ -67,7 +67,7 @@ export const authenticateResponseInterceptor = ({
     rejected: async (error) => {
       const { config, response } = error;
       // 如果不是 401 错误，直接抛出异常
-      if (!enableRefreshFunc(response)) {
+      if (enableRefreshFunc && !enableRefreshFunc(response)) {
         throw error;
       }
       // 判断是否启用了 refreshToken 功能
