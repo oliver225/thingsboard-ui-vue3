@@ -98,6 +98,44 @@ const tb: AppRouteModule = {
       },
     },
     {
+      path: '/dashboard',
+      name: 'Dashboard',
+      component: LAYOUT,
+      redirect: '/dashboard/list',
+      meta: {
+        orderNo: 35,
+        icon: 'i-ant-design:layout-outlined',
+        tabIcon: 'i-ant-design:layout-outlined',
+        title: t('仪表板'),
+        single: true,
+        authority: [Authority.TENANT_ADMIN, Authority.CUSTOMER_USER],
+      },
+      children: [
+        {
+          path: '/dashboard/list',
+          name: 'DashboardList',
+          component: () => import('/@/views/tb/dashboard/list.vue'),
+          meta: {
+            icon: 'i-ant-design:layout-outlined',
+            tabIcon: 'i-ant-design:layout-outlined',
+            title: t('仪表板'),
+            authority: [Authority.TENANT_ADMIN, Authority.CUSTOMER_USER],
+          },
+        },
+        {
+          path: '/dashboard/:dashboardId',
+          name: 'DashboardEditor',
+          component: () => import('/@/views/tb/dashboard/editor.vue'),
+          meta: {
+            icon: 'i-ant-design:layout-filled',
+            tabIcon: 'i-ant-design:layout-filled',
+            title: t('仪表板'),
+            authority: [Authority.TENANT_ADMIN],
+          },
+        },
+      ],
+    },
+    {
       path: '/device',
       name: 'Device',
       component: LAYOUT,
