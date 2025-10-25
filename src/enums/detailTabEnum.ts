@@ -25,6 +25,11 @@ export function getDetailTabItemEnum() {
       label: t('tb.detailTab.topic'),
       icon: 'ant-design:api-outlined',
     },
+    RPC: {
+      key: 'RPC',
+      label: t('tb.detailTab.rpc'),
+      icon: 'ant-design:to-top-outlined',
+    },
     CALCULATED: {
       key: 'CALCULATED',
       label: t('tb.detailTab.calculated'),

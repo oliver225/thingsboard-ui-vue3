@@ -7,4 +7,5 @@ export default {
   event: 'Event',
   relation: 'Relation',
   auditLog: 'Audit Log',
+  rpc: 'RPC',
 };

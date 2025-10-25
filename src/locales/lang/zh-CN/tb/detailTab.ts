@@ -7,4 +7,5 @@ export default {
   event: '事件',
   relation: '关联',
   auditLog: '审计日志',
+  rpc: '远程调用',
 };

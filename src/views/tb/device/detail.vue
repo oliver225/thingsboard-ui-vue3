@@ -89,6 +89,7 @@
       :entityType="EntityType.DEVICE"
       :entityId="record?.id?.id"
     />
+    <RPC v-if="tabActiveKey == DetailTabItemEnum.RPC.key" :entityType="EntityType.DEVICE" :entityId="record?.id?.id" />
 
     <Alarm
       v-if="tabActiveKey == DetailTabItemEnum.ALARM.key"
@@ -136,6 +137,7 @@
   import Event from '/@/views/tb/event/index.vue';
   import DeviceAPI from '/@/views/tb/device/deviceApi.vue';
   import CalculatedField from '/@/views/tb/calculatedField/list.vue';
+  import RPC from '/@/views/tb/device/rpcSend.vue';
   import { EntityType } from '/@/enums/entityTypeEnum';
   import { DetailTabItemEnum } from '/@/enums/detailTabEnum';
 
@@ -170,6 +172,7 @@
         DetailTabItemEnum.DETAIL,
         DetailTabItemEnum.TELEMETRY,
         DetailTabItemEnum.TOPIC,
+        DetailTabItemEnum.RPC,
         DetailTabItemEnum.CALCULATED,
         DetailTabItemEnum.EVENT,
         DetailTabItemEnum.RELATION,
@@ -179,6 +182,7 @@
         DetailTabItemEnum.DETAIL,
         DetailTabItemEnum.TELEMETRY,
         DetailTabItemEnum.TOPIC,
+        DetailTabItemEnum.RPC,
         DetailTabItemEnum.ALARM,
         DetailTabItemEnum.EVENT,
         DetailTabItemEnum.RELATION,

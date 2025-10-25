@@ -23,7 +23,7 @@
   import { useI18n } from '/@/hooks/web/useI18n';
   import { ThemeEnum } from '/@/enums/appEnum';
 
-  import { RpcSendResult, rpcSendTwoway } from '/@/api/tb/gateways/rpc';
+  import { RpcSendResult, rpcSendTwoway } from '/@/api/tb/rpc';
 
   const props = defineProps({
     gatewayName: { type: String, default: () => '' },

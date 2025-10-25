@@ -28,7 +28,7 @@
   import { useRootSetting } from '/@/hooks/setting/useRootSetting';
   import { ThemeEnum } from '/@/enums/appEnum';
 
-  import { rpcSendTwoway } from '/@/api/tb/gateways/rpc';
+  import { rpcSendTwoway } from '/@/api/tb/rpc';
 
   import { COMMAND_OPTIONS } from './enum';
 

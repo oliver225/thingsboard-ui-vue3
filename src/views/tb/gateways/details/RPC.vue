@@ -71,7 +71,7 @@
   import { EntityType } from '/@/enums/entityTypeEnum';
   import { EntityFilterType, EntityKeyType } from '/@/enums/queryEnum';
 
-  import { rpcSendTwoway } from '/@/api/tb/gateways/rpc';
+  import { rpcSendTwoway } from '/@/api/tb/rpc';
 
   import RpcTerminalModal from './RpcComp/RpcTerminalModal.vue';
   import { COMMAND_OPTIONS } from './RpcComp/enum';

@@ -7,4 +7,5 @@ export default {
   event: '事件',
   relation: '關聯',
   auditLog: '審計日誌',
+  rpc: '遠端調用',
 };
