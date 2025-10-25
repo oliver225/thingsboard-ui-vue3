@@ -6,9 +6,11 @@
         <div class="flex flex-col">
           <span class="text-base font-semibold">
             {{ getTitle.value || '· · · ·' }}
-            <Tag class="text-base font-normal" color="success" v-if="record.default == true">默认</Tag>
+            <Tag class="text-base font-normal" color="success" v-if="record.default == true">{{
+              t('tb.tenantProfile.table.default')
+            }}</Tag>
           </span>
-          <span class="text-sm">租户配置详情</span>
+          <span class="text-sm">{{ t('tb.tenantProfile.detail.detail') }}</span>
         </div>
       </div>
     </template>
@@ -25,27 +27,29 @@
     <div v-show="tabActiveKey == DetailTabItemEnum.DETAIL.key">
       <div class="space-x-4">
         <a-button type="primary" v-if="!!!record?.default" @click="handleSetDefault">
-          <Icon :icon="'ant-design:flag-outlined'" />设为默认租户配置
+          <Icon :icon="'ant-design:flag-outlined'" />{{ t('tb.tenantProfile.action.setDefault') }}
         </a-button>
         <a-button type="primary success" @click="handleEditTenantProfile">
-          <Icon :icon="'i-clarity:note-edit-line'" />编辑租户配置
+          <Icon :icon="'i-clarity:note-edit-line'" />{{ t('tb.tenantProfile.action.edit') }}
         </a-button>
         <a-button type="primary" danger @click="handleDeleteTenantProfile">
-          <Icon :icon="'ant-design:delete-outlined'" />租删租户配置
+          <Icon :icon="'ant-design:delete-outlined'" />{{ t('tb.tenantProfile.action.delete') }}
         </a-button>
       </div>
       <div class="space-x-4 my-4">
         <a-button @click="handleCopyTenantProfileId">
           <Icon :icon="'ant-design:copy-filled'" />
-          复制租户配置ID
+          {{ t('tb.tenantProfile.detail.copyId') }}
         </a-button>
       </div>
       <Form ref="formRef" layout="vertical" :disabled="true">
-        <Form.Item name="isolatedTbRuleEngine" help="每个独立租户需要单独的规则引擎微服务">
-          <Checkbox v-model:checked="record.isolatedTbRuleEngine"> 使用独立的规则引擎服务 </Checkbox>
+        <Form.Item name="isolatedTbRuleEngine" :help="t('tb.tenantProfile.form.isolatedTip')">
+          <Checkbox v-model:checked="record.isolatedTbRuleEngine">
+            {{ t('tb.tenantProfile.form.isolatedLabel') }}
+          </Checkbox>
         </Form.Item>
         <CollapseContainer
-          :title="`队列(${record.profileData?.queueConfiguration?.length})`"
+          :title="`${t('tb.tenantProfile.form.queue')}(${record.profileData?.queueConfiguration?.length})`"
           v-if="record.isolatedTbRuleEngine == true"
           class="border border-solid border-neutral-300 mb-4"
         >
@@ -55,13 +59,19 @@
             :title="queue.name"
             class="border border-solid border-neutral-300 mb-4"
           >
-            <Form.Item label="队列名称" :name="['profileData', 'queueConfiguration', index, 'name']">
-              <Input :value="queue.name" placeholder="请输入队列名称" />
+            <Form.Item
+              :label="t('tb.tenantProfile.form.queueName')"
+              :name="['profileData', 'queueConfiguration', index, 'name']"
+            >
+              <Input :value="queue.name" :placeholder="t('tb.tenantProfile.form.queueNamePlaceholder')" />
             </Form.Item>
-            <CollapseContainer title="提交设置" class="border border-solid border-neutral-300 mb-4">
+            <CollapseContainer
+              :title="t('tb.tenantProfile.form.submitSettings')"
+              class="border border-solid border-neutral-300 mb-4"
+            >
               <Row :gutter="16">
                 <Col :span="12">
-                  <Form.Item label="提交策略">
+                  <Form.Item :label="t('tb.tenantProfile.form.submitStrategy')">
                     <Radio.Group :value="queue.submitStrategy.type">
                       <Radio
                         :style="{ display: 'flex', height: '30px', lineHeight: '30px', marginLeft: '30px' }"
@@ -78,22 +88,28 @@
                   </Form.Item>
                 </Col>
                 <Col :span="12">
-                  <Form.Item label="批量处理大小" v-if="queue.submitStrategy.type == SubmitStrategyType.BATCH">
+                  <Form.Item
+                    :label="t('tb.tenantProfile.form.batchSizeLabel')"
+                    v-if="queue.submitStrategy.type == SubmitStrategyType.BATCH"
+                  >
                     <InputNumber
                       :style="{ width: '90%' }"
                       :defaultValue="1000"
                       :min="1"
                       :value="queue.submitStrategy.batchSize"
-                      placeholder="请输入批量处理大小"
+                      :placeholder="t('tb.tenantProfile.form.batchSizeRequired')"
                     />
                   </Form.Item>
                 </Col>
               </Row>
             </CollapseContainer>
-            <CollapseContainer title="重试处理设置" class="border border-solid border-neutral-300 mb-4">
+            <CollapseContainer
+              :title="t('tb.tenantProfile.form.retrySettings')"
+              class="border border-solid border-neutral-300 mb-4"
+            >
               <Row :gutter="16">
                 <Col :span="12">
-                  <Form.Item label="处理策略">
+                  <Form.Item :label="t('tb.tenantProfile.form.processingStrategy')">
                     <Radio.Group :value="queue.processingStrategy.type">
                       <Radio
                         :style="{ display: 'flex', height: '40px', lineHeight: '40px', marginLeft: '30px' }"
@@ -110,137 +126,168 @@
                   </Form.Item>
                 </Col>
                 <Col :span="12">
-                  <Form.Item label="重试次数(0表示无限制)">
+                  <Form.Item :label="t('tb.tenantProfile.form.retriesLabel')">
                     <InputNumber
                       :style="{ width: '90%' }"
                       :defaultValue="3"
                       :min="0"
                       :value="queue.processingStrategy.retries"
-                      placeholder="请输入重试次数"
+                      :placeholder="t('tb.tenantProfile.form.retriesRequired')"
                     />
                   </Form.Item>
-                  <Form.Item label="跳过重试的失败消息百分比">
+                  <Form.Item :label="t('tb.tenantProfile.form.failurePercentageLabel')">
                     <InputNumber
                       :style="{ width: '90%' }"
                       :defaultValue="0"
                       :min="0"
                       :max="100"
                       :value="queue.processingStrategy.failurePercentage"
-                      placeholder="请输入跳过重试的失败消息百分比"
+                      :placeholder="t('tb.tenantProfile.form.failurePercentageRequired')"
                     />
                   </Form.Item>
-                  <Form.Item label="重试间隔">
+                  <Form.Item :label="t('tb.tenantProfile.form.pauseBetweenRetriesLabel')">
                     <InputNumber
                       :style="{ width: '90%' }"
                       :defaultValue="3"
                       :min="0"
                       :value="queue.processingStrategy.pauseBetweenRetries"
-                      placeholder="请输入重试间隔"
-                      addon-after="秒"
+                      :placeholder="t('tb.tenantProfile.form.pauseBetweenRetriesRequired')"
+                      :addon-after="t('tb.tenantProfile.form.unitSecond')"
                     />
                   </Form.Item>
-                  <Form.Item label="最大重试间隔">
+                  <Form.Item :label="t('tb.tenantProfile.form.maxPauseBetweenRetriesLabel')">
                     <InputNumber
                       :style="{ width: '90%' }"
                       :defaultValue="3"
                       :min="0"
                       :value="queue.processingStrategy.maxPauseBetweenRetries"
-                      placeholder="请输入最大重试间隔"
-                      addon-after="秒"
+                      :placeholder="t('tb.tenantProfile.form.maxPauseBetweenRetriesRequired')"
+                      :addon-after="t('tb.tenantProfile.form.unitSecond')"
                     />
                   </Form.Item>
                 </Col>
               </Row>
             </CollapseContainer>
-            <CollapseContainer title="轮训设置" class="border border-solid border-neutral-300 mb-4">
-              批量处理
+            <CollapseContainer
+              :title="t('tb.tenantProfile.form.pollSettings')"
+              class="border border-solid border-neutral-300 mb-4"
+            >
+              {{ t('tb.tenantProfile.form.batchProcessing') }}
               <Row :gutter="16">
                 <Col :span="12">
-                  <Form.Item label="轮训间隔">
+                  <Form.Item :label="t('tb.tenantProfile.form.pollIntervalLabel')">
                     <InputNumber
                       :style="{ width: '90%' }"
                       :defaultValue="25"
                       :min="0"
                       :value="queue.pollInterval"
-                      placeholder="请输入轮训间隔"
+                      :placeholder="t('tb.tenantProfile.form.pollIntervalRequired')"
                     />
                   </Form.Item>
                 </Col>
                 <Col :span="12">
-                  <Form.Item label="分区">
+                  <Form.Item :label="t('tb.tenantProfile.form.partitionsLabel')">
                     <InputNumber
                       :style="{ width: '90%' }"
                       :defaultValue="10"
                       :min="1"
                       :value="queue.partitions"
-                      placeholder="请输入分区"
+                      :placeholder="t('tb.tenantProfile.form.partitionsRequired')"
                     />
                   </Form.Item>
                 </Col>
               </Row>
-              即时处理
+              {{ t('tb.tenantProfile.form.instantProcessing') }}
               <Row :gutter="16">
                 <Col :span="12">
                   <Form.Item label=" ">
                     <Checkbox :checked="queue.consumerPerPartition" :defaultChecked="false">
-                      每个分区消费者单独轮询消息
+                      {{ t('tb.tenantProfile.form.consumerPerPartitionLabel') }}
                     </Checkbox>
                   </Form.Item>
                 </Col>
                 <Col :span="12">
-                  <Form.Item label="处理超时">
+                  <Form.Item :label="t('tb.tenantProfile.form.packProcessingTimeoutLabel')">
                     <InputNumber
                       :style="{ width: '90%' }"
                       :defaultValue="2000"
                       :min="0"
                       :value="queue.packProcessingTimeout"
-                      placeholder="请输入处理超时时间"
-                      addon-after="毫秒"
+                      :placeholder="t('tb.tenantProfile.form.packProcessingTimeoutRequired')"
+                      :addon-after="t('tb.tenantProfile.form.unitMillisecond')"
                     />
                   </Form.Item>
                 </Col>
               </Row>
             </CollapseContainer>
-            <Form.Item label="描述信息" help="此文本将显示在队列说明中，而不是所选策略中">
-              <Textarea :value="queue.additionalInfo?.description" placeholder="输入队列描述信息" :rows="3" />
+            <Form.Item
+              :label="t('tb.tenantProfile.form.description')"
+              :help="t('tb.tenantProfile.form.queueDescriptionHelp')"
+            >
+              <Textarea
+                :value="queue.additionalInfo?.description"
+                :placeholder="t('tb.tenantProfile.form.queueDescriptionPlaceholder')"
+                :rows="3"
+              />
             </Form.Item>
           </CollapseContainer>
         </CollapseContainer>
         <div class="h-4" v-if="record.isolatedTbRuleEngine == true"> </div>
-        <CollapseContainer title="配置设置" class="border border-solid border-neutral-300 mb-4">
+        <CollapseContainer
+          :title="t('tb.tenantProfile.form.configurationSettings')"
+          class="border border-solid border-neutral-300 mb-4"
+        >
           <Card size="small">
             <template #title>
-              实体
-              <span class="text-help">0 表示无限制</span>
+              {{ t('tb.tenantProfile.form.entity') }}
+              <span class="text-help">{{ t('tb.tenantProfile.form.unlimitedTip') }}</span>
             </template>
             <Row :gutter="20">
               <Col :span="12">
-                <Form.Item label="最大设备数" :name="['profileData', 'configuration', 'maxDevices']">
+                <Form.Item
+                  :label="t('tb.tenantProfile.form.maxDevices')"
+                  :name="['profileData', 'configuration', 'maxDevices']"
+                >
                   <InputNumber :value="record.profileData?.configuration?.maxDevices" :style="{ width: '100%' }" />
                 </Form.Item>
               </Col>
               <Col :span="12">
-                <Form.Item label="最大资产数" :name="['profileData', 'configuration', 'maxAssets']">
+                <Form.Item
+                  :label="t('tb.tenantProfile.form.maxAssets')"
+                  :name="['profileData', 'configuration', 'maxAssets']"
+                >
                   <InputNumber :value="record.profileData?.configuration?.maxAssets" :style="{ width: '100%' }" />
                 </Form.Item>
               </Col>
               <Col :span="12">
-                <Form.Item label="最大客户数" :name="['profileData', 'configuration', 'maxCustomers']">
+                <Form.Item
+                  :label="t('tb.tenantProfile.form.maxCustomers')"
+                  :name="['profileData', 'configuration', 'maxCustomers']"
+                >
                   <InputNumber :value="record.profileData?.configuration?.maxCustomers" :style="{ width: '100%' }" />
                 </Form.Item>
               </Col>
               <Col :span="12">
-                <Form.Item label="最大用户数" :name="['profileData', 'configuration', 'maxUsers']">
+                <Form.Item
+                  :label="t('tb.tenantProfile.form.maxUsers')"
+                  :name="['profileData', 'configuration', 'maxUsers']"
+                >
                   <InputNumber :value="record.profileData?.configuration?.maxUsers" :style="{ width: '100%' }" />
                 </Form.Item>
               </Col>
               <Col :span="12">
-                <Form.Item label="最大仪表盘数" :name="['profileData', 'configuration', 'maxDashboards']">
+                <Form.Item
+                  :label="t('tb.tenantProfile.form.maxDashboards')"
+                  :name="['profileData', 'configuration', 'maxDashboards']"
+                >
                   <InputNumber :value="record.profileData?.configuration?.maxDashboards" :style="{ width: '100%' }" />
                 </Form.Item>
               </Col>
               <Col :span="12">
-                <Form.Item label="最大规则链数" :name="['profileData', 'configuration', 'maxRuleChains']">
+                <Form.Item
+                  :label="t('tb.tenantProfile.form.maxRuleChains')"
+                  :name="['profileData', 'configuration', 'maxRuleChains']"
+                >
                   <InputNumber :value="record.profileData?.configuration?.maxRuleChains" :style="{ width: '100%' }" />
                 </Form.Item>
               </Col>
@@ -248,17 +295,23 @@
           </Card>
           <Card size="small" class="mt-4">
             <template #title>
-              规则引擎
-              <span class="text-help">0 表示无限制</span>
+              {{ t('tb.tenantProfile.form.ruleEngine') }}
+              <span class="text-help">{{ t('tb.tenantProfile.form.unlimitedTip') }}</span>
             </template>
             <Row :gutter="20">
               <Col :span="12">
-                <Form.Item label="最大规则引擎执行数" :name="['profileData', 'configuration', 'maxREExecutions']">
+                <Form.Item
+                  :label="t('tb.tenantProfile.form.maxREExecutions')"
+                  :name="['profileData', 'configuration', 'maxREExecutions']"
+                >
                   <InputNumber :value="record.profileData?.configuration?.maxREExecutions" :style="{ width: '100%' }" />
                 </Form.Item>
               </Col>
               <Col :span="12">
-                <Form.Item label="最大传输消息数" :name="['profileData', 'configuration', 'maxTransportMessages']">
+                <Form.Item
+                  :label="t('tb.tenantProfile.form.maxTransportMessages')"
+                  :name="['profileData', 'configuration', 'maxTransportMessages']"
+                >
                   <InputNumber
                     :value="record.profileData?.configuration?.maxTransportMessages"
                     :style="{ width: '100%' }"
@@ -267,15 +320,18 @@
               </Col>
               <Col :span="12">
                 <Form.Item
-                  label="最大 JavaScript 执行数"
+                  :label="t('tb.tenantProfile.form.maxJSExecutions')"
                   :name="['profileData', 'configuration', 'maxJSExecutions']"
-                  :rules="[{ required: true, message: '请输入最大 JavaScript 执行数!' }]"
+                  :rules="[{ required: true, message: t('tb.tenantProfile.form.maxJSExecutionsRequired') }]"
                 >
                   <InputNumber :value="record.profileData?.configuration?.maxJSExecutions" :style="{ width: '100%' }" />
                 </Form.Item>
               </Col>
               <Col :span="12">
-                <Form.Item label="最大传输数据点数" :name="['profileData', 'configuration', 'maxTransportDataPoints']">
+                <Form.Item
+                  :label="t('tb.tenantProfile.form.maxTransportDataPoints')"
+                  :name="['profileData', 'configuration', 'maxTransportDataPoints']"
+                >
                   <InputNumber
                     :value="record.profileData?.configuration?.maxTransportDataPoints"
                     :style="{ width: '100%' }"
@@ -284,7 +340,7 @@
               </Col>
               <Col :span="12">
                 <Form.Item
-                  label="每条消息的最大规则节点执行数"
+                  :label="t('tb.tenantProfile.form.maxRuleNodeExecutionsPerMessage')"
                   :name="['profileData', 'configuration', 'maxRuleNodeExecutionsPerMessage']"
                 >
                   <InputNumber
@@ -297,12 +353,15 @@
           </Card>
           <Card size="small" class="mt-4">
             <template #title>
-              TTL
-              <span class="text-help">0 表示无限制</span>
+              {{ t('tb.tenantProfile.form.ttl') }}
+              <span class="text-help">{{ t('tb.tenantProfile.form.unlimitedTip') }}</span>
             </template>
             <Row :gutter="20">
               <Col :span="12">
-                <Form.Item label="最大存储点天" :name="['profileData', 'configuration', 'maxDPStorageDays']">
+                <Form.Item
+                  :label="t('tb.tenantProfile.form.maxDPStorageDays')"
+                  :name="['profileData', 'configuration', 'maxDPStorageDays']"
+                >
                   <InputNumber
                     :value="record.profileData?.configuration?.maxDPStorageDays"
                     :style="{ width: '100%' }"
@@ -310,12 +369,18 @@
                 </Form.Item>
               </Col>
               <Col :span="12">
-                <Form.Item label="告警TTL天数" :name="['profileData', 'configuration', 'alarmsTtlDays']">
+                <Form.Item
+                  :label="t('tb.tenantProfile.form.alarmsTtlDays')"
+                  :name="['profileData', 'configuration', 'alarmsTtlDays']"
+                >
                   <InputNumber :value="record.profileData?.configuration?.alarmsTtlDays" :style="{ width: '100%' }" />
                 </Form.Item>
               </Col>
               <Col :span="12">
-                <Form.Item label="默认存储TTL天数" :name="['profileData', 'configuration', 'defaultStorageTtlDays']">
+                <Form.Item
+                  :label="t('tb.tenantProfile.form.defaultStorageTtlDays')"
+                  :name="['profileData', 'configuration', 'defaultStorageTtlDays']"
+                >
                   <InputNumber
                     :value="record.profileData?.configuration?.defaultStorageTtlDays"
                     :style="{ width: '100%' }"
@@ -323,7 +388,10 @@
                 </Form.Item>
               </Col>
               <Col :span="12">
-                <Form.Item label="RPC TTL天数" :name="['profileData', 'configuration', 'rpcTtlDays']">
+                <Form.Item
+                  :label="t('tb.tenantProfile.form.rpcTtlDays')"
+                  :name="['profileData', 'configuration', 'rpcTtlDays']"
+                >
                   <InputNumber :value="record.profileData?.configuration?.rpcTtlDays" :style="{ width: '100%' }" />
                 </Form.Item>
               </Col>
@@ -331,22 +399,31 @@
           </Card>
           <Card size="small" class="mt-4">
             <template #title>
-              告警与通知
-              <span class="text-help">0 表示无限制</span>
+              {{ t('tb.tenantProfile.form.alertsAndNotifications') }}
+              <span class="text-help">{{ t('tb.tenantProfile.form.unlimitedTip') }}</span>
             </template>
             <Row :gutter="20">
               <Col :span="12">
-                <Form.Item label="最大电子邮件发送数" :name="['profileData', 'configuration', 'maxEmails']">
+                <Form.Item
+                  :label="t('tb.tenantProfile.form.maxEmails')"
+                  :name="['profileData', 'configuration', 'maxEmails']"
+                >
                   <InputNumber :value="record.profileData?.configuration?.maxEmails" :style="{ width: '100%' }" />
                 </Form.Item>
               </Col>
               <Col :span="12">
-                <Form.Item label="最大短信发送数" :name="['profileData', 'configuration', 'maxSms']">
+                <Form.Item
+                  :label="t('tb.tenantProfile.form.maxSms')"
+                  :name="['profileData', 'configuration', 'maxSms']"
+                >
                   <InputNumber :value="record.profileData?.configuration?.maxSms" :style="{ width: '100%' }" />
                 </Form.Item>
               </Col>
               <Col :span="12">
-                <Form.Item label="最大创建告警数" :name="['profileData', 'configuration', 'maxCreatedAlarms']">
+                <Form.Item
+                  :label="t('tb.tenantProfile.form.maxCreatedAlarms')"
+                  :name="['profileData', 'configuration', 'maxCreatedAlarms']"
+                >
                   <InputNumber
                     :value="record.profileData?.configuration?.maxCreatedAlarms"
                     :style="{ width: '100%' }"
@@ -357,12 +434,15 @@
           </Card>
           <Card size="small" class="mt-4">
             <template #title>
-              OTA文件(字节)
-              <span class="text-help">0 表示无限制</span>
+              {{ t('tb.tenantProfile.form.otaBytes') }}
+              <span class="text-help">{{ t('tb.tenantProfile.form.unlimitedTip') }}</span>
             </template>
             <Row :gutter="20">
               <Col :span="12">
-                <Form.Item label="资源文件总大小" :name="['profileData', 'configuration', 'maxResourcesInBytes']">
+                <Form.Item
+                  :label="t('tb.tenantProfile.form.maxResourcesInBytes')"
+                  :name="['profileData', 'configuration', 'maxResourcesInBytes']"
+                >
                   <InputNumber
                     :value="record.profileData?.configuration?.maxResourcesInBytes"
                     :style="{ width: '100%' }"
@@ -370,7 +450,10 @@
                 </Form.Item>
               </Col>
               <Col :span="12">
-                <Form.Item label="OTA包文件总大小" :name="['profileData', 'configuration', 'maxOtaPackagesInBytes']">
+                <Form.Item
+                  :label="t('tb.tenantProfile.form.maxOtaPackagesInBytes')"
+                  :name="['profileData', 'configuration', 'maxOtaPackagesInBytes']"
+                >
                   <InputNumber
                     :value="record.profileData?.configuration?.maxOtaPackagesInBytes"
                     :style="{ width: '100%' }"
@@ -381,12 +464,15 @@
           </Card>
           <Card size="small" class="mt-4">
             <template #title>
-              WebSocket
-              <span class="text-help">0 表示无限制</span>
+              {{ t('tb.tenantProfile.form.websocket') }}
+              <span class="text-help">{{ t('tb.tenantProfile.form.unlimitedTip') }}</span>
             </template>
             <Row :gutter="20">
               <Col :span="12">
-                <Form.Item label="租户最大会话数" :name="['profileData', 'configuration', 'maxWsSessionsPerTenant']">
+                <Form.Item
+                  :label="t('tb.tenantProfile.form.maxWsSessionsPerTenant')"
+                  :name="['profileData', 'configuration', 'maxWsSessionsPerTenant']"
+                >
                   <InputNumber
                     :value="record.profileData?.configuration?.maxWsSessionsPerTenant"
                     :style="{ width: '100%' }"
@@ -395,7 +481,7 @@
               </Col>
               <Col :span="12">
                 <Form.Item
-                  label="租户最大订阅数"
+                  :label="t('tb.tenantProfile.form.maxWsSubscriptionsPerTenant')"
                   :name="['profileData', 'configuration', 'maxWsSubscriptionsPerTenant']"
                 >
                   <InputNumber
@@ -405,7 +491,10 @@
                 </Form.Item>
               </Col>
               <Col :span="12">
-                <Form.Item label="客户最大会话数" :name="['profileData', 'configuration', 'maxWsSessionsPerCustomer']">
+                <Form.Item
+                  :label="t('tb.tenantProfile.form.maxWsSessionsPerCustomer')"
+                  :name="['profileData', 'configuration', 'maxWsSessionsPerCustomer']"
+                >
                   <InputNumber
                     :value="record.profileData?.configuration?.maxWsSessionsPerCustomer"
                     :style="{ width: '100%' }"
@@ -414,7 +503,7 @@
               </Col>
               <Col :span="12">
                 <Form.Item
-                  label="客户最大订阅数"
+                  :label="t('tb.tenantProfile.form.maxWsSubscriptionsPerCustomer')"
                   :name="['profileData', 'configuration', 'maxWsSubscriptionsPerCustomer']"
                 >
                   <InputNumber
@@ -425,7 +514,7 @@
               </Col>
               <Col :span="12">
                 <Form.Item
-                  label="公共用户最大会话数"
+                  :label="t('tb.tenantProfile.form.maxWsSessionsPerPublicUser')"
                   :name="['profileData', 'configuration', 'maxWsSessionsPerPublicUser']"
                 >
                   <InputNumber
@@ -436,7 +525,7 @@
               </Col>
               <Col :span="12">
                 <Form.Item
-                  label="公共用户最大订阅数"
+                  :label="t('tb.tenantProfile.form.maxWsSubscriptionsPerPublicUser')"
                   :name="['profileData', 'configuration', 'maxWsSubscriptionsPerPublicUser']"
                 >
                   <InputNumber
@@ -447,7 +536,7 @@
               </Col>
               <Col :span="12">
                 <Form.Item
-                  label="普通用户最大会话数"
+                  :label="t('tb.tenantProfile.form.maxWsSessionsPerRegularUser')"
                   :name="['profileData', 'configuration', 'maxWsSessionsPerRegularUser']"
                 >
                   <InputNumber
@@ -458,7 +547,7 @@
               </Col>
               <Col :span="12">
                 <Form.Item
-                  label="普通用户最大订阅数"
+                  :label="t('tb.tenantProfile.form.maxWsSubscriptionsPerRegularUser')"
                   :name="['profileData', 'configuration', 'maxWsSubscriptionsPerRegularUser']"
                 >
                   <InputNumber
@@ -469,8 +558,8 @@
               </Col>
               <Col :span="12">
                 <Form.Item
-                  label="会话最大消息队列大小"
-                  help="队列的大小也受到系统配置的限制"
+                  :label="t('tb.tenantProfile.form.wsMsgQueueLimitPerSession')"
+                  :help="t('tb.tenantProfile.form.wsMsgQueueHelp')"
                   :name="['profileData', 'configuration', 'wsMsgQueueLimitPerSession']"
                 >
                   <InputNumber
@@ -482,10 +571,13 @@
             </Row>
           </Card>
           <Card size="small" class="mt-4">
-            <template #title> 速率限制 </template>
+            <template #title> {{ t('tb.tenantProfile.form.rateLimit') }} </template>
             <Row :gutter="20">
               <Col :span="12">
-                <Form.Item label="传输租户消息" :name="['profileData', 'configuration', 'transportTenantMsgRateLimit']">
+                <Form.Item
+                  :label="t('tb.tenantProfile.form.transportTenantMsgRateLimit')"
+                  :name="['profileData', 'configuration', 'transportTenantMsgRateLimit']"
+                >
                   <RateLimit
                     :value="record.profileData?.configuration?.transportTenantMsgRateLimit"
                     :edit="false"
@@ -494,7 +586,10 @@
                 </Form.Item>
               </Col>
               <Col :span="12">
-                <Form.Item label="传输设备消息" :name="['profileData', 'configuration', 'transportDeviceMsgRateLimit']">
+                <Form.Item
+                  :label="t('tb.tenantProfile.form.transportDeviceMsgRateLimit')"
+                  :name="['profileData', 'configuration', 'transportDeviceMsgRateLimit']"
+                >
                   <RateLimit
                     :value="record.profileData?.configuration?.transportDeviceMsgRateLimit"
                     :edit="false"
@@ -504,7 +599,7 @@
               </Col>
               <Col :span="12">
                 <Form.Item
-                  label="传输租户遥测消息"
+                  :label="t('tb.tenantProfile.form.transportTenantTelemetryMsgRateLimit')"
                   :name="['profileData', 'configuration', 'transportTenantTelemetryMsgRateLimit']"
                 >
                   <RateLimit
@@ -516,7 +611,7 @@
               </Col>
               <Col :span="12">
                 <Form.Item
-                  label="传输设备遥测消息"
+                  :label="t('tb.tenantProfile.form.transportDeviceTelemetryMsgRateLimit')"
                   :name="['profileData', 'configuration', 'transportDeviceTelemetryMsgRateLimit']"
                 >
                   <RateLimit
@@ -528,7 +623,7 @@
               </Col>
               <Col :span="12">
                 <Form.Item
-                  label="传输租户遥测消息点数"
+                  :label="t('tb.tenantProfile.form.transportTenantTelemetryDataPointsRateLimit')"
                   :name="['profileData', 'configuration', 'transportTenantTelemetryDataPointsRateLimit']"
                 >
                   <RateLimit
@@ -540,7 +635,7 @@
               </Col>
               <Col :span="12">
                 <Form.Item
-                  label="传输设备遥测消息点数"
+                  :label="t('tb.tenantProfile.form.transportDeviceTelemetryDataPointsRateLimit')"
                   :name="['profileData', 'configuration', 'transportDeviceTelemetryDataPointsRateLimit']"
                 >
                   <RateLimit
@@ -552,7 +647,7 @@
               </Col>
               <Col :span="12">
                 <Form.Item
-                  label="租户REST请求"
+                  :label="t('tb.tenantProfile.form.tenantServerRestLimitsConfiguration')"
                   :name="['profileData', 'configuration', 'tenantServerRestLimitsConfiguration']"
                 >
                   <RateLimit
@@ -564,7 +659,7 @@
               </Col>
               <Col :span="12">
                 <Form.Item
-                  label="客户REST请求"
+                  :label="t('tb.tenantProfile.form.customerServerRestLimitsConfiguration')"
                   :name="['profileData', 'configuration', 'customerServerRestLimitsConfiguration']"
                 >
                   <RateLimit
@@ -575,7 +670,10 @@
                 </Form.Item>
               </Col>
               <Col :span="12">
-                <Form.Item label="实体版本创建" :name="['profileData', 'configuration', 'tenantEntityImportRateLimit']">
+                <Form.Item
+                  :label="t('tb.tenantProfile.form.tenantEntityImportRateLimit')"
+                  :name="['profileData', 'configuration', 'tenantEntityImportRateLimit']"
+                >
                   <RateLimit
                     :value="record.profileData?.configuration?.tenantEntityImportRateLimit"
                     :edit="false"
@@ -584,7 +682,10 @@
                 </Form.Item>
               </Col>
               <Col :span="12">
-                <Form.Item label="实体版本加载" :name="['profileData', 'configuration', 'tenantEntityExportRateLimit']">
+                <Form.Item
+                  :label="t('tb.tenantProfile.form.tenantEntityExportRateLimit')"
+                  :name="['profileData', 'configuration', 'tenantEntityExportRateLimit']"
+                >
                   <RateLimit
                     :value="record.profileData?.configuration?.tenantEntityExportRateLimit"
                     :edit="false"
@@ -594,7 +695,7 @@
               </Col>
               <Col :span="12">
                 <Form.Item
-                  label="WebSocket会话更新"
+                  :label="t('tb.tenantProfile.form.wsUpdatesPerSessionRateLimit')"
                   :name="['profileData', 'configuration', 'wsUpdatesPerSessionRateLimit']"
                 >
                   <RateLimit
@@ -606,7 +707,7 @@
               </Col>
               <Col :span="12">
                 <Form.Item
-                  label="Cassandra租户查询"
+                  :label="t('tb.tenantProfile.form.cassandraQueryTenantRateLimitsConfiguration')"
                   :name="['profileData', 'configuration', 'cassandraQueryTenantRateLimitsConfiguration']"
                 >
                   <RateLimit
@@ -618,7 +719,7 @@
               </Col>
               <Col :span="12">
                 <Form.Item
-                  label="通知请求"
+                  :label="t('tb.tenantProfile.form.tenantNotificationRequestsRateLimit')"
                   :name="['profileData', 'configuration', 'tenantNotificationRequestsRateLimit']"
                 >
                   <RateLimit
@@ -630,7 +731,7 @@
               </Col>
               <Col :span="12">
                 <Form.Item
-                  label="每个规则通知请求"
+                  :label="t('tb.tenantProfile.form.tenantNotificationRequestsPerRuleRateLimit')"
                   :name="['profileData', 'configuration', 'tenantNotificationRequestsPerRuleRateLimit']"
                 >
                   <RateLimit
@@ -643,8 +744,12 @@
             </Row>
           </Card>
         </CollapseContainer>
-        <Form.Item label="描述信息" name="description">
-          <Textarea :value="record.description" placeholder="输入配置描述信息" :rows="3" />
+        <Form.Item :label="t('tb.tenantProfile.form.description')" name="description">
+          <Textarea
+            :value="record.description"
+            :placeholder="t('tb.tenantProfile.form.descriptionPlaceholder')"
+            :rows="3"
+          />
         </Form.Item>
       </Form>
     </div>
@@ -730,7 +835,7 @@
   }
 
   function handleCopyTenantProfileId() {
-    copyToClipboard(record.value.id.id, '复制租户配置ID成功！');
+    copyToClipboard(record.value.id.id, t('tb.tenantProfile.detail.copyIdSuccess'));
   }
 
   function handleDeleteTenantProfile() {
@@ -750,20 +855,20 @@
 </script>
 <style lang="less">
   .telemetry-card {
-    .jeesite-basic-table {
+    .tbv3-basic-table {
       padding: 0;
 
-      .jeesite-basic-table-header__header-top {
+      .tbv3-basic-table-header__header-top {
         margin-top: 0;
       }
     }
   }
 
   .detail-info-card {
-    .jeesite-basic-table {
+    .tbv3-basic-table {
       padding: 0;
 
-      .jeesite-basic-table-header__header-top {
+      .tbv3-basic-table-header__header-top {
         display: none;
       }
     }

@@ -10,14 +10,14 @@
       <Icon :icon="getTitle.icon" class="pr-1 m-1" />
       <span> {{ getTitle.value }} </span>
     </template>
-    <p class="mb-2">{{ t('选择客户分配仪表板') }}</p>
+    <p class="mb-2">{{ t('tb.dashboard.action.assignCustomerSelectTip') }}</p>
     <Select
       v-model:value="customerIds"
       size="large"
       style="width: 90%"
       :allowClear="true"
       mode="multiple"
-      :placeholder="t('选择客户分配仪表板')"
+      :placeholder="t('tb.dashboard.action.assignCustomerSelectTip')"
       max-tag-count="responsive"
     >
       <Select.Option
@@ -53,7 +53,7 @@
   const customerListData = ref<Customer[]>([]);
   const getTitle = computed(() => ({
     icon: meta.icon || 'ant-design:book-outlined',
-    value: t('分配客户'),
+    value: t('tb.device.action.assignCustomer'),
   }));
 
   // 多选客户 ID 数组
@@ -80,7 +80,7 @@
     try {
       setModalProps({ confirmLoading: true });
       const res = await updateDashboardCustomers(dashboardInfo.value.id.id, customerIds.value);
-      showMessage(t('为客户分配仪表板成功'));
+      showMessage(t('tb.dashboard.action.assignCustomerSuccess'));
       setTimeout(closeModal);
       emit('success', res);
     } catch (error: any) {

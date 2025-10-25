@@ -1,4 +1,4 @@
-import { RelationsSearchParameters } from '../model/baseModel';
+import { RelationEntityTypeFilter, RelationsSearchParameters } from '../model/baseModel';
 import { RelationTypeGroup } from '/@/enums/relationEnum';
 import { defHttp } from '/@/utils/http/axios';
 import { EntityType } from '/@/enums/entityTypeEnum';
@@ -27,7 +27,7 @@ export interface RelationParams {
 
 export interface EntityRelationsQuery {
   parameters?: RelationsSearchParameters;
-  filters?: Array<{ relationTyp?: string; entityTypes?: Array<EntityType> }>;
+  filters?: Array<RelationEntityTypeFilter>;
 }
 
 export function saveRelation(data: EntityRelation | any) {

@@ -1,10 +1,5 @@
-<!--
- * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
- * No deletion without permission, or be held responsible to law.
- * @author ThinkGem
--->
 <template>
-  <div class="jeesite-collapse-form-page">
+  <div class="tbv3-collapse-form-page">
     <ScrollContainer ref="contentRef" :style="{ height: contentHeight + 'px' }" v-loading="props.loading">
       <div v-for="item in configList" :key="item.value">
         <Collapse
@@ -17,7 +12,7 @@
         </Collapse>
       </div>
     </ScrollContainer>
-    <div class="jeesite-collapse-form-actions">
+    <div class="tbv3-collapse-form-actions">
       <slot v-if="$slots.actions" name="actions"></slot>
       <template v-else>
         <a-button type="default" @click="handleClose" v-auth="props.okAuth">
@@ -58,7 +53,7 @@
 
   function calcContentHeight() {
     const parentElement = contentRef.value?.$el.parentElement;
-    const actionsElement = parentElement?.querySelector('.jeesite-collapse-form-actions');
+    const actionsElement = parentElement?.querySelector('.tbv3-collapse-form-actions');
     if (parentElement && actionsElement) {
       contentHeight.value = document.body.clientHeight - headerHeightRef.value - actionsElement.scrollHeight - 32;
     }
@@ -87,7 +82,7 @@
   }
 </script>
 <style lang="less">
-  .jeesite-collapse-form {
+  .tbv3-collapse-form {
     &-page {
       .scrollbar {
         border-radius: 4px !important;

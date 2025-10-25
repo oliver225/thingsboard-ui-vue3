@@ -1,38 +1,45 @@
 <template>
   <Form ref="formRef" :model="formState" layout="vertical">
-    <Form.Item label="消息计数" name="msgCount" :rules="[{ required: true, message: '消息计数必填!' }]">
-      <InputNumber v-model:value="formState.msgCount" :min="0" :style="{ width: '100%' }"> </InputNumber>
+    <Form.Item
+      :label="t('tb.ruleChain.nodeAction.messageCount')"
+      name="msgCount"
+      :rules="[{ required: true, message: t('tb.ruleChain.nodeAction.messageCountRequired') }]"
+    >
+      <InputNumber v-model:value="formState.msgCount" :min="0" :style="{ width: '100%' }" />
     </Form.Item>
-    <Form.Item label="周期（秒）" name="periodInSeconds" :rules="[{ required: true, message: '周期必填!' }]">
-      <InputNumber v-model:value="formState.periodInSeconds" :min="0" :style="{ width: '100%' }"> </InputNumber>
+    <Form.Item
+      :label="t('tb.ruleChain.nodeAction.periodInSeconds')"
+      name="periodInSeconds"
+      :rules="[{ required: true, message: t('tb.ruleChain.nodeAction.periodInSecondsRequired') }]"
+    >
+      <InputNumber v-model:value="formState.periodInSeconds" :min="0" :style="{ width: '100%' }" />
     </Form.Item>
     <Row :gutter="20">
       <Col :span="8">
-        <Form.Item label="发起" name="originatorType" :rules="[{ required: true }]">
-          <Select v-model:value="formState.originatorType" :options="entityTypeOptions" @change="onEntityTypeChange">
-          </Select>
+        <Form.Item :label="t('tb.ruleChain.nodeAction.originator')" name="originatorType" :rules="[{ required: true }]">
+          <Select v-model:value="formState.originatorType" :options="entityTypeOptions" @change="onEntityTypeChange" />
         </Form.Item>
       </Col>
       <Col :span="16">
         <Form.Item label=" " name="originatorId" :rules="[{ required: true }]">
-          <Select v-model:value="formState.originatorId" :options="entityIdOptions"> </Select>
+          <Select v-model:value="formState.originatorId" :options="entityIdOptions" />
         </Form.Item>
       </Col>
     </Row>
-    <Form.Item label="队列" name="queueName">
+    <Form.Item :label="t('tb.ruleChain.nodeAction.queue')" name="queueName">
       <Select v-model:value="formState.queueName">
         <Select.Option v-for="(option, index) in queueOptions" :key="index" :value="option.value">
           {{ option.label }}
           <p>
             <Tag>
-              <small>提交策略:</small>
+              <small>{{ t('tb.ruleChain.nodeAction.submitStrategy') }}</small>
               {{
                 SUBMIT_STRATEGY_OPTIONS.find((item) => item.value === option.submitStrategy)?.label ||
                 option.submitStrategy
               }}
             </Tag>
             <Tag>
-              <small>处理策略:</small>
+              <small>{{ t('tb.ruleChain.nodeAction.processingStrategy') }}</small>
               {{
                 PROCESSING_STRATEGY_OPTIONS.find((item) => item.value === option.processingStrategy)?.label ||
                 option.processingStrategy
@@ -55,37 +62,35 @@
         <div class="flex justify-between">
           <p class="text-gray-500">function Generate(prevMsg, prevMetadata, prevMsgType) {</p>
           <Space>
-            <Tooltip title="格式化">
+            <Tooltip :title="t('tb.ruleChain.nodeAction.format')">
               <Icon class="cursor-pointer" @click="handleFormatScript" :icon="'ant-design:format-painter-filled'" />
             </Tooltip>
-            <Tooltip title="测试脚本功能">
+            <Tooltip :title="t('tb.ruleChain.nodeAction.testScript')">
               <Icon class="cursor-pointer" @click="handleTestScript" :icon="'ant-design:bug-outlined'" />
             </Tooltip>
-            <Tooltip title="全屏">
+            <Tooltip :title="t('tb.ruleChain.nodeAction.fullScreen')">
               <Icon class="cursor-pointer" @click="handleFullScreen" :icon="'ant-design:fullscreen-outlined'" />
             </Tooltip>
           </Space>
         </div>
-        <div class="py-2">
-          <CodeEditor
-            v-if="formState.scriptLang == 'JS'"
-            v-model:value="formState.jsScript"
-            :mode="'javascript'"
-            class="border border-solid border-gray-400"
-          />
+        <div class="border border-solid border-neutral-300 h-56">
+          <CodeEditor v-if="formState.scriptLang == 'JS'" v-model:value="formState.jsScript" :mode="MODE.JAVASCRIPT" />
           <CodeEditor
             v-if="formState.scriptLang == 'TBEL'"
             v-model:value="formState.tbelScript"
-            :mode="'javascript'"
-            class="border border-solid border-gray-400"
+            :mode="MODE.JAVASCRIPT"
           />
         </div>
         <div class="text-gray-500">}</div>
       </div>
 
-      <Button class="mt-2" type="primary" @click="handleTestScript">测试generate函数</Button>
+      <Button class="mt-2" type="primary" @click="handleTestScript">{{
+        t('tb.ruleChain.nodeAction.testGenerateFunction')
+      }}</Button>
     </Form.Item>
   </Form>
+
+  <TestScriptModal @register="registerTestModal" @success="handleScriptSaved" />
 </template>
 <script lang="ts">
   export default defineComponent({
@@ -93,12 +98,12 @@
   });
 </script>
 <script lang="ts" setup>
-  import { ref, watch, defineComponent, reactive, onMounted } from 'vue';
+  import { ref, watch, defineComponent, reactive, onMounted, computed } from 'vue';
   import { Form, InputNumber, Select, Tag, Row, Col, Radio, Space, Tooltip, Button } from 'ant-design-vue';
   import { FormInstance } from 'ant-design-vue/lib/form';
   import { Icon } from '/@/components/Icon';
   import { useUserStore } from '/@/store/modules/user';
-  import { CodeEditor } from '/@/components/CodeEditor';
+  import { CodeEditor, MODE } from '/@/components/CodeEditor';
   import { PROCESSING_STRATEGY_OPTIONS, SUBMIT_STRATEGY_OPTIONS } from '/@/enums/queueEnum';
   import { ENTITY_TYPE_OPTIONS, EntityType } from '/@/enums/entityTypeEnum';
   import { queueList } from '/@/api/tb/queue';
@@ -109,6 +114,9 @@
   import { customerList } from '/@/api/tb/customer';
   import { userList } from '/@/api/tb/user';
   import { currentTenantDashboardList } from '/@/api/tb/dashboard';
+  import { useI18n } from '/@/hooks/web/useI18n';
+  import { useModal } from '/@/components/Modal';
+  import TestScriptModal from '../../components/TestScriptModal.vue';
 
   interface Configuration {
     msgCount: number;
@@ -120,6 +128,7 @@
     tbelScript: string;
     jsScript: string;
   }
+  const { t } = useI18n('tb');
   const userStore = useUserStore();
 
   const queueOptions = ref<any[]>([]);
@@ -148,6 +157,7 @@
   });
 
   const formRef = ref<FormInstance>();
+  const [registerTestModal, { openModal: openTestModal }] = useModal();
 
   const formState = reactive<any>({
     msgCount: 0,
@@ -158,6 +168,14 @@
     scriptLang: 'TBEL',
     tbelScript: '',
     jsScript: '',
+  });
+
+  const currentScript = computed(() => {
+    return formState.scriptLang === 'JS' ? formState.jsScript : formState.tbelScript;
+  });
+
+  const scriptLangLabel = computed(() => {
+    return formState.scriptLang === 'JS' ? 'JavaScript' : 'TBEL';
   });
 
   watch(
@@ -267,7 +285,23 @@
 
   function handleFormatScript() {}
 
-  function handleTestScript() {}
+  function handleTestScript() {
+    openTestModal(true, {
+      scriptLang: formState.scriptLang,
+      scriptContent: currentScript.value,
+      modalTitle: `${t('tb.ruleChain.nodeAction.testScriptModal.title')} (${scriptLangLabel.value})`,
+      transformerTitle: 'Generator',
+      scriptType: 'generate',
+    });
+  }
+
+  function handleScriptSaved(data: { scriptContent: string }) {
+    if (formState.scriptLang === 'JS') {
+      formState.jsScript = data.scriptContent;
+    } else {
+      formState.tbelScript = data.scriptContent;
+    }
+  }
 
   function handleFullScreen() {}
 

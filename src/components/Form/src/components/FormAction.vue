@@ -41,7 +41,7 @@
     </div>
   </Col>
 </template>
-<script lang="ts" setup name="JeeSiteFormAction">
+<script lang="ts" setup name="TbV3FormAction">
   import type { ColEx } from '../types/index';
   //import type { ButtonProps } from 'ant-design-vue/es/button/buttonTypes';
   import { defineComponent, computed, PropType } from 'vue';

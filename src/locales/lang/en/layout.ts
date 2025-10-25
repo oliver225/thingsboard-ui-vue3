@@ -23,7 +23,7 @@ export default {
     home: 'Home',
   },
   footer: {
-    onlinePreview: 'JeeSite',
+    onlinePreview: 'TbV3',
     onlineDocument: 'Document',
   },
   multipleTab: {

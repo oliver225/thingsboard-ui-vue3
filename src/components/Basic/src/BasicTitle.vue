@@ -40,7 +40,7 @@
   ]);
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-basic-title';
+  @prefix-cls: ~'tbv3-basic-title';
 
   .@{prefix-cls} {
     position: relative;

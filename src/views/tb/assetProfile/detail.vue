@@ -6,9 +6,11 @@
         <div class="flex flex-col">
           <span class="text-base font-semibold">
             {{ getTitle.value || '· · · ·' }}
-            <Tag class="text-base font-normal" color="success" v-if="record.default == true">默认</Tag>
+            <Tag class="text-base font-normal" color="success" v-if="record.default == true">
+              {{ t('tb.assetProfile.detail.default') }}
+            </Tag>
           </span>
-          <span class="text-sm">资产配置详情</span>
+          <span class="text-sm">{{ t('tb.assetProfile.detail.detail') }}</span>
         </div>
       </div>
     </template>
@@ -29,10 +31,10 @@
           @click="handleSetDefault"
           v-if="!(record.name == 'TbServiceQueue' || record.default == true)"
         >
-          <Icon :icon="'ant-design:flag-outlined'" />设为默认资产配置
+          <Icon :icon="'ant-design:flag-outlined'" />{{ t('tb.assetProfile.action.setDefault') }}
         </a-button>
         <a-button type="primary success" @click="handleEditAssetProfile">
-          <Icon :icon="'i-clarity:note-edit-line'" />编辑资产配置
+          <Icon :icon="'i-clarity:note-edit-line'" />{{ t('tb.assetProfile.action.edit') }}
         </a-button>
         <a-button
           type="primary"
@@ -40,13 +42,13 @@
           @click="handleDeleteAssetProfile"
           v-if="!(record.name == 'TbServiceQueue' || record.default == true)"
         >
-          <Icon :icon="'ant-design:delete-outlined'" />删除资产配置
+          <Icon :icon="'ant-design:delete-outlined'" />{{ t('tb.assetProfile.action.deleteAssetProfile') }}
         </a-button>
       </div>
       <div class="space-x-4 my-4">
         <a-button @click="handleCopyAssetProfileId">
           <Icon :icon="'ant-design:copy-filled'" />
-          复制资产配置ID
+          {{ t('tb.assetProfile.action.copyId') }}
         </a-button>
       </div>
       <Description @register="register" size="default">
@@ -69,6 +71,12 @@
       :entityType="EntityType.ASSET_PROFILE"
       :entityId="record?.id?.id"
     />
+
+    <CalculatedField
+      v-if="tabActiveKey == DetailTabItemEnum.CALCULATED.key"
+      :entityType="EntityType.ASSET_PROFILE"
+      :entityId="record?.id?.id"
+    />
   </BasicDrawer>
 </template>
 <script lang="ts" setup name="ViewsTbAssetProfileDetail">
@@ -87,6 +95,7 @@
   import { useUserStore } from '/@/store/modules/user';
   import { Authority } from '/@/enums/authorityEnum';
   import AuditLog from '/@/views/tb/auditLog/list.vue';
+  import CalculatedField from '/@/views/tb/calculatedField/list.vue';
   import { DescItem, Description, useDescription } from '/@/components/Description';
   import { router } from '/@/router';
   import { DetailTabItemEnum } from '/@/enums/detailTabEnum';
@@ -113,41 +122,41 @@
     : [DetailTabItemEnum.DETAIL];
   const descSchema: DescItem[] = [
     {
-      label: t('资产配置名称'),
+      label: t('tb.assetProfile.form.name'),
       field: 'name',
       span: 4,
     },
     {
-      label: t('默认规则链'),
+      label: t('tb.assetProfile.form.defaultRuleChain'),
       field: 'defaultRuleChain',
       slot: 'defaultRuleChain',
       span: 4,
     },
     {
-      label: t('移动端仪表盘'),
+      label: t('tb.assetProfile.form.mobileDashboard'),
       field: 'defaultDashboard',
       slot: 'defaultDashboard',
       span: 4,
     },
     {
-      label: t('队列'),
+      label: t('tb.assetProfile.form.queue'),
       field: 'defaultQueueName',
       span: 4,
     },
     {
-      label: t('边缘规则链'),
+      label: t('tb.assetProfile.form.edgeRuleChain'),
       field: 'defaultEdgeRuleChain',
       slot: 'defaultEdgeRuleChain',
       span: 4,
     },
     {
-      label: t('图片'),
+      label: t('tb.assetProfile.form.image'),
       field: 'image',
       slot: 'image',
       span: 4,
     },
     {
-      label: t('描述信息'),
+      label: t('tb.assetProfile.form.description'),
       field: 'description',
       span: 4,
     },
@@ -188,7 +197,7 @@
   }
 
   function handleCopyAssetProfileId() {
-    copyToClipboard(record.value.id.id, '复制资产配置ID成功！');
+    copyToClipboard(record.value.id.id, t('tb.assetProfile.action.copyIdSuccess'));
   }
 
   function handleDeleteAssetProfile() {

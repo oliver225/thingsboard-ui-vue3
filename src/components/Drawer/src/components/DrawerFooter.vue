@@ -76,7 +76,7 @@
 </script>
 
 <style lang="less">
-  @prefix-cls: ~'jeesite-basic-drawer-footer';
+  @prefix-cls: ~'tbv3-basic-drawer-footer';
 
   .@{prefix-cls} {
     position: absolute;

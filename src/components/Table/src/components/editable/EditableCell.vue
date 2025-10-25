@@ -1,8 +1,4 @@
-<!--
- * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
- * No deletion without permission, or be held responsible to law.
- * @author Vben、ThinkGem
--->
+
 <template>
   <div :class="prefixCls">
     <div
@@ -463,7 +459,7 @@
   };
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-editable-cell';
+  @prefix-cls: ~'tbv3-editable-cell';
 
   .edit-cell-align-left {
     text-align: left;
@@ -503,7 +499,7 @@
     }
   }
 
-  .jeesite-table-tree-name {
+  .tbv3-table-tree-name {
     .@{prefix-cls} {
       display: inline-block;
 
@@ -569,7 +565,7 @@
         }
       }
 
-      .jeesite-basic-upload {
+      .tbv3-basic-upload {
         padding-left: 3px;
         width: 100% !important;
       }

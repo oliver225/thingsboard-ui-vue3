@@ -90,7 +90,7 @@
   });
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-basic-help';
+  @prefix-cls: ~'tbv3-basic-help';
 
   .@{prefix-cls} {
     display: inline-block;

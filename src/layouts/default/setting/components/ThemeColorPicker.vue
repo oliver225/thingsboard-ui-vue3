@@ -54,7 +54,7 @@
   });
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-setting-theme-picker';
+  @prefix-cls: ~'tbv3-setting-theme-picker';
 
   .@{prefix-cls} {
     display: flex;

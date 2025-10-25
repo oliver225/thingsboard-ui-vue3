@@ -1,17 +1,17 @@
 <template>
   <div class="widgets-bundle-list">
     <BasicTable @register="registerTable">
-      <template #headerTop>
+      <!-- <template #headerTop>
         <div class="text-lg font-bold my-2">{{ t(getTitle.value) }}</div>
-      </template>
+      </template> -->
       <template #tableTitle>
         <div class="space-x-2">
           <a-button type="primary" @click="handleForm({})">
-            <Icon icon="i-fluent:add-12-filled" /> 新增部件包
+            <Icon icon="i-fluent:add-12-filled" /> {{ t('tb.widgetsBundle.action.add') }}
           </a-button>
           <a-input
             v-model:value="searchParam.textSearch"
-            placeholder="输入搜索内容"
+            :placeholder="t('common.search.searchText')"
             allow-clear
             @change="reload"
             style="width: 240px"
@@ -69,7 +69,7 @@
   const { createConfirm, showMessage } = useMessage();
 
   const getTitle = {
-    value: router.currentRoute.value.meta.title || '部件包',
+    value: router.currentRoute.value.meta.title || t('tb.widgetsBundle.title'),
   };
 
   const searchParam = reactive({
@@ -77,7 +77,7 @@
   });
   const tableColumns: BasicColumn[] = [
     {
-      title: t('标题'),
+      title: t('tb.widgetsBundle.table.title'),
       dataIndex: 'title',
       key: 'title',
       sorter: true,
@@ -87,14 +87,14 @@
       slot: 'firstColumn',
     },
     {
-      title: '描述信息',
+      title: t('tb.widgetsBundle.table.description'),
       dataIndex: 'description',
       key: 'description',
       align: 'left',
       ellipsis: true,
     },
     {
-      title: '系统',
+      title: t('tb.widgetsBundle.table.system'),
       dataIndex: 'tenantId',
       key: 'tenantId',
       width: 80,
@@ -102,7 +102,7 @@
       slot: 'isSystem',
     },
     {
-      title: t('创建时间'),
+      title: t('tb.widgetsBundle.table.createdTime'),
       dataIndex: 'createdTime',
       key: 'createdTime',
       format: 'date|YYYY-MM-DD HH:mm:ss',
@@ -117,18 +117,18 @@
     actions: (record: Recordable) => [
       {
         icon: 'ant-design:folder-open-outlined',
-        title: t('打开部件包'),
+        title: t('tb.widgetsBundle.action.open'),
         onClick: handleOpenBundle.bind(this, { ...record }),
       },
       {
         icon: 'ant-design:download-outlined',
-        title: t('导出部件包'),
+        title: t('tb.widgetsBundle.action.export'),
         onClick: handleDownload.bind(this, { ...record }),
       },
       {
         icon: 'ant-design:delete-outlined',
         color: 'error',
-        title: t('删除部件包'),
+        title: t('tb.widgetsBundle.action.delete'),
         onClick: handleDelete.bind(this, { ...record }),
       },
     ],
@@ -160,10 +160,10 @@
   async function handleDelete(record: Recordable) {
     const modalFunc = createConfirm({
       iconType: 'error',
-      title: `确定删除部件包[${record.title}]吗？`,
-      content: '请注意：确认后，部件包和所有相关数据将不可恢复。',
+      title: t('tb.widgetsBundle.action.deleteConfirm', { name: record.title }),
+      content: t('tb.widgetsBundle.action.deleteConfirmContent'),
       centered: false,
-      okText: '删除',
+      okText: t('common.delText'),
       okButtonProps: {
         type: 'primary',
         danger: true,
@@ -171,7 +171,7 @@
       onOk: async () => {
         try {
           await deleteWidgetsBundle(record.id.id);
-          showMessage('删除部件包成功！');
+          showMessage(t('tb.widgetsBundle.action.deleteSuccess'));
         } catch (error: any) {
           console.log(error);
         } finally {

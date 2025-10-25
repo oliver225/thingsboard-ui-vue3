@@ -1,5 +1,5 @@
 <template>
-  <div class="jeesite-resizer" :style="getWrapStyleRef" @mousedown="onMouseDown">
+  <div class="tbv3-resizer" :style="getWrapStyleRef" @mousedown="onMouseDown">
     <div class="resiezer-toggler" :title="`${t('common.hideText')}/${t('common.showText')}`" @click="toggle">
       <span class="resizer-content">
         <slot v-if="$slots.default"></slot>
@@ -17,7 +17,7 @@
   import { useEventListener } from '/@/hooks/event/useEventListener';
 
   export default defineComponent({
-    name: 'JeeSiteResizer',
+    name: 'TbV3Resizer',
     components: { Icon },
     props: {
       position: {
@@ -130,7 +130,7 @@
   });
 </script>
 <style lang="less">
-  .jeesite-resizer {
+  .tbv3-resizer {
     z-index: 100;
     display: flex;
     justify-content: center;

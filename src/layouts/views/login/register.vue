@@ -38,7 +38,7 @@
         label: t('sys.login.password'),
         renderComponentContent() {
           return {
-            strengthText: () => t('authentication.passwordStrength'),
+            strengthText: () => t('sys.login.passwordStrength'),
           };
         },
       },

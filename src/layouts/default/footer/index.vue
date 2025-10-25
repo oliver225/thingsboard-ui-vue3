@@ -7,7 +7,7 @@
 
       <a @click="openWindow(DOC_URL)">{{ t('layout.footer.onlineDocument') }}</a>
     </div>
-    <div>Copyright &copy;2021 <a href="https://jeesite.com" target="_blank">JeeSite</a></div>
+    <div>Copyright &copy;2021 <a href="https://tbv3.com" target="_blank">TbV3</a></div>
   </Footer>
 </template>
 
@@ -61,7 +61,7 @@
   });
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-layout-footer';
+  @prefix-cls: ~'tbv3-layout-footer';
 
   .@{prefix-cls} {
     text-align: center;

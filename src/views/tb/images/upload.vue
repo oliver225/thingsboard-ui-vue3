@@ -2,7 +2,7 @@
   <BasicModal
     v-bind="$attrs"
     :showFooter="true"
-    :ok-text="'上传'"
+    :ok-text="t('tb.images.form.upload')"
     :can-fullscreen="false"
     @register="registerModal"
     @ok="handleSubmit"
@@ -10,7 +10,7 @@
   >
     <template #title>
       <Icon icon="ant-design:upload-outlined" class="pr-1 m-1" />
-      <span> 上传图片 </span>
+      <span>{{ t('tb.images.action.uploadImage') }}</span>
     </template>
     <Form ref="formRef" :model="formState" layout="vertical">
       <Form.Item name="fileList" :rules="[{ validator: validatorFile }]">
@@ -24,16 +24,16 @@
           <p class="ant-upload-drag-icon">
             <Icon :icon="'ant-design:upload-outlined'" />
           </p>
-          <p class="ant-upload-text">拖放或者点击选择一个图片</p>
+          <p class="ant-upload-text">{{ t('tb.images.form.dragTip') }}</p>
         </Upload.Dragger>
       </Form.Item>
       <Form.Item
         v-show="formState.fileList.length > 0"
-        label="标题"
+        :label="t('tb.images.form.title')"
         name="title"
-        :rules="[{ required: true, message: '请输入标题!' }]"
+        :rules="[{ required: true, message: t('tb.images.form.titleRequired') }]"
       >
-        <Input v-model:value="formState.title" placeholder="请输入标题" />
+        <Input v-model:value="formState.title" :placeholder="t('tb.images.form.titlePlaceholder')" />
       </Form.Item>
     </Form>
   </BasicModal>
@@ -56,7 +56,7 @@
 
   const emit = defineEmits(['register', 'success']);
 
-  const { t } = useI18n('things');
+  const { t } = useI18n('tb');
   const { showMessage } = useMessage();
 
   const formRef = ref<FormInstance>();
@@ -89,7 +89,7 @@
 
   function validatorFile() {
     if (formState.fileList.length < 1) {
-      return Promise.reject('请选择一个图片！');
+      return Promise.reject(t('tb.images.form.fileRequired'));
     } else {
       return Promise.resolve();
     }
@@ -100,7 +100,7 @@
       const data = await formRef.value?.validate();
       setModalProps({ confirmLoading: true });
       if (data == undefined) {
-        throw new Error('数据为空');
+        throw new Error(t('tb.images.message.dataEmpty'));
       }
       const result = await uploadImage(data.fileList[0].originFileObj, data.title);
       setTimeout(closeModal);

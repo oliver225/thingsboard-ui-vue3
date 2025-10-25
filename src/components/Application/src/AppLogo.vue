@@ -58,11 +58,11 @@
   ]);
 
   function goHome() {
-    go(userStore.getUserInfo.homePath || PageEnum.BASE_HOME);
+    go(userStore.getUserInfo.additionalInfo?.homePath || PageEnum.BASE_HOME);
   }
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-app-logo';
+  @prefix-cls: ~'tbv3-app-logo';
 
   .@{prefix-cls} {
     display: flex;

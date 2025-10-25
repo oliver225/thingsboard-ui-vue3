@@ -59,7 +59,7 @@
   });
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-basic-table-img';
+  @prefix-cls: ~'tbv3-basic-table-img';
 
   .@{prefix-cls} {
     .ant-image {

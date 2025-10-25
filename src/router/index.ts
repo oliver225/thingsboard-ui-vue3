@@ -58,7 +58,7 @@ function initTabPage() {
       const route = {
         meta: { frameSrc: url, title },
         path: path + '/' + name,
-        name: 'JeeSite' + name,
+        name: 'TbV3' + name,
         url,
       };
       addFramePage(route);
@@ -66,7 +66,7 @@ function initTabPage() {
     },
     getCurrentTabPage: function (currentTabCallback: Fn) {
       const route = router.currentRoute.value;
-      const frame = document.querySelector(`.jeesite-iframe-page .${route.name as string}`);
+      const frame = document.querySelector(`.tbv3-iframe-page .${route.name as string}`);
       if (frame && typeof currentTabCallback == 'function') {
         try {
           currentTabCallback(frame['contentWindow']);
@@ -81,7 +81,7 @@ function initTabPage() {
       const index = tabStore.getTabList.findIndex((item) => item.path === router.currentRoute.value.path);
       if (index > 1) {
         const rotue = tabStore.getTabList[index - 1];
-        const frame = document.querySelector(`.jeesite-iframe-page .${rotue.name as string}`);
+        const frame = document.querySelector(`.tbv3-iframe-page .${rotue.name as string}`);
         if (frame && typeof preTabCallback == 'function') {
           try {
             preTabCallback(frame['contentWindow']);

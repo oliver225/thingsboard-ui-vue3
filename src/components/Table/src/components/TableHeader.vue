@@ -1,8 +1,4 @@
-<!--
- * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
- * No deletion without permission, or be held responsible to law.
- * @author Vben、ThinkGem
--->
+
 <template>
   <div style="width: 100%">
     <div v-if="$slots.headerTop" style="margin: 5px">
@@ -79,7 +75,7 @@
   });
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-basic-table-header';
+  @prefix-cls: ~'tbv3-basic-table-header';
 
   .@{prefix-cls} {
     &__title {

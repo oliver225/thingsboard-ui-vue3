@@ -1,8 +1,3 @@
-/**
- * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
- * No deletion without permission, or be held responsible to law.
- * @author Vben、ThinkGem
- */
 import type { RouteRecordRaw } from 'vue-router';
 
 import { useAppStore } from '/@/store/modules/app';

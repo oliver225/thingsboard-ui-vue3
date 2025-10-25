@@ -6,3 +6,8 @@ export enum RelationTypeGroup {
   EDGE = 'EDGE',
   EDGE_AUTO_ASSIGN_RULE_CHAIN = 'EDGE_AUTO_ASSIGN_RULE_CHAIN',
 }
+
+export enum EntitySearchDirection {
+  TO = 'TO',
+  FROM = 'FROM',
+}

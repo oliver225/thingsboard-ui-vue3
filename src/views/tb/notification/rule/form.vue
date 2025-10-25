@@ -4,7 +4,7 @@
       <Icon :icon="getTitle.icon" class="pr-1 m-1" />
       <span> {{ getTitle.value }} </span>
       <Steps size="small" v-model:current="currentStep" style="margin-top: 12px">
-        <Steps.Step :title="'基础'" />
+  <Steps.Step :title="t('tb.notification.rule.form.stepBasic')" />
         <Steps.Step
           :title="NOTIFICATION_TYPE_OPTIONS.find((item) => item.value == triggerType)?.label || triggerType"
         />
@@ -12,7 +12,7 @@
     </template>
     <BasicForm @register="registerForm" v-show="currentStep == 0">
       <template #templateId="{ model, field }">
-        <Select v-model:value="model[field]" placeholder="请选择通知模版">
+  <Select v-model:value="model[field]" :placeholder="t('tb.notification.rule.form.notificationTemplate')">
           <Select.Option v-for="(option, index) in templateOptions" :key="index" :value="option.value">
             {{ option.label }}
             <Tag v-for="(method, index) in option.deliveryMethods" :key="index">
@@ -25,9 +25,9 @@
         <div class="ant-form-item">
           <div class="ant-row ant-form-row">
             <div class="ant-col ant-form-item-label">
-              <label for="escalationTable" class="ant-form-item-required ant-form-item-no-colon leading-8"
-                >通知顺序</label
-              >
+              <label for="escalationTable" class="ant-form-item-required ant-form-item-no-colon leading-8">{{
+                t('tb.notification.rule.form.escalationOrder')
+              }}</label>
             </div>
             <div class="ant-col ant-form-item-control">
               <InputGroup compact v-for="(escalation, index) in escalationList" :key="index" style="margin-bottom: 8px">
@@ -36,24 +36,22 @@
                   :disabled="index == 0"
                   :options="escalationTimeOption"
                   style="width: 25%"
-                >
-                </Select>
+                />
                 <Select
                   v-model:value="escalationList[index].targets"
                   mode="multiple"
-                  placeholder="请选择通知接收组"
+                  :placeholder="t('tb.notification.rule.form.recipientsGroup')"
                   style="width: 70%"
                   :options="recipientOptions"
-                >
-                </Select>
-                <Tooltip title="移除" v-if="index > 0">
+                />
+                <Tooltip :title="t('tb.notification.rule.form.escalationRemove')" v-if="index > 0">
                   <a-button type="text" shape="circle" @click="handleRemoveEscalation(index)">
                     <Icon icon="ant-design:close-outlined" :size="20" />
                   </a-button>
                 </Tooltip>
               </InputGroup>
               <a-button type="primary" size="small" @click="handleAddEscalation">
-                <Icon icon="i-fluent:add-12-filled" /> 增加阶段
+                <Icon icon="i-fluent:add-12-filled" /> {{ t('tb.notification.rule.form.escalationAddStage') }}
               </a-button>
             </div>
           </div>
@@ -76,14 +74,16 @@
     </div>
     <template #footer>
       <a-button v-if="currentStep > 0" @click="prev" style="float: left">
-        <Icon icon="ant-design:left-outlined" />上一步
+        <Icon icon="ant-design:left-outlined" />{{ t('tb.notification.common.prev') }}
       </a-button>
-      <a-button @click="close"> <Icon icon="ant-design:close-outlined" />取消 </a-button>
+      <a-button @click="close">
+        <Icon icon="ant-design:close-outlined" />{{ t('tb.notification.common.cancel') }}
+      </a-button>
       <a-button :loading="confirmLoading" v-if="currentStep == 0" type="primary" @click="next">
-        <Icon icon="ant-design:right-outlined" />下一步
+        <Icon icon="ant-design:right-outlined" />{{ t('tb.notification.common.next') }}
       </a-button>
       <a-button :loading="confirmLoading" v-if="currentStep == 1" type="primary" @click="handleSubmit">
-        <Icon icon="ant-design:check-outlined" />确定
+        <Icon icon="ant-design:check-outlined" />{{ t('tb.notification.common.ok') }}
       </a-button>
     </template>
   </BasicModal>
@@ -114,7 +114,7 @@
   import AlarmAssignment from './triggerConfig/alarmAssignment.vue';
   import AlarmComment from './triggerConfig/alarmComment.vue';
   import ruleEngineLifecycleEvent from './triggerConfig/ruleEngineLifecycleEvent.vue';
-import { EntityType } from '/@/enums/entityTypeEnum';
+  import { EntityType } from '/@/enums/entityTypeEnum';
 
   const emit = defineEmits(['success', 'register']);
 
@@ -128,7 +128,7 @@ import { EntityType } from '/@/enums/entityTypeEnum';
   const record = ref<NotificationRule>({} as NotificationRule);
   const getTitle = computed(() => ({
     icon: meta.icon || 'ant-design:book-outlined',
-    value: record.value.id?.id ? t('编辑通知规则') : t('新增通知规则'),
+  value: record.value.id?.id ? t('tb.notification.rule.action.edit') : t('tb.notification.rule.action.add'),
   }));
   const tenantId = userStore.getUserInfo?.tenantId || { EntityType: 'TENANT', id: '' };
 
@@ -147,29 +147,33 @@ import { EntityType } from '/@/enums/entityTypeEnum';
 
   const escalationList = ref([{ second: 0, targets: [] }]);
 
-  const escalationTimeOption = [
-    { value: 0, label: '首先通知', disabled: true },
-    { value: 60, label: '1分钟后通知' },
-    { value: 120, label: '2分钟后通知' },
-    { value: 300, label: '5分钟后通知' },
-    { value: 600, label: '10分钟后通知' },
-    { value: 900, label: '15分钟后通知' },
-    { value: 1800, label: '30分钟后通知' },
-    { value: 3600, label: '1小时后通知' },
-    { value: 7200, label: '2小时后通知' },
-    { value: 18000, label: '5小时后通知' },
-    { value: 36000, label: '10小时后通知' },
-    { value: 43200, label: '12小时后通知' },
-    { value: 86400, label: '1天后通知' },
-  ];
+  const escalationTimeOption = computed(() => [
+    { value: 0, label: t('tb.notification.rule.form.firstNotify'), disabled: true },
+    { value: 60, label: t('tb.notification.rule.form.minuteLater', { count: 1 }) },
+    { value: 120, label: t('tb.notification.rule.form.minuteLater', { count: 2 }) },
+    { value: 300, label: t('tb.notification.rule.form.minuteLater', { count: 5 }) },
+    { value: 600, label: t('tb.notification.rule.form.minuteLater', { count: 10 }) },
+    { value: 900, label: t('tb.notification.rule.form.minuteLater', { count: 15 }) },
+    { value: 1800, label: t('tb.notification.rule.form.minuteLater', { count: 30 }) },
+    { value: 3600, label: t('tb.notification.rule.form.hourLater', { count: 1 }) },
+    { value: 7200, label: t('tb.notification.rule.form.hourLater', { count: 2 }) },
+    { value: 18000, label: t('tb.notification.rule.form.hourLater', { count: 5 }) },
+    { value: 36000, label: t('tb.notification.rule.form.hourLater', { count: 10 }) },
+    { value: 43200, label: t('tb.notification.rule.form.hourLater', { count: 12 }) },
+    { value: 86400, label: t('tb.notification.rule.form.dayLater', { count: 1 }) },
+  ]);
 
   const notificationTypeOptions = computed(() => {
     if (hasPermission(Authority.SYS_ADMIN)) {
       return NOTIFICATION_TYPE_OPTIONS.filter(
         (item) =>
+          item.value == NotificationType.GENERAL ||
           item.value == NotificationType.ENTITIES_LIMIT ||
           item.value == NotificationType.API_USAGE_LIMIT ||
-          item.value == NotificationType.NEW_PLATFORM_VERSION,
+          item.value == NotificationType.NEW_PLATFORM_VERSION ||
+          item.value == NotificationType.RATE_LIMITS ||
+          item.value == NotificationType.TASK_PROCESSING_FAILURE ||
+          item.value == NotificationType.RESOURCES_SHORTAGE,
       );
     } else {
       return NOTIFICATION_TYPE_OPTIONS.filter(
@@ -180,7 +184,9 @@ import { EntityType } from '/@/enums/entityTypeEnum';
           item.value == NotificationType.DEVICE_ACTIVITY ||
           item.value == NotificationType.ENTITY_ACTION ||
           item.value == NotificationType.RULE_NODE ||
-          item.value == NotificationType.RULE_ENGINE_COMPONENT_LIFECYCLE_EVENT,
+          item.value == NotificationType.RULE_ENGINE_COMPONENT_LIFECYCLE_EVENT ||
+          item.value == NotificationType.EDGE_CONNECTION ||
+          item.value == NotificationType.EDGE_COMMUNICATION_FAILURE,
       );
     }
   });
@@ -189,7 +195,7 @@ import { EntityType } from '/@/enums/entityTypeEnum';
   const inputFormSchemas: FormSchema[] = [
     { field: 'tenantId', component: 'Input', defaultValue: tenantId, show: false },
     {
-      label: t('规则名称'),
+      label: t('tb.notification.rule.form.name'),
       field: 'name',
       component: 'Input',
       componentProps: {
@@ -199,7 +205,7 @@ import { EntityType } from '/@/enums/entityTypeEnum';
       colProps: { lg: 24, md: 24 },
     },
     {
-      label: t('通知类型'),
+      label: t('tb.notification.rule.form.notificationType'),
       field: 'triggerType',
       component: 'Select',
       defaultValue: notificationTypeOptions.value[0].value,
@@ -213,11 +219,11 @@ import { EntityType } from '/@/enums/entityTypeEnum';
     },
     { field: 'templateId.entityType', component: 'Input', defaultValue: EntityType.NOTIFICATION_TEMPLATE, show: false },
     {
-      label: t('通知模版'),
+      label: t('tb.notification.rule.form.notificationTemplate'),
       field: 'templateId.id',
       component: 'Select',
       componentProps: {
-        placeholder: '请选择通知模版',
+  placeholder: t('tb.notification.rule.form.notificationTemplate'),
       },
       slot: 'templateId',
       required: true,
@@ -230,19 +236,19 @@ import { EntityType } from '/@/enums/entityTypeEnum';
       show: false,
     },
     {
-      label: t('通知接收组'),
+      label: t('tb.notification.rule.form.recipientsGroup'),
       field: 'recipientsConfig.targets',
       component: 'Select',
       componentProps: {
         mode: 'multiple',
-        placeholder: '请选择通知接收组',
+  placeholder: t('tb.notification.rule.form.recipientsGroup'),
         options: recipientOptions,
       },
       required: true,
       colProps: { lg: 24, md: 24 },
     },
     {
-      label: t('通知链'),
+  label: t('tb.notification.rule.form.recipientsChain'),
       field: 'recipientsConfig.escalationTable',
       component: 'Select',
       colSlot: 'escalationTable',
@@ -344,7 +350,11 @@ import { EntityType } from '/@/enums/entityTypeEnum';
 
       // console.log('submit', params, data, record);
       const res = await saveNotificationRule({ ...data, id: record.value.id });
-      showMessage(`${record.value.id?.id ? '编辑' : '新增'}通知规则成功！`);
+      showMessage(
+        record.value.id?.id
+          ? t('tb.notification.rule.form.saveSuccessEdit')
+          : t('tb.notification.rule.form.saveSuccessAdd'),
+      );
       setTimeout(closeModal);
       emit('success', data);
     } catch (error: any) {

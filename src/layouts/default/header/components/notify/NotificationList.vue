@@ -41,7 +41,9 @@
                   >
                     {{ item.additionalConfig?.actionButtonConfig?.text }}
                   </a-button>
-                  <a-button type="primary" size="small" v-else @click="handleBtnClick(item)"> 知道了 </a-button>
+                  <a-button type="primary" size="small" v-else @click="handleBtnClick(item)">
+                    {{ t('component.notification.gotIt') }}
+                  </a-button>
                 </div>
               </div>
             </template>
@@ -50,8 +52,10 @@
       </template>
     </List>
     <div style="display: flex; flex-direction: row-reverse">
-      <a-button type="link" @click="handleToNotificationList">查看全部</a-button>
-      <a-button type="link" @click="handleMarkAllAsRead" v-if="list.length > 0">全部已读</a-button>
+      <a-button type="link" @click="handleToNotificationList">{{ t('component.notification.viewAll') }}</a-button>
+      <a-button type="link" @click="handleMarkAllAsRead" v-if="list.length > 0">
+        {{ t('component.notification.markAllRead') }}
+      </a-button>
     </div>
   </div>
 </template>
@@ -70,6 +74,7 @@
   import dayjs from 'dayjs';
   import relativeTime from 'dayjs/plugin/relativeTime';
   import { router } from '/@/router';
+  import { useI18n } from '/@/hooks/web/useI18n';
 
   const props = defineProps({
     list: {
@@ -102,6 +107,8 @@
   dayjs.locale('zh-cn');
   dayjs.extend(relativeTime);
 
+  const { t } = useI18n();
+
   const emit = defineEmits(['update:currentPage']);
 
   const { prefixCls } = useDesign('header-notify-list');
@@ -122,22 +129,31 @@
     },
   );
 
-  const getPagination = computed(() => {
+  const getPagination = computed<
+    | false
+    | {
+        total: number;
+        pageSize: number;
+        current: number;
+        size: 'small' | 'default';
+        onChange: (page: number) => void;
+      }
+  >(() => {
     const { list, pageSize } = props;
-    if (pageSize > 0 && list && list.length > pageSize) {
+    if (isNumber(pageSize) && pageSize > 0 && list && list.length > pageSize) {
+      const pageSizeNum = pageSize as number;
       return {
         total: list.length,
-        pageSize,
+        pageSize: pageSizeNum,
         size: 'small',
         current: unref(current),
-        onChange(page) {
+        onChange(page: number) {
           current.value = page;
           emit('update:currentPage', page);
         },
       };
-    } else {
-      return false;
     }
+    return false;
   });
 
   function handleTitleClick(item: Notification) {
@@ -166,7 +182,7 @@
   }
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-header-notify-list';
+  @prefix-cls: ~'tbv3-header-notify-list';
 
   .@{prefix-cls} {
     &::-webkit-scrollbar {

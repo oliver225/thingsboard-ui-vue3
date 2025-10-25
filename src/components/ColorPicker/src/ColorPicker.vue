@@ -55,7 +55,7 @@
 </script>
 
 <style lang="less">
-  @prefix-cls: ~'jeesite-color-picker';
+  @prefix-cls: ~'tbv3-color-picker';
 
   .@{prefix-cls} {
     .ant-input-group-addon {

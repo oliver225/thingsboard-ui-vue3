@@ -1,11 +1,5 @@
-<!--
- * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
- * No deletion without permission, or be held responsible to law.
- * @description 支持字典类型、支持下拉框标签返回、支持 API 接口
- * @author Vben、ThinkGem
--->
 <template>
-  <div class="jeesite-tree-select">
+  <div class="tbv3-tree-select">
     <TreeSelect v-bind="getAttrs" v-model:value="state" :treeData="treeDataRef" @click="handleFetch">
       <template #[item]="data" v-for="item in Object.keys($slots)">
         <slot :name="item" v-bind="data || {}"></slot>
@@ -19,7 +13,7 @@
     </TreeSelect>
   </div>
 </template>
-<script lang="ts" setup name="JeeSiteTreeSelect">
+<script lang="ts" setup name="TbV3TreeSelect">
   import { ref, unref, computed, watch, onMounted } from 'vue';
   import { TreeSelect } from 'ant-design-vue';
   import { isEmpty, isFunction } from '/@/utils/is';
@@ -87,7 +81,7 @@
       },
       treeDataSimpleMode: false,
       dropdownStyle: { maxHeight: '300px' },
-      popupClassName: 'jeesite-tree-select-popup',
+      popupClassName: 'tbv3-tree-select-popup',
       getPopupContainer: () => document.body,
       ...unref(attrs),
       ...(props as Recordable),
@@ -180,7 +174,7 @@
   }
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-tree-select';
+  @prefix-cls: ~'tbv3-tree-select';
 
   .@{prefix-cls} {
     width: 100%;

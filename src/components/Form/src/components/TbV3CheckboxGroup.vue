@@ -1,37 +1,30 @@
-<!--
- * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
- * No deletion without permission, or be held responsible to law.
- * @description 支持字典类型
- * @author Vben、ThinkGem
--->
 <template>
-  <RadioGroup v-bind="attrs" v-model:value="state" button-style="solid">
+  <CheckboxGroup v-bind="getAttrs" v-model:value="state">
     <template v-for="item in getOptions" :key="`${item.value}`">
-      <RadioButton :value="item.value" :disabled="item.disabled">
+      <Checkbox :value="item.value" :disabled="item.disabled">
         {{ item.label }}
-      </RadioButton>
+      </Checkbox>
     </template>
-  </RadioGroup>
+  </CheckboxGroup>
 </template>
-<script lang="ts" setup name="JeeSiteRadioButtonGroup">
+<script lang="ts" setup name="TbV3CheckboxGroup">
   import { PropType, computed, ref, unref, watch } from 'vue';
-  import { Radio } from 'ant-design-vue';
-  import { isString } from '/@/utils/is';
-  import { useAttrs } from '/@/hooks/core/useAttrs';
+  import { Checkbox } from 'ant-design-vue';
   import { useRuleFormItem } from '/@/hooks/component/useFormItem';
+  import { useAttrs } from '/@/hooks/core/useAttrs';
+  import { isString } from '/@/utils/is';
 
   type OptionsItem = { label: string; value: string | number | boolean; disabled?: boolean };
-  type RadioItem = string | OptionsItem;
+  type CheckboxItem = string | OptionsItem;
 
-  const RadioGroup = Radio.Group;
-  const RadioButton = Radio.Button;
+  const CheckboxGroup = Checkbox.Group;
 
   const props = defineProps({
     value: {
-      type: [String, Number, Boolean, Object] as PropType<string | number | boolean | object>,
+      type: [Array, Object, String, Number] as PropType<Array<any> | object | string | number>,
     },
     options: {
-      type: Array as PropType<RadioItem[]>,
+      type: Array as PropType<CheckboxItem[]>,
       default: () => [],
     },
   });
@@ -40,7 +33,11 @@
 
   const attrs = useAttrs();
   const [state] = useRuleFormItem(props);
-  const optionsRef = ref<RadioItem[]>(props.options);
+  const optionsRef = ref<CheckboxItem[]>(props.options);
+
+  const getAttrs = computed(() => {
+    return { ...unref(attrs), ...(props as Recordable) };
+  });
 
   watch(
     () => props.options,
@@ -57,3 +54,15 @@
     return options.map((item) => ({ label: item, value: item })) as OptionsItem[];
   });
 </script>
+<style lang="less">
+  .ant-checkbox-wrapper {
+    margin-right: 0;
+    margin-left: 4px;
+  }
+
+  .ant-checkbox-checked {
+    .ant-checkbox-inner {
+      opacity: 0.9;
+    }
+  }
+</style>

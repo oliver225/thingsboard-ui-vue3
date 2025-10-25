@@ -16,7 +16,7 @@
     :app-name="appName"
     :logo="logo"
     :page-title="t('Thingsboard Iot Platform')"
-    :page-description="t('基于 Vue3 的Thingsboard 前端应用（ThingsBoard v4.1.0）')"
+    :page-description="t('基于Vue3 的ThingsBoard 前端应用（ThingsBoard v4.2.0）')"
   >
     <!-- 自定义工具栏 -->
     <!-- <template #toolbar></template> -->

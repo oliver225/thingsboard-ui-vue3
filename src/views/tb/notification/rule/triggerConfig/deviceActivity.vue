@@ -9,8 +9,10 @@
             style="margin: 1px auto"
             @change="handleDeviceEnableChange"
           >
-            <Radio.Button value="device">&nbsp;&nbsp;设&nbsp;&nbsp;备&nbsp;&nbsp; </Radio.Button>
-            <Radio.Button value="deviceProfile">设备配置</Radio.Button>
+            <Radio.Button value="device">{{ t('tb.notification.ruleTrigger.deviceActivity.device') }}</Radio.Button>
+            <Radio.Button value="deviceProfile">{{
+              t('tb.notification.ruleTrigger.deviceActivity.deviceProfile')
+            }}</Radio.Button>
           </Radio.Group>
         </div>
       </template>
@@ -30,8 +32,8 @@
   const { t } = useI18n('tb');
 
   const notifyOnOptions = [
-    { value: 'ACTIVE', label: '在线' },
-    { value: 'INACTIVE', label: '离线' },
+    { value: 'ACTIVE', label: t('tb.notification.ruleTrigger.deviceActivity.online') },
+    { value: 'INACTIVE', label: t('tb.notification.ruleTrigger.deviceActivity.offline') },
   ];
 
   const inputFormSchemas: FormSchema[] = [
@@ -49,12 +51,12 @@
       colProps: { lg: 24, md: 24 },
     },
     {
-      label: t('设备'),
-      subLabel: '不选默认为全部设备',
+      label: t('tb.notification.ruleTrigger.deviceActivity.device'),
+      subLabel: t('tb.notification.ruleTrigger.deviceActivity.allDevices'),
       field: 'triggerConfig.devices',
       component: 'Select',
       componentProps: {
-        placeholder: '全部设备',
+        placeholder: t('tb.notification.ruleTrigger.deviceActivity.allDevices'),
         mode: 'multiple',
         immediate: true,
         resultField: 'data',
@@ -68,12 +70,12 @@
       colProps: { lg: 24, md: 24 },
     },
     {
-      label: t('设备配置'),
-      subLabel: '不选默认为全部设备',
+      label: t('tb.notification.ruleTrigger.deviceActivity.deviceProfile'),
+      subLabel: t('tb.notification.ruleTrigger.deviceActivity.allDeviceProfiles'),
       field: 'triggerConfig.deviceProfiles',
       component: 'Select',
       componentProps: {
-        placeholder: '全部设备配置',
+        placeholder: t('tb.notification.ruleTrigger.deviceActivity.allDeviceProfiles'),
         mode: 'multiple',
         immediate: true,
         resultField: 'data',
@@ -87,7 +89,7 @@
       colProps: { lg: 24, md: 24 },
     },
     {
-      label: t('何时报警'),
+      label: t('tb.notification.ruleTrigger.alarm.notifyOn'),
       field: 'triggerConfig.notifyOn',
       component: 'Select',
       defaultValue: ['INACTIVE'],
@@ -99,7 +101,7 @@
       colProps: { lg: 24, md: 24 },
     },
     {
-      label: t('描述信息'),
+      label: t('tb.notification.ruleTrigger.description'),
       field: 'additionalConfig.description',
       component: 'InputTextArea',
       componentProps: {
@@ -176,6 +178,5 @@
   defineExpose({ getFieldsValue, validate: validateTrigger, resetFields, setFieldsValue: setTriggerFieldsValue });
 </script>
 <style lang="less">
-  .trigger-config-device-activity {
-  }
+  /* removed empty rule .trigger-config-device-activity */
 </style>

@@ -1,11 +1,5 @@
-<!--
- * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
- * No deletion without permission, or be held responsible to law.
- * @description 用于文本展示
- * @author ThinkGem
--->
 <template>
-  <div class="jeesite-text">
+  <div class="tbv3-text">
     <!-- eslint-disable vue/no-v-html -->
     <div v-if="isHtml" v-html="labelValue || value" class="p-1"></div>
     <div v-else>
@@ -13,7 +7,7 @@
     </div>
   </div>
 </template>
-<script lang="ts" setup name="JeeSiteText">
+<script lang="ts" setup name="TbV3Text">
   import { propTypes } from '/@/utils/propTypes';
 
   defineProps({
@@ -27,7 +21,7 @@
   });
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-text';
+  @prefix-cls: ~'tbv3-text';
 
   .@{prefix-cls} {
     width: 100%;

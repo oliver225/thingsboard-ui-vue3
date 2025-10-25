@@ -1,23 +1,23 @@
 <template>
   <Form ref="formRef" :model="formState" layout="vertical">
     <div class="border border-solid border-neutral-300 rounded-md py-2 px-3 mb-4">
-      <p class="text-base font-bold">关系查询</p>
+      <p class="text-base font-bold">{{ t('tb.ruleChain.nodeAction.relationQuery') }}</p>
       <div class="p-2">
         <Row :gutter="20">
           <Col :span="12">
             <Form.Item
-              label="方向"
+              :label="t('tb.ruleChain.nodeAction.direction')"
               :name="['relationsQuery', 'direction']"
-              :rules="[{ required: true, message: '请选择查询方向!' }]"
+              :rules="[{ required: true, message: t('tb.ruleChain.nodeAction.directionRequired') }]"
             >
               <Select v-model:value="formState.relationsQuery.direction">
-                <Select.Option value="FROM">从 originator</Select.Option>
-                <Select.Option value="TO">到 originator</Select.Option>
+                <Select.Option value="FROM">{{ t('tb.ruleChain.nodeAction.fromOriginator') }}</Select.Option>
+                <Select.Option value="TO">{{ t('tb.ruleChain.nodeAction.toOriginator') }}</Select.Option>
               </Select>
             </Form.Item>
           </Col>
           <Col :span="12">
-            <Form.Item label="最大关联层级" :name="['relationsQuery', 'maxLevel']">
+            <Form.Item :label="t('tb.ruleChain.nodeAction.level')" :name="['relationsQuery', 'maxLevel']">
               <InputNumber
                 v-model:value="formState.relationsQuery.maxLevel"
                 :precision="0"
@@ -32,19 +32,21 @@
           :name="['relationsQuery', 'fetchLastLevelOnly']"
           v-show="formState.relationsQuery.maxLevel && formState.relationsQuery.maxLevel > 1"
         >
-          <Checkbox v-model:checked="formState.relationsQuery.fetchLastLevelOnly"> 仅获取最后一级关联 </Checkbox>
+          <Checkbox v-model:checked="formState.relationsQuery.fetchLastLevelOnly">
+            {{ t('tb.ruleChain.nodeAction.fetchLastLevelOnly') }}
+          </Checkbox>
         </Form.Item>
         <div class="border border-solid border-neutral-300 rounded-md py-2 px-3 mb-4">
           <Form.Item
-            label="关联筛选器"
+            :label="t('tb.ruleChain.nodeAction.relationFilters')"
             :name="['relationsQuery', 'filters']"
             :rules="[{ validator: validatorRelationsQueryFilters }]"
           >
             <div class="p-2">
               <Table class="mapping-table">
                 <tr class="header">
-                  <th>关联类型</th>
-                  <th>实体类型</th>
+                  <th>{{ t('tb.ruleChain.nodeAction.relationType') }}</th>
+                  <th>{{ t('tb.ruleChain.nodeAction.entityType') }}</th>
                 </tr>
                 <tr class="content" v-for="(filter, index) in formState.relationsQuery.filters" :key="index">
                   <td class="py-2 px-4">
@@ -57,12 +59,16 @@
                         <v-nodes :vnodes="menu" />
                         <Divider style="margin: 4px 0" />
                         <Space style="padding: 4px 8px">
-                          <Input ref="inputRef" v-model:value="addName" placeholder="请输入关联关系" />
+                          <Input
+                            ref="inputRef"
+                            v-model:value="addName"
+                            :placeholder="t('tb.ruleChain.nodeAction.enterRelationType')"
+                          />
                           <Button type="text" @click="addRelationType">
                             <template #icon>
                               <plus-outlined />
                             </template>
-                            添加关联关系
+                            {{ t('tb.ruleChain.nodeAction.addRelationType') }}
                           </Button>
                         </Space>
                       </template>
@@ -74,11 +80,10 @@
                       mode="multiple"
                       :style="{ width: '100%' }"
                       :options="entityTypeOptions"
-                    >
-                    </Select>
+                    />
                   </td>
                   <td>
-                    <Tooltip title="删除" class="pl-4">
+                    <Tooltip :title="t('tb.ruleChain.nodeAction.delete')" class="pl-4">
                       <Icon
                         :icon="'ant-design:delete-outlined'"
                         :size="20"
@@ -90,14 +95,16 @@
                   </td>
                 </tr>
               </Table>
-              <Button class="my-4" type="primary" @click="handleAddFilter">添加筛选器</Button>
+              <Button class="my-4" type="primary" @click="handleAddFilter">{{
+                t('tb.ruleChain.nodeAction.addFilter')
+              }}</Button>
             </div>
           </Form.Item>
         </div>
       </div>
     </div>
     <div class="border border-solid border-neutral-300 rounded-md py-2 px-3 mb-4">
-      <p class="text-base font-bold">要获取的数据</p>
+      <p class="text-base font-bold">{{ t('tb.ruleChain.nodeAction.dataToFetch') }}</p>
       <div class="p-2">
         <Form.Item name="dataToFetch">
           <Radio.Group
@@ -106,30 +113,46 @@
             :style="{ display: 'flex' }"
             class="w-full"
           >
-            <Radio.Button class="flex-1" value="ATTRIBUTES">Attributes</Radio.Button>
-            <Radio.Button class="flex-1" value="LATEST_TELEMETRY">Last telemetry</Radio.Button>
-            <Radio.Button class="flex-1" value="FIELDS">Fields</Radio.Button>
+            <Radio.Button class="flex-1" value="ATTRIBUTES">{{ t('tb.ruleChain.nodeAction.attributes') }}</Radio.Button>
+            <Radio.Button class="flex-1" value="LATEST_TELEMETRY">{{
+              t('tb.ruleChain.nodeAction.latestTelemetry')
+            }}</Radio.Button>
+            <Radio.Button class="flex-1" value="FIELDS">{{
+              t('tb.ruleChain.nodeAction.originatorFields')
+            }}</Radio.Button>
           </Radio.Group>
         </Form.Item>
         <div class="border border-solid border-neutral-300 rounded-md py-2 px-3 mb-4">
           <Form.Item name="dataMapping" :rules="[{ validator: validatorDataMapping }]">
             <template #label>
-              <span v-if="formState.dataToFetch == 'ATTRIBUTES'">属性映射</span>
-              <span v-else-if="formState.dataToFetch == 'LATEST_TELEMETRY'">遥测数据映射</span>
-              <span v-else>属性映射</span>
+              <span v-if="formState.dataToFetch == 'ATTRIBUTES'">{{
+                t('tb.ruleChain.nodeAction.attributeMapping')
+              }}</span>
+              <span v-else-if="formState.dataToFetch == 'LATEST_TELEMETRY'">{{
+                t('tb.ruleChain.nodeAction.telemetryMapping')
+              }}</span>
+              <span v-else>{{ t('tb.ruleChain.nodeAction.originatorFieldsMapping') }}</span>
             </template>
             <Table class="mapping-table">
               <tr class="header">
-                <th>原属性</th>
-                <th>目标属性</th>
+                <th>{{ t('tb.ruleChain.nodeAction.sourceAttribute') }}</th>
+                <th>{{ t('tb.ruleChain.nodeAction.targetAttribute') }}</th>
               </tr>
               <tr class="content" v-for="(mapping, index) in mappingList" :key="index">
                 <td class="py-2 px-4">
-                  <Input v-model:value="mapping.key" placeholder="输入原属性" />
+                  <Input
+                    v-model:value="mapping.key"
+                    :placeholder="t('tb.ruleChain.nodeAction.sourceAttributePlaceholder')"
+                  />
                 </td>
-                <td> <Input v-model:value="mapping.value" placeholder="输入目标属性" /> </td>
                 <td>
-                  <Tooltip title="删除" class="pl-4">
+                  <Input
+                    v-model:value="mapping.value"
+                    :placeholder="t('tb.ruleChain.nodeAction.targetAttributePlaceholder')"
+                  />
+                </td>
+                <td>
+                  <Tooltip :title="t('tb.ruleChain.nodeAction.delete')" class="pl-4">
                     <Icon
                       :icon="'ant-design:delete-outlined'"
                       :size="20"
@@ -141,19 +164,18 @@
                 </td>
               </tr>
             </Table>
-            <Button class="my-4" type="primary" @click="handleAddMapping">添加映射</Button>
-            <Alert
-              type="success"
-              message="只有目标键字段支持模板化。使用$[messageKey]从消息中提取值，使用${metadataKey}从元数据中提取值。"
-            />
+            <Button class="my-4" type="primary" @click="handleAddMapping">{{
+              t('tb.ruleChain.nodeAction.addMapping')
+            }}</Button>
+            <Alert type="success" :message="t('tb.ruleChain.nodeAction.targetFieldTemplatingHelp')" />
           </Form.Item>
         </div>
         <Form.Item name="fetchTo">
           <div class="flex justify-between items-center border border-solid border-neutral-300 rounded-md py-2 px-4">
-            <span>添加映射属性到</span>
+            <span>{{ t('tb.ruleChain.nodeAction.addMappedAttributesTo') }}</span>
             <Radio.Group v-model:value="formState.fetchTo" button-style="solid">
-              <Radio.Button value="DATA">Message</Radio.Button>
-              <Radio.Button value="METADATA">Metadata</Radio.Button>
+              <Radio.Button value="DATA">{{ t('tb.ruleChain.nodeAction.message') }}</Radio.Button>
+              <Radio.Button value="METADATA">{{ t('tb.ruleChain.nodeAction.metadata') }}</Radio.Button>
             </Radio.Group>
           </div>
         </Form.Item>
@@ -187,6 +209,7 @@
   import { Icon } from '/@/components/Icon';
   import { FormInstance } from 'ant-design-vue/lib/form';
   import { isEmpty } from 'lodash-es';
+  import { useI18n } from '/@/hooks/web/useI18n';
   import { ENTITY_TYPE_OPTIONS, EntityType } from '/@/enums/entityTypeEnum';
 
   interface Configuration {
@@ -200,6 +223,8 @@
       filters: Array<any>;
     };
   }
+
+  const { t } = useI18n('tb');
 
   const props = defineProps({
     configuration: {
@@ -285,7 +310,7 @@
 
   function validatorDataMapping() {
     if (mappingList.value.length < 1) {
-      return Promise.reject('属性映射必填！');
+      return Promise.reject(t('tb.ruleChain.nodeAction.mappingRequired'));
     } else {
       let validateTag = true;
       mappingList.value.forEach((mapping) => {
@@ -294,7 +319,7 @@
         }
       });
       if (!validateTag) {
-        return Promise.reject('属性映射不能存在空值！');
+        return Promise.reject(t('tb.ruleChain.nodeAction.fieldsMappingNotEmpty'));
       } else {
         return Promise.resolve();
       }
@@ -310,7 +335,7 @@
       }
     });
     if (!validateTag) {
-      return Promise.reject('关联筛选器不能存在空值！');
+      return Promise.reject(t('tb.ruleChain.nodeAction.relationFiltersNotEmpty'));
     } else {
       return Promise.resolve();
     }

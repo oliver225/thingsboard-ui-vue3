@@ -56,3 +56,8 @@ export const SCOPE_OPTIONS_SIMPLE = [
   { value: Scope.SERVER_SCOPE, label: '服务端属性' },
   { value: Scope.SHARED_SCOPE, label: '共享属性' },
 ];
+
+export const SCOPE_OPTIONS_SERVER = [
+  { value: Scope.SERVER_SCOPE, label: '服务端属性' },
+  { value: Scope.SHARED_SCOPE, label: '共享属性' },
+];

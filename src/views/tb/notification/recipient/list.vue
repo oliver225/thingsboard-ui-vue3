@@ -3,17 +3,17 @@
     <BasicTable @register="registerTable">
       <template #headerTop>
         <div class="text-lg font-bold my-2">
-          {{ t('通知接收人') }}
+          {{ t('tb.notification.recipient.title') }}
         </div>
       </template>
       <template #tableTitle>
         <div class="space-x-2">
           <a-button type="primary" @click="handleForm({})">
-            <Icon icon="i-fluent:add-12-filled" /> 新增接收人
+            <Icon icon="i-fluent:add-12-filled" /> {{ t('tb.notification.recipient.action.add') }}
           </a-button>
           <a-input
             v-model:value="searchParam.textSearch"
-            placeholder="输入搜索内容"
+            :placeholder="t('common.search.searchText')"
             allow-clear
             @change="reload"
             style="width: 240px"
@@ -72,7 +72,7 @@
   const { createConfirm, showMessage } = useMessage();
 
   const getTitle = {
-    value: router.currentRoute.value.meta.title || '通知接收人组',
+    value: router.currentRoute.value.meta.title || t('tb.notification.recipient.title'),
   };
 
   const searchParam = reactive({
@@ -80,7 +80,7 @@
   });
   const tableColumns: BasicColumn[] = [
     {
-      title: t('接收人组'),
+      title: t('tb.notification.recipient.table.group'),
       dataIndex: 'name',
       key: 'name',
       sorter: true,
@@ -88,7 +88,7 @@
       fixed: 'left',
     },
     {
-      title: t('类型'),
+      title: t('tb.notification.recipient.table.type'),
       dataIndex: 'configuration.type',
       key: 'configuration.type',
       align: 'left',
@@ -96,7 +96,7 @@
       slot: 'configurationType',
     },
     {
-      title: t('过滤用户'),
+      title: t('tb.notification.recipient.table.filterUsers'),
       dataIndex: 'configuration.usersFilter',
       key: 'configuration.usersFilter',
       align: 'left',
@@ -104,13 +104,13 @@
       slot: 'configurationUsersFilter',
     },
     {
-      title: t('描述'),
+      title: t('tb.notification.recipient.table.description'),
       dataIndex: 'configuration.description',
       key: 'configuration.description',
       align: 'left',
     },
     {
-      title: t('创建时间'),
+      title: t('tb.notification.recipient.table.createdTime'),
       dataIndex: 'createdTime',
       key: 'createdTime',
       format: 'date|YYYY-MM-DD HH:mm:ss',
@@ -125,14 +125,14 @@
     actions: (record: Recordable) => [
       {
         icon: 'i-clarity:note-edit-line',
-        title: t('编辑通知接收组'),
+        title: t('tb.notification.recipient.action.edit'),
         color: 'success',
         onClick: handleForm.bind(this, { ...record }),
       },
       {
         icon: 'ant-design:delete-outlined',
         color: 'error',
-        title: t('删除通知接收组'),
+        title: t('tb.notification.recipient.action.delete'),
         onClick: handleDelete.bind(this, { ...record }),
       },
     ],
@@ -162,10 +162,10 @@
   async function handleDelete(record: Recordable) {
     createConfirm({
       iconType: 'error',
-      title: `确定删除通知接收组[${record.name}]吗？`,
-      content: '请注意：确认后，通知接收组将不可恢复。',
+      title: t('tb.notification.recipient.action.deleteConfirm', { name: record.name }),
+      content: t('tb.notification.recipient.action.deleteConfirmContent'),
       centered: false,
-      okText: '删除',
+      okText: t('tb.notification.action.delete'),
       okButtonProps: {
         type: 'primary',
         danger: true,
@@ -173,7 +173,7 @@
       onOk: async () => {
         try {
           await deleteNotificationTarget(record.id.id);
-          showMessage('删除通知接收组成功！');
+          showMessage(t('tb.notification.recipient.action.deleteSuccess'));
         } catch (error: any) {
           console.log(error);
         } finally {

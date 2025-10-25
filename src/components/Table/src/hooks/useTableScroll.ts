@@ -102,7 +102,7 @@ export function useTableScroll(
 
     // Table height from bottom height-custom offset
     let paddingHeight = 17;
-    if (tableEl.closest('.jeesite-layout-content')) {
+    if (tableEl.closest('.tbv3-layout-content')) {
       paddingHeight += 13;
     }
 

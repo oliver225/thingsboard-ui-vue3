@@ -2,7 +2,7 @@
   <div class="image-url-Input">
     <div class="image-show-box">
       <img :src="currentVale" alt="" v-if="currentVale" />
-      <div v-else>未选择图片</div>
+      <div v-else>{{ t('tb.images.input.notSelected') }}</div>
     </div>
     <div class="image-info">
       <div class="input-info-resource" v-if="selectBtn === 'resource'">
@@ -24,7 +24,7 @@
         <InputGroup>
           <Input
             v-model:value="currentVale"
-            placeholder="请输入图片链接"
+            :placeholder="t('tb.images.form.linkPlaceholder')"
             style="width: calc(100% - 100px)"
             :disabled="disabled"
           />
@@ -36,11 +36,11 @@
       <div v-if="isEmpty(selectBtn)" class="show-btn">
         <div class="resource-image-btn" @click="handleClickBtn('resource')">
           <Icon icon="ant-design:picture-outlined" :size="24" />
-          <div> 从图形库选择 </div>
+          <div> {{ t('tb.images.input.chooseFromLibrary') }} </div>
         </div>
         <div class="resource-image-btn" @click="handleClickBtn('link')">
           <Icon icon="ant-design:link-outlined" :size="24" />
-          <div>设置链接</div>
+          <div>{{ t('tb.images.input.setLink') }}</div>
         </div>
       </div>
     </div>
@@ -72,17 +72,18 @@
   const selectBtn = ref('');
   const imageResource = ref<ResourceInfo>({} as ResourceInfo);
 
-  const { t } = useI18n();
+  const { t } = useI18n('tb');
   const { prefixCls } = useDesign('image-url-Input');
 
   const [registerModal, { openModal: openModal }] = useModal();
 
   watchEffect(async () => {
-    const tmp = props.value?.replace(tbImagePrefix, '') || '';
+    const origin = (props.value as string | undefined) || '';
+    const tmp: string = origin.replace(tbImagePrefix, '');
     currentVale.value = tmp;
-    if (isEmpty(tmp)) {
+    if (isEmpty(tmp as string)) {
       selectBtn.value = '';
-    } else if (tmp.startsWith('http')) {
+    } else if ((tmp as string).startsWith('http')) {
       selectBtn.value = 'link';
     } else {
       selectBtn.value = 'resource';

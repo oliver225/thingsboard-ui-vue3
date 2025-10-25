@@ -1,15 +1,19 @@
 <template>
   <Form ref="formRef" :model="formState" layout="vertical">
     <div class="border border-neutral-400 p-2 rounded">
-      <p class="text-base font-bold">关系搜索参数</p>
+      <p class="text-base font-bold">{{ t('tb.ruleChain.nodeAction.relationSearchParameters') }}</p>
       <div class="p-2">
-        <Form.Item label="方向" name="direction">
+        <Form.Item :label="t('tb.ruleChain.nodeAction.direction')" name="direction">
           <Select v-model:value="formState.direction">
-            <Select.Option value="FROM">从 发起者</Select.Option>
-            <Select.Option value="TO">到 发起者</Select.Option>
+            <Select.Option value="FROM">{{ t('tb.ruleChain.nodeAction.fromOriginator') }}</Select.Option>
+            <Select.Option value="TO">{{ t('tb.ruleChain.nodeAction.toOriginator') }}</Select.Option>
           </Select>
         </Form.Item>
-        <Form.Item label="关联类型" name="relationType" :rules="[{ required: true, message: '请选择关联类型!' }]">
+        <Form.Item
+          :label="t('tb.ruleChain.nodeAction.relationType')"
+          name="relationType"
+          :rules="[{ required: true, message: t('tb.ruleChain.nodeAction.relationTypeRequired') }]"
+        >
           <Select
             v-model:value="formState.relationType"
             :options="relationTypeOptions.map((item) => ({ value: item }))"
@@ -18,28 +22,34 @@
               <v-nodes :vnodes="menu" />
               <Divider style="margin: 4px 0" />
               <Space style="padding: 4px 8px">
-                <Input ref="inputRef" v-model:value="addName" placeholder="请输入关联关系" />
+                <Input
+                  ref="inputRef"
+                  v-model:value="addName"
+                  :placeholder="t('tb.ruleChain.nodeAction.enterRelationType')"
+                />
                 <Button type="text" @click="addRelationType">
                   <template #icon>
                     <plus-outlined />
                   </template>
-                  添加关联关系
+                  {{ t('tb.ruleChain.nodeAction.addRelationType') }}
                 </Button>
               </Space>
             </template>
           </Select>
         </Form.Item>
         <Form.Item name="checkAllKeys">
-          <Checkbox v-model:checked="formState.checkForSingleEntity"> 检查与特定实体的关系 </Checkbox>
+          <Checkbox v-model:checked="formState.checkForSingleEntity">
+            {{ t('tb.ruleChain.nodeAction.checkRelationToSpecificEntity') }}
+          </Checkbox>
         </Form.Item>
         <Row :gutter="20" v-if="formState.checkForSingleEntity == true">
           <Col :span="12">
-            <Form.Item label="实体类型" name="entityType">
+            <Form.Item :label="t('tb.ruleChain.nodeAction.entityType')" name="entityType">
               <Select
                 v-model:value="formState.entityType"
                 :options="entityTypeOptions"
                 @change="handleEntityTypeChange"
-              ></Select>
+              />
             </Form.Item>
           </Col>
           <Col :span="12" v-if="formState.entityType">
@@ -47,7 +57,7 @@
               :label="ENTITY_TYPE_OPTIONS.find((type) => type.value == formState.entityType)?.label"
               name="entityId"
             >
-              <Select v-model:value="formState.entityId" :options="entityIdOptions"></Select>
+              <Select v-model:value="formState.entityId" :options="entityIdOptions" />
             </Form.Item>
           </Col>
         </Row>
@@ -66,7 +76,8 @@
   import { Form, Select, Checkbox, Divider, Space, Input, Row, Col, Button } from 'ant-design-vue';
   import { FormInstance } from 'ant-design-vue/lib/form';
   import { useUserStore } from '/@/store/modules/user';
-  import { ENTITY_TYPE_OPTIONS } from '/@/enums/entityTypeEnum';
+  import { useI18n } from '/@/hooks/web/useI18n';
+  import { ENTITY_TYPE_OPTIONS, EntityType } from '/@/enums/entityTypeEnum';
   import { tenantById } from '/@/api/tb/tenant';
   import { customerList } from '/@/api/tb/customer';
   import { userList } from '/@/api/tb/user';
@@ -94,6 +105,8 @@
       return this.vnodes;
     },
   });
+
+  const { t } = useI18n('tb');
 
   const props = defineProps({
     configuration: {

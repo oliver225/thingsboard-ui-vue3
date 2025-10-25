@@ -1,30 +1,24 @@
-<!--
- * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
- * No deletion without permission, or be held responsible to law.
- * @description 支持字典类型
- * @author ThinkGem
--->
 <template>
-  <RadioGroup v-bind="attrs" v-model:value="state">
+  <RadioGroup v-bind="attrs" v-model:value="state" button-style="solid">
     <template v-for="item in getOptions" :key="`${item.value}`">
-      <Radio :value="item.value" :disabled="item.disabled">
+      <RadioButton :value="item.value" :disabled="item.disabled">
         {{ item.label }}
-      </Radio>
+      </RadioButton>
     </template>
   </RadioGroup>
 </template>
-<script lang="ts" setup name="JeeSiteRadioGroup">
+<script lang="ts" setup name="TbV3RadioButtonGroup">
   import { PropType, computed, ref, unref, watch } from 'vue';
   import { Radio } from 'ant-design-vue';
-  import { isEmpty, isString } from '/@/utils/is';
-  import { propTypes } from '/@/utils/propTypes';
-  import { useRuleFormItem } from '/@/hooks/component/useFormItem';
+  import { isString } from '/@/utils/is';
   import { useAttrs } from '/@/hooks/core/useAttrs';
+  import { useRuleFormItem } from '/@/hooks/component/useFormItem';
 
   type OptionsItem = { label: string; value: string | number | boolean; disabled?: boolean };
   type RadioItem = string | OptionsItem;
 
   const RadioGroup = Radio.Group;
+  const RadioButton = Radio.Button;
 
   const props = defineProps({
     value: {
@@ -57,15 +51,3 @@
     return options.map((item) => ({ label: item, value: item })) as OptionsItem[];
   });
 </script>
-<style lang="less">
-  .ant-radio-wrapper {
-    margin-right: 0;
-    margin-left: 4px;
-  }
-
-  .ant-radio-checked {
-    .ant-radio-inner {
-      opacity: 0.9;
-    }
-  }
-</style>

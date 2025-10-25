@@ -7,24 +7,24 @@
         <Steps.Step v-for="(step, index) in stepItems" :key="index" :title="getDeliveryMethodLabel(step.title)" />
       </Steps>
     </template>
-    <BasicForm @register="registerForm" v-show="stepItems.at(currentStep)?.title == '基础'">
+    <BasicForm @register="registerForm" v-show="currentStep == 0">
       <template #deliveryMethods>
         <div class="grid grid-cols-2 gap-2 w-full">
           <div class="border border-solid border-neutral-300 rounded-md py-3 px-4">
             <Switch v-model:checked="deliveryMethodEnable.WEB" size="small" />
-            <span class="ml-4">Web</span>
+            <span class="ml-4">{{ t('tb.notification.template.method.web') }}</span>
           </div>
           <div class="border border-solid border-neutral-300 rounded-md py-3 px-4">
             <Switch v-model:checked="deliveryMethodEnable.EMAIL" size="small" />
-            <span class="ml-4">Email</span>
+            <span class="ml-4">{{ t('tb.notification.template.method.email') }}</span>
           </div>
           <div class="border border-solid border-neutral-300 rounded-md py-3 px-4">
             <Switch v-model:checked="deliveryMethodEnable.SMS" size="small" />
-            <span class="ml-4">短信</span>
+            <span class="ml-4">{{ t('tb.notification.template.method.sms') }}</span>
           </div>
           <div class="border border-solid border-neutral-300 rounded-md py-3 px-4">
             <Switch v-model:checked="deliveryMethodEnable.SLACK" size="small" :disabled="true" />
-            <span class="ml-4">Slack</span>
+            <span class="ml-4">{{ t('tb.notification.template.method.slack') }}</span>
           </div>
         </div>
       </template>
@@ -51,11 +51,13 @@
     />
     <template #footer>
       <a-button v-if="currentStep > 0" @click="prev" style="float: left">
-        <Icon icon="ant-design:left-outlined" />上一步
+        <Icon icon="ant-design:left-outlined" />{{ t('tb.notification.common.prev') }}
       </a-button>
-      <a-button @click="close"> <Icon icon="ant-design:close-outlined" />取消 </a-button>
+      <a-button @click="close">
+        <Icon icon="ant-design:close-outlined" />{{ t('tb.notification.common.cancel') }}
+      </a-button>
       <a-button :loading="confirmLoading" v-if="currentStep < stepItems.length - 1" type="primary" @click="next">
-        <Icon icon="ant-design:right-outlined" />下一步
+        <Icon icon="ant-design:right-outlined" />{{ t('tb.notification.common.next') }}
       </a-button>
       <a-button
         :loading="confirmLoading"
@@ -63,7 +65,7 @@
         type="primary"
         @click="handleSubmit"
       >
-        <Icon icon="ant-design:check-outlined" />确定
+        <Icon icon="ant-design:check-outlined" />{{ t('tb.notification.common.ok') }}
       </a-button>
     </template>
   </BasicModal>
@@ -102,7 +104,9 @@
   const record = ref<NotificationTemplate>({} as NotificationTemplate);
   const getTitle = computed(() => ({
     icon: meta.icon || 'ant-design:book-outlined',
-    value: record.value.id?.id ? t('编辑通知模版') : t('新增通知模版'),
+    value: record.value.id?.id
+      ? t('tb.notification.template.action.edit')
+      : t('tb.notification.template.action.add'),
   }));
 
   const tenantId = userStore.getUserInfo?.tenantId || { EntityType: 'TENANT', id: '' };
@@ -125,7 +129,7 @@
       .map((method) => {
         return { title: method };
       });
-    items.unshift({ title: '基础' });
+  items.unshift({ title: t('tb.notification.template.form.stepBasic') });
     if (items.length - 1 < currentStep.value) {
       currentStep.value = items.length - 1;
     }
@@ -139,19 +143,24 @@
           item.value == NotificationType.GENERAL ||
           item.value == NotificationType.ENTITIES_LIMIT ||
           item.value == NotificationType.API_USAGE_LIMIT ||
-          item.value == NotificationType.NEW_PLATFORM_VERSION,
+          item.value == NotificationType.NEW_PLATFORM_VERSION ||
+          item.value == NotificationType.RATE_LIMITS ||
+          item.value == NotificationType.TASK_PROCESSING_FAILURE ||
+          item.value == NotificationType.RESOURCES_SHORTAGE,
       );
     } else {
       return NOTIFICATION_TYPE_OPTIONS.filter(
         (item) =>
           item.value == NotificationType.GENERAL ||
           item.value == NotificationType.ALARM ||
-          item.value == NotificationType.ALARM_ASSIGNMENT ||
-          item.value == NotificationType.ALARM_COMMENT ||
           item.value == NotificationType.DEVICE_ACTIVITY ||
           item.value == NotificationType.ENTITY_ACTION ||
+          item.value == NotificationType.ALARM_ASSIGNMENT ||
+          item.value == NotificationType.ALARM_COMMENT ||
           item.value == NotificationType.RULE_NODE ||
-          item.value == NotificationType.RULE_ENGINE_COMPONENT_LIFECYCLE_EVENT,
+          item.value == NotificationType.RULE_ENGINE_COMPONENT_LIFECYCLE_EVENT ||
+          item.value == NotificationType.EDGE_CONNECTION ||
+          item.value == NotificationType.EDGE_COMMUNICATION_FAILURE,
       );
     }
   });
@@ -159,7 +168,7 @@
   const inputFormSchemas: FormSchema[] = [
     { field: 'tenantId', component: 'Input', defaultValue: tenantId, show: false },
     {
-      label: t('模板名称'),
+  label: t('tb.notification.template.form.name'),
       field: 'name',
       component: 'Input',
       componentProps: {
@@ -169,7 +178,7 @@
       colProps: { lg: 24, md: 24 },
     },
     {
-      label: t('通知类型'),
+  label: t('tb.notification.template.form.notificationType'),
       field: 'notificationType',
       component: 'Select',
       defaultValue: NotificationType.GENERAL,
@@ -181,8 +190,8 @@
       colProps: { lg: 24, md: 24 },
     },
     {
-      label: t('接收方式'),
-      subLabel: '至少选择一种',
+  label: t('tb.notification.template.form.deliveryMethods'),
+  subLabel: t('tb.notification.template.form.atLeastOne'),
       field: 'deliveryMethods',
       component: 'Input',
       slot: 'deliveryMethods',
@@ -197,7 +206,7 @@
               ) {
                 return resolve();
               }
-              reject(t('至少选择一种接收方式'));
+              reject(t('tb.notification.template.form.selectOneDeliveryMethod'));
             });
           },
           trigger: ['change', 'blur'],
@@ -284,7 +293,11 @@
 
       // console.log('submit', params, data, record);
       const res = await saveNotificationTemplate({ ...data, id: record.value.id });
-      showMessage(`${record.value.id?.id ? '编辑' : '新增'}通知模版成功！`);
+      showMessage(
+        record.value.id?.id
+          ? t('tb.notification.template.form.saveSuccessEdit')
+          : t('tb.notification.template.form.saveSuccessAdd'),
+      );
       setTimeout(closeModal);
       emit('success', data);
     } catch (error: any) {
@@ -333,13 +346,13 @@
 
   function getDeliveryMethodLabel(deliveryMethod: string) {
     if ('WEB' == deliveryMethod) {
-      return 'Web';
+      return t('tb.notification.template.method.web');
     } else if ('EMAIL' == deliveryMethod) {
-      return 'Email';
+      return t('tb.notification.template.method.email');
     } else if ('SMS' == deliveryMethod) {
-      return '短信';
+      return t('tb.notification.template.method.sms');
     } else if ('SLACK' == deliveryMethod) {
-      return 'Slack';
+      return t('tb.notification.template.method.slack');
     } else {
       return deliveryMethod;
     }

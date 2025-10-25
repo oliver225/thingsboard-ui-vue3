@@ -1,8 +1,4 @@
-<!--
- * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
- * No deletion without permission, or be held responsible to law.
- * @author Vben、ThinkGem
--->
+
 <template>
   <div :class="getClass" ref="wrapperRef">
     <PageHeader ref="headerRef" v-if="getShowHeader" v-bind="omit($attrs, 'class')" :ghost="ghost" :title="title">
@@ -237,7 +233,7 @@
     };
   });
 
-  // 自适应侧边栏高度 by think gem
+  // 自适应侧边栏高度
   function calcSidebarContentHeight() {
     if (props.contentFullHeight && contentHeight.value) {
       const height = contentHeight.value - 14;
@@ -247,7 +243,7 @@
     let height = 0;
     const el = unref(contentRef) as any;
     if (!el || el.clientHeight <= 0) return;
-    const table = el.querySelector('.jeesite-basic-table');
+    const table = el.querySelector('.tbv3-basic-table');
     if (table) {
       height = table.clientHeight;
     }
@@ -323,7 +319,7 @@
   }
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-page-wrapper';
+  @prefix-cls: ~'tbv3-page-wrapper';
 
   .@{prefix-cls} {
     position: relative;
@@ -397,7 +393,7 @@
           overflow: hidden;
           border-radius: 4px;
 
-          .jeesite-basic-tree-header {
+          .tbv3-basic-tree-header {
             padding: 10px 6px;
             min-height: 44px;
           }

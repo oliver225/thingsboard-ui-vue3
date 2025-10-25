@@ -1,6 +1,6 @@
 import { AlarmSeverity, AlarmStatus } from '/@/enums/alarmEnum';
 import { EntityType } from '/@/enums/entityTypeEnum';
-import { RelationTypeGroup } from '/@/enums/relationEnum';
+import { EntitySearchDirection, RelationTypeGroup } from '/@/enums/relationEnum';
 
 export interface Page<T> {
   data: Array<T>;
@@ -101,10 +101,16 @@ export interface AuditLogQueryParam extends Recordable {
 export interface RelationsSearchParameters {
   rootId?: string;
   rootType?: EntityType;
-  direction?: 'FROM' | 'TO';
+  direction?: EntitySearchDirection;
   relationTypeGroup?: RelationTypeGroup;
   maxLevel?: number;
   fetchLastLevelOnly?: boolean;
+}
+
+export interface RelationEntityTypeFilter {
+  relationType?: string;
+  entityTypes?: Array<EntityType>;
+  negate?: boolean;
 }
 
 export interface EntitySubtype {

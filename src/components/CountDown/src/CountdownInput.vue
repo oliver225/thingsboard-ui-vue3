@@ -36,7 +36,7 @@
   const [state] = useRuleFormItem(props);
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-countdown-input';
+  @prefix-cls: ~'tbv3-countdown-input';
 
   .@{prefix-cls} {
     .ant-input-group-addon {

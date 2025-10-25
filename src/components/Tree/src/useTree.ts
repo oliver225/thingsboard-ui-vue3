@@ -1,9 +1,3 @@
-/**
- * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
- * No deletion without permission, or be held responsible to law.
- * @description 树结构数据操作工具
- * @author Vben、ThinkGem
- */
 import type { InsertNodeParams, Keys, FieldNames } from './typing';
 import type { Ref, ComputedRef } from 'vue';
 import type { TreeDataItem } from 'ant-design-vue/es/tree';

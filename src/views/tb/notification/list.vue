@@ -3,13 +3,13 @@
     <BasicTable @register="registerTable">
       <template #headerTop>
         <div class="text-lg font-bold my-2">
-          {{ t('通知列表') }}
+          {{ t('tb.notification.title') }}
         </div>
       </template>
       <template #toolbar>
         <Tooltip placement="top">
           <template #title>
-            <span>{{ t('设置全部已读') }}</span>
+            <span>{{ t('tb.notification.action.markAllRead') }}</span>
           </template>
           <Icon
             icon="ant-design:check-circle-outlined"
@@ -25,13 +25,13 @@
             v-model:value="unreadOnly"
             @change="reload()"
             :options="[
-              { label: '未读', value: 'true' },
-              { label: '所有', value: 'false' },
+              { label: t('tb.notification.filter.unread'), value: 'true' },
+              { label: t('tb.notification.filter.all'), value: 'false' },
             ]"
           />
           <a-input
             v-model:value="searchParam.textSearch"
-            placeholder="输入搜索内容"
+            :placeholder="t('common.search.searchText')"
             allow-clear
             @change="reload()"
             style="width: 240px"
@@ -45,7 +45,7 @@
 
       <template #firstColumn="{ record }">
         <a @click="handleDetail({ ...record })" :title="record.subject">
-          <span v-html="record.subject" />
+          <span v-html="record.subject"> </span>
         </a>
       </template>
     </BasicTable>
@@ -83,7 +83,7 @@
   const { createConfirm, showMessage } = useMessage();
 
   const getTitle = {
-    value: router.currentRoute.value.meta.title || '通知列表',
+    value: router.currentRoute.value.meta.title || t('tb.notification.title'),
   };
 
   const unreadOnly = ref('true');
@@ -93,7 +93,7 @@
   });
   const tableColumns: BasicColumn[] = [
     {
-      title: '类型',
+      title: t('tb.notification.table.type'),
       key: 'type',
       dataIndex: 'type',
       fixed: 'left',
@@ -103,7 +103,7 @@
       format: (text) => NOTIFICATION_TYPE_OPTIONS.find((item) => item.value == text)?.label || text,
     },
     {
-      title: t('主题'),
+      title: t('tb.notification.table.subject'),
       dataIndex: 'subject',
       key: 'subject',
       width: 300,
@@ -113,14 +113,14 @@
       ellipsis: true,
     },
     {
-      title: '消息',
+      title: t('tb.notification.table.text'),
       dataIndex: 'text',
       key: 'text',
       align: 'left',
       ellipsis: true,
     },
     {
-      title: t('创建时间'),
+      title: t('tb.notification.table.createdTime'),
       dataIndex: 'createdTime',
       key: 'createdTime',
       format: 'date|YYYY-MM-DD HH:mm:ss',
@@ -135,7 +135,7 @@
     actions: (record: Recordable) => [
       {
         icon: 'ant-design:check-outlined',
-        title: t('设置为已读'),
+        title: t('tb.notification.action.markRead'),
         color: 'success',
         onClick: handleMarkAsRead.bind(this, { ...record }),
         ifShow: record.status == NotificationStatus.SENT,
@@ -143,7 +143,7 @@
       {
         icon: 'ant-design:delete-outlined',
         color: 'error',
-        title: t('删除通知'),
+        title: t('tb.notification.action.deleteNotification'),
         onClick: handleDelete.bind(this, { ...record }),
       },
     ],
@@ -168,10 +168,10 @@
   async function handleDelete(record: Recordable) {
     createConfirm({
       iconType: 'error',
-      title: () => h('span', { innerHTML: `确定删除通知[${record.subject}]吗？` }),
-      content: '请注意：确认后，通知相关数据将不可恢复。',
+      title: () => h('span', { innerHTML: t('tb.notification.action.deleteConfirm', { name: record.subject }) }),
+      content: t('tb.notification.action.deleteConfirmContent'),
       centered: false,
-      okText: '删除',
+      okText: t('tb.notification.action.delete'),
       okButtonProps: {
         type: 'primary',
         danger: true,
@@ -179,7 +179,7 @@
       onOk: async () => {
         try {
           await deleteNotification(record.id.id);
-          showMessage('删除通知成功！');
+          showMessage(t('tb.notification.action.deleteSuccess'));
         } catch (error: any) {
           console.log(error);
         } finally {
@@ -192,9 +192,9 @@
   async function handleMarkAsRead(record: Recordable) {
     try {
       const res = await markNotificationAsRead(record.id.id);
-      showMessage('设置为已读成功！', 'success');
+      showMessage(t('tb.notification.action.markReadSuccess'), 'success');
     } catch (error: any) {
-      showMessage(`设置失败:${error.message}`, 'error');
+      showMessage(t('tb.notification.action.setFailPrefix') + error.message, 'error');
       console.log(error);
     } finally {
       handleSuccess();
@@ -204,9 +204,9 @@
   async function handleMarkAllAsRead() {
     try {
       const res = await markAllNotificationAsRead();
-      showMessage('设置所有为已读成功！', 'success');
+      showMessage(t('tb.notification.action.markAllReadSuccess'), 'success');
     } catch (error: any) {
-      showMessage(`设置失败:${error.message}`, 'error');
+      showMessage(t('tb.notification.action.setFailPrefix') + error.message, 'error');
       console.log(error);
     } finally {
       handleSuccess();

@@ -3,17 +3,20 @@
     <BasicForm @register="registerForm">
       <template #created="{ model, field }">
         <div class="flex items-center">
-          <Switch size="small" v-model:checked="model[field]" /> <span class="ml-2">创建后</span>
+          <Switch size="small" v-model:checked="model[field]" />
+          <span class="ml-2">{{ t('tb.notification.ruleTrigger.entityAction.afterCreate') }}</span>
         </div>
       </template>
       <template #updated="{ model, field }">
         <div class="flex items-center">
-          <Switch size="small" v-model:checked="model[field]" /> <span class="ml-2">更新后</span>
+          <Switch size="small" v-model:checked="model[field]" />
+          <span class="ml-2">{{ t('tb.notification.ruleTrigger.entityAction.afterUpdate') }}</span>
         </div>
       </template>
       <template #deleted="{ model, field }">
         <div class="flex items-center">
-          <Switch size="small" v-model:checked="model[field]" /> <span class="ml-2">删除后</span>
+          <Switch size="small" v-model:checked="model[field]" />
+          <span class="ml-2">{{ t('tb.notification.ruleTrigger.entityAction.afterDelete') }}</span>
         </div>
       </template>
     </BasicForm>
@@ -62,7 +65,7 @@
       show: false,
     },
     {
-      label: t('实体类型'),
+      label: t('tb.notification.ruleTrigger.entityAction.entityTypes'),
       field: 'triggerConfig.entityTypes',
       component: 'Select',
       componentProps: {
@@ -74,7 +77,7 @@
     },
 
     {
-      label: t('状态'),
+      label: t('tb.notification.ruleTrigger.entityAction.status'),
       labelWidth: 120,
       field: 'triggerConfig.created',
       component: 'Switch',
@@ -100,7 +103,7 @@
       colProps: { lg: 8, md: 8 },
     },
     {
-      label: t('描述信息'),
+      label: t('tb.notification.ruleTrigger.description'),
       field: 'additionalConfig.description',
       component: 'InputTextArea',
       componentProps: {
@@ -132,6 +135,5 @@
   defineExpose({ getFieldsValue, validate: validateTrigger, resetFields, setFieldsValue: setTriggerFieldsValue });
 </script>
 <style lang="less">
-  .trigger-config-entity-action {
-  }
+  /* removed empty rule .trigger-config-entity-action */
 </style>

@@ -76,7 +76,7 @@
   });
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-strength-meter';
+  @prefix-cls: ~'tbv3-strength-meter';
 
   .@{prefix-cls} {
     &-bar {

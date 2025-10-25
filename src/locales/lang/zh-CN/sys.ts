@@ -71,10 +71,11 @@ export default {
     loginSubtitle: '请输入账户信息开始登录',
     qrcodeSubtitle: '使用手机扫描二维码登录',
     forgetPasswordSubtitle: '请输入您的电子邮件,我们将向您发送重置密码的连接',
-    signUpSubtitle: '',
+    signUpSubtitle: '创建账号，立即开始使用',
     alreadyHaveAccount: '已经有账户了?',
 
     techSupport: '技术支持',
+    thirdPartyLogin: '第三方登录',
 
     createPassword: '创建密码',
     backSignIn: '返回',
@@ -121,6 +122,20 @@ export default {
     email: '邮箱',
     smsCode: '短信验证码',
     emailCode: '邮箱验证码',
+    // create password page additions
+    createPasswordSubtitle: '创建密码 激活账户',
+    pageErrorTitle: '页面错误',
+    activateLinkError: '当前激活链接错误，请重新获取！',
+    createPasswordSuccess: '创建密码成功！',
+    createPasswordSuccessDesc: '创建密码成功，开始使用吧',
+    passwordResetLinkSent: '密码重置链接已成功发送！',
+    passwordRetrieveByEmail: '使用电子邮箱找回您的密码',
+    passwordRetrieveByMobile: '使用手机号码找回您的密码',
+    emailFormatError: '请输入正确的邮箱地址',
+    passwordStrength: '密码强度',
+    // sms code send related
+    sendCode: '获取验证码',
+    sendText: '{0}s 后可重新发送',
   },
   account: {
     center: '个人中心',
@@ -132,6 +147,7 @@ export default {
 
     basicTab: '基础设置',
     securityTab: '安全设置',
+    notificationTab: '通知设置',
     bindingTab: '账号绑定',
 
     userName: '用户昵称',
@@ -148,5 +164,41 @@ export default {
     newPasswordInputTip: '请输入新密码',
     newPasswordNotBlank: '密码不能为空',
     newPasswordNotEquals: '两次输入的密码不一致!',
+
+    // user info page additions
+    lastLogin: '最后登录：',
+    emailRequired: '邮箱地址必须输入',
+    emailFormatError: '请填写正确的邮箱地址',
+    firstName: '用户姓名',
+    position: '用户职务',
+    phoneRequired: '手机号码必须输入',
+    phoneFormatError: '请填写正确的手机号码',
+    description: '描述信息',
+    updateUserInfoSuccess: '更新用户信息成功',
+
+    // password modify page additions
+    jwtToken: 'JWT 令牌',
+    jwtTokenExpirePrefix: '令牌有效期至',
+    copyJwtToken: '复制JWT令牌',
+    copyJwtTokenSuccess: '复制JWT令牌成功！',
+    changePassword: '更改密码',
+    abandonUpdate: '放弃更新',
+    passwordRequirements: '密码要求',
+    policyMinLength: '最少 {count} 位字符',
+    policyMaxLength: '最多 {count} 位字符',
+    policyMinDigits: '最少 {count} 位数字',
+    policyMinUppercase: '最少 {count} 位大写字母',
+    policyMinLowercase: '最少 {count} 位小写字母',
+    policyMinSpecial: '最少 {count} 位特殊字符',
+    policyNoWhitespace: '不允许包含空格',
+    changePasswordSuccess: '更改密码成功！',
+    newPasswordSameAsCurrent: '新密码不能和当前密码相同',
+    policyErrorMinLength: '密码最少 {count} 位字符',
+    policyErrorMaxLength: '密码最多 {count} 位字符',
+    policyErrorMinDigits: '密码最少包含 {count} 位数字',
+    policyErrorMinUppercase: '密码最少包含 {count} 位大写字母',
+    policyErrorMinLowercase: '密码最少包含 {count} 位小写字母',
+    policyErrorMinSpecial: '密码最少包含 {count} 位特殊字符',
+    policyErrorWhitespace: '密码不能包含空格',
   },
 };

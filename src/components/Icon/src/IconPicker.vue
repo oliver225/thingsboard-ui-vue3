@@ -1,8 +1,3 @@
-<!--
- * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
- * No deletion without permission, or be held responsible to law.
- * @author ThinkGem
--->
 <template>
   <a-input
     disabled
@@ -144,7 +139,7 @@
   }
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-icon-picker';
+  @prefix-cls: ~'tbv3-icon-picker';
 
   .@{prefix-cls} {
     .ant-input-group-addon {

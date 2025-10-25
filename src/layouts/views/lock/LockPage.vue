@@ -120,7 +120,7 @@
   }
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-lock-page';
+  @prefix-cls: ~'tbv3-lock-page';
 
   .@{prefix-cls} {
     z-index: @lock-page-z-index;

@@ -1,53 +1,63 @@
+import { useI18n } from '/@/hooks/web/useI18n';
+
 export interface DetailTabItem {
   key: string;
   label: string;
   icon: string;
 }
 
-export const DetailTabItemEnum = {
-  DETAIL: {
-    key: 'DETAIL',
-    label: '详情',
-    icon: 'ant-design:appstore-outlined',
-  },
-  TELEMETRY: {
-    key: 'TELEMETRY',
-    label: '数据',
-    icon: 'ant-design:line-chart-outlined',
-  },
-  TGINGMODEL: {
-    key: 'TGINGMODEL',
-    label: '物模型',
-    icon: 'ant-design:project-outlined',
-  },
-  TOPIC: {
-    key: 'TOPIC',
-    label: '连接API',
-    icon: 'ant-design:api-outlined',
-  },
-  CALCULATED: {
-    key: 'CALCULATED',
-    label: '计算属性',
-    icon: 'ant-design:calculator-outlined',
-  },
-  ALARM: {
-    key: 'ALARM',
-    label: '告警',
-    icon: 'ant-design:alert-outlined',
-  },
-  EVENT: {
-    key: 'EVENT',
-    label: '事件',
-    icon: 'ant-design:info-circle-outlined',
-  },
-  RELATION: {
-    key: 'RELATION',
-    label: '关联',
-    icon: 'ant-design:radar-chart-outlined',
-  },
-  AUDIT_LOG: {
-    key: 'AUDIT_LOG',
-    label: '审计日志',
-    icon: 'ant-design:bars-outlined',
-  },
-} as const satisfies Record<string, DetailTabItem>;
+// 使用函数而不是常量，避免在 i18n 尚未初始化时访问 t
+export function getDetailTabItemEnum() {
+  const { t } = useI18n('tb');
+  const enumObj = {
+    DETAIL: {
+      key: 'DETAIL',
+      label: t('tb.detailTab.detail'),
+      icon: 'ant-design:appstore-outlined',
+    },
+    TELEMETRY: {
+      key: 'TELEMETRY',
+      label: t('tb.detailTab.telemetry'),
+      icon: 'ant-design:line-chart-outlined',
+    },
+    TOPIC: {
+      key: 'TOPIC',
+      label: t('tb.detailTab.topic'),
+      icon: 'ant-design:api-outlined',
+    },
+    RPC: {
+      key: 'RPC',
+      label: t('tb.detailTab.rpc'),
+      icon: 'ant-design:to-top-outlined',
+    },
+    CALCULATED: {
+      key: 'CALCULATED',
+      label: t('tb.detailTab.calculated'),
+      icon: 'ant-design:calculator-outlined',
+    },
+    ALARM: {
+      key: 'ALARM',
+      label: t('tb.detailTab.alarm'),
+      icon: 'ant-design:alert-outlined',
+    },
+    EVENT: {
+      key: 'EVENT',
+      label: t('tb.detailTab.event'),
+      icon: 'ant-design:info-circle-outlined',
+    },
+    RELATION: {
+      key: 'RELATION',
+      label: t('tb.detailTab.relation'),
+      icon: 'ant-design:radar-chart-outlined',
+    },
+    AUDIT_LOG: {
+      key: 'AUDIT_LOG',
+      label: t('tb.detailTab.auditLog'),
+      icon: 'ant-design:bars-outlined',
+    },
+  } as const satisfies Record<string, DetailTabItem>;
+  return enumObj;
+}
+
+// 兼容旧引用（如果外部代码仍引用 DetailTabItemEnum）
+export const DetailTabItemEnum = getDetailTabItemEnum();

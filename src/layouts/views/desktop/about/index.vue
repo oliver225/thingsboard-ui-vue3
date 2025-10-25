@@ -3,7 +3,7 @@
     <template #headerContent>
       <div class="flex items-center justify-between">
         <span class="flex-1">
-          <a href="https://jeesite.com" target="_blank">JeeSite</a>
+          <a href="https://tbv3.com" target="_blank">TbV3</a>
           快速开发平台，不仅仅是一个后台开发框架，它是一个企业级快速开发解决方案，有平台来封装技术细节，
           让开发者更专注业务，降低软件的开发难度。平台基于经典组合 Spring Boot、Apache MyBatis，
           前端采用：Vue3、Vite、Monorepo、Ant-Design-Vue、TypeScript、
@@ -51,32 +51,32 @@
     {
       label: '文档地址',
       field: 'docs',
-      render: commonLinkRender('http://docs.jeesite.com'),
+      render: commonLinkRender('https://gitee.com/oliver225'),
     },
     {
       label: '官方网站',
       field: 'website',
-      render: commonLinkRender('https://jeesite.com'),
+      render: commonLinkRender('https://tbv3.com'),
     },
     {
       label: '下载地址',
       field: 'download',
-      render: commonLinkRender('https://gitee.com/thinkgem'),
+      render: commonLinkRender('https://gitee.com/oliver225'),
     },
     {
       label: '联系我',
       field: 'linkers',
-      render: commonLinkRender('http://s.jeesite.com'),
+      render: commonLinkRender('https://gitee.com/oliver225'),
     },
   ];
 
   const infoData = {
     version,
     lastBuildTime,
-    docs: 'http://docs.jeesite.com',
-    website: 'https://jeesite.com',
-    download: 'https://gitee.com/thinkgem',
-    linkers: 'http://s.jeesite.com',
+    docs: 'http://docs.tbv3.com',
+    website: 'https://tbv3.com',
+    download: 'https://gitee.com/oliver225',
+    linkers: 'http://s.tbv3.com',
   };
 
   const [infoRegister] = useDescription({

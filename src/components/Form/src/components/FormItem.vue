@@ -1,8 +1,4 @@
-<!--
- * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
- * No deletion without permission, or be held responsible to law.
- * @author Vben、ThinkGem
--->
+
 <script lang="tsx">
   import type { PropType, Ref } from 'vue';
   import type { FormActionType, FormProps } from '../types/form';
@@ -21,7 +17,7 @@
   import { useI18n } from '/@/hooks/web/useI18n';
 
   export default defineComponent({
-    name: 'JeeSiteFormItem',
+    name: 'TbV3FormItem',
     inheritAttrs: false,
     props: {
       schema: {

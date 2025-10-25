@@ -1,6 +1,7 @@
 import { BasicModel, BasicQuery, Page } from '../model/baseModel';
 import { defHttp } from '/@/utils/http/axios';
 import { EntityType } from '/@/enums/entityTypeEnum';
+import { DebugSettings } from '/#/store';
 
 export interface RuleChain extends BasicModel<EntityType.RULE_CHAIN> {
   tenantId?: EntityId<EntityType.TENANT>;
@@ -16,11 +17,14 @@ export interface RuleChain extends BasicModel<EntityType.RULE_CHAIN> {
 
 export interface RuleNode extends BasicModel<EntityType.RULE_NODE> {
   ruleChainId?: EntityId<EntityType.RULE_CHAIN>;
-  name: string;
-  debugMode: boolean;
-  singletonMode: boolean;
   type: string;
+  name: string;
+  // debugMode: boolean;
+  debugSettings?: DebugSettings;
   configuration: Recordable;
+  configurationVersion: number;
+  singletonMode: boolean;
+  queueName: string;
   additionalInfo: Recordable;
 }
 
@@ -103,5 +107,25 @@ export function saveRuleChainMetaData(data: RuleChainMetaData | any, updateRelat
     url: '/api/ruleChain/metadata',
     data,
     params: { updateRelated: updateRelated },
+  });
+}
+
+export function isTbelEnabled() {
+  return defHttp.get<boolean>({
+    url: '/api/ruleChain/tbelEnabled',
+  });
+}
+
+export function getLatestRuleNodeDebugInput(ruleNodeId: string) {
+  return defHttp.get<Recordable>({
+    url: `/api/ruleNode/${ruleNodeId}/debugIn`,
+  });
+}
+
+export function testScript(scriptLang: 'JS' | 'TBEL', inputParams: any) {
+  return defHttp.postJson<Recordable>({
+    url: `/api/ruleChain/testScript`,
+    params: { scriptLang },
+    data: inputParams,
   });
 }

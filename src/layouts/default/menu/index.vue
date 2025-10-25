@@ -178,8 +178,8 @@
   });
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-layout-menu';
-  @logo-prefix-cls: ~'jeesite-app-logo';
+  @prefix-cls: ~'tbv3-layout-menu';
+  @logo-prefix-cls: ~'tbv3-app-logo';
 
   .@{prefix-cls} {
     &-logo {

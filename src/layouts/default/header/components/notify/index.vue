@@ -108,7 +108,7 @@
   });
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-header-notify';
+  @prefix-cls: ~'tbv3-header-notify';
 
   .@{prefix-cls} {
     padding-top: 2px;

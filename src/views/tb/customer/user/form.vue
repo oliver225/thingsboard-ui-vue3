@@ -6,10 +6,10 @@
     </template>
     <BasicForm @register="registerForm">
       <template #defaultDashboardFullscreen="{ model, field }">
-        <Checkbox v-model:checked="model[field]">始终全屏</Checkbox>
+        <Checkbox v-model:checked="model[field]">{{ t('tb.user.form.defaultDashboardFullscreen') }}</Checkbox>
       </template>
       <template #homeDashboardHideToolbar="{ model, field }">
-        <Checkbox v-model:checked="model[field]">隐藏工具栏</Checkbox>
+        <Checkbox v-model:checked="model[field]">{{ t('tb.user.form.homeDashboardHideToolbar') }}</Checkbox>
       </template>
     </BasicForm>
   </BasicModal>
@@ -37,7 +37,7 @@
   const record = ref<UserInfo>({} as UserInfo);
   const getTitle = computed(() => ({
     icon: meta.icon || 'ant-design:book-outlined',
-    value: record.value.id?.id ? t('编辑客户用户') : t('新增客户用户'),
+    value: record.value.id?.id ? t('tb.user.action.edit') : t('tb.user.action.add'),
   }));
 
   const inputFormSchemas: FormSchema[] = [
@@ -45,19 +45,19 @@
     { field: 'tenantId', component: 'Input', show: false },
     { field: 'customerId', component: 'Input', show: false },
     {
-      label: t('邮箱地址'),
+      label: t('tb.user.table.email'),
       field: 'email',
       component: 'Input',
       componentProps: {
         maxlength: 100,
       },
       rules: [
-        { required: true, message: t('邮箱地址必须输入') },
-        { type: 'email', message: t('请填写正确的邮箱地址') },
+        { required: true, message: t('tb.user.form.emailRequired') },
+        { type: 'email', message: t('tb.user.form.emailRule') },
       ],
     },
     {
-      label: t('用户姓名'),
+      label: t('tb.user.form.firstName'),
       field: 'firstName',
       component: 'Input',
       componentProps: {
@@ -66,7 +66,7 @@
       required: true,
     },
     {
-      label: t('用户职务'),
+      label: t('tb.user.form.lastName'),
       field: 'lastName',
       component: 'Input',
       componentProps: {
@@ -74,21 +74,18 @@
       },
     },
     {
-      label: t('手机号码'),
+      label: t('tb.user.form.phone'),
       field: 'phone',
       component: 'Input',
       componentProps: {
         maxlength: 100,
       },
       required: true,
-      rules: [
-        { required: true, message: t('手机号码必须输入') },
-        { pattern: /^1[3-9]\d{9}$/, message: t('请填写正确的手机号码') },
-      ],
+      rules: [{ pattern: /^(1[3-9]\d{9}|09\d{8})$/, message: t('tb.user.form.phoneRule') }],
     },
 
     {
-      label: t('描述信息'),
+      label: t('tb.user.table.description'),
       field: 'additionalInfo.description',
       component: 'InputTextArea',
       componentProps: {
@@ -96,20 +93,20 @@
       },
     },
     {
-      label: t('激活方式'),
+      label: t('tb.user.form.activationMethod'),
       field: 'sendActivationMail',
       component: 'Select',
       defaultValue: 'false',
       componentProps: {
         options: [
-          { label: '显示激活链接', value: 'false' },
-          { label: '发送激活邮件', value: 'true' },
+          { label: t('tb.user.form.activationShowLink'), value: 'false' },
+          { label: t('tb.user.form.activationSendMail'), value: 'true' },
         ],
       },
       ifShow: () => !record.value?.id?.id,
     },
     {
-      label: t('默认仪表盘'),
+      label: t('tb.user.form.defaultDashboard'),
       field: 'additionalInfo.defaultDashboardId',
       component: 'Select',
       componentProps: {
@@ -132,7 +129,7 @@
       ifShow: () => !!record.value?.id?.id,
     },
     {
-      label: t('首页仪表盘'),
+      label: t('tb.user.form.homeDashboard'),
       field: 'additionalInfo.homeDashboardId',
       component: 'Select',
       componentProps: {
@@ -182,19 +179,19 @@
 
       // console.log('submit', params, data, record);
       const res = await saveUser({ ...data, id: record.value.id }, data.sendActivationMail);
-      showMessage(`${record.value.id?.id ? '编辑' : '新增'}客户用户成功！`);
+      showMessage(record.value.id?.id ? t('tb.user.action.editSuccess') : t('tb.user.action.addSuccess'));
       if (!record.value.id?.id && data.sendActivationMail == 'false') {
         const activationLink = await getProxyActivationLink(res.id.id);
         createConfirm({
           iconType: 'success',
           icon: () => h(Icon, { icon: 'ant-design:info-circle-filled', style: { color: 'blue' } }),
-          title: '用户激活链接',
+          title: t('tb.user.action.activationLink'),
           content: h('a', { href: activationLink, target: '_blank' }, `${activationLink}`),
           width: '50%',
-          okText: '确认',
-          cancelText: '复制',
+          okText: t('common.okText'),
+          cancelText: t('common.copyText'),
           maskClosable: false,
-          onCancel: () => copyToClipboard(activationLink, '复制用户激活链接成功！'),
+          onCancel: () => copyToClipboard(activationLink, t('tb.user.action.copyActivationLinkSuccess')),
         });
       }
       setTimeout(closeModal);

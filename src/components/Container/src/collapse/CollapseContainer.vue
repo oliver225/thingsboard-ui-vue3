@@ -92,7 +92,7 @@
   }
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-collapse-container';
+  @prefix-cls: ~'tbv3-collapse-container';
 
   .@{prefix-cls} {
     background-color: @component-background;

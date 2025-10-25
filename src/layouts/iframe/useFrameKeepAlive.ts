@@ -43,7 +43,7 @@ export function useFrameKeepAlive() {
     let res: AppRouteRecordRaw[] = [];
     for (const route of routes) {
       const { meta: { frameSrc } = {}, children } = route;
-      if (frameSrc && !route.name.startsWith('JeeSite')) {
+      if (frameSrc && !route.name.startsWith('TbV3')) {
         res.push(route);
       }
       if (children && children.length) {

@@ -12,13 +12,13 @@
   const { t } = useI18n('tb');
 
   const apiFeaturesOptions = [
-    { value: 'ALARM', label: '报警' },
-    { value: 'DB', label: '遥测持久化' },
-    { value: 'RE', label: '规则引擎' },
-    { value: 'TRANSPORT', label: 'Device API' },
-    { value: 'EMAIL', label: '邮件信息' },
-    { value: 'SMS', label: '短信信息' },
-    { value: 'JS', label: 'JavaScript执行' },
+    { value: 'ALARM', label: t('tb.notification.ruleTrigger.apiUsageLimit.feature.ALARM') },
+    { value: 'DB', label: t('tb.notification.ruleTrigger.apiUsageLimit.feature.DB') },
+    { value: 'RE', label: t('tb.notification.ruleTrigger.apiUsageLimit.feature.RE') },
+    { value: 'TRANSPORT', label: t('tb.notification.ruleTrigger.apiUsageLimit.feature.TRANSPORT') },
+    { value: 'EMAIL', label: t('tb.notification.ruleTrigger.apiUsageLimit.feature.EMAIL') },
+    { value: 'SMS', label: t('tb.notification.ruleTrigger.apiUsageLimit.feature.SMS') },
+    { value: 'JS', label: t('tb.notification.ruleTrigger.apiUsageLimit.feature.JS') },
   ];
 
   const notifyOnOptions = [
@@ -35,8 +35,8 @@
       show: false,
     },
     {
-      label: t('API接口'),
-      subLabel: t('不选择是所有API接口'),
+      label: t('tb.notification.ruleTrigger.apiUsageLimit.apiInterface'),
+      subLabel: t('tb.notification.ruleTrigger.apiUsageLimit.anyApiInterface'),
       field: 'triggerConfig.apiFeatures',
       component: 'Select',
       componentProps: {
@@ -46,7 +46,7 @@
       colProps: { lg: 24, md: 24 },
     },
     {
-      label: t('何时报警'),
+      label: t('tb.notification.ruleTrigger.apiUsageLimit.notifyOn'),
       field: 'triggerConfig.notifyOn',
       component: 'Select',
       defaultValue: ['WARNING'],
@@ -58,7 +58,7 @@
       colProps: { lg: 24, md: 24 },
     },
     {
-      label: t('描述信息'),
+      label: t('tb.notification.ruleTrigger.description'),
       field: 'additionalConfig.description',
       component: 'InputTextArea',
       componentProps: {
@@ -93,6 +93,5 @@
   defineExpose({ getFieldsValue, validate: validateTrigger, resetFields, setFieldsValue: setTriggerFieldsValue });
 </script>
 <style lang="less">
-  .trigger-config-api-usage-limit {
-  }
+  /* removed empty rule .trigger-config-api-usage-limit */
 </style>

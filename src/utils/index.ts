@@ -162,7 +162,7 @@ export function encodeHtml(s: any) {
       });
 }
 
-export function randomSecret(length: number) {
+export function randomSecret(length: number = 20) {
   let str = '';
   let chars = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
   for (let i = 0; i < length; i++) {

@@ -5,7 +5,7 @@
         <Icon :icon="getTitle.icon" :size="24" />
         <div class="flex flex-col">
           <span class="text-base font-semibold">{{ getTitle.value || '· · · ·' }}</span>
-          <span class="text-sm">资产详情</span>
+          <span class="text-sm">{{ t('tb.asset.detail.detail') }}</span>
         </div>
       </div>
     </template>
@@ -26,34 +26,34 @@
           @click="handleAssignToPublic"
           v-if="hasPermission(Authority.TENANT_ADMIN) && !!!record.customerTitle"
         >
-          <Icon :icon="'ant-design:share-alt-outlined'" />设为公开
+          <Icon :icon="'ant-design:share-alt-outlined'" />{{ t('tb.asset.action.setPublic') }}
         </a-button>
         <a-button
           type="primary"
           @click="handleAssignCustomer"
           v-if="hasPermission(Authority.TENANT_ADMIN) && !!!record.customerTitle"
         >
-          <Icon :icon="'ant-design:contacts-outlined'" />分配客户
+          <Icon :icon="'ant-design:contacts-outlined'" />{{ t('tb.asset.action.assignCustomer') }}
         </a-button>
         <a-button
           type="primary"
           @click="handleUnAssignFromCustomer"
           v-if="hasPermission(Authority.TENANT_ADMIN) && !!record.customerTitle"
         >
-          <Icon :icon="'ant-design:rollback-outlined'" />取消分配客户
+          <Icon :icon="'ant-design:rollback-outlined'" />{{ t('tb.asset.action.unAssignCustomer') }}
         </a-button>
 
         <a-button type="primary success" @click="handleEditAsset" v-if="hasPermission(Authority.TENANT_ADMIN)">
-          <Icon :icon="'i-clarity:note-edit-line'" />编辑资产
+          <Icon :icon="'i-clarity:note-edit-line'" />{{ t('tb.asset.action.edit') }}
         </a-button>
         <a-button type="primary" danger @click="handleDeleteAsset" v-if="hasPermission(Authority.TENANT_ADMIN)">
-          <Icon :icon="'ant-design:delete-outlined'" />删除资产
+          <Icon :icon="'ant-design:delete-outlined'" />{{ t('tb.asset.action.deleteAsset') }}
         </a-button>
       </div>
       <div class="space-x-4 my-4">
         <a-button @click="handleCopyAssetId">
           <Icon :icon="'ant-design:copy-filled'" />
-          复制资产ID
+          {{ t('tb.asset.action.copyId') }}
         </a-button>
       </div>
       <Description @register="register" size="default" />
@@ -61,6 +61,12 @@
 
     <Telemetry
       v-if="tabActiveKey == DetailTabItemEnum.TELEMETRY.key"
+      :entityType="EntityType.ASSET"
+      :entityId="record?.id?.id"
+    />
+
+    <CalculatedField
+      v-if="tabActiveKey == DetailTabItemEnum.CALCULATED.key"
       :entityType="EntityType.ASSET"
       :entityId="record?.id?.id"
     />
@@ -108,6 +114,7 @@
   import Alarm from '/@/views/tb/alarm/list.vue';
   import Relation from '/@/views/tb/relation/list.vue';
   import Event from '/@/views/tb/event/index.vue';
+  import CalculatedField from '/@/views/tb/calculatedField/list.vue';
   import { usePermission } from '/@/hooks/web/usePermission';
   import { DetailTabItemEnum } from '/@/enums/detailTabEnum';
   const userStore = useUserStore();
@@ -153,29 +160,28 @@
       ];
   const descSchema: DescItem[] = [
     {
-      label: t('资产名称'),
+      label: t('tb.asset.form.name'),
       field: 'name',
       span: 2,
     },
     {
-      label: t('标签'),
+      label: t('tb.asset.form.label'),
       field: 'label',
       span: 2,
     },
     {
-      label: t('资产配置'),
+      label: t('tb.asset.form.profile'),
       field: 'assetProfileName',
       span: 2,
     },
     {
-      label: t('分配的客户'),
+      label: t('tb.asset.form.assignedCustomer'),
       field: 'customerTitle',
       span: 4,
       show: () => hasPermission(Authority.TENANT_ADMIN),
     },
-
     {
-      label: t('描述信息'),
+      label: t('tb.asset.form.description'),
       field: 'additionalInfo.description',
       span: 4,
     },
@@ -207,7 +213,7 @@
   }
 
   function handleCopyAssetId() {
-    copyToClipboard(record.value.id.id, '复制资产ID成功！');
+    copyToClipboard(record.value.id.id, t('tb.asset.action.copyIdSuccess'));
   }
 
   function handleDeleteAsset() {

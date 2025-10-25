@@ -2,13 +2,17 @@
   <CollapseContainer :title="t('sys.account.basicTab')" :canExpan="false" class="overflow-x-hidden">
     <template #action>
       <span v-if="record.additionalInfo?.lastLoginTs">
-        <span>最后登录：</span>
+        <span>{{ t('sys.account.lastLogin') }}</span>
         {{ dayjs(record.additionalInfo.lastLoginTs).format('YYYY-MM-DD HH:mm:ss') }}
       </span>
     </template>
     <ARow :gutter="24" class="mt-3">
       <ACol :span="14">
-        <BasicForm @register="register" />
+        <BasicForm @register="register">
+          <template #homeDashboardHideToolbar="{ model, field }">
+            <Checkbox v-model:checked="model[field]">{{ t('tb.user.form.homeDashboardHideToolbar') }}</Checkbox>
+          </template>
+        </BasicForm>
       </ACol>
       <ACol :span="10">
         <div class="change-avatar mt-6">
@@ -32,7 +36,7 @@
 </template>
 <script lang="ts" setup>
   import { computed, onMounted, ref } from 'vue';
-  import { Button, Row, Col } from 'ant-design-vue';
+  import { Button, Row, Col, Checkbox } from 'ant-design-vue';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { Icon } from '/@/components/Icon';
@@ -40,14 +44,20 @@
   import { CollapseContainer } from '/@/components/Container';
   import { CropperAvatar } from '/@/components/Cropper';
   import { UserInfo } from '/#/store';
+  import { usePermission } from '/@/hooks/web/usePermission';
   import AvatarImg from '/@/assets/images/avatar.jpg';
   import { useUserStore } from '/@/store/modules/user';
   import { saveUser, userInfoApi } from '/@/api/tb/user';
   import { uploadImage } from '/@/api/tb/images';
   import dayjs from 'dayjs';
-  import { localeSetting } from '/@/settings/localeSetting';
+  import { Authority } from '/@/enums/authorityEnum';
+  import { localeList } from '/@/settings/localeSetting';
+  import { useLocale } from '/@/locales/useLocale';
+  import { currentTenantDashboardList, customerDashboardList } from '/@/api/tb/dashboard';
 
   const { t } = useI18n();
+  const { changeLocale, getLocale } = useLocale();
+  const { hasPermission } = usePermission();
   const { showMessage } = useMessage();
   const avatarBase64 = ref<string>('');
   const userStore = useUserStore();
@@ -59,16 +69,16 @@
     {
       field: 'email',
       component: 'Input',
-      label: t('sys.account.email'),
+      label: t('tb.user.form.email'),
       required: true,
       colProps: { span: 18 },
       rules: [
-        { required: true, message: t('邮箱地址必须输入') },
-        { type: 'email', message: t('请填写正确的邮箱地址') },
+        { required: true, message: t('tb.user.form.emailRequired') },
+        { type: 'email', message: t('tb.user.form.emailRule') },
       ],
     },
     {
-      label: t('用户姓名'),
+      label: t('tb.user.form.firstName'),
       field: 'firstName',
       component: 'Input',
       componentProps: {
@@ -78,7 +88,7 @@
       colProps: { span: 18 },
     },
     {
-      label: t('用户职务'),
+      label: t('tb.user.form.lastName'),
       field: 'lastName',
       component: 'Input',
       componentProps: {
@@ -87,21 +97,73 @@
       colProps: { span: 18 },
     },
     {
-      label: t('sys.account.mobile'),
+      label: t('tb.user.form.phone'),
       field: 'phone',
       component: 'Input',
       required: true,
-      rules: [
-        { required: true, message: t('手机号码必须输入') },
-        { pattern: /^1[3-9]\d{9}$/, message: t('请填写正确的手机号码') },
-      ],
+      rules: [{ pattern: /^(1[3-9]\d{9}|09\d{8})$/, message: t('tb.user.form.phoneRule') }],
+      colProps: { span: 18 },
+    },
+    // {
+    //   label: t('tb.user.form.description'),
+    //   field: 'additionalInfo.description',
+    //   component: 'InputTextArea',
+    //   colProps: { span: 18 },
+    // },
+    {
+      label: t('tb.user.form.lang'),
+      field: 'additionalInfo.lang',
+      component: 'Select',
+      componentProps: {
+        options: localeList.map((item) => ({ label: item.text, value: item.event.toString() })),
+      },
       colProps: { span: 18 },
     },
     {
-      label: t('描述信息'),
-      field: 'additionalInfo.description',
-      component: 'InputTextArea',
+      label: t('tb.user.form.unitSystem'),
+      field: 'additionalInfo.unitSystem',
+      component: 'Select',
+      componentProps: {
+        options: [
+          { label: 'Auto', value: 'Auto' },
+          { label: 'METRIC', value: 'METRIC' },
+          { label: 'IMPERIAL', value: 'IMPERIAL' },
+          { label: 'HYBRID', value: 'HYBRID' },
+        ],
+      },
       colProps: { span: 18 },
+    },
+    {
+      label: t('tb.user.form.homeDashboard'),
+      field: 'additionalInfo.homeDashboardId',
+      component: 'Select',
+      componentProps: {
+        immediate: true,
+        resultField: 'data',
+        allowClear: true,
+        params: { pageSize: 50, page: 0, sortProperty: 'title', sortOrder: 'ASC' },
+        mapFn: (item) => {
+          return { label: item.title, value: item.id.id };
+        },
+        api: (args: any) => {
+          if (hasPermission(Authority.TENANT_ADMIN)) {
+            return currentTenantDashboardList(args);
+          }
+          if (hasPermission(Authority.CUSTOMER_USER)) {
+            return customerDashboardList(args, userStore.getUserInfo.customerId.id);
+          }
+          return [];
+        },
+      },
+      ifShow: hasPermission(Authority.TENANT_ADMIN) || hasPermission(Authority.CUSTOMER_USER),
+      colProps: { lg: 14, md: 14 },
+    },
+    {
+      field: 'additionalInfo.homeDashboardHideToolbar',
+      slot: 'homeDashboardHideToolbar',
+      component: 'Checkbox',
+      colProps: { lg: 8, md: 8 },
+      ifShow: hasPermission(Authority.TENANT_ADMIN) || hasPermission(Authority.CUSTOMER_USER),
     },
   ];
 
@@ -139,15 +201,22 @@
       record.value.phone = data.phone;
       record.value.additionalInfo = {
         ...record.value.additionalInfo,
-        description: data.additionalInfo.description,
-        lang: localeSetting.locale,
+        lang: data.additionalInfo.lang,
+        unitSystem: data.additionalInfo.unitSystem,
+        homeDashboardId: data.additionalInfo.homeDashboardId,
+        homeDashboardHideToolbar: data.additionalInfo.homeDashboardHideToolbar,
       };
       // console.log('submit', data);
       const res = await saveUser(record.value);
       const userInfoRes = await userInfoApi();
 
       userStore.setUserInfo(userInfoRes);
-      showMessage('更新用户信息成功');
+      // 如果修改了语言，则重新加载页面
+      if (data.additionalInfo?.lang && data.additionalInfo.lang !== getLocale.value) {
+        await changeLocale(data.additionalInfo.lang);
+        location.reload();
+      }
+      showMessage(t('sys.account.updateUserInfoSuccess'));
     } catch (error: any) {
       if (error && error.errorFields) {
         showMessage(error.message || t('common.validateError'));

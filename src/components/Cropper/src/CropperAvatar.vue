@@ -101,7 +101,7 @@
 </script>
 
 <style lang="less">
-  @prefix-cls: ~'jeesite-cropper-avatar';
+  @prefix-cls: ~'tbv3-cropper-avatar';
 
   .@{prefix-cls} {
     display: inline-block;

@@ -128,5 +128,6 @@
 <style>
   .CodeMirror {
     height: 100%;
+    font-size: 12px !important;
   }
 </style>

@@ -116,8 +116,8 @@
   }
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-app-search-modal';
-  @footer-prefix-cls: ~'jeesite-app-search-footer';
+  @prefix-cls: ~'tbv3-app-search-modal';
+  @footer-prefix-cls: ~'tbv3-app-search-footer';
   .@{prefix-cls} {
     position: fixed;
     top: 0;

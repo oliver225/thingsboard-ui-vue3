@@ -3,14 +3,14 @@
     <BasicTable @register="registerTable">
       <template #headerTop>
         <div class="text-lg font-bold my-2">
-          {{ t('发送记录') }}
+          {{ t('tb.notification.request.title') }}
         </div>
       </template>
       <template #tableTitle>
         <div class="space-x-2">
           <a-input
             v-model:value="searchParam.textSearch"
-            placeholder="输入搜索内容"
+            :placeholder="t('common.search.searchText')"
             allow-clear
             @change="reload()"
             style="width: 240px"
@@ -33,15 +33,17 @@
           <template #icon>
             <SyncOutlined :spin="true" />
           </template>
-          定时中...
+          {{ t('tb.notification.request.table.scheduled') }}
         </Tag>
         <Tag color="processing" v-else-if="NotificationRequestStatus.PROCESSING == record.status">
           <template #icon>
             <SyncOutlined :spin="true" />
           </template>
-          处理中...
+          {{ t('tb.notification.request.table.processing') }}
         </Tag>
-        <Tag color="success" v-else-if="NotificationRequestStatus.SENT == record.status"> 已发送 </Tag>
+        <Tag color="success" v-else-if="NotificationRequestStatus.SENT == record.status">
+          {{ t('tb.notification.request.table.sent') }}
+        </Tag>
         <Tag color="default" v-else>
           {{ record.status }}
         </Tag>
@@ -49,7 +51,9 @@
       <template #stats="{ record }">
         <div v-if="!record.stats"> -- </div>
         <div v-else-if="!isEmpty(record.stats.error)">
-          <Tag style="cursor: pointer" color="error" @click="handleStats(record)">错误</Tag>
+          <Tag style="cursor: pointer" color="error" @click="handleStats(record)">
+            {{ t('tb.notification.request.table.error') }}
+          </Tag>
         </div>
         <div v-else-if="!isEmpty(record.stats.errors)">
           <Tag style="cursor: pointer" color="error" @click="handleStats(record)">
@@ -58,7 +62,7 @@
                 .map((key) => Object.keys(record.stats.errors[key]).length)
                 .reduce((a, b) => a + b, 0)
             }}
-            条 失败
+            {{ t('tb.notification.request.table.failed') }}
           </Tag>
         </div>
         <div v-else>
@@ -68,7 +72,7 @@
                 .map((key) => Number.parseInt(record.stats.sent[key]))
                 .reduce((a, b) => a + b, 0)
             }}
-            条 成功
+            {{ t('tb.notification.request.table.success') }}
           </Tag>
         </div>
       </template>
@@ -104,7 +108,7 @@
   const { createConfirm, showMessage } = useMessage();
 
   const getTitle = {
-    value: router.currentRoute.value.meta.title || '发送记录',
+    value: router.currentRoute.value.meta.title || t('tb.notification.request.title'),
   };
 
   const searchParam = reactive({
@@ -112,7 +116,7 @@
   });
   const tableColumns: BasicColumn[] = [
     {
-      title: t('模板'),
+      title: t('tb.notification.request.table.template'),
       dataIndex: 'templateName',
       key: 'templateName',
       fixed: 'left',
@@ -121,7 +125,7 @@
       sorter: true,
     },
     {
-      title: '发送方式',
+      title: t('tb.notification.request.table.deliveryMethods'),
       key: 'deliveryMethods',
       dataIndex: 'deliveryMethods',
       width: 160,
@@ -129,7 +133,7 @@
       slot: 'deliveryMethods',
     },
     {
-      title: t('状态'),
+      title: t('tb.notification.request.table.status'),
       dataIndex: 'status',
       key: 'status',
       width: 120,
@@ -138,7 +142,7 @@
       sorter: true,
     },
     {
-      title: '结果',
+      title: t('tb.notification.request.table.result'),
       align: 'center',
       dataIndex: 'stats',
       key: 'stats',
@@ -146,7 +150,7 @@
       width: 120,
     },
     {
-      title: t('创建时间'),
+      title: t('tb.notification.request.table.createdTime'),
       dataIndex: 'createdTime',
       key: 'createdTime',
       format: 'date|YYYY-MM-DD HH:mm:ss',
@@ -161,7 +165,7 @@
     actions: (record: Recordable) => [
       {
         icon: 'ant-design:send-outlined',
-        title: t('重新发送'),
+        title: t('tb.notification.request.action.resend'),
         color: 'success',
         onClick: handleForm.bind(this, { ...record }),
         ifShow: record.status == NotificationRequestStatus.SENT,
@@ -169,7 +173,7 @@
       {
         icon: 'ant-design:delete-outlined',
         color: 'error',
-        title: t('删除发送记录'),
+        title: t('tb.notification.request.action.delete'),
         onClick: handleDelete.bind(this, { ...record }),
       },
     ],
@@ -197,10 +201,13 @@
   async function handleDelete(record: Recordable) {
     createConfirm({
       iconType: 'error',
-      title: () => h('span', { innerHTML: `确定删除发送记录[]吗？` }),
-      content: '请注意：确认后，删除后发送记录将不可恢复。',
+      title: () =>
+        h('span', {
+          innerHTML: t('tb.notification.request.action.deleteConfirm', { name: record.templateName || '' }),
+        }),
+      content: t('tb.notification.request.action.deleteConfirmContent'),
       centered: false,
-      okText: '删除',
+      okText: t('tb.notification.request.action.delete'),
       okButtonProps: {
         type: 'primary',
         danger: true,
@@ -208,7 +215,7 @@
       onOk: async () => {
         try {
           await deleteNotificationRequest(record.id.id);
-          showMessage('删除发送记录成功！');
+          showMessage(t('tb.notification.request.action.deleteSuccess'));
         } catch (error: any) {
           console.log(error);
         } finally {

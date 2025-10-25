@@ -8,10 +8,12 @@
       </template>
       <template #tableTitle>
         <div class="space-x-2">
-          <a-button type="primary" @click="handleForm({})"> <Icon icon="i-fluent:add-12-filled" /> 新增队列 </a-button>
+          <a-button type="primary" @click="handleForm({})">
+            <Icon icon="i-fluent:add-12-filled" /> {{ t('tb.queue.action.add') }}
+          </a-button>
           <a-input
             v-model:value="searchParam.textSearch"
-            placeholder="输入搜索内容"
+            :placeholder="t('common.search.searchText')"
             allow-clear
             @change="reload"
             style="width: 240px"
@@ -55,7 +57,7 @@
   const { createConfirm, showMessage } = useMessage();
 
   const getTitle = {
-    value: '队列设置',
+    value: 'tb.queue.title',
   };
 
   const searchParam = reactive({
@@ -63,7 +65,7 @@
   });
   const tableColumns: BasicColumn[] = [
     {
-      title: t('队列名称'),
+      title: t('tb.queue.table.name'),
       dataIndex: 'name',
       key: 'name',
       sorter: true,
@@ -73,14 +75,14 @@
       slot: 'firstColumn',
     },
     {
-      title: '分区',
+      title: t('tb.queue.table.partitions'),
       dataIndex: 'partitions',
       key: 'partitions',
       width: 80,
       align: 'center',
     },
     {
-      title: '提交策略',
+      title: t('tb.queue.table.submitStrategy'),
       key: 'submitStrategy',
       dataIndex: 'submitStrategy',
       width: 180,
@@ -90,7 +92,7 @@
         text.type ? SUBMIT_STRATEGY_OPTIONS.find((item) => item.value === text.type)?.label || text.type : '',
     },
     {
-      title: '处理策略',
+      title: t('tb.queue.table.processingStrategy'),
       key: 'processingStrategy',
       dataIndex: 'processingStrategy',
       width: 180,
@@ -101,14 +103,14 @@
     },
 
     {
-      title: '描述信息',
+      title: t('tb.queue.table.description'),
       dataIndex: 'additionalInfo.description',
       key: 'additionalInfo.description',
       align: 'left',
       ellipsis: true,
     },
     {
-      title: t('创建时间'),
+      title: t('tb.queue.table.createdTime'),
       dataIndex: 'createdTime',
       key: 'createdTime',
       format: 'date|YYYY-MM-DD HH:mm:ss',
@@ -124,7 +126,7 @@
       {
         icon: 'ant-design:delete-outlined',
         color: 'error',
-        title: t('删除队列'),
+        title: t('tb.queue.action.delete'),
         disabled: record.name == 'Main',
         onClick: handleDelete.bind(this, { ...record }),
       },
@@ -156,10 +158,10 @@
   async function handleDelete(record: Recordable) {
     createConfirm({
       iconType: 'error',
-      title: `确定删除队列[${record.name}]吗？`,
-      content: '请注意：确认后，队列和所有相关数据将不可恢复。',
+      title: t('tb.queue.action.deleteConfirmTitle', { name: record.name }),
+      content: t('tb.queue.action.deleteConfirmContent'),
       centered: false,
-      okText: '删除',
+      okText: t('tb.queue.action.deleteButton'),
       okButtonProps: {
         type: 'primary',
         danger: true,
@@ -167,7 +169,7 @@
       onOk: async () => {
         try {
           await deleteQueue(record.id.id);
-          showMessage('删除队列成功！');
+          showMessage(t('tb.queue.action.deleteSuccess'));
         } catch (error: any) {
           console.log(error);
         } finally {

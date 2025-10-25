@@ -1,8 +1,4 @@
-<!--
- * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
- * No deletion without permission, or be held responsible to law.
- * @author Vben、ThinkGem
--->
+
 <template>
   <div ref="wrapRef" :class="getWrapperClass">
     <TableHeader v-bind="getHeaderProps" :showSelectionBar="false">
@@ -453,7 +449,7 @@
   defineExpose(tableAction);
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-basic-table';
+  @prefix-cls: ~'tbv3-basic-table';
 
   html[data-theme='dark'] {
     .@{prefix-cls} {
@@ -537,7 +533,7 @@
 
         td.ant-table-cell-fix-left,
         td.ant-table-cell-fix-right {
-          .jeesite-basic-arrow {
+          .tbv3-basic-arrow {
             vertical-align: middle;
           }
 

@@ -13,10 +13,12 @@
     </template>
     <BasicForm @register="registerForm">
       <template #gateway="{ model, field }">
-        <Checkbox v-model:checked="model[field]" @change="handleGatewayChange">是否网关</Checkbox>
+        <Checkbox v-model:checked="model[field]" @change="handleGatewayChange">{{
+          t('tb.device.form.isGateway')
+        }}</Checkbox>
       </template>
       <template #overwriteActivityTime="{ model, field }">
-        <Checkbox v-model:checked="model[field]">覆盖已连接设备的活动时间</Checkbox>
+        <Checkbox v-model:checked="model[field]">{{ t('tb.device.form.overwriteActivityTime') }}</Checkbox>
       </template>
     </BasicForm>
   </BasicModal>
@@ -51,34 +53,34 @@
   const record = ref<DeviceInfo>({} as DeviceInfo);
   const getTitle = computed(() => ({
     icon: meta.icon || 'ant-design:book-outlined',
-    value: record.value.id?.id ? t('编辑设备') : t('新增设备'),
+    value: record.value.id?.id ? t('tb.device.action.edit') : t('tb.device.action.add'),
   }));
 
   const inputFormSchemas: FormSchema[] = [
     { field: 'tenantId', component: 'Input', defaultValue: userStore.getUserInfo.tenantId, show: false },
     { field: 'deviceProfileId.entityType', component: 'Input', defaultValue: EntityType.DEVICE_PROFILE, show: false },
     {
-      label: t('设备名称'),
+      label: t('tb.device.form.deviceName'),
       field: 'name',
       component: 'Input',
       componentProps: {
         maxlength: 100,
-        placeholder: '请输设备名称',
+        placeholder: t('tb.device.form.deviceNamePlaceholder'),
       },
       required: true,
     },
     {
-      label: t('设备标签'),
+      label: t('tb.device.form.deviceLabel'),
       field: 'label',
       component: 'Input',
       componentProps: {
         maxlength: 100,
-        placeholder: '设备标签',
+        placeholder: t('tb.device.form.deviceLabelPlaceholder'),
       },
     },
 
     {
-      label: t('设备配置'),
+      label: t('tb.device.form.deviceProfile'),
       field: 'deviceProfileId.id',
       component: 'Select',
       componentProps: {
@@ -93,7 +95,7 @@
       required: true,
     },
     {
-      label: t('分配客户'),
+      label: t('tb.device.form.assignCustomer'),
       field: 'customerId.id',
       component: 'Select',
       componentProps: {
@@ -124,7 +126,7 @@
     },
 
     {
-      label: t('描述信息'),
+      label: t('tb.device.form.description'),
       field: 'additionalInfo.description',
       component: 'InputTextArea',
       componentProps: {
@@ -169,7 +171,7 @@
         : { entityType: EntityType.CUSTOMER, id: data.customerId.id };
 
       const res = await saveDevice({ ...data, id: record.value.id });
-      showMessage(`${record.value.id?.id ? '编辑' : '新增'}设备成功！`);
+      showMessage(record.value.id?.id ? t('tb.device.action.editSuccess') : t('tb.device.action.addSuccess'));
       setTimeout(closeModal);
       emit('success', data);
     } catch (error: any) {

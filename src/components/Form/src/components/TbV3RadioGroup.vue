@@ -1,35 +1,31 @@
-<!--
- * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
- * No deletion without permission, or be held responsible to law.
- * @description 支持字典类型
- * @author ThinkGem
--->
 <template>
-  <CheckboxGroup v-bind="getAttrs" v-model:value="state">
+  <RadioGroup v-bind="attrs" v-model:value="state">
     <template v-for="item in getOptions" :key="`${item.value}`">
-      <Checkbox :value="item.value" :disabled="item.disabled">
+      <Radio :value="item.value" :disabled="item.disabled">
         {{ item.label }}
-      </Checkbox>
+      </Radio>
     </template>
-  </CheckboxGroup>
+  </RadioGroup>
 </template>
-<script lang="ts" setup name="JeeSiteCheckboxGroup">
+<script lang="ts" setup name="TbV3RadioGroup">
   import { PropType, computed, ref, unref, watch } from 'vue';
-  import { Checkbox } from 'ant-design-vue';
+  import { Radio } from 'ant-design-vue';
+  import { isEmpty, isString } from '/@/utils/is';
+  import { propTypes } from '/@/utils/propTypes';
   import { useRuleFormItem } from '/@/hooks/component/useFormItem';
   import { useAttrs } from '/@/hooks/core/useAttrs';
 
   type OptionsItem = { label: string; value: string | number | boolean; disabled?: boolean };
-  type CheckboxItem = string | OptionsItem;
+  type RadioItem = string | OptionsItem;
 
-  const CheckboxGroup = Checkbox.Group;
+  const RadioGroup = Radio.Group;
 
   const props = defineProps({
     value: {
-      type: [Array, Object, String, Number] as PropType<Array<any> | object | string | number>,
+      type: [String, Number, Boolean, Object] as PropType<string | number | boolean | object>,
     },
     options: {
-      type: Array as PropType<CheckboxItem[]>,
+      type: Array as PropType<RadioItem[]>,
       default: () => [],
     },
   });
@@ -38,11 +34,7 @@
 
   const attrs = useAttrs();
   const [state] = useRuleFormItem(props);
-  const optionsRef = ref<CheckboxItem[]>(props.options);
-
-  const getAttrs = computed(() => {
-    return { ...unref(attrs), ...(props as Recordable) };
-  });
+  const optionsRef = ref<RadioItem[]>(props.options);
 
   watch(
     () => props.options,
@@ -60,13 +52,13 @@
   });
 </script>
 <style lang="less">
-  .ant-checkbox-wrapper {
+  .ant-radio-wrapper {
     margin-right: 0;
     margin-left: 4px;
   }
 
-  .ant-checkbox-checked {
-    .ant-checkbox-inner {
+  .ant-radio-checked {
+    .ant-radio-inner {
       opacity: 0.9;
     }
   }

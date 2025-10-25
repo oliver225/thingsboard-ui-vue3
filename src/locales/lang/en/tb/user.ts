@@ -1,0 +1,90 @@
+export default {
+  title: 'User',
+  table: {
+    email: 'Email',
+    firstName: 'First Name',
+    lastName: 'Last Name',
+    phone: 'Phone',
+    description: 'Description',
+    createdTime: 'CreatedTime',
+  },
+  form: {
+    email: 'Email',
+    firstName: 'First Name',
+    lastName: 'Last Name',
+    phone: 'Phone',
+    description: 'Description',
+    activationMethod: 'Activation Method',
+    defaultDashboard: 'Default Dashboard',
+    homeDashboard: 'Home Dashboard',
+    defaultDashboardFullscreen: 'Always fullscreen',
+    homeDashboardHideToolbar: 'Hide home dashboard toolbar',
+    lang: 'Language',
+    unitSystem: 'Unit System',
+    status: 'User Status',
+    emailRequired: 'Email is required',
+    emailRule: 'Please enter a valid email address',
+    phoneRequired: 'Phone is required',
+    phoneRule: 'Please enter a valid phone number',
+    activationShowLink: 'Show Activation Link',
+    activationSendMail: 'Send Activation Email',
+  },
+  action: {
+    add: 'Add User',
+    edit: 'Edit User',
+    delete: 'Delete User',
+    disableAccount: 'Disable Account',
+    enableAccount: 'Enable Account',
+    loginAsUser: 'Login as User',
+    showActivationLink: 'Display Activation Link',
+    resendActivationMail: 'Resend Activation',
+
+    copyUserId: 'Copy User ID',
+
+    customerEmpty: 'Customer is empty!',
+
+    deleteConfirm: 'Are you sure you want to delete the user [{name}]?',
+    deleteConfirmContent: 'Be careful, after confirmation, the user and all related data will not be recoverable.',
+
+    addSuccess: 'add user success!',
+    editSuccess: 'Edit user success!',
+    deleteSuccess: 'Delete user success!',
+    copyUserIdSuccess: 'Copy user ID success!',
+    copyActivationLinkSuccess: 'Copy user activation link success!',
+
+    activationLink: 'User Activation Link',
+
+    disableAccountConfirm: 'Confirm to disable user [{name}]?',
+    disableAccountConfirmContent: 'After disabling, the user account will be unavailable.',
+    disableAccountSuccess: 'Disable User Account Success!',
+    enableAccountSuccess: 'Enable User Account Success!',
+
+    sendActivationMailSuccess: 'Sending activation email success!',
+  },
+  detail: {
+    detail: 'User Details',
+    activated: 'Activated',
+    notActivated: 'Not Activated',
+    accountDisabled: 'Account Disabled',
+  },
+  admin: {
+    title: 'Tenant Admin',
+    action: {
+      add: 'Add Admin',
+      edit: 'Edit Admin',
+      delete: 'Delete Admin',
+      copyUserId: 'Copy Admin ID',
+      loginAsAdmin: 'Login as Admin',
+      deleteConfirm: 'Are you sure you want to delete the admin [{name}]?',
+      deleteConfirmContent: 'Be careful, after confirmation, the admin and all related data will not be recoverable.。',
+      addSuccess: 'Add Tenant Admin Success!',
+      editSuccess: 'Edit Tenant Admin Success!',
+      deleteSuccess: 'Delete Tenant Admin Success!',
+
+      tenantEmpty: 'Tenant is empty!',
+    },
+    detail: {
+      title: 'Tenant Admin Details',
+    },
+  },
+};

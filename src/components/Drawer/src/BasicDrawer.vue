@@ -250,8 +250,8 @@
 <style lang="less">
   @header-height: 60px;
   @detail-header-height: 40px;
-  @prefix-cls: ~'jeesite-basic-drawer';
-  @prefix-cls-detail: ~'jeesite-basic-drawer__detail';
+  @prefix-cls: ~'tbv3-basic-drawer';
+  @prefix-cls-detail: ~'tbv3-basic-drawer__detail';
 
   .ant-drawer .@{prefix-cls} {
     overflow: hidden;

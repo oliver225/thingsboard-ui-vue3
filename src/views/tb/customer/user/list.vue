@@ -6,10 +6,12 @@
       </template>
       <template #tableTitle>
         <div class="space-x-2">
-          <a-button type="primary" @click="handleForm({})"> <Icon icon="i-fluent:add-12-filled" /> 新增用户 </a-button>
+          <a-button type="primary" @click="handleForm({})">
+            <Icon icon="i-fluent:add-12-filled" /> {{ t('tb.user.action.add') }}
+          </a-button>
           <a-input
             v-model:value="searchParam.textSearch"
-            placeholder="输入搜索内容"
+            :placeholder="t('common.search.searchText')"
             allow-clear
             @change="reload"
             style="width: 240px"
@@ -58,7 +60,7 @@
   const { createConfirm, showMessage, notification } = useMessage();
 
   const getTitle = {
-    value: router.currentRoute.value.meta.title || '客户用户',
+    value: router.currentRoute.value.meta.title || t('tb.user.title'),
   };
 
   const customer = ref<Customer>({} as Customer);
@@ -68,7 +70,7 @@
   });
   const tableColumns: BasicColumn[] = [
     {
-      title: t('电子邮件'),
+      title: t('tb.user.table.email'),
       dataIndex: 'email',
       key: 'email',
       sorter: true,
@@ -77,32 +79,32 @@
       slot: 'firstColumn',
     },
     {
-      title: '姓名',
+      title: t('tb.user.table.firstName'),
       dataIndex: 'firstName',
       width: 230,
       key: 'firstName',
     },
     {
-      title: '职务',
+      title: t('tb.user.table.lastName'),
       dataIndex: 'lastName',
       key: 'lastName',
       width: 230,
     },
     {
-      title: '手机号码',
+      title: t('tb.user.table.phone'),
       dataIndex: 'phone',
       key: 'phone',
       width: 140,
     },
     {
-      title: '描述信息',
+      title: t('tb.user.table.description'),
       dataIndex: 'additionalInfo.description',
       key: 'additionalInfo.description',
       ellipsis: true,
     },
 
     {
-      title: t('创建时间'),
+      title: t('tb.user.table.createdTime'),
       dataIndex: 'createdTime',
       key: 'createdTime',
       format: 'date|YYYY-MM-DD HH:mm:ss',
@@ -117,13 +119,13 @@
     actions: (record: Recordable) => [
       {
         icon: 'ant-design:login-outlined',
-        title: t('以用户身份登录'),
+        title: t('tb.user.action.loginAsUser'),
         onClick: handleLoginUser.bind(this, { ...record }),
       },
       {
         icon: 'ant-design:delete-outlined',
         color: 'error',
-        title: t('删除用户'),
+        title: t('tb.user.action.delete'),
         onClick: handleDelete.bind(this, { ...record }),
       },
     ],
@@ -150,7 +152,7 @@
   async function fetchData(params: any) {
     const customerId = router.currentRoute.value.params.customerId as string;
     if (isEmpty(customerId)) {
-      return Promise.reject(new Error('客户为空！'));
+      return Promise.reject(new Error(t('tb.user.action.customerEmpty')));
     }
     return getCustomerById(customerId).then((res) => {
       customer.value = res;
@@ -194,10 +196,10 @@
   async function handleDelete(record: Recordable) {
     createConfirm({
       iconType: 'error',
-      title: `确定删除用户[${record.name}]吗？`,
-      content: '请注意：确认后，用户和所有相关数据将不可恢复。',
+      title: t('tb.user.action.deleteConfirm', { name: record.name }),
+      content: t('tb.user.action.deleteConfirmContent'),
       centered: false,
-      okText: '删除',
+      okText: t('tb.user.action.delete'),
       okButtonProps: {
         type: 'primary',
         danger: true,
@@ -205,7 +207,7 @@
       onOk: async () => {
         try {
           await deleteUser(record.id.id);
-          showMessage('删除用户成功！');
+          showMessage(t('tb.user.action.deleteSuccess'));
         } catch (error: any) {
           console.log(error);
         } finally {
@@ -223,7 +225,4 @@
     openDrawer(true, record);
   }
 </script>
-<style lang="less">
-  .customer-user-list {
-  }
-</style>
+<style lang="less"></style>

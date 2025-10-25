@@ -63,7 +63,7 @@
   });
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-setting-switch-item';
+  @prefix-cls: ~'tbv3-setting-switch-item';
 
   .@{prefix-cls} {
     display: flex;

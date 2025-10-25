@@ -6,7 +6,7 @@
       </h2>
 
       <p class="text-secondary lg:text-md text-sm">
-        {{ t('创建密码 激活账户') }}
+        {{ t('sys.login.createPasswordSubtitle') }}
       </p>
     </div>
     <Form class="enter-x p-4" :model="formData" ref="formRef" :rules="formRules">
@@ -96,9 +96,9 @@
       createConfirm({
         maskClosable: false,
         iconType: 'error',
-        title: '页面错误',
-        content: '当前激活连接错误，请重新获取！',
-        okText: '去登录',
+        title: t('sys.login.pageErrorTitle'),
+        content: t('sys.login.activateLinkError'),
+        okText: t('sys.login.goToLogin'),
         maskStyle: { backdropFilter: 'blur(50px)' },
         onOk: () => {
           goToLogin();
@@ -116,7 +116,7 @@
       loading.value = true;
       try {
         const jwtPawir = await activateUser({ ...data, activateToken: formData.activateToken });
-        showMessage(`创建密码成功！`, 'success');
+        showMessage(t('sys.login.createPasswordSuccess'), 'success');
         userStore.setToken(jwtPawir);
         userStore.setSessionTimeout(false);
         const userInfo = await userStore.getUserInfoAction();
@@ -124,7 +124,7 @@
           await userStore.afterLoginAction(userInfo, true);
           notification.success({
             message: t('sys.login.loginSuccessTitle'),
-            description: `${t('创建密码成功，开始使用吧')}: ${userInfo.firstName || userInfo.email}`,
+            description: `${t('sys.login.createPasswordSuccessDesc')}: ${userInfo.firstName || userInfo.email}`,
             duration: 3,
           });
         }

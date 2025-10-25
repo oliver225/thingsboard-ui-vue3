@@ -25,7 +25,7 @@
   });
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-page-footer';
+  @prefix-cls: ~'tbv3-page-footer';
 
   .@{prefix-cls} {
     position: fixed;

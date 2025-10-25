@@ -15,27 +15,27 @@
         <Input v-model:value="formState.topic" />
       </Form.Item>
       <Form.Item
-        label="队列名称"
+        :label="t('tb.queue.form.name')"
         name="name"
         :rules="[
-          { required: true, message: '请输入队列名称!' },
-          { pattern: /^[a-zA-Z0-9_-]*$/, message: '队列名称只能包含字母数字和 _、-', trigger: ['change', 'blur'] },
+          { required: true, message: t('tb.queue.form.nameRequired') },
+          { pattern: /^[a-zA-Z0-9_-]*$/, message: t('tb.queue.form.namePattern'), trigger: ['change', 'blur'] },
         ]"
       >
         <Input
           v-model:value="formState.name"
-          placeholder="请输入队列名称"
+          :placeholder="t('tb.queue.form.namePlaceholder')"
           @change="() => (formState.topic = `tb_rule_engine.${formState.name}`)"
         />
       </Form.Item>
 
-      <CollapseContainer title="提交设置" class="border border-solid border-neutral-300 mb-4">
+      <CollapseContainer :title="t('tb.queue.form.submitSettings')" class="border border-solid border-neutral-300 mb-4">
         <Row :gutter="16">
           <Col :span="12">
             <Form.Item
-              label="提交策略"
+              :label="t('tb.queue.form.submitStrategy')"
               :name="['submitStrategy', 'type']"
-              :rules="[{ required: true, message: '请选择提交策略!' }]"
+              :rules="[{ required: true, message: t('tb.queue.form.submitStrategyRequired') }]"
             >
               <Radio.Group v-model:value="formState.submitStrategy.type">
                 <Radio
@@ -54,29 +54,32 @@
           </Col>
           <Col :span="12">
             <Form.Item
-              label="批量处理大小"
+              :label="t('tb.queue.form.batchSize')"
               :name="['submitStrategy', 'batchSize']"
               v-if="formState.submitStrategy.type == SubmitStrategyType.BATCH"
-              :rules="[{ required: true, message: '请输入批量处理大小!' }]"
+              :rules="[{ required: true, message: t('tb.queue.form.batchSizeRequired') }]"
             >
               <InputNumber
                 :style="{ width: '90%' }"
                 :defaultValue="1000"
                 :min="1"
                 v-model:value="formState.submitStrategy.batchSize"
-                placeholder="请输入批量处理大小"
+                :placeholder="t('tb.queue.form.batchSize')"
               />
             </Form.Item>
           </Col>
         </Row>
       </CollapseContainer>
-      <CollapseContainer title="重试处理设置" class="border border-solid border-neutral-300 mb-4">
+      <CollapseContainer
+        :title="t('tb.queue.form.processingSettings')"
+        class="border border-solid border-neutral-300 mb-4"
+      >
         <Row :gutter="16">
           <Col :span="12">
             <Form.Item
-              label="处理策略"
+              :label="t('tb.queue.form.processingStrategy')"
               :name="['processingStrategy', 'type']"
-              :rules="[{ required: true, message: '请选择重试处理策略!' }]"
+              :rules="[{ required: true, message: t('tb.queue.form.processingStrategyRequired') }]"
             >
               <Radio.Group v-model:value="formState.processingStrategy.type">
                 <Radio
@@ -95,22 +98,22 @@
           </Col>
           <Col :span="12">
             <Form.Item
-              label="重试次数(0表示无限制)"
+              :label="t('tb.queue.form.retries')"
               :name="['processingStrategy', 'retries']"
-              :rules="[{ required: true, message: '请输入重试次数!' }]"
+              :rules="[{ required: true, message: t('tb.queue.form.retriesRequired') }]"
             >
               <InputNumber
                 :style="{ width: '90%' }"
                 :defaultValue="3"
                 :min="0"
                 v-model:value="formState.processingStrategy.retries"
-                placeholder="请输入重试次数"
+                :placeholder="t('tb.queue.form.retries')"
               />
             </Form.Item>
             <Form.Item
-              label="跳过重试的失败消息百分比"
+              :label="t('tb.queue.form.failurePercentage')"
               :name="['processingStrategy', 'failurePercentage']"
-              :rules="[{ required: true, message: '请输入跳过重试的失败消息百分比!' }]"
+              :rules="[{ required: true, message: t('tb.queue.form.failurePercentageRequired') }]"
             >
               <InputNumber
                 :style="{ width: '90%' }"
@@ -118,99 +121,114 @@
                 :min="0"
                 :max="100"
                 v-model:value="formState.processingStrategy.failurePercentage"
-                placeholder="请输入跳过重试的失败消息百分比"
+                :placeholder="t('tb.queue.form.failurePercentage')"
               />
             </Form.Item>
             <Form.Item
-              label="重试间隔"
+              :label="t('tb.queue.form.pauseBetweenRetries')"
               :name="['processingStrategy', 'pauseBetweenRetries']"
-              :rules="[{ required: true, message: '请输入重试间隔!' }]"
+              :rules="[{ required: true, message: t('tb.queue.form.pauseBetweenRetriesRequired') }]"
             >
               <InputNumber
                 :style="{ width: '90%' }"
                 :defaultValue="3"
                 :min="0"
                 v-model:value="formState.processingStrategy.pauseBetweenRetries"
-                placeholder="请输入重试间隔"
-                addon-after="秒"
+                :placeholder="t('tb.queue.form.pauseBetweenRetries')"
+                :addon-after="t('tb.queue.detail.unitSecond')"
               />
             </Form.Item>
             <Form.Item
-              label="最大重试间隔"
+              :label="t('tb.queue.form.maxPauseBetweenRetries')"
               :name="['processingStrategy', 'maxPauseBetweenRetries']"
-              :rules="[{ required: true, message: '请输入最大重试间隔!' }]"
+              :rules="[{ required: true, message: t('tb.queue.form.maxPauseBetweenRetriesRequired') }]"
             >
               <InputNumber
                 :style="{ width: '90%' }"
                 :defaultValue="3"
                 :min="0"
                 v-model:value="formState.processingStrategy.maxPauseBetweenRetries"
-                placeholder="请输入最大重试间隔"
-                addon-after="秒"
+                :placeholder="t('tb.queue.form.maxPauseBetweenRetries')"
+                :addon-after="t('tb.queue.detail.unitSecond')"
               />
             </Form.Item>
           </Col>
         </Row>
       </CollapseContainer>
-      <CollapseContainer title="轮训设置" class="border border-solid border-neutral-300 mb-4">
-        批量处理
+      <CollapseContainer
+        :title="t('tb.queue.form.pollingSettings')"
+        class="border border-solid border-neutral-300 mb-4"
+      >
+        {{ t('tb.queue.detail.batchProcessing') }}
         <Row :gutter="16">
           <Col :span="12">
-            <Form.Item label="轮训间隔" name="pollInterval" :rules="[{ required: true, message: '请输入轮训间隔!' }]">
+            <Form.Item
+              :label="t('tb.queue.form.pollInterval')"
+              name="pollInterval"
+              :rules="[{ required: true, message: t('tb.queue.form.pollIntervalRequired') }]"
+            >
               <InputNumber
                 :style="{ width: '90%' }"
                 :defaultValue="25"
                 :min="0"
                 v-model:value="formState.pollInterval"
-                placeholder="请输入轮训间隔"
+                :placeholder="t('tb.queue.form.pollInterval')"
               />
             </Form.Item>
           </Col>
           <Col :span="12">
-            <Form.Item label="分区" name="partitions" :rules="[{ required: true, message: '请输入分区!' }]">
+            <Form.Item
+              :label="t('tb.queue.form.partitions')"
+              name="partitions"
+              :rules="[{ required: true, message: t('tb.queue.form.partitionsRequired') }]"
+            >
               <InputNumber
                 :style="{ width: '90%' }"
                 :defaultValue="10"
                 :min="1"
                 v-model:value="formState.partitions"
-                placeholder="请输入分区"
+                :placeholder="t('tb.queue.form.partitions')"
               />
             </Form.Item>
           </Col>
         </Row>
-        即时处理
+        {{ t('tb.queue.detail.immediateProcessing') }}
         <Row :gutter="16">
           <Col :span="12">
             <Form.Item label=" " name="consumerPerPartition">
               <Checkbox v-model:checked="formState.consumerPerPartition" :defaultChecked="false">
-                每个分区消费者单独轮询消息</Checkbox
+                {{ t('tb.queue.form.consumerPerPartition') }}</Checkbox
               >
             </Form.Item>
           </Col>
           <Col :span="12">
             <Form.Item
-              label="处理超时"
+              :label="t('tb.queue.form.packProcessingTimeout')"
               name="packProcessingTimeout"
-              :rules="[{ required: true, message: '请输入处理超时时间!' }]"
+              :rules="[{ required: true, message: t('tb.queue.form.packProcessingTimeoutRequired') }]"
             >
               <InputNumber
                 :style="{ width: '90%' }"
                 :defaultValue="2000"
                 :min="0"
                 v-model:value="formState.packProcessingTimeout"
-                placeholder="请输入处理超时时间"
-                addon-after="毫秒"
+                :placeholder="t('tb.queue.form.packProcessingTimeout')"
+                :addon-after="t('tb.queue.detail.unitMillisecond')"
               />
             </Form.Item>
           </Col>
         </Row>
       </CollapseContainer>
       <Form.Item
-        label="描述信息"
+        :label="t('tb.queue.form.description')"
         :name="['additionalInfo', 'description']"
-        help="此文本将显示在队列说明中，而不是所选策略中"
+        :help="t('tb.queue.form.descriptionHelp')"
       >
-        <Textarea v-model:value="formState.additionalInfo.description" placeholder="输入队列描述信息" :rows="3" />
+        <Textarea
+          v-model:value="formState.additionalInfo.description"
+          :placeholder="t('tb.queue.form.descriptionPlaceholder')"
+          :rows="3"
+        />
       </Form.Item>
     </Form>
   </BasicModal>
@@ -240,7 +258,7 @@
   const record = ref<Queue>({} as Queue);
   const getTitle = computed(() => ({
     icon: meta.icon || 'ant-design:book-outlined',
-    value: record.value.id?.id ? t('编辑队列') : t('新增队列'),
+    value: record.value.id?.id ? t('tb.queue.action.edit') : t('tb.queue.action.add'),
   }));
 
   const tenantId = userStore.getUserInfo?.tenantId || { EntityType: 'TENANT', id: '' };
@@ -304,7 +322,7 @@
 
       // console.log('submit', params, data, record);
       const res = await saveQueue('TB_RULE_ENGINE', { ...data, id: record.value.id });
-      showMessage(`${record.value.id?.id ? '编辑' : '新增'}队列成功！`);
+      showMessage(record.value.id?.id ? t('tb.queue.form.editSuccess') : t('tb.queue.form.addSuccess'));
       setTimeout(closeModal);
       emit('success', data);
     } catch (error: any) {

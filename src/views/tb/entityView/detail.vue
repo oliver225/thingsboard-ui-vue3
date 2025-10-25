@@ -5,7 +5,7 @@
         <Icon :icon="getTitle.icon" :size="24" />
         <div class="flex flex-col">
           <span class="text-base font-semibold">{{ getTitle.value || '· · · ·' }}</span>
-          <span class="text-sm">实体视图详情</span>
+          <span class="text-sm">{{ t('tb.entityView.detail.detail') }}</span>
         </div>
       </div>
     </template>
@@ -26,110 +26,119 @@
           @click="handleAssignToPublic"
           v-if="hasPermission(Authority.TENANT_ADMIN) && !!!record.customerTitle"
         >
-          <Icon :icon="'ant-design:share-alt-outlined'" />设为公开
+          <Icon :icon="'ant-design:share-alt-outlined'" />{{ t('tb.entityView.detail.setPublic') }}
         </a-button>
         <a-button
           type="primary"
           @click="handleAssignCustomer"
           v-if="hasPermission(Authority.TENANT_ADMIN) && !!!record.customerTitle"
         >
-          <Icon :icon="'ant-design:contacts-outlined'" />分配客户
+          <Icon :icon="'ant-design:contacts-outlined'" />{{ t('tb.entityView.detail.assignCustomer') }}
         </a-button>
         <a-button
           type="primary"
           @click="handleUnAssignFromCustomer"
           v-if="hasPermission(Authority.TENANT_ADMIN) && !!record.customerTitle"
         >
-          <Icon :icon="'ant-design:rollback-outlined'" />取消分配客户
+          <Icon :icon="'ant-design:rollback-outlined'" />{{ t('tb.entityView.detail.unassignCustomer') }}
         </a-button>
 
         <a-button type="primary success" @click="handleEditEntityView" v-if="hasPermission(Authority.TENANT_ADMIN)">
-          <Icon :icon="'i-clarity:note-edit-line'" />编辑实体视图
+          <Icon :icon="'i-clarity:note-edit-line'" />{{ t('tb.entityView.detail.editEntityView') }}
         </a-button>
         <a-button type="primary" danger @click="handleDeleteEntityView" v-if="hasPermission(Authority.TENANT_ADMIN)">
-          <Icon :icon="'ant-design:delete-outlined'" />删除实体视图
+          <Icon :icon="'ant-design:delete-outlined'" />{{ t('tb.entityView.detail.deleteEntityView') }}
         </a-button>
       </div>
       <div class="space-x-4 my-4">
         <a-button @click="handleCopyEntityViewId">
           <Icon :icon="'ant-design:copy-filled'" />
-          复制实体视图ID
+          {{ t('tb.entityView.detail.copyEntityViewId') }}
         </a-button>
       </div>
       <Form layout="vertical" :disabled="true">
-        <Form.Item label="视图名称" name="name">
+        <Form.Item :label="t('tb.entityView.form.name')" name="name">
           <Input :value="record.name" />
         </Form.Item>
-        <Form.Item label="视图类型" name="type">
+        <Form.Item :label="t('tb.entityView.form.type')" name="type">
           <Input :value="record.type" />
         </Form.Item>
         <Row :gutter="16">
           <Col :span="6">
-            <Form.Item label="目标实体类型" :name="['entityId', 'entityType']">
-              <Select :value="record.entityId?.entityType" placeholder="请选择目标实体类型">
-                <Select.Option :value="EntityType.DEVICE">设备</Select.Option>
-                <Select.Option :value="EntityType.ASSET">资产</Select.Option>
+            <Form.Item :label="t('tb.entityView.form.entityType')" :name="['entityId', 'entityType']">
+              <Select :value="record.entityId?.entityType" :placeholder="t('tb.entityView.form.entityTypePlaceholder')">
+                <Select.Option :value="EntityType.DEVICE">{{ t('tb.device.title') }}</Select.Option>
+                <Select.Option :value="EntityType.ASSET">{{ t('tb.asset.title') }}</Select.Option>
               </Select>
             </Form.Item>
           </Col>
           <Col :span="18">
             <Form.Item
-              label="目标设备"
+              :label="t('tb.entityView.form.targetDevice')"
               :name="['entityId', 'id']"
               v-if="EntityType.DEVICE == record.entityId?.entityType"
             >
-              <Select :value="record.entityId.id" placeholder="请选择目标设备" :options="entityIdOptions" />
+              <Select
+                :value="record.entityId.id"
+                :placeholder="t('tb.entityView.form.targetDevicePlaceholder')"
+                :options="entityIdOptions"
+              />
             </Form.Item>
             <Form.Item
-              label="目标资产"
+              :label="t('tb.entityView.form.targetAsset')"
               :name="['entityId', 'id']"
-              :rules="[{ required: true, message: '请选择目标资产!' }]"
+              :rules="[{ required: true, message: t('tb.entityView.form.assetRequired') }]"
               v-if="EntityType.ASSET == record.entityId?.entityType"
             >
-              <Select :value="record.entityId.id" placeholder="请选择目标资产" :options="entityIdOptions" />
+              <Select
+                :value="record.entityId.id"
+                :placeholder="t('tb.entityView.form.targetAssetPlaceholder')"
+                :options="entityIdOptions"
+              />
             </Form.Item>
           </Col>
         </Row>
-        <CollapseContainer title="属性传播" class="border border-solid border-neutral-300 mb-4">
+        <CollapseContainer
+          :title="t('tb.entityView.form.attributesPropagation')"
+          class="border border-solid border-neutral-300 mb-4"
+        >
           <div class="p-4">
-            <p class="text-help">每次保存或更新这个实体视图时将自动从目标实体复制指定的属性。</p>
-            <p class="text-help">由于性能原因目标实体属性不会在每次属性更改时传递到实体视图。</p>
-            <p class="text-help"
-              >你可以通过配置"<strong>copy to view</strong>"规则链中的规则节点，并将"<strong>Post attributes</strong
-              >"和"<strong>attributes Updated</strong>"消息链接到新规则节点，从而启用自动传递。</p
-            >
+            <p class="text-help">{{ t('tb.entityView.form.help.attr1') }}</p>
+            <p class="text-help">{{ t('tb.entityView.form.help.attr2') }}</p>
+            <p class="text-help" v-html="t('tb.entityView.form.help.attr3')"></p>
           </div>
-          <Form.Item label="客户端属性" :name="['keys', 'attributes', 'cs']">
+          <Form.Item :label="t('tb.entityView.form.clientAttributes')" :name="['keys', 'attributes', 'cs']">
             <Select :value="record.keys?.attributes?.cs" mode="tags" />
           </Form.Item>
-          <Form.Item label="共享属性" :name="['keys', 'attributes', 'sh']">
+          <Form.Item :label="t('tb.entityView.form.sharedAttributes')" :name="['keys', 'attributes', 'sh']">
             <Select :value="record.keys?.attributes?.sh" mode="tags" />
           </Form.Item>
-          <Form.Item label="服务端属性" :name="['keys', 'attributes', 'ss']">
+          <Form.Item :label="t('tb.entityView.form.serverAttributes')" :name="['keys', 'attributes', 'ss']">
             <Select :value="record.keys?.attributes?.ss" mode="tags" />
           </Form.Item>
         </CollapseContainer>
-        <CollapseContainer title="时间序列数据" class="border border-solid border-neutral-300 mb-4">
+        <CollapseContainer
+          :title="t('tb.entityView.form.timeseriesData')"
+          class="border border-solid border-neutral-300 mb-4"
+        >
           <div class="p-4">
-            <p class="text-help"
-              >配置目标实体的 Timeseries 数据键,以便实体视图可以访问这些键。此 Timeseries 数据是只读的。</p
-            >
+            <p class="text-help">{{ t('tb.entityView.form.help.ts') }}</p>
           </div>
-          <Form.Item label="遥测数据" :name="['keys', 'timeseries']">
+          <Form.Item :label="t('tb.entityView.form.telemetry')" :name="['keys', 'timeseries']">
             <Select :value="record.keys?.timeseries" mode="tags" />
           </Form.Item>
         </CollapseContainer>
-        <Form.Item label="开始时间" :name="['startTimeMs']">
+        <Form.Item :label="t('tb.entityView.form.startTime')" :name="['startTimeMs']">
           <span v-if="record.startTimeMs">
             {{ dayjs(record.startTimeMs).format('YYYY-MM-DD HH:mm') }}
           </span>
         </Form.Item>
-        <Form.Item label="结束时间" :name="['endTimeMs']">
+        <Form.Item :label="t('tb.entityView.form.endTime')" :name="['endTimeMs']">
           <span v-if="record.endTimeMs">
             {{ dayjs(record.endTimeMs).format('YYYY-MM-DD HH:mm') }}
           </span>
         </Form.Item>
-        <Form.Item label="描述信息" :name="['additionalInfo', 'description']">
+        <Form.Item :label="t('tb.entityView.form.description')" :name="['additionalInfo', 'description']">
           {{ record.additionalInfo?.description }}
         </Form.Item>
       </Form>
@@ -264,7 +273,7 @@
   }
 
   function handleCopyEntityViewId() {
-    copyToClipboard(record.value.id.id, '复制实体视图ID成功！');
+    copyToClipboard(record.value.id.id, t('tb.entityView.action.copyEntityViewIdSuccess'));
   }
 
   function handleDeleteEntityView() {

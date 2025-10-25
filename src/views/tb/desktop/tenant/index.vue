@@ -52,7 +52,9 @@
   import { useUserStore } from '/@/store/modules/user';
   import { tenantInfoById } from '/@/api/tb/tenant';
   import { areaList } from '@vant/area-data';
+  import { useI18n } from '/@/hooks/web/useI18n';
 
+  const { t } = useI18n();
   const userStore = useUserStore();
 
   const activeKey = ref('tab1');
@@ -64,15 +66,15 @@
   const tabListTitle = [
     {
       key: 'tab1',
-      tab: '在线设备数量',
+      tab: t('tb.desktop.tabs.activeDeviceCount'),
     },
     {
       key: 'tab2',
-      tab: '信息传输',
+      tab: t('tb.desktop.tabs.messageTransport'),
     },
     {
       key: 'tab3',
-      tab: '实时数据存储点数',
+      tab: t('tb.desktop.tabs.storageDataPoints'),
     },
   ];
 

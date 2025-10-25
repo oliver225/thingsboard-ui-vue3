@@ -9,11 +9,11 @@
       <template #tableTitle>
         <div class="space-x-2">
           <a-button type="primary" @click="handleForm({})">
-            <Icon icon="i-fluent:add-12-filled" /> 新增规则链
+            <Icon icon="i-fluent:add-12-filled" /> {{ t('tb.ruleChain.action.add') }}
           </a-button>
           <a-input
             v-model:value="searchParam.textSearch"
-            placeholder="输入搜索内容"
+            :placeholder="t('common.search.searchText')"
             allow-clear
             @change="reload"
             style="width: 240px"
@@ -60,7 +60,7 @@
   const { createConfirm, showMessage } = useMessage();
 
   const getTitle = {
-    value: router.currentRoute.value.meta.title || '规则链库',
+    value: router.currentRoute.value.meta.title || t('tb.ruleChain.title'),
   };
 
   const searchParam = reactive({
@@ -68,7 +68,7 @@
   });
   const tableColumns: BasicColumn[] = [
     {
-      title: t('名称'),
+      title: t('tb.ruleChain.table.name'),
       dataIndex: 'name',
       key: 'name',
       sorter: true,
@@ -78,7 +78,7 @@
       slot: 'firstColumn',
     },
     {
-      title: t('描述信息'),
+      title: t('tb.ruleChain.table.description'),
       dataIndex: 'additionalInfo.description',
       key: 'additionalInfo.description',
       align: 'left',
@@ -86,7 +86,7 @@
     },
 
     {
-      title: t('调试'),
+      title: t('tb.ruleChain.table.debug'),
       dataIndex: 'debugMode',
       key: 'debugMode',
       width: 80,
@@ -94,7 +94,7 @@
       slot: 'debugMode',
     },
     {
-      title: t('根链'),
+      title: t('tb.ruleChain.table.root'),
       dataIndex: 'root',
       key: 'root',
       width: 80,
@@ -102,7 +102,7 @@
       slot: 'root',
     },
     {
-      title: t('创建时间'),
+      title: t('tb.ruleChain.table.createdTime'),
       dataIndex: 'createdTime',
       key: 'createdTime',
       format: 'date|YYYY-MM-DD HH:mm:ss',
@@ -118,19 +118,19 @@
       {
         icon: 'ant-design:flag-outlined',
         disabled: record.root == true,
-        title: t('设为根链'),
+        title: t('tb.ruleChain.action.setRoot'),
         onClick: handleSetRuleChainRoot.bind(this, { ...record }),
       },
       {
         icon: 'i-clarity:note-edit-line',
         color: 'success',
-        title: t('编辑规则链'),
+        title: t('tb.ruleChain.action.edit'),
         onClick: handleForm.bind(this, { ...record }),
       },
       {
         icon: 'ant-design:delete-outlined',
         color: 'error',
-        title: t('删除规则链'),
+        title: t('tb.ruleChain.action.delete'),
         disabled: record.root == true,
         onClick: handleDelete.bind(this, { ...record }),
       },
@@ -161,10 +161,10 @@
   async function handleDelete(record: Recordable) {
     createConfirm({
       iconType: 'error',
-      title: `确定删除规则链[${record.name}]吗？`,
-      content: '请注意：确认后，规则链和所有相关数据将不可恢复。',
+      title: t('tb.ruleChain.action.deleteConfirmTitle', { name: record.name }),
+      content: t('tb.ruleChain.action.deleteConfirmContent'),
       centered: false,
-      okText: '删除',
+      okText: t('tb.ruleChain.action.delete'),
       okButtonProps: {
         type: 'primary',
         danger: true,
@@ -172,7 +172,7 @@
       onOk: async () => {
         try {
           await deleteRuleChain(record.id.id);
-          showMessage('删除规则链成功！');
+          showMessage(t('tb.ruleChain.action.deleteSuccess'));
         } catch (error: any) {
           console.log(error);
         } finally {
@@ -193,14 +193,14 @@
   async function handleSetRuleChainRoot(record: Recordable) {
     createConfirm({
       iconType: 'info',
-      title: `确定要将规则链[${record.name}]设置为根规则链吗？`,
-      content: '确认后，规则链将变为根规格链，并将处理所有传入的传输消息。',
+      title: t('tb.ruleChain.action.setRootConfirmTitle', { name: record.name }),
+      content: t('tb.ruleChain.action.setRootConfirmContent'),
       centered: false,
-      okText: '确认',
+      okText: t('tb.ruleChain.action.confirm'),
       onOk: async () => {
         try {
           await setRootRuleChain(record.id.id);
-          showMessage('设置根规则链成功！');
+          showMessage(t('tb.ruleChain.action.setRootSuccess'));
         } catch (error: any) {
           console.log(error);
         } finally {

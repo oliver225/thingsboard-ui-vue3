@@ -133,6 +133,8 @@ export default {
     netWorkError: '网络错误',
     notData: '无数据',
 
+    basic: '基础列表',
+
     list: '列表页',
     listCard: '卡片列表',
     listBasic: '标准列表',

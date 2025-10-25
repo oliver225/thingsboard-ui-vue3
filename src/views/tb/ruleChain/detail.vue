@@ -13,13 +13,15 @@
   import { router } from '/@/router';
   import { isEmpty } from 'lodash-es';
   import { ref, watch } from 'vue';
+  import { useI18n } from '/@/hooks/web/useI18n';
 
+  const { t } = useI18n('tb');
   const record = ref<RuleChain>({} as RuleChain);
 
   async function fetchData() {
     const ruleChainId = router.currentRoute.value.params.ruleChainId as string;
     if (isEmpty(ruleChainId)) {
-      return Promise.reject(new Error('规则链为空！'));
+      return Promise.reject(new Error(t('tb.ruleChain.form.ruleChainEmpty')));
     }
     record.value = await getRuleChainById(ruleChainId);
   }

@@ -1,8 +1,3 @@
-<!--
- * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
- * No deletion without permission, or be held responsible to law.
- * @author ThinkGem
--->
 <template>
   <div :class="prefixCls" :style="{ width: containerWidth }">
     <Toolbar class="toolbar" :editor="editorRef" :defaultConfig="toolbarConfig" :mode="mode" />
@@ -184,7 +179,8 @@
       const handleCreated = (editor: IDomEditor) => {
         editorRef.value = editor; // 记录 editor 实例，重要！
         const lang = useLocale().getLocale.value;
-        i18nChangeLanguage(lang == 'en' ? 'en' : 'zh-CN');
+        // Support en_US locale mapping to editor internal 'en' (editor only knows 'en')
+        i18nChangeLanguage(lang === 'en_US' ? 'en' : 'zh-CN');
         // console.log(editor.getAllMenuKeys());
       };
 
@@ -215,7 +211,7 @@
   });
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-editor-container';
+  @prefix-cls: ~'tbv3-editor-container';
 
   .@{prefix-cls} {
     border: 1px solid #ccc;

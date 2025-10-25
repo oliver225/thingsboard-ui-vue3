@@ -1,0 +1,90 @@
+export default {
+  title: '用户',
+  table: {
+    email: '电子邮件',
+    firstName: '名字',
+    lastName: '职务',
+    phone: '手机号码',
+    description: '描述信息',
+    createdTime: '创建时间',
+  },
+  form: {
+    email: '邮箱地址',
+    firstName: '名字',
+    lastName: '职务',
+    phone: '手机号码',
+    description: '描述信息',
+    activationMethod: '激活方式',
+    defaultDashboard: '默认仪表盘',
+    homeDashboard: '首页仪表盘',
+    defaultDashboardFullscreen: '默认全屏',
+    homeDashboardHideToolbar: '隐藏首页仪表板工具栏',
+    lang: '语言',
+    unitSystem: '单位制',
+    status: '用户状态',
+    emailRequired: '邮箱地址必须输入',
+    emailRule: '请填写正确的邮箱地址',
+    phoneRequired: '手机号码必须输入',
+    phoneRule: '请填写正确的手机号码',
+    activationShowLink: '显示激活链接',
+    activationSendMail: '发送激活邮件',
+  },
+  action: {
+    add: '新增用户',
+    edit: '编辑用户',
+    delete: '删除用户',
+    disableAccount: '停用账户',
+    enableAccount: '启用账户',
+    loginAsUser: '以用户身份登录',
+    showActivationLink: '显示激活链接',
+
+    copyUserId: '复制用户ID',
+
+    customerEmpty: '客户为空！',
+
+    deleteConfirm: '确定删除用户[{name}]吗？',
+    deleteConfirmContent: '请注意：确认后，用户和所有相关数据将不可恢复。',
+
+    addSuccess: '新增用户成功！',
+    editSuccess: '编辑用户成功！',
+    deleteSuccess: '删除用户成功！',
+    copyUserIdSuccess: '复制用户ID成功！',
+    copyActivationLinkSuccess: '复制用户激活链接成功！',
+
+    activationLink: '用户激活链接',
+
+    disableAccountConfirm: '确定停用用户[{name}]吗？',
+    disableAccountConfirmContent: '停用后，用户账户将不可用。',
+    disableAccountSuccess: '停用用户账户成功！',
+    enableAccountSuccess: '启用用户账户成功！',
+
+    resendActivationMail: '重新发送激活邮件',
+    sendActivationMailSuccess: '激活电子邮件已成功发送！',
+  },
+  detail: {
+    detail: '用户详情',
+    activated: '已激活',
+    notActivated: '未激活',
+    accountDisabled: '账户已禁用',
+  },
+  admin: {
+    title: '租户管理员',
+    action: {
+      add: '新增管理员',
+      edit: '编辑管理员',
+      delete: '删除管理员',
+      copyUserId: '复制管理员ID',
+      loginAsAdmin: '以管理员身份登录',
+      deleteConfirm: '确定删除管理员[{name}]吗？',
+      deleteConfirmContent: '请注意：确认后，管理员和所有相关数据将不可恢复。',
+      addSuccess: '新增租户管理员成功！',
+      editSuccess: '编辑租户管理员成功！',
+      deleteSuccess: '删除租户管理员成功！',
+
+      tenantEmpty: '租户为空！',
+    },
+    detail: {
+      title: '租户管理员详情',
+    },
+  },
+};

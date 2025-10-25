@@ -5,30 +5,30 @@
         <Icon :icon="getTitle.icon" :size="24" />
         <div class="flex flex-col">
           <span class="text-base font-semibold"> {{ getTitle.value || '· · · ·' }}</span>
-          <span class="text-sm">资源详情</span>
+          <span class="text-sm">{{ t('tb.resource.detail.title') }}</span>
         </div>
       </div>
     </template>
     <Tabs v-model:activeKey="tabActiveKey" class="tb-detail-menu">
       <TabPane key="DETAIL">
         <template #tab>
-          <span> <Icon :icon="'ant-design:appstore-outlined'" /> 详情 </span>
+          <span> <Icon :icon="'ant-design:appstore-outlined'" /> {{ t('tb.resource.detail.tab') }} </span>
         </template>
         <div class="space-x-4">
           <a-button type="primary" @click="handleDownload">
-            <Icon :icon="'ant-design:download-outlined'" />导出资源
+            <Icon :icon="'ant-design:download-outlined'" />{{ t('tb.resource.action.download') }}
           </a-button>
           <a-button type="primary success" @click="handleEdit">
-            <Icon :icon="'i-clarity:note-edit-line'" />编辑资源
+            <Icon :icon="'i-clarity:note-edit-line'" />{{ t('tb.resource.action.edit') }}
           </a-button>
           <a-button type="primary" danger @click="handleDelete">
-            <Icon :icon="'ant-design:delete-outlined'" />租删资源
+            <Icon :icon="'ant-design:delete-outlined'" />{{ t('tb.resource.action.delete') }}
           </a-button>
         </div>
         <div class="space-x-4 my-4">
           <a-button @click="handleCopyResourceId">
             <Icon :icon="'ant-design:copy-filled'" />
-            复制资源ID
+            {{ t('tb.resource.action.copyId') }}
           </a-button>
         </div>
         <Description @register="register" size="default" />
@@ -49,7 +49,7 @@
 
   const emit = defineEmits(['edit', 'delete', 'download', 'register']);
 
-  const { t } = useI18n('things');
+  const { t } = useI18n('tb');
   const { showMessage } = useMessage();
   const { meta } = unref(router.currentRoute);
   const record = ref<Resource>({} as Resource);
@@ -63,22 +63,22 @@
 
   const descSchema: DescItem[] = [
     {
-      label: t('标题'),
+      label: t('tb.resource.form.title'),
       field: 'title',
       span: 4,
     },
     {
-      label: t('资源Key'),
+      label: t('tb.resource.detail.resourceKey'),
       field: 'resourceKey',
       span: 4,
     },
     {
-      label: t('资源类型'),
+      label: t('tb.resource.table.resourceType'),
       field: 'resourceType',
       span: 4,
     },
     {
-      label: t('文件名称'),
+      label: t('tb.resource.detail.fileName'),
       field: 'fileName',
       span: 4,
     },
@@ -109,7 +109,7 @@
   }
 
   function handleCopyResourceId() {
-    copyToClipboard(record.value.id.id, '复制资源ID成功！');
+    copyToClipboard(record.value.id.id, t('tb.resource.action.copyIdSuccess'));
   }
 
   function handleDelete() {

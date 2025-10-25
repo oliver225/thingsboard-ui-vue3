@@ -9,11 +9,11 @@
       <template #tableTitle>
         <div class="space-x-2">
           <a-button type="primary" @click="handleForm({})" v-show="hasPermission(Authority.TENANT_ADMIN)">
-            <Icon icon="i-fluent:add-12-filled" /> {{ t('新增仪表板') }}
+            <Icon icon="i-fluent:add-12-filled" /> {{ t('tb.dashboard.action.add') }}
           </a-button>
           <a-input
             v-model:value="searchParam.textSearch"
-            :placeholder="t('输入搜索')"
+            :placeholder="t('common.search.searchText')"
             allow-clear
             @change="reload"
             style="width: 240px"
@@ -95,7 +95,7 @@
   const { createConfirm, showMessage } = useMessage();
 
   const getTitle = {
-    value: router.currentRoute.value.meta.title || t('仪表板'),
+    value: router.currentRoute.value.meta.title || t('tb.dashboard.title'),
   };
 
   const searchParam = reactive({
@@ -103,7 +103,7 @@
   });
   const tableColumns: BasicColumn[] = [
     {
-      title: t('标题'),
+      title: t('tb.dashboard.table.title'),
       dataIndex: 'title',
       key: 'title',
       sorter: true,
@@ -113,7 +113,7 @@
       ellipsis: false,
     },
     {
-      title: t('分配客户'),
+      title: t('tb.dashboard.table.assignedCustomers'),
       dataIndex: 'assignedCustomers',
       key: 'assignedCustomers',
       align: 'left',
@@ -122,7 +122,7 @@
       ifShow: hasPermission(Authority.TENANT_ADMIN),
     },
     {
-      title: t('公开'),
+      title: t('tb.dashboard.table.public'),
       dataIndex: 'customerIsPublic',
       key: 'customerIsPublic',
       width: 80,
@@ -131,7 +131,7 @@
       ifShow: hasPermission(Authority.TENANT_ADMIN),
     },
     {
-      title: t('创建时间'),
+      title: t('tb.dashboard.table.createdTime'),
       dataIndex: 'createdTime',
       key: 'createdTime',
       format: 'date|YYYY-MM-DD HH:mm:ss',
@@ -146,7 +146,7 @@
     actions: (record: Recordable) => [
       {
         icon: 'ant-design:share-alt-outlined',
-        title: t('设为公开'),
+        title: t('tb.dashboard.action.setPublic'),
         ifShow:
           hasPermission(Authority.TENANT_ADMIN) &&
           !(Array.isArray(record.assignedCustomers) && record.assignedCustomers.some((c) => c.public)),
@@ -154,7 +154,7 @@
       },
       {
         icon: 'ant-design:rollback-outlined',
-        title: t('设为私有'),
+        title: t('tb.dashboard.action.setSelf'),
         ifShow:
           hasPermission(Authority.TENANT_ADMIN) &&
           Array.isArray(record.assignedCustomers) &&
@@ -163,7 +163,7 @@
       },
       {
         icon: 'ant-design:contacts-outlined',
-        title: t('分配客户'),
+        title: t('tb.dashboard.action.assignCustomer'),
         ifShow: hasPermission(Authority.TENANT_ADMIN),
         onClick: handleAssignCustomer.bind(this, { ...record }),
       },
@@ -171,7 +171,7 @@
       {
         icon: 'i-clarity:note-edit-line',
         color: 'success',
-        title: t('编辑仪表板'),
+        title: t('tb.dashboard.action.edit'),
         ifShow: hasPermission(Authority.TENANT_ADMIN),
         onClick: handleDetail.bind(this, { ...record }),
       },
@@ -179,7 +179,7 @@
       {
         icon: 'ant-design:delete-outlined',
         color: 'error',
-        title: t('删除仪表板'),
+        title: t('tb.dashboard.action.delete'),
         ifShow: hasPermission(Authority.TENANT_ADMIN),
         onClick: handleDelete.bind(this, { ...record }),
       },
@@ -213,10 +213,10 @@
   async function handleDelete(record: Recordable) {
     createConfirm({
       iconType: 'error',
-      title: t('确认删除仪表板', { name: record.name }),
-      content: t('确认删除仪表板'),
+      title: t('tb.dashboard.action.deleteConfirm', { name: record.name }),
+      content: t('tb.dashboard.action.deleteConfirmContent'),
       centered: false,
-      okText: t('删除'),
+      okText: t('tb.dashboard.action.delete'),
       okButtonProps: {
         type: 'primary',
         danger: true,
@@ -224,7 +224,7 @@
       onOk: async () => {
         try {
           await deleteDashboard(record.id.id);
-          showMessage(t('删除仪表板成功'));
+          showMessage(t('tb.dashboard.action.deleteSuccess'));
         } catch (error: any) {
           console.log(error);
         } finally {

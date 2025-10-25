@@ -32,7 +32,7 @@
   import { GITEE_URL, GITHUB_URL } from '/@/settings/siteSetting';
   import Icon from '/@/components/Icon';
   import { useMessage } from '/@/hooks/web/useMessage';
-import { publicPath } from '/@/utils/env';
+  import { publicPath } from '/@/utils/env';
 
   defineOptions({
     name: 'TechSupport',

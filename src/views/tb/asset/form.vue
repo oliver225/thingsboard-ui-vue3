@@ -43,33 +43,31 @@
   const record = ref<AssetInfo>({} as AssetInfo);
   const getTitle = computed(() => ({
     icon: meta.icon || 'ant-design:book-outlined',
-    value: record.value.id?.id ? t('编辑资产') : t('新增资产'),
+    value: record.value.id?.id ? t('tb.asset.action.edit') : t('tb.asset.action.add'),
   }));
 
   const inputFormSchemas: FormSchema[] = [
     { field: 'tenantId', component: 'Input', defaultValue: userStore.getUserInfo.tenantId, show: false },
     { field: 'assetProfileId.entityType', component: 'Input', defaultValue: EntityType.DEVICE_PROFILE, show: false },
     {
-      label: t('资产名称'),
+      label: t('tb.asset.form.name'),
       field: 'name',
       component: 'Input',
       componentProps: {
         maxlength: 100,
-        placeholder: '请输资产名称',
       },
       required: true,
     },
     {
-      label: t('资产标签'),
+      label: t('tb.asset.form.label'),
       field: 'label',
       component: 'Input',
       componentProps: {
         maxlength: 100,
-        placeholder: '资产标签',
       },
     },
     {
-      label: t('资产配置'),
+      label: t('tb.asset.form.profile'),
       field: 'assetProfileId.id',
       component: 'Select',
       componentProps: {
@@ -84,7 +82,7 @@
       required: true,
     },
     {
-      label: t('分配客户'),
+      label: t('tb.asset.action.assignCustomer'),
       field: 'customerId.id',
       component: 'Select',
       componentProps: {
@@ -99,7 +97,7 @@
       },
     },
     {
-      label: t('描述信息'),
+      label: t('tb.asset.form.description'),
       field: 'additionalInfo.description',
       component: 'InputTextArea',
       componentProps: {
@@ -143,7 +141,7 @@
         : { entityType: EntityType.CUSTOMER, id: data.customerId.id };
 
       const res = await saveAsset({ ...data, id: record.value.id });
-      showMessage(`${record.value.id?.id ? '编辑' : '新增'}资产成功！`);
+      showMessage(record.value.id?.id ? t('tb.asset.action.editSuccess') : t('tb.asset.action.addSuccess'));
       setTimeout(closeModal);
       emit('success', data);
     } catch (error: any) {

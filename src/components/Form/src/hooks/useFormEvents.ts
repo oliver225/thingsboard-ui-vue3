@@ -1,8 +1,3 @@
-/**
- * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
- * No deletion without permission, or be held responsible to law.
- * @author Vben、ThinkGem
- */
 import type { ComputedRef, Ref } from 'vue';
 import type { FormProps, FormSchema, FormActionType } from '../types/form';
 import type { NamePath } from 'ant-design-vue/lib/form/interface';
@@ -50,7 +45,7 @@ export function useFormEvents({
 
   /**
    * @description: Set form value
-   * JeeSite 重写支持嵌套值，特殊类型转换
+   * TbV3 重写支持嵌套值，特殊类型转换
    */
   async function setFieldsValue(values: Recordable): Promise<void> {
     if (!values || Object.keys(values).length === 0) return;

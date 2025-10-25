@@ -1,57 +1,53 @@
 <template>
-    <Form ref="formRef" :model="formState" layout="vertical">
-
-        <Form.Item name="version" v-show="false">
-            <Input v-model:value="formState.version">
-            </Input>
-        </Form.Item>
-
-    </Form>
+  <Form ref="formRef" :model="formState" layout="vertical">
+    <Form.Item name="version" v-show="false">
+      <Input v-model:value="formState.version" />
+    </Form.Item>
+  </Form>
 </template>
 <script lang="ts">
-export default defineComponent({
-    name: "synchronization-end",
-});
+  export default defineComponent({
+    name: 'synchronization-end',
+  });
 </script>
-<script lang="ts" setup >
-import { ref, watch, defineComponent, reactive } from 'vue';
-import { Form, Input } from 'ant-design-vue';
-import { FormInstance } from 'ant-design-vue/lib/form';
+<script lang="ts" setup>
+  import { ref, watch, defineComponent, reactive } from 'vue';
+  import { Form, Input } from 'ant-design-vue';
+  import { FormInstance } from 'ant-design-vue/lib/form';
 
-interface Configuration {
-    version: number
-}
+  interface Configuration {
+    version: number;
+  }
 
-
-const props = defineProps({
+  const props = defineProps({
     configuration: {
-        type: Object as PropType<Configuration>,
-        required: true,
+      type: Object as PropType<Configuration>,
+      required: true,
     },
-    ruleChainId: { type: String, default: '' }
+    ruleChainId: { type: String, default: '' },
+  });
 
-});
+  const formRef = ref<FormInstance>();
 
-const formRef = ref<FormInstance>();
-
-const formState = reactive<any>({
+  const formState = reactive<any>({
     version: 0,
-});
+  });
 
-watch(
+  watch(
     () => props.configuration,
-    () => { formState.version = props.configuration.version },
-    { immediate: true }
-)
+    () => {
+      formState.version = props.configuration.version;
+    },
+    { immediate: true },
+  );
 
-async function getConfiguration() {
+  async function getConfiguration() {
     try {
-        return await formRef.value?.validate();
+      return await formRef.value?.validate();
     } catch (error: any) {
-        throw error;
+      throw error;
     }
-}
+  }
 
-defineExpose({ getConfiguration })
-
+  defineExpose({ getConfiguration });
 </script>

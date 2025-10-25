@@ -3,18 +3,20 @@
     <BasicForm @register="registerForm">
       <template #onlyRuleChainLifecycleFailures="{ model, field }">
         <div class="flex items-center mb-2">
-          <Switch size="small" v-model:checked="model[field]" /> <span class="ml-2">只有规则链失败的时候</span>
+          <Switch size="small" v-model:checked="model[field]" />
+          <span class="ml-2">{{ t('tb.notification.ruleTrigger.lifecycle.onlyRuleChainFailures') }}</span>
         </div>
       </template>
       <template #trackRuleNodeEvents="{ model, field }">
         <div class="flex items-center mb-2">
           <Switch size="small" v-model:checked="model[field]" @change="handleTrackRuleNodeChange" />
-          <span class="ml-2">跟踪规则节点事件</span>
+          <span class="ml-2">{{ t('tb.notification.ruleTrigger.lifecycle.trackRuleNodeEvents') }}</span>
         </div>
       </template>
       <template #onlyRuleNodeLifecycleFailures="{ model, field }">
         <div class="flex items-center mb-2">
-          <Switch size="small" v-model:checked="model[field]" /> <span class="ml-2">只有规则节点失败的时候</span>
+          <Switch size="small" v-model:checked="model[field]" />
+          <span class="ml-2">{{ t('tb.notification.ruleTrigger.lifecycle.onlyRuleNodeFailures') }}</span>
         </div>
       </template>
     </BasicForm>
@@ -31,9 +33,9 @@
   const { t } = useI18n('tb');
 
   const eventOptions = [
-    { value: 'STOPPED', label: '已停止' },
-    { value: 'STARTED', label: '已开始' },
-    { value: 'UPDATED', label: '已更新' },
+    { value: 'STOPPED', label: t('tb.notification.ruleTrigger.lifecycle.event.STOPPED') },
+    { value: 'STARTED', label: t('tb.notification.ruleTrigger.lifecycle.event.STARTED') },
+    { value: 'UPDATED', label: t('tb.notification.ruleTrigger.lifecycle.event.UPDATED') },
   ];
 
   const inputFormSchemas: FormSchema[] = [
@@ -44,18 +46,18 @@
       show: false,
     },
     {
-      label: t('规则链'),
+      label: t('tb.notification.ruleTrigger.lifecycle.ruleChain'),
       field: 'trigger',
       component: 'FormGroup',
       colProps: { lg: 24, md: 24 },
     },
     {
-      label: t('规则链'),
-      subLabel: '不选默认为全部规则链',
+      label: t('tb.notification.ruleTrigger.lifecycle.ruleChains'),
+      subLabel: t('tb.notification.ruleTrigger.lifecycle.allRuleChains'),
       field: 'triggerConfig.ruleChains',
       component: 'Select',
       componentProps: {
-        placeholder: '全部规则链',
+        placeholder: t('tb.notification.ruleTrigger.lifecycle.allRuleChains'),
         mode: 'multiple',
         immediate: true,
         resultField: 'data',
@@ -68,12 +70,12 @@
       colProps: { lg: 24, md: 24 },
     },
     {
-      label: t('规则链事件'),
-      subLabel: '不选默认为全部事件',
+      label: t('tb.notification.ruleTrigger.lifecycle.ruleChainEvents'),
+      subLabel: t('tb.notification.ruleTrigger.lifecycle.allEvents'),
       field: 'triggerConfig.ruleChainEvents',
       component: 'Select',
       componentProps: {
-        placeholder: '全部事件',
+        placeholder: t('tb.notification.ruleTrigger.lifecycle.allEvents'),
         mode: 'multiple',
         options: eventOptions,
       },
@@ -88,7 +90,7 @@
     },
 
     {
-      label: t('规则节点'),
+      label: t('tb.notification.ruleTrigger.lifecycle.ruleNode'),
       field: 'triggerConfig',
       component: 'FormGroup',
       colProps: { lg: 24, md: 24 },
@@ -102,12 +104,12 @@
       colProps: { lg: 24, md: 24 },
     },
     {
-      label: t('规则节点事件'),
-      subLabel: '不选默认为全部事件',
+      label: t('tb.notification.ruleTrigger.lifecycle.ruleNodeEvents'),
+      subLabel: t('tb.notification.ruleTrigger.lifecycle.allEvents'),
       field: 'triggerConfig.ruleNodeEvents',
       component: 'Select',
       componentProps: {
-        placeholder: '全部事件',
+        placeholder: t('tb.notification.ruleTrigger.lifecycle.allEvents'),
         mode: 'multiple',
         options: eventOptions,
       },
@@ -123,7 +125,7 @@
       colProps: { lg: 24, md: 24 },
     },
     {
-      label: t('描述信息'),
+      label: t('tb.notification.ruleTrigger.description'),
       field: 'additionalConfig.description',
       component: 'InputTextArea',
       componentProps: {
@@ -172,6 +174,5 @@
   }
 </script>
 <style lang="less">
-  .trigger-config-rule-engine-lifecycle {
-  }
+  /* removed empty rule .trigger-config-rule-engine-lifecycle */
 </style>

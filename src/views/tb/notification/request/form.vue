@@ -7,7 +7,7 @@
         <Steps.Step v-for="(step, index) in stepItems" :key="index" :title="getDeliveryMethodLabel(step.title)" />
       </Steps>
     </template>
-    <BasicForm @register="registerForm" v-show="stepItems.at(currentStep)?.title == '组合'">
+    <BasicForm @register="registerForm" v-show="stepItems.at(currentStep)?.title == 'COMPOSE'">
       <template #uesTemplate="{ model, field }">
         <div class="w-full flex">
           <Radio.Group
@@ -16,13 +16,16 @@
             style="margin: 1px auto"
             @change="handleUesTemplateChange"
           >
-            <Radio.Button value="false">从头开始</Radio.Button>
-            <Radio.Button value="true">使用模板</Radio.Button>
+            <Radio.Button value="false">{{ t('tb.notification.request.form.startScratch') }}</Radio.Button>
+            <Radio.Button value="true">{{ t('tb.notification.request.form.useTemplate') }}</Radio.Button>
           </Radio.Group>
         </div>
       </template>
       <template #templateId="{ model, field }">
-        <Select v-model:value="model[field]" placeholder="请选择通知模版">
+        <Select
+          v-model:value="model[field]"
+          :placeholder="t('tb.notification.request.form.selectNotificationTemplate')"
+        >
           <Select.Option v-for="(option, index) in templateOptions" :key="index" :value="option.value">
             {{ option.label }}
             <Tag v-for="(method, index) in option.deliveryMethods" :key="index">
@@ -43,7 +46,7 @@
           </div>
           <div class="border border-solid border-neutral-300 rounded-md py-3 px-4">
             <Switch v-model:checked="deliveryMethodEnable.SMS" size="small" />
-            <span class="ml-4">短信</span>
+            <span class="ml-4">{{ t('tb.notification.template.method.sms') }}</span>
           </div>
           <div class="border border-solid border-neutral-300 rounded-md py-3 px-4">
             <Switch v-model:checked="deliveryMethodEnable.SLACK" size="small" :disabled="true" />
@@ -72,14 +75,16 @@
       v-if="deliveryMethodEnable.SLACK"
       v-show="stepItems.at(currentStep)?.title == 'SLACK'"
     />
-    <Review ref="previewRef" v-show="stepItems.at(currentStep)?.title == '预览'" />
+    <Review ref="previewRef" v-show="stepItems.at(currentStep)?.title == 'PREVIEW'" />
     <template #footer>
       <a-button v-if="currentStep > 0" @click="prev" style="float: left">
-        <Icon icon="ant-design:left-outlined" />上一步
+        <Icon icon="ant-design:left-outlined" />{{ t('tb.notification.common.prev') }}
       </a-button>
-      <a-button @click="close"> <Icon icon="ant-design:close-outlined" />取消 </a-button>
+      <a-button @click="close">
+        <Icon icon="ant-design:close-outlined" />{{ t('tb.notification.common.cancel') }}
+      </a-button>
       <a-button :loading="confirmLoading" v-if="currentStep < stepItems.length - 1" type="primary" @click="next">
-        <Icon icon="ant-design:right-outlined" />下一步
+        <Icon icon="ant-design:right-outlined" />{{ t('tb.notification.common.next') }}
       </a-button>
       <a-button
         :loading="confirmLoading"
@@ -87,7 +92,7 @@
         type="primary"
         @click="handleSubmit"
       >
-        <Icon icon="ant-design:send-outlined" />发送
+        <Icon icon="ant-design:send-outlined" />{{ t('tb.notification.action.send') }}
       </a-button>
     </template>
   </BasicModal>
@@ -130,7 +135,9 @@
   const record = ref<NotificationRequest>({} as NotificationRequest);
   const getTitle = computed(() => ({
     icon: meta.icon || 'ant-design:book-outlined',
-    value: record.value.id?.id ? t('重新发送通知') : t('发送通知'),
+    value: record.value.id?.id
+      ? t('tb.notification.request.form.resendTitle')
+      : t('tb.notification.request.form.title'),
   }));
 
   const templateOptions = ref<Array<any>>([]);
@@ -154,8 +161,8 @@
       .map((method) => {
         return { title: method };
       });
-    items.unshift({ title: '组合' });
-    items.push({ title: '预览' });
+    items.unshift({ title: 'COMPOSE' });
+    items.push({ title: 'PREVIEW' });
     if (items.length - 1 < currentStep.value) {
       currentStep.value = items.length - 1;
     }
@@ -178,11 +185,11 @@
       ifShow: false,
     },
     {
-      label: t('通知模版'),
+      label: t('tb.notification.request.form.notificationTemplate'),
       field: 'templateId.id',
       component: 'Select',
       componentProps: {
-        placeholder: '请选择通知模版',
+        placeholder: t('tb.notification.request.form.selectNotificationTemplate'),
       },
       slot: 'templateId',
       ifShow: false,
@@ -190,14 +197,14 @@
       colProps: { lg: 24, md: 24 },
     },
     {
-      label: t('通知接收组'),
+      label: t('tb.notification.request.form.recipientGroup'),
       field: 'targets',
       component: 'Select',
       componentProps: {
         mode: 'multiple',
         immediate: true,
         resultField: 'data',
-        placeholder: '请选择通知接收组',
+        placeholder: t('tb.notification.request.form.selectRecipientGroup'),
         params: { pageSize: 50, page: 0, sortProperty: 'name', sortOrder: 'ASC' },
         mapFn: (item) => {
           return { label: item.name, value: item.id.id };
@@ -208,8 +215,8 @@
       colProps: { lg: 24, md: 24 },
     },
     {
-      label: t('接收方式'),
-      subLabel: '至少选择一种',
+      label: t('tb.notification.request.form.deliveryMethods'),
+      subLabel: t('tb.notification.request.form.selectAtLeastOne'),
       field: 'deliveryMethods',
       component: 'Input',
       ifShow: false,
@@ -225,7 +232,7 @@
               ) {
                 return resolve();
               }
-              reject(t('至少选择一种接收方式'));
+              reject(t('tb.notification.request.form.selectAtLeastOne'));
             });
           },
           trigger: ['change', 'blur'],
@@ -349,7 +356,7 @@
 
       // console.log('submit', params, data, record);
       const res = await createNotificationRequest({ ...data, id: null });
-      showMessage('发送通知成功！');
+      showMessage(t('tb.notification.request.form.sendSuccess'));
       setTimeout(closeModal);
       emit('success', data);
     } catch (error: any) {
@@ -380,7 +387,7 @@
       if (stepItems.value.at(currentStep.value)?.title == 'SLACK') {
         await deliverMethodSlackForm.value.validate();
       }
-      if (stepItems.value.at(currentStep.value + 1)?.title == '预览') {
+      if (stepItems.value.at(currentStep.value + 1)?.title == 'PREVIEW') {
         const data = await validateAndData();
         if (data) {
           await preview(data);
@@ -404,17 +411,13 @@
   }
 
   function getDeliveryMethodLabel(deliveryMethod: string) {
-    if ('WEB' == deliveryMethod) {
-      return 'Web';
-    } else if ('EMAIL' == deliveryMethod) {
-      return 'Email';
-    } else if ('SMS' == deliveryMethod) {
-      return '短信';
-    } else if ('SLACK' == deliveryMethod) {
-      return 'Slack';
-    } else {
-      return deliveryMethod;
-    }
+    if ('WEB' == deliveryMethod) return t('tb.notification.template.method.web');
+    if ('EMAIL' == deliveryMethod) return t('tb.notification.template.method.email');
+    if ('SMS' == deliveryMethod) return t('tb.notification.template.method.sms');
+    if ('SLACK' == deliveryMethod) return t('tb.notification.template.method.slack');
+    if ('COMPOSE' == deliveryMethod) return t('tb.notification.request.form.composeStep');
+    if ('PREVIEW' == deliveryMethod) return t('tb.notification.request.form.previewStep');
+    return deliveryMethod;
   }
 
   async function handleUesTemplateChange({ target: { value: uesTemplate } }) {

@@ -26,12 +26,12 @@
   const record = ref<WidgetsBundle>({} as WidgetsBundle);
   const getTitle = computed(() => ({
     icon: meta.icon || 'ant-design:book-outlined',
-    value: record.value.id?.id ? t('编辑部件包') : t('新增部件包'),
+    value: record.value.id?.id ? t('tb.widgetsBundle.action.edit') : t('tb.widgetsBundle.action.add'),
   }));
 
   const inputFormSchemas: FormSchema[] = [
     {
-      label: t('标题'),
+      label: t('tb.widgetsBundle.form.title'),
       field: 'title',
       component: 'Input',
       componentProps: {
@@ -42,7 +42,7 @@
     },
 
     {
-      label: t('描述信息'),
+      label: t('tb.widgetsBundle.form.description'),
       field: 'description',
       component: 'InputTextArea',
       componentProps: {
@@ -77,7 +77,9 @@
 
       // console.log('submit', params, data, record);
       const res = await saveWidgetsBundle({ ...data, id: record.value.id });
-      showMessage(`${record.value.id?.id ? '编辑' : '新增'}部件包成功！`);
+      showMessage(
+        record.value.id?.id ? t('tb.widgetsBundle.action.editSuccess') : t('tb.widgetsBundle.action.addSuccess'),
+      );
       setTimeout(closeModal);
       emit('success', data);
     } catch (error: any) {

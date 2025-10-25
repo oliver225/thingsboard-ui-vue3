@@ -5,7 +5,7 @@
         <Icon :icon="getTitle.icon" :size="24" />
         <div class="flex flex-col">
           <span class="text-base font-semibold">{{ getTitle.value || '· · · ·' }}</span>
-          <span class="text-sm">{{ t('仪表板详情') }}</span>
+          <span class="text-sm">{{ t('tb.dashboard.detail.title') }}</span>
         </div>
       </div>
     </template>
@@ -26,30 +26,30 @@
           @click="handleAssignToPublic"
           v-if="hasPermission(Authority.TENANT_ADMIN) && !isPublic"
         >
-          <Icon :icon="'ant-design:share-alt-outlined'" />{{ t('设置为公开') }}
+          <Icon :icon="'ant-design:share-alt-outlined'" />{{ t('tb.dashboard.action.setPublic') }}
         </a-button>
         <a-button
           type="primary"
           @click="handleUnAssignToPublic"
           v-if="hasPermission(Authority.TENANT_ADMIN) && !!isPublic"
         >
-          <Icon :icon="'ant-design:rollback-outlined'" />{{ t('设置为私有') }}
+          <Icon :icon="'ant-design:rollback-outlined'" />{{ t('tb.dashboard.action.setSelf') }}
         </a-button>
         <a-button type="primary" @click="handleAssignCustomer" v-if="hasPermission(Authority.TENANT_ADMIN)">
-          <Icon :icon="'ant-design:contacts-outlined'" />{{ t('分配客户') }}
+          <Icon :icon="'ant-design:contacts-outlined'" />{{ t('tb.dashboard.action.assignCustomer') }}
         </a-button>
 
         <a-button type="primary success" @click="handleEditAsset" v-if="hasPermission(Authority.TENANT_ADMIN)">
-          <Icon :icon="'i-clarity:note-edit-line'" />{{ t('编辑') }}
+          <Icon :icon="'i-clarity:note-edit-line'" />{{ t('tb.dashboard.action.edit') }}
         </a-button>
         <a-button type="primary" danger @click="handleDeleteAsset" v-if="hasPermission(Authority.TENANT_ADMIN)">
-          <Icon :icon="'ant-design:delete-outlined'" />{{ t('删除') }}
+          <Icon :icon="'ant-design:delete-outlined'" />{{ t('tb.dashboard.action.delete') }}
         </a-button>
       </div>
       <div class="space-x-4 my-4">
         <a-button @click="handleCopyAssetId">
           <Icon :icon="'ant-design:copy-filled'" />
-          {{ t('复制仪表板ID') }}
+          {{ t('tb.dashboard.action.copyId') }}
         </a-button>
       </div>
       <Description @register="register" size="default">
@@ -102,7 +102,7 @@
   import { DetailTabItemEnum } from '/@/enums/detailTabEnum';
   import { Dashboard, getDashboardById } from '/@/api/tb/dashboard';
   import { imagePreview } from '/@/api/tb/images';
-  import { publicPath } from '/@/utils/env';
+  import { useGlobSetting } from '/@/hooks/setting';
   const { hasPermission } = usePermission();
 
   const emit = defineEmits(['edit', 'delete', 'assignToPublic', 'assignToCustomer', 'unAssignToPublic', 'register']);
@@ -129,9 +129,8 @@
 
   const publicLink = computed(() => {
     if (isPublic.value) {
-      // 获取 location对象
-      const { protocol, hostname, port } = window.location;
-      const proxyLink = `${protocol}//${hostname}${port ? `:${port}` : ''}${publicPath}/dashboard/${record.value.id.id}?publicId=${record.value.assignedCustomers?.find((c) => c.public)?.customerId?.id}`;
+      const { tbBaseUrl } = useGlobSetting();
+      const proxyLink = `${tbBaseUrl}/dashboard/${record.value.id.id}?publicId=${record.value.assignedCustomers?.find((c) => c.public)?.customerId?.id}`;
       return proxyLink;
     }
     return '';
@@ -152,31 +151,31 @@
 
   const descSchema: DescItem[] = [
     {
-      label: t('标题'),
+      label: t('tb.dashboard.detail.name'),
       field: 'title',
       span: 4,
     },
     {
-      label: t('分配客户'),
+      label: t('tb.dashboard.detail.assignedCustomers'),
       field: 'assignedCustomers',
       span: 4,
       slot: 'assignedCustomers',
       show: () => hasPermission(Authority.TENANT_ADMIN),
     },
     {
-      label: t('公开连接'),
+      label: t('tb.dashboard.detail.public'),
       field: 'assignedCustomers',
       span: 4,
       slot: 'customerIsPublic',
       show: () => hasPermission(Authority.TENANT_ADMIN) && isPublic.value,
     },
     {
-      label: t('描述信息'),
+      label: t('tb.dashboard.detail.description'),
       field: 'configuration.description',
       span: 4,
     },
     {
-      label: t('预览图'),
+      label: t('tb.dashboard.detail.image'),
       field: 'imagePreview',
       slot: 'imagePreview',
       span: 4,
@@ -212,7 +211,7 @@
   }
 
   function handleCopyAssetId() {
-    copyToClipboard(record.value.id.id, t('复制成功'));
+    copyToClipboard(record.value.id.id, t('tb.asset.action.copyIdSuccess'));
   }
 
   function handleDeleteAsset() {

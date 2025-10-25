@@ -1,8 +1,4 @@
-/**
- * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
- * No deletion without permission, or be held responsible to law.
- * @author ThinkGem
- */
+
 import type { ServerOptions, ProxyOptions } from 'vite';
 import { IncomingMessage } from 'node:http';
 

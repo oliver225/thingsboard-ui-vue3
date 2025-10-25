@@ -7,7 +7,7 @@ import { TOKEN_KEY, USER_INFO_KEY, SESSION_TIMEOUT_KEY, REFRESH_TOKEN_KEY, AUTHO
 import { getAuthCache, setAuthCache } from '/@/utils/auth';
 import { loginApi, logoutApi, userInfoApi, LoginParams } from '/@/api/tb/login';
 // import { useI18n } from '/@/hooks/web/useI18n';
-import { useMessage } from '/@/hooks/web/useMessage';
+// import { useMessage } from '/@/hooks/web/useMessage';
 import { router } from '/@/router';
 import { usePermissionStore } from '/@/store/modules/permission';
 import { RouteRecordRaw } from 'vue-router';
@@ -18,8 +18,12 @@ import { mitt, Emitter } from '/@/utils/mitt';
 import { Authority } from '/@/enums/authorityEnum';
 import { getExpiration } from '/@/utils/jwt';
 import { publicPath } from '/@/utils/env';
+import { getSystemParams, SystemParams } from '/@/api/tb/systemInfo';
+import { useLocale } from '/@/locales/useLocale';
+import type { LocaleType } from '/#/config';
+import { localeList } from '/@/settings/localeSetting';
 
-const { showMessage, createConfirm } = useMessage();
+const { changeLocale, getLocale } = useLocale();
 
 interface UserState {
   userInfo: Nullable<UserInfo>;
@@ -28,6 +32,7 @@ interface UserState {
   authority?: Authority | string;
   sessionTimeout?: boolean;
   lastUpdateTime: number;
+  systemParams?: SystemParams;
   pageCache: any;
   emitter: Emitter<any>;
 }
@@ -44,9 +49,11 @@ export const useUserStore = defineStore('app-user', {
     sessionTimeout: undefined,
     // Last fetch time
     lastUpdateTime: 0,
+    // 系统参数
+    systemParams: undefined,
     // 刷新页面及销毁的缓存
     pageCache: {},
-    // 全局事件 think gem
+    // 全局事件
     emitter: mitt(),
   }),
   getters: {
@@ -82,6 +89,10 @@ export const useUserStore = defineStore('app-user', {
       this.lastUpdateTime = new Date().getTime();
       setAuthCache(TOKEN_KEY, token?.token);
       setAuthCache(REFRESH_TOKEN_KEY, token?.refreshToken);
+      this.setTbNativeSession(token);
+    },
+
+    setTbNativeSession(token: JwtPair | undefined) {
       // 设置thingsboard 平台原生的 token 方便IFRAME 访问
       if (token?.token) {
         localStorage.setItem('jwt_token', token.token);
@@ -92,6 +103,7 @@ export const useUserStore = defineStore('app-user', {
         localStorage.setItem('refresh_token_expiration', getExpiration(token.refreshToken)?.getTime().toString() || '');
       }
     },
+
     setSessionTimeout(flag: boolean) {
       this.sessionTimeout = flag;
       setAuthCache(SESSION_TIMEOUT_KEY, flag);
@@ -148,6 +160,11 @@ export const useUserStore = defineStore('app-user', {
       this.setUserInfo(res);
       this.initPageCache(res);
       this.setSessionTimeout(false);
+      this.systemParams = await getSystemParams();
+      // 设置后端存储的语言语言
+      if (res.additionalInfo?.lang) {
+        await this.changeUserLocale(res.additionalInfo?.lang);
+      }
       const permissionStore = usePermissionStore();
       if (!permissionStore.isDynamicAddedRoute) {
         const routes = await permissionStore.buildRoutesAction();
@@ -182,6 +199,27 @@ export const useUserStore = defineStore('app-user', {
       this.setPageCache('tenantId', userInfo.tenantId.id);
       this.setPageCache('customerId', userInfo.customerId.id);
     },
+
+    async getSystemParams() {
+      if (!this.systemParams) {
+        this.systemParams = await getSystemParams();
+      }
+      return this.systemParams;
+    },
+
+    // 设置后端存储的语言语言
+    async changeUserLocale(locale: string) {
+      let lang: LocaleType;
+      if (localeList.map((item) => item.event.toString()).concat(locale)) {
+        lang = locale as LocaleType;
+      } else {
+        lang = getLocale.value;
+      }
+      if (lang !== getLocale.value) {
+        await changeLocale(lang as LocaleType);
+      }
+    },
+
     /**
      * @description: logout
      */
@@ -217,7 +255,7 @@ export const useUserStore = defineStore('app-user', {
   },
 });
 
-// Global emit by think gem
+// Global emit
 export function useEmitter() {
   return useUserStore().emitter;
 }

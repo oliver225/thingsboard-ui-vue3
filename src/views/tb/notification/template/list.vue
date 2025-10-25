@@ -3,15 +3,17 @@
     <BasicTable @register="registerTable">
       <template #headerTop>
         <div class="text-lg font-bold my-2">
-          {{ t('通知模板') }}
+          {{ t('tb.notification.template.title') }}
         </div>
       </template>
       <template #tableTitle>
         <div class="space-x-2">
-          <a-button type="primary" @click="handleForm({})"> <Icon icon="i-fluent:add-12-filled" /> 新增模板 </a-button>
+          <a-button type="primary" @click="handleForm({})">
+            <Icon icon="i-fluent:add-12-filled" /> {{ t('tb.notification.template.action.add') }}
+          </a-button>
           <a-input
             v-model:value="searchParam.textSearch"
-            placeholder="输入搜索内容"
+            :placeholder="t('common.search.searchText')"
             allow-clear
             @change="reload()"
             style="width: 240px"
@@ -60,7 +62,7 @@
   const { createConfirm, showMessage } = useMessage();
 
   const getTitle = {
-    value: router.currentRoute.value.meta.title || '通知模板',
+    value: router.currentRoute.value.meta.title || t('tb.notification.template.title'),
   };
 
   const searchParam = reactive({
@@ -68,7 +70,7 @@
   });
   const tableColumns: BasicColumn[] = [
     {
-      title: t('模板'),
+      title: t('tb.notification.template.table.template'),
       dataIndex: 'name',
       key: 'name',
       fixed: 'left',
@@ -76,7 +78,7 @@
       ellipsis: false,
     },
     {
-      title: '通知类型',
+      title: t('tb.notification.template.table.notificationType'),
       key: 'notificationType',
       dataIndex: 'notificationType',
       width: 160,
@@ -84,9 +86,8 @@
       align: 'center',
       format: (text) => NOTIFICATION_TYPE_OPTIONS.find((item) => item.value == text)?.label || text,
     },
-
     {
-      title: t('接收方式'),
+      title: t('tb.notification.template.table.deliveryMethods'),
       key: 'deliveryMethods',
       dataIndex: 'deliveryMethods',
       width: 160,
@@ -94,7 +95,7 @@
       slot: 'deliveryMethods',
     },
     {
-      title: t('创建时间'),
+      title: t('tb.notification.template.table.createdTime'),
       dataIndex: 'createdTime',
       key: 'createdTime',
       format: 'date|YYYY-MM-DD HH:mm:ss',
@@ -109,14 +110,14 @@
     actions: (record: Recordable) => [
       {
         icon: 'i-clarity:note-edit-line',
-        title: t('编辑通知模板'),
+        title: t('tb.notification.template.action.edit'),
         color: 'success',
         onClick: handleForm.bind(this, { ...record }),
       },
       {
         icon: 'ant-design:delete-outlined',
         color: 'error',
-        title: t('删除通知模板'),
+        title: t('tb.notification.template.action.delete'),
         onClick: handleDelete.bind(this, { ...record }),
       },
     ],
@@ -142,10 +143,10 @@
   async function handleDelete(record: Recordable) {
     createConfirm({
       iconType: 'error',
-      title: () => h('span', { innerHTML: `确定删除通知模板[${record.name}]吗？` }),
-      content: '请注意：确认后，通知模板相关数据将不可恢复。',
+      title: () => h('span', { innerHTML: t('tb.notification.template.action.deleteConfirm', { name: record.name }) }),
+      content: t('tb.notification.template.action.deleteConfirmContent'),
       centered: false,
-      okText: '删除',
+      okText: t('tb.notification.action.delete'),
       okButtonProps: {
         type: 'primary',
         danger: true,
@@ -153,7 +154,7 @@
       onOk: async () => {
         try {
           await deleteNotificationTemplate(record.id.id);
-          showMessage('删除通知模板成功！');
+          showMessage(t('tb.notification.template.action.deleteSuccess'));
         } catch (error: any) {
           console.log(error);
         } finally {

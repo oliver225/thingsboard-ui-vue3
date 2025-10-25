@@ -16,7 +16,7 @@
   import { getTheme } from './getTheme';
   import { buildUUID } from '/@/utils/uuid';
 
-  type Lang = 'zh_CN' | 'en_US' | 'ja_JP' | 'ko_KR' | undefined;
+  type Lang = 'zh_CN' | 'zh_TW' | 'en_US' | 'ja_JP' | 'ko_KR' | undefined;
 
   defineOptions({ inheritAttrs: false });
 
@@ -71,10 +71,10 @@
     },
   );
 
-  const getCurrentLang = computed((): 'zh_CN' | 'en_US' | 'ja_JP' | 'ko_KR' => {
+  const getCurrentLang = computed((): 'zh_CN' | 'zh_TW' | 'en_US' | 'ja_JP' | 'ko_KR' => {
     let lang: Lang;
     switch (unref(getLocale)) {
-      case 'en':
+      case 'en_US':
         lang = 'en_US';
         break;
       case 'ja':
@@ -82,6 +82,9 @@
         break;
       case 'ko':
         lang = 'ko_KR';
+        break;
+      case 'zh_TW':
+        lang = 'zh_TW';
         break;
       default:
         lang = 'zh_CN';

@@ -3,7 +3,7 @@
     <div v-if="record?.processedTemplates?.WEB?.enabled == true" class="preview-notification">
       <div class="title">
         <Icon :icon="'ant-design:bell-outlined'" />
-        <span> web通知预览</span>
+        <span> {{ t('tb.notification.request.review.webPreview') }}</span>
       </div>
       <div class="w-full">
         <div class="web-container">
@@ -18,7 +18,7 @@
               <div class="web-container-body-title">
                 <div class="w-full">
                   <span v-html="record.processedTemplates?.WEB?.subject"></span>
-                  <span class="time">一分钟前</span>
+                  <span class="time">{{ t('tb.notification.request.review.minuteAgo') }}</span>
                 </div>
               </div>
               <div class="web-container-body-content">
@@ -32,7 +32,7 @@
               >
                 {{ record.processedTemplates?.WEB?.additionalConfig?.actionButtonConfig?.text }}
               </a-button>
-              <a-button type="primary" v-else> 知道了 </a-button>
+              <a-button type="primary" v-else> {{ t('tb.notification.request.review.gotIt') }} </a-button>
             </div>
           </div>
         </div>
@@ -41,7 +41,7 @@
     <div v-if="record?.processedTemplates?.SMS?.enabled == true" class="preview-notification">
       <div class="title">
         <Icon :icon="'ant-design:message-outlined'" />
-        <span> 短信通知预览</span>
+        <span> {{ t('tb.notification.request.review.smsPreview') }}</span>
       </div>
       <div class="sms-container">
         <div v-html="record?.processedTemplates?.SMS?.body"></div>
@@ -50,7 +50,7 @@
     <div v-if="record?.processedTemplates?.EMAIL?.enabled == true" class="preview-notification">
       <div class="title">
         <Icon :icon="'ant-design:mail-outlined'" />
-        <span> Email通知预览</span>
+        <span> {{ t('tb.notification.request.review.emailPreview') }}</span>
       </div>
       <div class="email-container">
         <div class="email-subject">
@@ -64,7 +64,7 @@
     <div v-if="record?.processedTemplates?.SLACK?.enabled == true" class="preview-notification">
       <div class="title">
         <Icon :icon="'ant-design:slack-outlined'" />
-        <span> Slack通知预览</span>
+        <span> {{ t('tb.notification.request.review.slackPreview') }}</span>
       </div>
       <div class="sms-container">
         <div v-html="record?.processedTemplates?.SLACK?.body"></div>
@@ -73,7 +73,9 @@
     <div class="recipient-container">
       <div class="title">
         <Icon :icon="'ant-design:usergroup-add-outlined'" />
-        <span>{{ record?.totalRecipientsCount }} 位接收用户</span>
+        <span>{{
+          t('tb.notification.request.review.recipientsCount', { count: record?.totalRecipientsCount || 0 })
+        }}</span>
       </div>
       <ul class="count">
         <li v-for="(key, value, index) in record?.recipientsCountByTarget" :key="index">

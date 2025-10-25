@@ -41,7 +41,7 @@
   });
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-darg-bar';
+  @prefix-cls: ~'tbv3-darg-bar';
 
   .@{prefix-cls} {
     position: absolute;

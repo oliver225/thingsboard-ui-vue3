@@ -60,7 +60,7 @@
 </template>
 
 <style lang="less">
-  @prefix-cls: ~'jeesite-setting-drawer-fearure';
+  @prefix-cls: ~'tbv3-setting-drawer-fearure';
 
   .@{prefix-cls} {
     position: absolute;

@@ -8,10 +8,12 @@
       </template>
       <template #tableTitle>
         <div class="space-x-2">
-          <a-button type="primary" @click="handleForm({})"> <Icon icon="i-fluent:add-12-filled" /> 新增包 </a-button>
+          <a-button type="primary" @click="handleForm({})">
+            <Icon icon="i-fluent:add-12-filled" /> {{ t('tb.otaPackage.action.add') }}
+          </a-button>
           <a-input
             v-model:value="searchParam.textSearch"
-            placeholder="输入搜索内容"
+            :placeholder="t('common.search.searchText')"
             allow-clear
             @change="reload"
             style="width: 240px"
@@ -64,7 +66,7 @@
   const { createConfirm, showMessage } = useMessage();
 
   const getTitle = {
-    value: 'OTA升级',
+    value: 'tb.otaPackage.title',
   };
 
   const searchParam = reactive({
@@ -72,7 +74,7 @@
   });
   const tableColumns: BasicColumn[] = [
     {
-      title: t('标题'),
+      title: t('tb.otaPackage.table.title'),
       dataIndex: 'title',
       key: 'title',
       width: 200,
@@ -82,7 +84,7 @@
       slot: 'firstColumn',
     },
     {
-      title: t('版本'),
+      title: t('tb.otaPackage.table.version'),
       dataIndex: 'version',
       key: 'version',
       width: 100,
@@ -91,36 +93,36 @@
       align: 'left',
     },
     {
-      title: t('版本标签'),
+      title: t('tb.otaPackage.table.tag'),
       dataIndex: 'tag',
       key: 'tag',
       align: 'left',
     },
     {
-      title: t('包类型'),
+      title: t('tb.otaPackage.table.type'),
       dataIndex: 'type',
       key: 'type',
       width: 100,
       sorter: true,
       align: 'center',
-      format: (text) => (text == 'FIRMWARE' ? '固件' : '软件'),
+      format: (text) => (text == 'FIRMWARE' ? t('tb.otaPackage.form.firmware') : t('tb.otaPackage.form.software')),
     },
     {
-      title: t('直接URL'),
+      title: t('tb.otaPackage.table.url'),
       dataIndex: 'url',
       key: 'url',
       sorter: true,
       align: 'center',
     },
     {
-      title: t('文件名'),
+      title: t('tb.otaPackage.table.fileName'),
       dataIndex: 'fileName',
       key: 'fileName',
       sorter: true,
       align: 'left',
     },
     {
-      title: t('文件大小'),
+      title: t('tb.otaPackage.table.dataSize'),
       dataIndex: 'dataSize',
       key: 'dataSize',
       sorter: true,
@@ -129,7 +131,7 @@
       slot: 'dataSize',
     },
     {
-      title: t('校验和'),
+      title: t('tb.otaPackage.table.checksum'),
       dataIndex: 'checksum',
       key: 'checksum',
       align: 'left',
@@ -137,7 +139,7 @@
     },
 
     {
-      title: t('创建时间'),
+      title: t('tb.otaPackage.table.createdTime'),
       dataIndex: 'createdTime',
       key: 'createdTime',
       format: 'date|YYYY-MM-DD HH:mm:ss',
@@ -152,14 +154,14 @@
     actions: (record: Recordable) => [
       {
         icon: 'ant-design:download-outlined',
-        title: t('下载包'),
+        title: t('tb.otaPackage.action.download'),
         onClick: handleDownload.bind(this, { ...record }),
         disabled: !record.dataSize,
       },
       {
         icon: 'ant-design:delete-outlined',
         color: 'error',
-        title: t('删除包'),
+        title: t('tb.otaPackage.action.delete'),
         onClick: handleDelete.bind(this, { ...record }),
       },
     ],
@@ -189,10 +191,10 @@
   async function handleDelete(record: Recordable) {
     createConfirm({
       iconType: 'error',
-      title: `确定删除OTA升级[${record.title}]吗？`,
-      content: '请注意：确认后，OTA升级将不可恢复。',
+      title: t('tb.otaPackage.action.deleteConfirmTitle', { title: record.title }),
+      content: t('tb.otaPackage.action.deleteConfirmContent'),
       centered: false,
-      okText: '删除',
+      okText: t('tb.otaPackage.action.deleteButton'),
       okButtonProps: {
         type: 'primary',
         danger: true,
@@ -200,7 +202,7 @@
       onOk: async () => {
         try {
           await deleteOtaPackage(record.id.id);
-          showMessage('删除成功！');
+          showMessage(t('tb.otaPackage.action.deleteSuccess'));
         } catch (error: any) {
           console.log(error);
         } finally {

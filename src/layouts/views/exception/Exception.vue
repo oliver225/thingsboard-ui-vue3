@@ -131,7 +131,7 @@
   });
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-app-exception-page';
+  @prefix-cls: ~'tbv3-app-exception-page';
 
   .@{prefix-cls} {
     display: flex;

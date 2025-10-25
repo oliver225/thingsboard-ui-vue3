@@ -1,50 +1,56 @@
 <template>
   <Form ref="formRef" :model="formState" layout="vertical">
-    <Form.Item name="deleteForSingleEntity" help="根据方向和类型删除传入消息的原始发件人与指定实体或实体列表的关系。">
-      <Checkbox v-model:checked="formState.deleteForSingleEntity">删除与特定实体的关系</Checkbox>
+    <Form.Item name="deleteForSingleEntity" :help="t('tb.ruleChain.nodeAction.deleteForSingleEntityHelp')">
+      <Checkbox v-model:checked="formState.deleteForSingleEntity">{{
+        t('tb.ruleChain.nodeAction.deleteForSingleEntity')
+      }}</Checkbox>
     </Form.Item>
-    <Form.Item label="方向" name="direction">
+    <Form.Item :label="t('tb.ruleChain.nodeAction.direction')" name="direction">
       <Select v-model:value="formState.direction">
-        <Select.Option value="FROM">从</Select.Option>
-        <Select.Option value="TO">到</Select.Option>
+        <Select.Option value="FROM">{{ t('tb.ruleChain.nodeAction.directionFrom') }}</Select.Option>
+        <Select.Option value="TO">{{ t('tb.ruleChain.nodeAction.directionTo') }}</Select.Option>
       </Select>
     </Form.Item>
     <Row :gutter="20">
       <Col :span="8">
-        <Form.Item label="实体类型" name="entityType" :rules="[{ required: true, message: '实体类型必填!' }]">
-          <Select v-model:value="formState.entityType" :options="entityTypeOptions"> </Select>
+        <Form.Item
+          :label="t('tb.ruleChain.nodeAction.entityType')"
+          name="entityType"
+          :rules="[{ required: true, message: t('tb.ruleChain.nodeAction.entityTypeRequired') }]"
+        >
+          <Select v-model:value="formState.entityType" :options="entityTypeOptions" />
         </Form.Item>
       </Col>
       <Col :span="16">
         <Form.Item
-          label="匹配名称"
+          :label="t('tb.ruleChain.nodeAction.namePattern')"
           name="entityNamePattern"
-          :rules="[{ required: true, message: '匹配名称称必填!' }]"
-          help=" 使用${metadataKey}表示元数据中的值，$[messageKey]表示消息正文中的值。"
+          :rules="[{ required: true, message: t('tb.ruleChain.nodeAction.namePatternRequired') }]"
+          :help="t('tb.ruleChain.nodeAction.customerNamePatternHelp')"
         >
           <Input v-model:value="formState.entityNamePattern" />
         </Form.Item>
       </Col>
     </Row>
     <Form.Item
-      label="匹配关系类型"
+      :label="t('tb.ruleChain.nodeAction.relationType')"
       name="relationType"
-      :rules="[{ required: true, message: '关系类型必填!' }]"
-      help="使用${metadataKey}表示元数据中的值，$[messageKey]表示消息正文中的值。"
+      :rules="[{ required: true, message: t('tb.ruleChain.nodeAction.relationTypeRequired') }]"
+      :help="t('tb.ruleChain.nodeAction.customerNamePatternHelp')"
     >
       <Input v-model:value="formState.relationType" />
     </Form.Item>
 
     <Form.Item
-      label="实体缓存过期时间"
+      :label="t('tb.ruleChain.nodeAction.entityCacheExpiration')"
       name="entityCacheExpiration"
-      :rules="[{ required: true, message: '实体缓存过期时间必填!' }]"
-      help="指定存储找到的实体记录所允许的最大时间间隔。0值表示记录永远不会过期。"
+      :rules="[{ required: true, message: t('tb.ruleChain.nodeAction.entityCacheExpirationRequired') }]"
+      :help="t('tb.ruleChain.nodeAction.entityCacheExpirationHelp')"
     >
       <InputNumber
         v-model:value="formState.entityCacheExpiration"
         :min="0"
-        :addon-after="'秒'"
+        :addon-after="t('tb.ruleChain.nodeAction.unitSecond')"
         :style="{ width: '100%' }"
       />
     </Form.Item>
@@ -59,6 +65,7 @@
   import { ref, watch, defineComponent, reactive } from 'vue';
   import { Form, Select, Input, InputNumber, Checkbox, Row, Col } from 'ant-design-vue';
   import { FormInstance } from 'ant-design-vue/lib/form';
+  import { useI18n } from '/@/hooks/web/useI18n';
   import { ENTITY_TYPE_OPTIONS, EntityType } from '/@/enums/entityTypeEnum';
 
   interface Configuration {
@@ -83,6 +90,8 @@
       item.value == EntityType.EDGE
     );
   });
+
+  const { t } = useI18n('tb');
 
   const props = defineProps({
     configuration: {

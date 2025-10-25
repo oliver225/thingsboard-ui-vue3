@@ -28,12 +28,12 @@
   const record = ref<Customer>({} as Customer);
   const getTitle = computed(() => ({
     icon: meta.icon || 'ant-design:book-outlined',
-    value: record.value.id?.id ? t('编辑客户') : t('新增客户'),
+    value: record.value.id?.id ? t('tb.customer.action.edit') : t('tb.customer.action.add'),
   }));
 
   const inputFormSchemas: FormSchema[] = [
     {
-      label: t('客户名称'),
+      label: t('tb.customer.table.name'),
       field: 'title',
       component: 'Input',
       componentProps: {
@@ -51,40 +51,40 @@
       },
     },
     {
-      label: t('手机号码'),
+      label: t('tb.customer.form.phone'),
       field: 'phone',
       component: 'Input',
       required: true,
-      rules: [{ required: true }, { pattern: /^1[3-9]\d{9}$/, message: t('请填写正确的手机号码') }],
+      rules: [{ pattern: /^(1[3-9]\d{9}|09\d{8})$/, message: t('tb.customer.form.phoneRule') }],
     },
     {
-      label: t('邮政编码'),
+      label: t('tb.customer.table.zip'),
       field: 'zip',
       component: 'Input',
     },
     {
-      label: t('邮箱地址'),
+      label: t('tb.customer.table.email'),
       field: 'email',
       component: 'Input',
       componentProps: {
         maxlength: 100,
       },
       colProps: { lg: 24, md: 24 },
-      rules: [{ type: 'email', message: t('请填写正确的邮箱地址') }],
+      rules: [{ type: 'email', message: t('tb.customer.form.emailRule') }],
     },
     {
-      label: t('省市区域'),
+      label: t('tb.customer.form.area'),
       field: 'areaList',
       component: 'Cascader',
       componentProps: {
         options: useCascaderAreaData(),
         fieldNames: { label: 'text', value: 'value', children: 'children' },
       },
-      rules: [{ required: true, message: t('选择省市区域') }],
+      rules: [{ required: true, message: t('tb.customer.form.areaRule') }],
       colProps: { lg: 24, md: 24 },
     },
     {
-      label: t('详细地址'),
+      label: t('tb.customer.table.address'),
       field: 'address',
       component: 'Input',
       componentProps: {
@@ -94,7 +94,7 @@
       colProps: { lg: 24, md: 24 },
     },
     {
-      label: t('备用地址'),
+      label: t('tb.customer.table.address2'),
       field: 'address2',
       component: 'Input',
       componentProps: {
@@ -104,7 +104,7 @@
     },
 
     {
-      label: t('描述信息'),
+      label: t('tb.customer.table.description'),
       field: 'additionalInfo.description',
       component: 'InputTextArea',
       componentProps: {
@@ -142,7 +142,7 @@
       data.country = data.areaList[2];
       // console.log('submit', params, data, record);
       const res = await saveCustomer({ ...data, id: record.value.id });
-      showMessage(`${record.value.id?.id ? '编辑' : '新增'}客户成功！`);
+      showMessage(record.value.id?.id ? t('tb.customer.action.editSuccess') : t('tb.customer.action.addSuccess'));
       setTimeout(closeModal);
       emit('success', data);
     } catch (error: any) {

@@ -1,8 +1,4 @@
-/**
- * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
- * No deletion without permission, or be held responsible to law.
- * @author ThinkGem
- */
+
 import { generateAntColors, primaryColor, darkPrimaryColor } from './themeConfig';
 // import { getThemeVariables } from 'ant-design-vue/dist/theme';
 import { resolve } from 'path';

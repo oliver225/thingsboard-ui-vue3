@@ -1,4 +1,4 @@
-import { Function } from './deviceProfile';
+// import { Function } from './deviceProfile';
 import { Scope } from '/@/enums/telemetryEnum';
 import { defHttp } from '/@/utils/http/axios';
 import { EntityType } from '/@/enums/entityTypeEnum';
@@ -72,9 +72,10 @@ export function getAttributes(entityId: EntityId<any>, keys?: string) {
   });
 }
 
-export function getAttributesByScope(entityId: EntityId<any>, scope: Scope) {
+export function getAttributesByScope(entityId: EntityId<any>, scope: Scope, params: any = {}) {
   return defHttp.get<Array<kvEntity>>({
     url: `/api/plugins/telemetry/${entityId.entityType}/${entityId.id}/values/attributes/${scope}`,
+    params,
   });
 }
 

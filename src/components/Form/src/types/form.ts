@@ -1,8 +1,3 @@
-/**
- * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
- * No deletion without permission, or be held responsible to law.
- * @author Vben、ThinkGem
- */
 import type { NamePath, RuleObject } from 'ant-design-vue/lib/form/interface';
 import type { VNode } from 'vue';
 import type { ButtonProps as AntdButtonProps } from '/@/components/Button';

@@ -13,8 +13,8 @@
     </template>
     <BasicForm @register="registerForm">
       <template #additionalInfo="{ model, field }">
-        <div class="border border-solid border-neutral-300">
-          <CodeEditor v-model:value="model[field]" />
+        <div class="border border-solid border-neutral-300 h-30">
+          <CodeEditor :bordered="true" :mode="MODE.JSON" v-model:value="model[field]" />
         </div>
       </template>
     </BasicForm>
@@ -26,7 +26,7 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import { router } from '/@/router';
   import { Icon } from '/@/components/Icon';
-  import { CodeEditor } from '/@/components/CodeEditor';
+  import { CodeEditor, MODE } from '/@/components/CodeEditor';
 
   import { BasicForm, FormSchema, useForm } from '/@/components/Form';
   import { BasicModal, useModalInner } from '/@/components/Modal';
@@ -43,7 +43,7 @@
   import { tenantById } from '/@/api/tb/tenant';
   import { customerList } from '/@/api/tb/customer';
   import { userList } from '/@/api/tb/user';
-  // import { currentTenantDashboardList } from '/@/api/tb/dashboard';
+  import { ruleChainList } from '/@/api/tb/ruleChain';
 
   const emit = defineEmits(['success', 'register']);
 
@@ -59,7 +59,7 @@
 
   const getTitle = computed(() => ({
     icon: meta.icon || 'ant-design:book-outlined',
-    value: isNewRecord.value ? t('新增关联') : t('编辑关联'),
+    value: isNewRecord.value ? t('tb.relation.action.add') : t('tb.relation.action.edit'),
   }));
 
   const entityTypeOptions = computed(() => {
@@ -72,7 +72,8 @@
         item.value == EntityType.CUSTOMER ||
         item.value == EntityType.USER ||
         item.value == EntityType.DASHBOARD ||
-        item.value == EntityType.EDGE
+        item.value == EntityType.EDGE ||
+        item.value == EntityType.RULE_CHAIN
       );
     });
   });
@@ -82,17 +83,17 @@
   const inputFormSchemas: FormSchema[] = [
     { field: 'typeGroup', component: 'Input', defaultValue: RelationTypeGroup.COMMON, show: false },
     {
-      label: t('关联类型'),
+      label: t('tb.relation.form.relationType'),
       field: 'type',
       component: 'Input',
       componentProps: {
         maxlength: 100,
-        placeholder: '请输关联类型',
+        placeholder: t('tb.relation.form.relationTypePlaceholder'),
       },
       required: true,
     },
     {
-      label: t('从实体'),
+      label: t('tb.relation.form.fromEntity'),
       field: 'from.entityType',
       component: 'Select',
       componentProps: {
@@ -101,7 +102,7 @@
       },
       required: true,
       show: direction.value == 'To',
-      colProps: { lg: 8, md: 8 },
+      colProps: { lg: 10, md: 10 },
     },
     {
       field: 'from.id',
@@ -111,10 +112,10 @@
       },
       required: true,
       show: direction.value == 'To',
-      colProps: { lg: 16, md: 16 },
+      colProps: { lg: 14, md: 14 },
     },
     {
-      label: t('到实体'),
+      label: t('tb.relation.form.toEntity'),
       field: 'to.entityType',
       component: 'Select',
       componentProps: {
@@ -123,7 +124,7 @@
       },
       required: true,
       show: direction.value == 'From',
-      colProps: { lg: 8, md: 8 },
+      colProps: { lg: 10, md: 10 },
     },
     {
       field: 'to.id',
@@ -133,11 +134,12 @@
       },
       required: true,
       show: direction.value == 'From',
-      colProps: { lg: 16, md: 16 },
+      colProps: { lg: 14, md: 14 },
     },
 
     {
-      label: t('附加信息(JSON)'),
+      label: t('tb.relation.form.additionalInfo'),
+      subLabel: '(JSON)',
       field: 'additionalInfo',
       component: 'InputTextArea',
       componentProps: {
@@ -167,18 +169,18 @@
     setFieldsValue(record.value);
     updateSchema([
       {
-        label: t('关联类型'),
+        label: t('tb.relation.form.relationType'),
         field: 'type',
         component: 'Input',
         componentProps: {
           maxlength: 100,
-          placeholder: '请输关联类型',
+          placeholder: t('tb.relation.form.relationTypePlaceholder'),
           disabled: !isNewRecord.value,
         },
         required: true,
       },
       {
-        label: t('从实体'),
+        label: t('tb.relation.form.fromEntity'),
         field: 'from.entityType',
         component: 'Select',
         componentProps: {
@@ -202,7 +204,7 @@
         colProps: { lg: 16, md: 16 },
       },
       {
-        label: t('到实体'),
+        label: t('tb.relation.form.toEntity'),
         field: 'to.entityType',
         component: 'Select',
         componentProps: {
@@ -238,12 +240,12 @@
         try {
           data.additionalInfo = JSON.parse(data.additionalInfo);
         } catch (e) {
-          showMessage('附加信息格式错误！请输入JSON格式数据', 'error');
+          showMessage(t('tb.relation.form.additionalInfoJsonError'), 'error');
           return;
         }
       }
       const res = await saveRelation({ ...data });
-      showMessage(`${isNewRecord.value ? '新增' : '编辑'}关联成功！`);
+      showMessage(isNewRecord.value ? t('tb.relation.action.addSuccess') : t('tb.relation.action.editSuccess'));
       setTimeout(closeModal);
       emit('success', data);
     } catch (error: any) {
@@ -302,6 +304,13 @@
       case EntityType.USER:
         const userListResult = await userList({ pageSize: 50, page: 0, sortProperty: 'email', sortOrder: 'ASC' });
         options = userListResult.data.map((device) => ({ label: device.name, value: device.id.id }));
+        break;
+      case EntityType.RULE_CHAIN:
+        const ruleChainResult = await ruleChainList(
+          { pageSize: 50, page: 0, sortProperty: 'name', sortOrder: 'ASC' },
+          'CORE',
+        );
+        options = ruleChainResult.data.map((ruleChain) => ({ label: ruleChain.name, value: ruleChain.id.id }));
         break;
       default:
         options = [];

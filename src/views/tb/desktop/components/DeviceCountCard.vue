@@ -1,5 +1,5 @@
 <template>
-  <Card size="small" title="设备" class="cursor-pointer" @click="go('/device/list')">
+  <Card size="small" :title="t('tb.desktop.cards.device')" class="cursor-pointer" @click="go('/device/list')">
     <template #extra>
       <Icon icon="ant-design:database-outlined" :size="24" color="green" />
     </template>
@@ -7,7 +7,7 @@
     <Row v-else class="py-4 px-4">
       <Col span="8">
         <div class="ant-statistic">
-          <div class="ant-statistic-title mb-1 text-green-600"> 在线 </div>
+          <div class="ant-statistic-title mb-1 text-green-600">{{ t('tb.desktop.cards.online') }}</div>
           <div class="ant-statistic-content">
             <CountTo :endVal="activeDevice" color="green" class="ant-statistic-content-value-int text-2xl" />
           </div>
@@ -15,7 +15,7 @@
       </Col>
       <Col span="8">
         <div class="ant-statistic">
-          <div class="ant-statistic-title mb-1 text-rose-500"> 离线 </div>
+          <div class="ant-statistic-title mb-1 text-rose-500">{{ t('tb.desktop.cards.offline') }}</div>
           <div class="ant-statistic-content">
             <CountTo :endVal="inactiveDevice" color="red" class="ant-statistic-content-value-int text-2xl" />
           </div>
@@ -23,7 +23,7 @@
       </Col>
       <Col span="8">
         <div class="ant-statistic">
-          <div class="ant-statistic-title mb-1"> 全部 </div>
+          <div class="ant-statistic-title mb-1">{{ t('tb.desktop.cards.total') }}</div>
           <div class="ant-statistic-content">
             <CountTo :endVal="total" class="ant-statistic-content-value-int text-2xl" />
           </div>
@@ -45,7 +45,9 @@
   import { EntityType } from '/@/enums/entityTypeEnum';
   import { useGo } from '/@/hooks/web/usePage';
   import { WsCmdType } from '/@/enums/wsCmdTypeEnum';
+  import { useI18n } from '/@/hooks/web/useI18n';
 
+  const { t } = useI18n();
   const go = useGo();
 
   const DEVICE_COUNT_CMD_ID = ref(0);

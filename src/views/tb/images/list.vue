@@ -9,11 +9,11 @@
       <template #tableTitle>
         <div class="space-x-2">
           <a-button type="primary" @click="handleUpload({})">
-            <Icon icon="ant-design:upload-outlined" /> 上传图像
+            <Icon icon="ant-design:upload-outlined" /> {{ t('tb.images.action.uploadImage') }}
           </a-button>
           <a-input
             v-model:value="searchParam.textSearch"
-            placeholder="输入搜索内容"
+            :placeholder="t('common.search.searchText')"
             allow-clear
             @change="reload()"
             style="width: 240px"
@@ -23,7 +23,9 @@
             </template>
           </a-input>
           <template v-if="hasPermission(Authority.TENANT_ADMIN)">
-            <Checkbox v-model:checked="searchParam.includeSystemImages" @change="reload()"> 包含系统图像 </Checkbox>
+            <Checkbox v-model:checked="searchParam.includeSystemImages" @change="reload()">
+              {{ t('tb.images.select.includeSystemImages') }}
+            </Checkbox>
           </template>
         </div>
       </template>
@@ -110,7 +112,7 @@
   const { createConfirm, showMessage } = useMessage();
 
   const getTitle = {
-    value: router.currentRoute.value.meta.title || '图片集',
+    value: router.currentRoute.value.meta.title || t('tb.images.title'),
   };
 
   const searchParam = reactive({
@@ -120,7 +122,7 @@
 
   const tableColumns: BasicColumn[] = [
     {
-      title: t('名称'),
+      title: t('tb.images.table.name'),
       dataIndex: 'title',
       key: 'title',
       sorter: true,
@@ -129,7 +131,7 @@
       slot: 'firstColumn',
     },
     {
-      title: t('创建时间'),
+      title: t('tb.images.table.createdTime'),
       dataIndex: 'createdTime',
       key: 'createdTime',
       format: 'date|YYYY-MM-DD HH:mm:ss',
@@ -138,7 +140,7 @@
       align: 'center',
     },
     {
-      title: '分辨率',
+      title: t('tb.images.table.resolution'),
       dataIndex: 'descriptor.height',
       key: 'descriptor.height',
       align: 'center',
@@ -146,7 +148,7 @@
       slot: 'resolution',
     },
     {
-      title: t('文件大小'),
+      title: t('tb.images.table.size'),
       dataIndex: 'descriptor.size',
       key: 'descriptor.size',
       sorter: true,
@@ -155,7 +157,7 @@
       slot: 'descriptorSize',
     },
     {
-      title: '系统',
+      title: t('tb.images.table.system'),
       dataIndex: 'link',
       key: 'link',
       ifShow: hasPermission(Authority.TENANT_ADMIN),
@@ -170,25 +172,25 @@
     actions: (record: Recordable) => [
       {
         icon: 'ant-design:download-outlined',
-        title: t('下载图片'),
+        title: t('tb.images.action.downloadImage'),
         onClick: handleDownload.bind(this, { ...record }),
       },
       {
         icon: 'ant-design:code-outlined',
-        title: t('嵌入图片'),
+        title: t('tb.images.action.embedImage'),
         onClick: handleEmbedImage.bind(this, { ...record }),
       },
       {
         icon: 'i-clarity:note-edit-line',
         color: 'success',
-        title: t('修改图片'),
+        title: t('tb.images.action.editImage'),
         onClick: handleDetail.bind(this, { ...record }),
       },
       {
         icon: 'ant-design:delete-outlined',
         color: 'error',
         ifShow: !!!(hasPermission(Authority.TENANT_ADMIN) && record.link.indexOf('system') > -1),
-        title: t('删除图片'),
+        title: t('tb.images.action.deleteImage'),
         onClick: handleDelete.bind(this, { ...record }),
       },
     ],
@@ -209,8 +211,6 @@
     showTableSetting: true,
     useSearchForm: false,
     canResize: true,
-    tableSetting: { card: true },
-    cardList: true,
   });
 
   function wrapFetchParams(param: any) {
@@ -230,10 +230,10 @@
   async function handleDelete(record: Recordable) {
     createConfirm({
       iconType: 'error',
-      title: `确定删除图片${record.title}吗？`,
-      content: '请注意：确认后，图片和所有相关数据将不可恢复。',
+      title: t('tb.images.action.deleteConfirm', { title: record.title }),
+      content: t('tb.images.action.deleteConfirmContent'),
       centered: false,
-      okText: '删除',
+      okText: t('tb.images.action.deleteButton'),
       okButtonProps: {
         type: 'primary',
         danger: true,
@@ -241,7 +241,7 @@
       onOk: async () => {
         try {
           await deleteImage(record.link);
-          showMessage('删除图片成功！');
+          showMessage(t('tb.images.action.deleteSuccess'));
           handleSuccess();
         } catch (error: any) {
           if (error.success == false) {
@@ -263,10 +263,10 @@
     });
     createConfirm({
       iconType: 'error',
-      title: `图片被其他实体引用`,
-      content: '请注意：确认后，图片和所有相关数据将不可恢复。',
+      title: t('tb.images.action.forceDeleteConfirmTitle'),
+      content: t('tb.images.action.forceDeleteConfirmContent'),
       centered: false,
-      okText: '强制删除',
+      okText: t('tb.images.action.forceDeleteButton'),
       okButtonProps: {
         type: 'primary',
         danger: true,
@@ -274,7 +274,7 @@
       onOk: async () => {
         try {
           await deleteImage(record.link, true);
-          showMessage('删除图片成功！');
+          showMessage(t('tb.images.action.deleteSuccess'));
         } catch (error: any) {
           console.log(error);
         } finally {

@@ -1,0 +1,41 @@
+export default {
+  title: '资源库',
+  table: {
+    title: '标题',
+    resourceKey: '资源Key',
+    resourceType: '资源类型',
+    createdTime: '创建时间',
+    system: '系统',
+  },
+  form: {
+    title: '标题',
+    titlePlaceholder: '请输入标题',
+    resourceType: '资源类型',
+    resourceTypePlaceholder: '请选择资源类型',
+    upload: '上传文件',
+    uploadTip: '拖拽或点击选择文件',
+    fileRequired: '请选择一个文件!',
+    addSuccess: '新增资源成功！',
+    editSuccess: '编辑资源成功！',
+  },
+  action: {
+    add: '新增资源',
+    edit: '编辑资源',
+    download: '导出资源',
+    delete: '删除资源',
+    deleteConfirm: '确定删除资源[{title}]吗？',
+    deleteConfirmContent: '请注意：确认后，资源及其相关数据将不可恢复。',
+    deleteSuccess: '删除资源成功！',
+    copyId: '复制资源ID',
+    copyIdSuccess: '复制资源ID成功！',
+  },
+  detail: {
+    title: '资源详情',
+    tab: '详情',
+    resourceKey: '资源Key',
+    fileName: '文件名称',
+  },
+  filter: {
+    all: '全部',
+  },
+};

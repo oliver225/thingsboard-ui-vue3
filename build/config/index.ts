@@ -1,8 +1,4 @@
-/**
- * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
- * No deletion without permission, or be held responsible to law.
- * @author ThinkGem
- */
+
 import fs from 'fs-extra';
 import dotenv from 'dotenv';
 import { join } from 'node:path';

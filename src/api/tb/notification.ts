@@ -59,7 +59,7 @@ export interface NotificationSettings {
 
 export interface NotificationPref {
   enabled: boolean;
-  enabledDeliveryMethods: Map<string, boolean>;
+  enabledDeliveryMethods: Map<'WEB' | 'EMAIL' | 'SMS' | 'MOBILE_APP', boolean>;
 }
 
 export function notificationList(params: BasicQuery, unreadOnly = true) {

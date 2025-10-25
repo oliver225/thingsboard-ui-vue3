@@ -1,3 +1,7 @@
+import { useI18n } from '/@/hooks/web/useI18n';
+
+const { t } = useI18n();
+
 export enum ALarmShowStatus {
   ACTIVE_UNACK = 'ACTIVE_UNACK',
   ACTIVE_ACK = 'ACTIVE_ACK',
@@ -6,6 +10,14 @@ export enum ALarmShowStatus {
 }
 
 export enum AlarmStatus {
+  ACTIVE = 'ACTIVE',
+  CLEARED = 'CLEARED',
+  ACK = 'ACK',
+  UNACK = 'UNACK',
+}
+
+export enum AlarmSearchStatus {
+  ANY = 'ANY',
   ACTIVE = 'ACTIVE',
   CLEARED = 'CLEARED',
   ACK = 'ACK',
@@ -22,25 +34,25 @@ export enum AlarmSeverity {
 }
 
 export const ALARM_SHOW_STATUS_OPTIONS = [
-  { value: ALarmShowStatus.ACTIVE_UNACK, label: '激活未确认' },
-  { value: ALarmShowStatus.ACTIVE_ACK, label: '激活已确认' },
-  { value: ALarmShowStatus.CLEARED_UNACK, label: '清理未确认' },
-  { value: ALarmShowStatus.CLEARED_ACK, label: '清理已确认' },
+  { value: ALarmShowStatus.ACTIVE_UNACK, label: t('tb.alarm.enums.showStatus.activeUnack') },
+  { value: ALarmShowStatus.ACTIVE_ACK, label: t('tb.alarm.enums.showStatus.activeAck') },
+  { value: ALarmShowStatus.CLEARED_UNACK, label: t('tb.alarm.enums.showStatus.clearedUnack') },
+  { value: ALarmShowStatus.CLEARED_ACK, label: t('tb.alarm.enums.showStatus.clearedAck') },
 ];
 
 export const ALARM_STATUS_OPTIONS = [
-  { value: AlarmStatus.ACTIVE, label: '已激活' },
-  { value: AlarmStatus.CLEARED, label: '已清理' },
-  { value: AlarmStatus.ACK, label: '已确认' },
-  { value: AlarmStatus.UNACK, label: '未确认' },
+  { value: AlarmStatus.ACTIVE, label: t('tb.alarm.enums.status.active') },
+  { value: AlarmStatus.CLEARED, label: t('tb.alarm.enums.status.cleared') },
+  { value: AlarmStatus.ACK, label: t('tb.alarm.enums.status.ack') },
+  { value: AlarmStatus.UNACK, label: t('tb.alarm.enums.status.unack') },
 ];
 
 export const ALARM_SEVERITY_OPTIONS = [
-  { value: AlarmSeverity.CRITICAL, label: '危险', color: '#FF0000' }, // 红色
-  { value: AlarmSeverity.MAJOR, label: '重要', color: '#E37318' }, // 橙色
-  { value: AlarmSeverity.MINOR, label: '次要', color: '#FFA000' }, // 黄色
-  { value: AlarmSeverity.WARNING, label: '警告', color: '#FFCA3D' }, //蓝色
-  { value: AlarmSeverity.INDETERMINATE, label: '不确定' }, //灰色
+  { value: AlarmSeverity.CRITICAL, label: t('tb.alarm.enums.severity.critical'), color: '#FF0000' }, // 红色
+  { value: AlarmSeverity.MAJOR, label: t('tb.alarm.enums.severity.major'), color: '#E37318' }, // 橙色
+  { value: AlarmSeverity.MINOR, label: t('tb.alarm.enums.severity.minor'), color: '#FFA000' }, // 黄色
+  { value: AlarmSeverity.WARNING, label: t('tb.alarm.enums.severity.warning'), color: '#FFCA3D' }, //蓝色
+  { value: AlarmSeverity.INDETERMINATE, label: t('tb.alarm.enums.severity.indeterminate') }, //灰色
 ];
 
 export enum AlarmConditionKeyType {
@@ -50,9 +62,9 @@ export enum AlarmConditionKeyType {
 }
 
 export const ALARM_CONDITION_KEY_TYPE_OPTIONS = [
-  { value: AlarmConditionKeyType.ATTRIBUTE, label: '属性' },
-  { value: AlarmConditionKeyType.TIME_SERIES, label: '遥测数据' },
-  { value: AlarmConditionKeyType.CONSTANT, label: '常量' },
+  { value: AlarmConditionKeyType.ATTRIBUTE, label: t('tb.alarm.enums.conditionKeyType.attribute') },
+  { value: AlarmConditionKeyType.TIME_SERIES, label: t('tb.alarm.enums.conditionKeyType.timeSeries') },
+  { value: AlarmConditionKeyType.CONSTANT, label: t('tb.alarm.enums.conditionKeyType.constant') },
 ];
 
 export enum AlarmConditionValueType {
@@ -63,10 +75,10 @@ export enum AlarmConditionValueType {
 }
 
 export const ALARM_CONDITION_VALUE_TYPE_OPTIONS = [
-  { value: AlarmConditionValueType.STRING, label: '字符串' },
-  { value: AlarmConditionValueType.NUMERIC, label: '数字' },
-  { value: AlarmConditionValueType.BOOLEAN, label: '布尔值' },
-  { value: AlarmConditionValueType.DATE_TIME, label: '日期时间' },
+  { value: AlarmConditionValueType.STRING, label: t('tb.alarm.enums.conditionValueType.string') },
+  { value: AlarmConditionValueType.NUMERIC, label: t('tb.alarm.enums.conditionValueType.numeric') },
+  { value: AlarmConditionValueType.BOOLEAN, label: t('tb.alarm.enums.conditionValueType.boolean') },
+  { value: AlarmConditionValueType.DATE_TIME, label: t('tb.alarm.enums.conditionValueType.dateTime') },
 ];
 
 export enum PredicateOperation {
@@ -85,16 +97,16 @@ export enum PredicateOperation {
 }
 
 export const PREDICATE_OPERATION_OPTIONS = [
-  { value: PredicateOperation.EQUAL, label: '等于' },
-  { value: PredicateOperation.NOT_EQUAL, label: '不等于' },
-  { value: PredicateOperation.STARTS_WITH, label: '开始于' },
-  { value: PredicateOperation.ENDS_WITH, label: '结束于' },
-  { value: PredicateOperation.CONTAINS, label: '包含' },
-  { value: PredicateOperation.NOT_CONTAINS, label: '不包含' },
-  { value: PredicateOperation.IN, label: '匹配' },
-  { value: PredicateOperation.NOT_IN, label: '不匹配' },
-  { value: PredicateOperation.LESS, label: '小于' },
-  { value: PredicateOperation.GREATER, label: '大于' },
-  { value: PredicateOperation.GREATER_OR_EQUAL, label: '大于等于' },
-  { value: PredicateOperation.LESS_OR_EQUAL, label: '小于等于' },
+  { value: PredicateOperation.EQUAL, label: t('tb.alarm.enums.predicateOperation.equal') },
+  { value: PredicateOperation.NOT_EQUAL, label: t('tb.alarm.enums.predicateOperation.notEqual') },
+  { value: PredicateOperation.STARTS_WITH, label: t('tb.alarm.enums.predicateOperation.startsWith') },
+  { value: PredicateOperation.ENDS_WITH, label: t('tb.alarm.enums.predicateOperation.endsWith') },
+  { value: PredicateOperation.CONTAINS, label: t('tb.alarm.enums.predicateOperation.contains') },
+  { value: PredicateOperation.NOT_CONTAINS, label: t('tb.alarm.enums.predicateOperation.notContains') },
+  { value: PredicateOperation.IN, label: t('tb.alarm.enums.predicateOperation.in') },
+  { value: PredicateOperation.NOT_IN, label: t('tb.alarm.enums.predicateOperation.notIn') },
+  { value: PredicateOperation.LESS, label: t('tb.alarm.enums.predicateOperation.less') },
+  { value: PredicateOperation.GREATER, label: t('tb.alarm.enums.predicateOperation.greater') },
+  { value: PredicateOperation.GREATER_OR_EQUAL, label: t('tb.alarm.enums.predicateOperation.greaterOrEqual') },
+  { value: PredicateOperation.LESS_OR_EQUAL, label: t('tb.alarm.enums.predicateOperation.lessOrEqual') },
 ];

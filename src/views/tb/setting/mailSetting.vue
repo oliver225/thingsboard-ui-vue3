@@ -2,19 +2,19 @@
   <ScrollContainer :style="{ maxHeight: domHeight + 'px' }">
     <Spin :spinning="dataLoading">
       <div class="general-setting">
-        <div class="text-lg font-bold my-4">发送邮件配置</div>
+        <div class="text-lg font-bold my-4">{{ t('tb.setting.mail.title') }}</div>
         <Form ref="formRef" :model="formState" layout="vertical">
-          <Form.Item label="邮件来自" :name="['jsonValue', 'mailFrom']" :rules="[{ required: true }]">
+          <Form.Item :label="t('tb.setting.mail.mailFrom')" :name="['jsonValue', 'mailFrom']" :rules="[{ required: true }]">
             <Input v-model:value="formState.jsonValue.mailFrom" />
           </Form.Item>
-          <Form.Item label="SMTP供应商" :name="['jsonValue', 'providerId']" :rules="[{ required: true }]">
+          <Form.Item :label="t('tb.setting.mail.smtpProvider')" :name="['jsonValue', 'providerId']" :rules="[{ required: true }]">
             <Input v-model:value="formState.jsonValue.providerId" :disabled="true" />
           </Form.Item>
-          <CollapseContainer title="连接设置" :canExpan="false" class="border border-solid border-neutral-300 mb-4">
+          <CollapseContainer :title="t('tb.setting.mail.connectionSettings')" :canExpan="false" class="border border-solid border-neutral-300 mb-4">
             <div class="px-4">
               <Row :gutter="24">
                 <Col :span="24">
-                  <Form.Item label="SMTP协议" :name="['jsonValue', 'smtpProtocol']" :rules="[{ required: true }]">
+                  <Form.Item :label="t('tb.setting.mail.smtpProtocol')" :name="['jsonValue', 'smtpProtocol']" :rules="[{ required: true }]">
                     <Select v-model:value="formState.jsonValue.smtpProtocol">
                       <Select.Option value="smtp">SMTP</Select.Option>
                       <Select.Option value="smtps">SMTPS</Select.Option>
@@ -22,12 +22,12 @@
                   </Form.Item>
                 </Col>
                 <Col :span="12">
-                  <Form.Item label="SMTP主机" :name="['jsonValue', 'smtpHost']" :rules="[{ required: true }]">
+                  <Form.Item :label="t('tb.setting.mail.smtpHost')" :name="['jsonValue', 'smtpHost']" :rules="[{ required: true }]">
                     <Input v-model:value="formState.jsonValue.smtpHost" />
                   </Form.Item>
                 </Col>
                 <Col :span="12">
-                  <Form.Item label="SMTP端口" :name="['jsonValue', 'smtpPort']" :rules="[{ required: true }]">
+                  <Form.Item :label="t('tb.setting.mail.smtpPort')" :name="['jsonValue', 'smtpPort']" :rules="[{ required: true }]">
                     <InputNumber
                       v-model:value="formState.jsonValue.smtpPort"
                       :min="1"
@@ -37,11 +37,11 @@
                   </Form.Item>
                 </Col>
                 <Col :span="24">
-                  <Form.Item label="超时时间(毫秒)" :name="['jsonValue', 'timeout']" :rules="[{ required: true }]">
+                  <Form.Item :label="t('tb.setting.mail.timeout')" :name="['jsonValue', 'timeout']" :rules="[{ required: true }]">
                     <InputNumber
                       v-model:value="formState.jsonValue.timeout"
                       :min="0"
-                      addonAfter="毫秒"
+                      :addonAfter="t('tb.setting.mail.unitMillisecond')"
                       style="width: calc(90%)"
                     />
                   </Form.Item>
@@ -49,7 +49,7 @@
                 <Col :span="24">
                   <Form.Item :name="['jsonValue', 'enableTls']">
                     <Switch v-model:checked="formState.jsonValue.enableTls" @change="handleTlsEnableChange" />
-                    <span class="ml-2 text-base font-bold"> 启用TLS </span>
+                    <span class="ml-2 text-base font-bold"> {{ t('tb.setting.mail.enableTls') }} </span>
                   </Form.Item>
                 </Col>
                 <Col :span="24" v-if="formState.jsonValue.enableTls == true">
@@ -65,16 +65,16 @@
                 <Col :span="24">
                   <Form.Item :name="['jsonValue', 'enableProxy']">
                     <Switch v-model:checked="formState.jsonValue.enableProxy" @change="handleProxyEnableChange" />
-                    <span class="ml-2 text-base font-bold"> 启用代理 </span>
+                    <span class="ml-2 text-base font-bold"> {{ t('tb.setting.mail.enableProxy') }} </span>
                   </Form.Item>
                 </Col>
                 <Col :span="12" v-if="formState.jsonValue.enableProxy == true">
-                  <Form.Item label="代理主机" :name="['jsonValue', 'proxyHost']" :rules="[{ required: true }]">
+                  <Form.Item :label="t('tb.setting.mail.proxyHost')" :name="['jsonValue', 'proxyHost']" :rules="[{ required: true }]">
                     <Input v-model:value="formState.jsonValue.proxyHost" />
                   </Form.Item>
                 </Col>
                 <Col :span="12" v-if="formState.jsonValue.enableProxy == true">
-                  <Form.Item label="代理端口" :name="['jsonValue', 'proxyPort']" :rules="[{ required: true }]">
+                  <Form.Item :label="t('tb.setting.mail.proxyPort')" :name="['jsonValue', 'proxyPort']" :rules="[{ required: true }]">
                     <InputNumber
                       v-model:value="formState.jsonValue.proxyPort"
                       :min="1"
@@ -84,24 +84,24 @@
                   </Form.Item>
                 </Col>
                 <Col :span="12" v-if="formState.jsonValue.enableProxy == true">
-                  <Form.Item label="代理用户" :name="['jsonValue', 'proxyUser']">
+                  <Form.Item :label="t('tb.setting.mail.proxyUser')" :name="['jsonValue', 'proxyUser']">
                     <Input v-model:value="formState.jsonValue.proxyUser" />
                   </Form.Item>
                 </Col>
                 <Col :span="12" v-if="formState.jsonValue.enableProxy == true">
-                  <Form.Item label="代理密码" :name="['jsonValue', 'proxyPassword']">
+                  <Form.Item :label="t('tb.setting.mail.proxyPassword')" :name="['jsonValue', 'proxyPassword']">
                     <InputPassword v-model:value="formState.jsonValue.proxyPassword" />
                   </Form.Item>
                 </Col>
               </Row>
             </div>
           </CollapseContainer>
-          <CollapseContainer title="身份验证" :canExpan="false" class="border border-solid border-neutral-300 mb-4">
+          <CollapseContainer :title="t('tb.setting.mail.authentication')" :canExpan="false" class="border border-solid border-neutral-300 mb-4">
             <div class="px-4">
-              <Form.Item label="用户名" :name="['jsonValue', 'username']">
+              <Form.Item :label="t('tb.setting.mail.username')" :name="['jsonValue', 'username']">
                 <Input v-model:value="formState.jsonValue.username" />
               </Form.Item>
-              <Form.Item label="修改密码" :name="['jsonValue', 'password']">
+              <Form.Item :label="t('tb.setting.mail.password')" :name="['jsonValue', 'password']">
                 <InputPassword v-model:value="formState.jsonValue.password" />
               </Form.Item>
             </div>
@@ -111,15 +111,15 @@
           <Space>
             <a-button @click="fetchData">
               <Icon :icon="'ant-design:reload-outlined'" />
-              重置
+              {{ t('tb.setting.connectivity.reset') }}
             </a-button>
             <a-button :loading="dataLoading" @click="handleSendTestMail">
               <Icon :icon="'ant-design:send-outlined'" />
-              发送测试邮件
+              {{ t('tb.setting.mail.sendTestMail') }}
             </a-button>
             <a-button :loading="dataLoading" type="primary" @click="handleSubmit">
               <Icon :icon="'ant-design:check-outlined'" />
-              保存
+              {{ t('tb.setting.connectivity.save') }}
             </a-button>
           </Space>
         </div>
@@ -227,7 +227,7 @@ import { EntityType } from '/@/enums/entityTypeEnum';
       // console.log('submit', params, data, record);
       const res = await saveAdminSetting({ ...record.value, ...data });
       fetchData();
-      showMessage('保存发送邮件配置成功！');
+      showMessage(t('tb.setting.mail.saveSuccess'));
     } catch (error: any) {
       if (error && error.errorFields) {
         showMessage(t('common.validateError'));
@@ -245,7 +245,7 @@ import { EntityType } from '/@/enums/entityTypeEnum';
       dataLoading.value = true;
 
       const result = await sendTestMail({ ...record.value, ...data });
-      showMessage('发送测试邮件成功！');
+      showMessage(t('tb.setting.mail.sendTestMailSuccess'));
     } catch (error: any) {
       if (error && error.errorFields) {
         showMessage(t('common.validateError'), 'error');

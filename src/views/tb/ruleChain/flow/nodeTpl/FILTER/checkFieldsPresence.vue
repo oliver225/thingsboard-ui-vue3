@@ -1,90 +1,93 @@
 <template>
-    <Form ref="formRef" :model="formState" layout="vertical">
-        <div class="border  border-neutral-400 p-2 rounded">
-            <p class="text-base font-bold">检查字段</p>
-            <div class="p-2">
-                <Form.Item label="消息字段" name="messageNames" :rules="[{ validator: validatorFieldName }]">
-                    <Select v-model:value="formState.messageNames" mode="tags">
-                    </Select>
-                </Form.Item>
-                <Form.Item label="元数据字段" name="metadataNames" :rules="[{ validator: validatorFieldName }]">
-                    <Select v-model:value="formState.metadataNames" mode="tags">
-                    </Select>
-                </Form.Item>
-            </div>
-
-        </div>
-
-        <Form.Item name="checkAllKeys">
-            <Checkbox v-model:checked="formState.checkAllKeys">
-                检查是否存在所有指定的字段
-            </Checkbox>
+  <Form ref="formRef" :model="formState" layout="vertical">
+    <div class="border border-neutral-400 p-2 rounded">
+      <p class="text-base font-bold">{{ t('tb.ruleChain.nodeAction.checkFields') }}</p>
+      <div class="p-2">
+        <Form.Item
+          :label="t('tb.ruleChain.nodeAction.messageFields')"
+          name="messageNames"
+          :rules="[{ validator: validatorFieldName }]"
+        >
+          <Select v-model:value="formState.messageNames" mode="tags" />
         </Form.Item>
+        <Form.Item
+          :label="t('tb.ruleChain.nodeAction.metadataFields')"
+          name="metadataNames"
+          :rules="[{ validator: validatorFieldName }]"
+        >
+          <Select v-model:value="formState.metadataNames" mode="tags" />
+        </Form.Item>
+      </div>
+    </div>
 
-    </Form>
+    <Form.Item name="checkAllKeys">
+      <Checkbox v-model:checked="formState.checkAllKeys">
+        {{ t('tb.ruleChain.nodeAction.checkPresenceOfAllFields') }}
+      </Checkbox>
+    </Form.Item>
+  </Form>
 </template>
 <script lang="ts">
-export default defineComponent({
-    name: "check-fields-presence",
-});
+  export default defineComponent({
+    name: 'check-fields-presence',
+  });
 </script>
-<script lang="ts" setup >
-import { Checkbox, Form, Select } from 'ant-design-vue';
-import { FormInstance } from 'ant-design-vue/lib/form';
-import { isEmpty } from 'lodash-es';
-import { defineComponent, reactive, ref, watch } from 'vue';
+<script lang="ts" setup>
+  import { Checkbox, Form, Select } from 'ant-design-vue';
+  import { FormInstance } from 'ant-design-vue/lib/form';
+  import { isEmpty } from 'lodash-es';
+  import { defineComponent, reactive, ref, watch } from 'vue';
+  import { useI18n } from '/@/hooks/web/useI18n';
 
+  interface Configuration {
+    checkAllKeys: boolean;
+    messageNames: Array<string>;
+    metadataNames: Array<string>;
+  }
 
-interface Configuration {
-    checkAllKeys: boolean,
-    messageNames: Array<string>,
-    metadataNames: Array<string>,
-}
+  const { t } = useI18n('tb');
 
-
-const props = defineProps({
+  const props = defineProps({
     configuration: {
-        type: Object as PropType<Configuration>,
-        required: true,
+      type: Object as PropType<Configuration>,
+      required: true,
     },
-    ruleChainId: { type: String, default: '' }
-});
+    ruleChainId: { type: String, default: '' },
+  });
 
+  const formRef = ref<FormInstance>();
 
-const formRef = ref<FormInstance>();
-
-const formState = reactive<any>({
+  const formState = reactive<any>({
     messageNames: [],
     metadataNames: [],
     checkAllKeys: true,
-});
+  });
 
-watch(
+  watch(
     () => props.configuration,
     () => {
-        formState.checkAllKeys = props.configuration.checkAllKeys;
-        formState.messageNames = props.configuration.messageNames;
-        formState.metadataNames = props.configuration.metadataNames;
+      formState.checkAllKeys = props.configuration.checkAllKeys;
+      formState.messageNames = props.configuration.messageNames;
+      formState.metadataNames = props.configuration.metadataNames;
     },
-    { immediate: true }
-)
+    { immediate: true },
+  );
 
-function validatorFieldName() {
+  function validatorFieldName() {
     if (!isEmpty(formState.messageNames) || !isEmpty(formState.metadataNames)) {
-        return Promise.resolve();
+      return Promise.resolve();
     } else {
-        return Promise.reject('检查字段必填！');
+      return Promise.reject(t('tb.ruleChain.nodeAction.checkFieldsRequired'));
     }
-}
+  }
 
-async function getConfiguration() {
+  async function getConfiguration() {
     try {
-        return await formRef.value?.validate();
+      return await formRef.value?.validate();
     } catch (error: any) {
-        throw error;
+      throw error;
     }
-}
+  }
 
-defineExpose({ getConfiguration })
-
+  defineExpose({ getConfiguration });
 </script>

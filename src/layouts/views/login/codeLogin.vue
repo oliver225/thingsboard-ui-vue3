@@ -36,7 +36,7 @@
         componentProps: {
           codeLength: CODE_LENGTH,
           createText: (countdown: number) => {
-            const text = countdown > 0 ? t('authentication.sendText', [countdown]) : $t('authentication.sendCode');
+            const text = countdown > 0 ? t('sys.login.sendText', [countdown]) : t('sys.login.sendCode');
             return text;
           },
           placeholder: t('sys.login.smsCode'),

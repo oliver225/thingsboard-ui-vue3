@@ -1,11 +1,5 @@
-<!--
- * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
- * No deletion without permission, or be held responsible to law.
- * @description 支持字典类型、支持下拉框标签返回、支持 API 接口
- * @author Vben、ThinkGem
--->
 <template>
-  <div class="jeesite-select">
+  <div class="tbv3-select">
     <Select v-bind="getAttrs" v-model:value="state" :options="optionsRef" @click="handleFetch">
       <template #[item]="data" v-for="item in Object.keys($slots)">
         <slot :name="item" v-bind="data || {}"></slot>
@@ -22,7 +16,7 @@
     </Select>
   </div>
 </template>
-<script lang="ts" setup name="JeeSiteSelect">
+<script lang="ts" setup name="TbV3Select">
   import { ref, unref, computed, watch, onMounted } from 'vue';
   import { Select } from 'ant-design-vue';
   import { isFunction } from '/@/utils/is';
@@ -180,7 +174,7 @@
   }
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-select';
+  @prefix-cls: ~'tbv3-select';
 
   .@{prefix-cls} {
     width: 100%;
