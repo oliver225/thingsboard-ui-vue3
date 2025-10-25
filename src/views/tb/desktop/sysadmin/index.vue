@@ -113,6 +113,11 @@
               </Col>
             </Row>
           </Col>
+          <Col span="24">
+            <Card size="small">
+              <GeoMap height="600px" />
+            </Card>
+          </Col>
         </Row>
       </Col>
     </Row>
@@ -127,6 +132,7 @@
   import MessageTransportBar from '../components/chart/MessageTransportBar.vue';
   import StorageDataPointsBar from '../components/chart/StorageDataPointsBar.vue';
   import CpuStateLine from '../components/chart/CpuStateLine.vue';
+  import GeoMap from '../components/chart/GeoMap.vue';
   import { ref, onMounted, onBeforeUnmount } from 'vue';
   import { EntityType } from '/@/enums/entityTypeEnum';
   import { WsCmdType } from '/@/enums/wsCmdTypeEnum';

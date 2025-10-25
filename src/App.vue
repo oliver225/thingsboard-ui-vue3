@@ -39,6 +39,8 @@
 
   // Listening to page changes and dynamically changing site titles
   useTitle();
+
+  setWatermark(['品科智能科技（山东）有限公司', 'https://github.com/oliver225/thingsboard-ui-vue3']);
 </script>
 <style lang="less">
   body {

@@ -1,6 +1,9 @@
 <template>
   <div>
     <Row :gutter="16">
+      <Col span="18">
+        <GeoMap :height="mapHeight + 'px'" :center="mapCity" />
+      </Col>
       <Col span="6">
         <Row :gutter="[16, 16]">
           <Col span="24">
@@ -25,6 +28,7 @@
   import AlertCountCard from '../components/AlertCountCard.vue';
   import DeviceCountCard from '../components/DeviceCountCard.vue';
   import EntityCountCard from '../components/EntityCountCard.vue';
+  import GeoMap from '../components/chart/GeoMap.vue';
   import { getViewportOffset } from '/@/utils/domUtils';
   import { onMounted, ref } from 'vue';
   import { useUserStore } from '/@/store/modules/user';
