@@ -1,6 +1,7 @@
 import { BasicQuery, Page } from '../model/baseModel';
 import { JwtPair, UserInfo } from '/#/store';
 import { defHttp } from '/@/utils/http/axios';
+import { publicPath } from '/@/utils/env';
 
 export const userInfoApi = () => defHttp.get<UserInfo>({ url: '/api/auth/user', timeout: 10 * 1000 });
 
@@ -70,7 +71,7 @@ export async function getProxyActivationLink(userId: string) {
   // 获取 location对象
   const { protocol, hostname, port } = window.location;
   // 生成前端代理地址
-  const proxyActivationLink = `${protocol}//${hostname}${port ? `:${port}` : ''}/auth/create-password${activeLinkURL.search}`;
+  const proxyActivationLink = `${protocol}//${hostname}${port ? `:${port}` : ''}${publicPath}/auth/create-password${activeLinkURL.search}`;
   return proxyActivationLink;
 }
 

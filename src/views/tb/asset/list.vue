@@ -9,11 +9,11 @@
       <template #tableTitle>
         <div class="space-x-2">
           <a-button type="primary" @click="handleForm({})" v-show="hasPermission(Authority.TENANT_ADMIN)">
-            <Icon icon="i-fluent:add-12-filled" /> 新增资产
+            <Icon icon="i-fluent:add-12-filled" /> {{ t('tb.asset.action.add') }}
           </a-button>
           <a-input
             v-model:value="searchParam.textSearch"
-            placeholder="输入搜索内容"
+            :placeholder="t('common.search.searchText')"
             allow-clear
             @change="reload"
             style="width: 240px"
@@ -74,6 +74,7 @@
   import AssignCustomer from './assignCustomer.vue';
   import { Authority } from '/@/enums/authorityEnum';
   import { assetProfileInfoList } from '/@/api/tb/assetProfile';
+  import { router } from '/@/router';
 
   const userStore = useUserStore();
 
@@ -82,7 +83,7 @@
   const { createConfirm, showMessage } = useMessage();
 
   const getTitle = {
-    value: '资产',
+    value: router.currentRoute.value.meta.title || t('tb.asset.title'),
   };
 
   const assetProfileList = ref<any[]>([]);
@@ -92,7 +93,7 @@
   });
   const tableColumns: BasicColumn[] = [
     {
-      title: t('名称'),
+      title: t('tb.asset.form.name'),
       dataIndex: 'name',
       key: 'name',
       sorter: true,
@@ -102,7 +103,7 @@
       ellipsis: false,
     },
     {
-      title: '资产配置',
+      title: t('tb.asset.form.profile'),
       dataIndex: 'assetProfileName',
       key: 'assetProfileId',
       align: 'left',
@@ -111,23 +112,22 @@
       filters: assetProfileList.value.map((item) => ({ text: item.name, value: item.id.id })),
     },
     {
-      title: '标签',
+      title: t('tb.asset.form.label'),
       dataIndex: 'label',
       key: 'label',
       align: 'left',
       ellipsis: false,
     },
     {
-      title: '客户',
+      title: t('tb.asset.form.customer'),
       dataIndex: 'customerTitle',
       key: 'customerTitle',
       align: 'left',
       ellipsis: false,
       ifShow: hasPermission(Authority.TENANT_ADMIN),
     },
-
     {
-      title: '公开',
+      title: t('tb.asset.detail.public'),
       dataIndex: 'customerIsPublic',
       key: 'customerIsPublic',
       width: 80,
@@ -136,7 +136,7 @@
       ifShow: hasPermission(Authority.TENANT_ADMIN),
     },
     {
-      title: t('创建时间'),
+      title: t('tb.asset.detail.createdTime'),
       dataIndex: 'createdTime',
       key: 'createdTime',
       format: 'date|YYYY-MM-DD HH:mm:ss',
@@ -151,26 +151,26 @@
     actions: (record: Recordable) => [
       {
         icon: 'ant-design:share-alt-outlined',
-        title: t('设为公开'),
+        title: t('tb.asset.action.setPublic'),
         ifShow: hasPermission(Authority.TENANT_ADMIN) && !!!record.customerTitle,
         onClick: handleAssignToPublic.bind(this, { ...record }),
       },
       {
         icon: 'ant-design:contacts-outlined',
-        title: t('分配客户'),
+        title: t('tb.asset.action.assignCustomer'),
         ifShow: hasPermission(Authority.TENANT_ADMIN) && !!!record.customerTitle,
         onClick: handleAssignCustomer.bind(this, { ...record }),
       },
       {
         icon: 'ant-design:rollback-outlined',
-        title: t('取消分配客户'),
+        title: t('tb.asset.action.unAssignCustomer'),
         ifShow: hasPermission(Authority.TENANT_ADMIN) && !!record.customerTitle,
         onClick: handleUnAssignFromCustomer.bind(this, { ...record }),
       },
       {
         icon: 'ant-design:delete-outlined',
         color: 'error',
-        title: t('删除资产配置'),
+        title: t('tb.asset.action.deleteAsset'),
         ifShow: hasPermission(Authority.TENANT_ADMIN),
         onClick: handleDelete.bind(this, { ...record }),
       },
@@ -202,7 +202,7 @@
       (result) => {
         assetProfileList.value = result.data;
         updateColumn({
-          title: '资产配置',
+          title: t('tb.asset.form.profile'),
           dataIndex: 'assetProfileName',
           key: 'assetProfileId',
           align: 'left',
@@ -223,10 +223,10 @@
   async function handleDelete(record: Recordable) {
     createConfirm({
       iconType: 'error',
-      title: `确定删除资产[${record.name}]吗？`,
-      content: '请注意：确认后，资产和所有相关数据将不可恢复。',
+      title: t('tb.asset.action.deleteConfirm', { name: record.name }),
+      content: t('tb.asset.action.deleteConfirmContent'),
       centered: false,
-      okText: '删除',
+      okText: t('tb.asset.action.deleteText'),
       okButtonProps: {
         type: 'primary',
         danger: true,
@@ -234,7 +234,7 @@
       onOk: async () => {
         try {
           await deleteAsset(record.id.id);
-          showMessage('删除资产配置成功！');
+          showMessage(t('tb.asset.action.deleteSuccess'));
         } catch (error: any) {
           console.log(error);
         } finally {
@@ -247,17 +247,17 @@
   function handleAssignToPublic(record: Recordable) {
     createConfirm({
       iconType: 'info',
-      title: `确定要将资产[${record.name}]设为公开吗？`,
-      content: '请注意：确认后，资产及其所有数据将被公开并被他人访问。',
+      title: t('tb.asset.action.setPublicConfirm', { name: record.name }),
+      content: t('tb.asset.action.setPublicConfirmContent'),
       centered: false,
-      okText: '确认',
+      okText: t('tb.asset.action.confirmText'),
       okButtonProps: {
         type: 'primary',
       },
       onOk: async () => {
         try {
           await assignAssetToPublicCustomer(record.id.id);
-          showMessage('资产设置为公开成功！');
+          showMessage(t('tb.asset.action.setPublicSuccess'));
         } catch (error: any) {
           console.log(error);
         } finally {
@@ -274,17 +274,17 @@
   function handleUnAssignFromCustomer(record: Recordable) {
     createConfirm({
       iconType: 'info',
-      title: `确定要将资产[${record.name}]设为私有吗？`,
-      content: '请注意：确认后，资产及其所有数据将被私有化，无法被他人访问。',
+      title: t('tb.asset.action.setPrivateConfirm', { name: record.name }),
+      content: t('tb.asset.action.setPrivateConfirmContent'),
       centered: false,
-      okText: '确认',
+      okText: t('tb.asset.action.confirmText'),
       okButtonProps: {
         type: 'primary',
       },
       onOk: async () => {
         try {
           await unAssignAssetFromCustomer(record.id.id);
-          showMessage('资产设为私有成功！');
+          showMessage(t('tb.asset.action.setPrivateSuccess'));
         } catch (error: any) {
           console.log(error);
         } finally {
@@ -302,7 +302,4 @@
     openDetailDrawer(true, record);
   }
 </script>
-<style lang="less">
-  .asset-list {
-  }
-</style>
+<style lang="less"></style>

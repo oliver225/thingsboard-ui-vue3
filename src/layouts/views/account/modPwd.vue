@@ -1,31 +1,31 @@
 <template>
   <PageWrapper>
     <div class="jwt-conainer">
-      <div class="text-base font-bold">JWT 令牌</div>
+      <div class="text-base font-bold">{{ t('sys.account.jwtToken') }}</div>
       <div class="flex items-start justify-between mt-4 mr-4">
-        <div class="text-base text-slate-600">令牌有效期至 {{ tokenExpireTime }}</div>
-        <Button type="primary" @click="handleCopyJWT"> 复制JWT令牌 </Button>
+        <div class="text-base text-slate-600"> {{ t('sys.account.jwtTokenExpirePrefix') }} {{ tokenExpireTime }} </div>
+        <Button type="primary" @click="handleCopyJWT"> {{ t('sys.account.copyJwtToken') }} </Button>
       </div>
     </div>
     <div class="p4">
       <Row :gutter="24" class="mt-3">
         <Col :span="14">
           <div class="password-from-container">
-            <div class="text-base font-bold mb-4">更改密码</div>
+            <div class="text-base font-bold mb-4">{{ t('sys.account.changePassword') }}</div>
             <BasicForm @register="register" />
             <div class="mt-4 flex justify-center space-x-6">
               <Button :loading="submitLoading" @click="handleResetPassword">
-                <Icon icon="ant-design:redo-outlined" /> 放弃更新
+                <Icon icon="ant-design:redo-outlined" /> {{ t('sys.account.abandonUpdate') }}
               </Button>
               <Button type="primary" :loading="submitLoading" @click="handleChangePassword">
-                <Icon icon="i-ant-design:check-outlined" /> 更改密码
+                <Icon icon="i-ant-design:check-outlined" /> {{ t('sys.account.changePassword') }}
               </Button>
             </div>
           </div>
         </Col>
         <Col :span="10">
           <div class="password-policy-container">
-            <div class="text-base font-bold mb-4">密码要求</div>
+            <div class="text-base font-bold mb-4">{{ t('sys.account.passwordRequirements') }}</div>
             <ul>
               <li
                 v-if="passwordPolicy?.minimumLength"
@@ -38,7 +38,7 @@
                     policyChecked.minimumLength == true ? 'ant-design:check-outlined' : 'ant-design:close-outlined'
                   "
                 />
-                最少 {{ passwordPolicy?.minimumLength }} 位字符
+                {{ t('sys.account.policyMinLength', { count: passwordPolicy?.minimumLength }) }}
               </li>
               <li
                 v-if="passwordPolicy?.maximumLength"
@@ -51,7 +51,7 @@
                     policyChecked.maximumLength == true ? 'ant-design:check-outlined' : 'ant-design:close-outlined'
                   "
                 />
-                最多 {{ passwordPolicy?.maximumLength }} 位字符
+                {{ t('sys.account.policyMaxLength', { count: passwordPolicy?.maximumLength }) }}
               </li>
               <li
                 v-if="passwordPolicy?.minimumDigits"
@@ -63,7 +63,7 @@
                   "
                   class="mr-2"
                 />
-                最少 {{ passwordPolicy?.minimumDigits }} 位数字
+                {{ t('sys.account.policyMinDigits', { count: passwordPolicy?.minimumDigits }) }}
               </li>
               <li
                 v-if="passwordPolicy?.minimumUppercaseLetters"
@@ -77,7 +77,7 @@
                   "
                   class="mr-2"
                 />
-                最少 {{ passwordPolicy?.minimumUppercaseLetters }} 位大写字母
+                {{ t('sys.account.policyMinUppercase', { count: passwordPolicy?.minimumUppercaseLetters }) }}
               </li>
               <li
                 v-if="passwordPolicy?.minimumLowercaseLetters"
@@ -91,7 +91,7 @@
                   "
                   class="mr-2"
                 />
-                最少 {{ passwordPolicy?.minimumLowercaseLetters }} 位小写字母
+                {{ t('sys.account.policyMinLowercase', { count: passwordPolicy?.minimumLowercaseLetters }) }}
               </li>
               <li
                 v-if="passwordPolicy?.minimumSpecialCharacters"
@@ -105,7 +105,7 @@
                   "
                   class="mr-2"
                 />
-                最少 {{ passwordPolicy?.minimumSpecialCharacters }} 位特殊字符
+                {{ t('sys.account.policyMinSpecial', { count: passwordPolicy?.minimumSpecialCharacters }) }}
               </li>
               <li
                 v-if="passwordPolicy?.allowWhitespaces == false"
@@ -117,7 +117,7 @@
                   "
                   class="mr-2"
                 />
-                不允许包含空格
+                {{ t('sys.account.policyNoWhitespace') }}
               </li>
             </ul>
           </div>
@@ -150,7 +150,7 @@
   });
 
   function handleCopyJWT() {
-    copyToClipboard(getRefreshToken() || '', '复制JWT令牌成功！');
+    copyToClipboard(getRefreshToken() || '', t('sys.account.copyJwtTokenSuccess'));
   }
 
   const submitLoading = ref(false);
@@ -241,7 +241,7 @@
       submitLoading.value = true;
       // console.log('submit', params, data, record);
       const res = await changePassword({ ...data });
-      showMessage('更改密码成功！');
+      showMessage(t('sys.account.changePasswordSuccess'));
     } catch (error: any) {
       if (error && error.errorFields) {
         showMessage(t('common.validateError'));
@@ -275,12 +275,12 @@
       return Promise.reject(t('sys.account.newPasswordNotBlank'));
     }
     if (newPassword == values.currentPassword) {
-      return Promise.reject('新密码不能和当前密码相同');
+      return Promise.reject(t('sys.account.newPasswordSameAsCurrent'));
     }
 
     if (passwordPolicy.value?.minimumLength) {
       if (newPassword.length < passwordPolicy.value.minimumLength) {
-        return Promise.reject(`密码最少${passwordPolicy.value.minimumLength}位字符`);
+        return Promise.reject(t('sys.account.policyErrorMinLength', { count: passwordPolicy.value.minimumLength }));
       } else {
         policyChecked.minimumLength = true;
       }
@@ -288,7 +288,7 @@
     if (passwordPolicy.value?.maximumLength) {
       if (newPassword.length > passwordPolicy.value.maximumLength) {
         policyChecked.maximumLength = false;
-        return Promise.reject(`密码最多${passwordPolicy.value.maximumLength}位字符`);
+        return Promise.reject(t('sys.account.policyErrorMaxLength', { count: passwordPolicy.value.maximumLength }));
       } else {
         policyChecked.maximumLength = true;
       }
@@ -296,7 +296,7 @@
     if (passwordPolicy.value?.minimumDigits) {
       const digitsStr = newPassword.replace(/[^\d]/g, '');
       if (digitsStr.length < passwordPolicy.value.minimumDigits) {
-        return Promise.reject(`密码最少包含${passwordPolicy.value.minimumDigits}位数字`);
+        return Promise.reject(t('sys.account.policyErrorMinDigits', { count: passwordPolicy.value.minimumDigits }));
       } else {
         policyChecked.minimumDigits = true;
       }
@@ -304,7 +304,9 @@
     if (passwordPolicy.value?.minimumUppercaseLetters) {
       const uppercaseStr = newPassword.replace(/[^\A-Z]/g, '');
       if (uppercaseStr.length < passwordPolicy.value.minimumUppercaseLetters) {
-        return Promise.reject(`密码最少包含${passwordPolicy.value.minimumUppercaseLetters}位大写字母`);
+        return Promise.reject(
+          t('sys.account.policyErrorMinUppercase', { count: passwordPolicy.value.minimumUppercaseLetters }),
+        );
       } else {
         policyChecked.minimumUppercaseLetters = true;
       }
@@ -312,7 +314,9 @@
     if (passwordPolicy.value?.minimumLowercaseLetters) {
       const lowercaseStr = newPassword.replace(/[^\a-z]/g, '');
       if (lowercaseStr.length < passwordPolicy.value.minimumLowercaseLetters) {
-        return Promise.reject(`密码最少包含${passwordPolicy.value.minimumLowercaseLetters}位小写字母`);
+        return Promise.reject(
+          t('sys.account.policyErrorMinLowercase', { count: passwordPolicy.value.minimumLowercaseLetters }),
+        );
       } else {
         policyChecked.minimumLowercaseLetters = true;
       }
@@ -320,14 +324,16 @@
     if (passwordPolicy.value?.minimumSpecialCharacters) {
       const specialStr = newPassword.replace(/[a-zA-Z0-9]/g, '');
       if (specialStr.length < passwordPolicy.value.minimumSpecialCharacters) {
-        return Promise.reject(`密码最少包含${passwordPolicy.value.minimumSpecialCharacters}位特殊字符`);
+        return Promise.reject(
+          t('sys.account.policyErrorMinSpecial', { count: passwordPolicy.value.minimumSpecialCharacters }),
+        );
       } else {
         policyChecked.minimumSpecialCharacters = true;
       }
     }
     if (passwordPolicy.value?.allowWhitespaces == false) {
       if (newPassword.indexOf(' ') > -1) {
-        return Promise.reject(`密码不能包含空格`);
+        return Promise.reject(t('sys.account.policyErrorWhitespace'));
       } else {
         policyChecked.allowWhitespaces = true;
       }

@@ -26,8 +26,8 @@
             style="margin: 1px auto"
             @change="handleTenantEnableChange"
           >
-            <Radio.Button value="tenant">&nbsp;&nbsp;租&nbsp;&nbsp;户&nbsp;&nbsp; </Radio.Button>
-            <Radio.Button value="tenantProfile">租户配置</Radio.Button>
+            <Radio.Button value="tenant">{{ t('tb.notification.recipient.form.tenant') }}</Radio.Button>
+            <Radio.Button value="tenantProfile">{{ t('tb.notification.recipient.form.tenantProfile') }}</Radio.Button>
           </Radio.Group>
         </div>
       </template>
@@ -70,7 +70,7 @@
   const record = ref<NotificationTarget>({} as NotificationTarget);
   const getTitle = computed(() => ({
     icon: meta.icon || 'ant-design:book-outlined',
-    value: record.value.id?.id ? t('编辑通知接收组') : t('新增通知接收组'),
+    value: record.value.id?.id ? t('tb.notification.recipient.action.edit') : t('tb.notification.recipient.action.add'),
   }));
   const tenantId = userStore.getUserInfo?.tenantId || { EntityType: 'TENANT', id: '' };
 
@@ -101,7 +101,7 @@
   const inputFormSchemas: FormSchema[] = [
     { field: 'tenantId', component: 'Input', defaultValue: tenantId, show: false },
     {
-      label: t('接收组名称'),
+      label: t('tb.notification.recipient.form.groupName'),
       field: 'name',
       component: 'Input',
       componentProps: {
@@ -111,7 +111,7 @@
       colProps: { lg: 24, md: 24 },
     },
     {
-      label: t('类型'),
+      label: t('tb.notification.recipient.form.type'),
       field: 'configuration.type',
       component: 'RadioGroup',
       defaultValue: NotificationRecipientType.PLATFORM_USERS,
@@ -120,7 +120,7 @@
     },
 
     {
-      label: t('筛选用户'),
+      label: t('tb.notification.recipient.form.filterUsers'),
       field: 'configuration.usersFilter.type',
       component: 'Select',
       defaultValue: NotificationRecipientUsersFilter.ALL_USERS,
@@ -142,7 +142,7 @@
       field: 'configuration.usersFilter.tenantsIds',
       component: 'Select',
       componentProps: {
-        placeholder: '请选择租户',
+        placeholder: t('tb.notification.recipient.form.selectTenant'),
         mode: 'multiple',
         immediate: true,
         resultField: 'data',
@@ -159,7 +159,7 @@
       field: 'configuration.usersFilter.tenantProfilesIds',
       component: 'Select',
       componentProps: {
-        placeholder: '请选择租户配置',
+        placeholder: t('tb.notification.recipient.form.selectTenantProfile'),
         mode: 'multiple',
         immediate: true,
         resultField: 'data',
@@ -173,11 +173,11 @@
       colProps: { lg: 24, md: 24 },
     },
     {
-      label: t('客户'),
+      label: t('tb.notification.recipient.form.customer'),
       field: 'configuration.usersFilter.customerId',
       component: 'Select',
       componentProps: {
-        placeholder: '请选择客户',
+        placeholder: t('tb.notification.recipient.form.selectCustomer'),
         immediate: true,
         resultField: 'data',
         params: { pageSize: 50, page: 0, sortProperty: 'title', sortOrder: 'ASC' },
@@ -190,11 +190,11 @@
       colProps: { lg: 24, md: 24 },
     },
     {
-      label: t('选择用户'),
+      label: t('tb.notification.recipient.form.selectUsers'),
       field: 'configuration.usersFilter.usersIds',
       component: 'Select',
       componentProps: {
-        placeholder: '请选择用户',
+        placeholder: t('tb.notification.recipient.form.selectUsers'),
         mode: 'multiple',
         immediate: true,
         resultField: 'data',
@@ -209,7 +209,7 @@
     },
 
     {
-      label: t('描述信息'),
+      label: t('tb.notification.recipient.form.descriptionInfo'),
       field: 'configuration.description',
       component: 'InputTextArea',
       componentProps: {
@@ -237,7 +237,7 @@
       NotificationRecipientUsersFilter.TENANT_ADMINISTRATORS == record.value?.configuration?.usersFilter?.type &&
       hasPermission(Authority.SYS_ADMIN)
     ) {
-      record.value.configuration.usersFilter.tenantEnable = isEmpty(
+      (record.value.configuration.usersFilter as any).tenantEnable = isEmpty(
         record.value?.configuration?.usersFilter?.tenantsIds,
       )
         ? 'tenantProfile'
@@ -256,13 +256,13 @@
         field: 'configuration.usersFilter.tenantsIds',
         ifShow:
           NotificationRecipientUsersFilter.TENANT_ADMINISTRATORS == record.value?.configuration?.usersFilter?.type &&
-          record.value?.configuration?.usersFilter?.tenantEnable == 'tenant',
+          (record.value?.configuration?.usersFilter as any)?.tenantEnable == 'tenant',
       },
       {
         field: 'configuration.usersFilter.tenantProfilesIds',
         ifShow:
           NotificationRecipientUsersFilter.TENANT_ADMINISTRATORS == record.value?.configuration?.usersFilter?.type &&
-          record.value?.configuration?.usersFilter?.tenantEnable == 'tenantProfile',
+          (record.value?.configuration?.usersFilter as any)?.tenantEnable == 'tenantProfile',
       },
       {
         field: 'configuration.usersFilter.customerId',
@@ -296,7 +296,11 @@
       }
       // console.log('submit', params, data, record);
       const res = await saveNotificationTarget({ ...data, id: record.value.id });
-      showMessage(`${record.value.id?.id ? '编辑' : '新增'}通知接收组成功！`);
+      showMessage(
+        record.value.id?.id
+          ? t('tb.notification.recipient.form.saveSuccessEdit')
+          : t('tb.notification.recipient.form.saveSuccessAdd'),
+      );
       setTimeout(closeModal);
       emit('success', data);
     } catch (error: any) {
@@ -319,7 +323,7 @@
         usersFilter: {
           tenantEnable: 'tenant',
           type: value,
-        },
+        } as any,
       },
     });
     updateSchema([
@@ -347,7 +351,8 @@
     ]);
   }
 
-  async function handleTenantEnableChange({ target: { value } }) {
+  async function handleTenantEnableChange(e: any) {
+    const value = e?.target?.value;
     const record = getFieldsValue();
     const configuration = record.configuration;
     await setFieldsValue({
@@ -357,7 +362,7 @@
         usersFilter: {
           tenantEnable: value,
           type: NotificationRecipientUsersFilter.TENANT_ADMINISTRATORS,
-        },
+        } as any,
       },
     });
     updateSchema([

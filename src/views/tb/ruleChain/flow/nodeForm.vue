@@ -14,18 +14,24 @@
     <Form ref="formRef" :model="formState" layout="vertical">
       <Row :gutter="16">
         <Col :span="18">
-          <Form.Item label="节点名称" name="name" :rules="[{ required: true, message: '请输入节点名称!' }]">
-            <Input v-model:value="formState.name" placeholder="请输入节点名称" />
+          <Form.Item
+            :label="t('tb.ruleChain.node.name')"
+            name="name"
+            :rules="[{ required: true, message: t('tb.ruleChain.node.nameRequired') }]"
+          >
+            <Input v-model:value="formState.name" :placeholder="t('tb.ruleChain.node.namePlaceholder')" />
           </Form.Item>
         </Col>
         <Col :span="6">
-          <Form.Item label="&nbsp;" name="debugMode">
-            <Switch v-model:checked="formState.debugMode" size="small" /><span class="ml-2">调试模式</span>
+          <Form.Item label="&nbsp;" name="debugSettings">
+            <DebugSetting v-model:value="formState.debugSettings" :edit-able="true" />
           </Form.Item>
         </Col>
       </Row>
       <Form.Item name="singletonMode" v-show="singletonModeShow">
-        <Switch v-model:checked="formState.singletonMode" size="small" /><span class="ml-2">单节点模式</span>
+        <Switch v-model:checked="formState.singletonMode" size="small" /><span class="ml-2">{{
+          t('tb.ruleChain.node.singletonMode')
+        }}</span>
       </Form.Item>
 
       <component
@@ -35,8 +41,12 @@
         :ruleChainId="formState.ruleChainId?.id"
       />
 
-      <Form.Item label="描述信息" :name="['additionalInfo', 'description']">
-        <Textarea v-model:value="formState.additionalInfo.description" placeholder="输入节点描述信息" :rows="3" />
+      <Form.Item :label="t('tb.ruleChain.node.description')" :name="['additionalInfo', 'description']">
+        <Textarea
+          v-model:value="formState.additionalInfo.description"
+          :placeholder="t('tb.ruleChain.node.descriptionPlaceholder')"
+          :rows="3"
+        />
       </Form.Item>
 
       <Form.Item name="type" v-show="false">
@@ -75,6 +85,7 @@
   import { Form, Row, Col, Textarea, Input, Switch, InputNumber } from 'ant-design-vue';
   import ruleChainTypes from './nodeTpl/rule-chain-types.json';
   import { EntityType } from '/@/enums/entityTypeEnum';
+  import DebugSetting from './components/DebugSetting.vue';
   const nodeTemplates = import.meta.glob('./nodeTpl/**/*.vue', { eager: true });
 
   const instance = getCurrentInstance();
@@ -101,7 +112,7 @@
 
   const getTitle = computed(() => ({
     icon: meta.icon || 'ant-design:book-outlined',
-    value: record.value?.id?.id ? t('编辑规则节点') : t('添加规则节点'),
+    value: record.value?.id?.id ? t('tb.ruleChain.node.editNode') : t('tb.ruleChain.node.addNode'),
   }));
 
   const singletonModeShow = computed(() => {
@@ -112,13 +123,13 @@
     id: { entityType: EntityType.RULE_NODE, id: '' },
     ruleChainId: { entityType: EntityType.RULE_CHAIN, id: '' },
     name: '',
-    debugMode: false,
+    debugSettings: undefined,
     singletonMode: false,
     type: descriptor.value?.clazz || '',
     configuration: descriptor.value?.configurationDescriptor.nodeDefinition.defaultConfiguration || {},
     configurationVersion: 0,
     additionalInfo: { description: '', layoutX: 0, layoutY: 0 },
-  } as RuleNode);
+  } as unknown as RuleNode);
 
   const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
     setModalProps({ loading: true });
@@ -145,7 +156,7 @@
     formState.id = { entityType: EntityType.RULE_NODE, id: '' };
     formState.ruleChainId = { entityType: EntityType.RULE_CHAIN, id: '' };
     formState.name = '';
-    formState.debugMode = false;
+    formState.debugSettings = undefined;
     formState.singletonMode = false;
     formState.type = descriptor.value?.clazz || '';
     formState.configuration = descriptor.value?.configurationDescriptor.nodeDefinition.defaultConfiguration || {};

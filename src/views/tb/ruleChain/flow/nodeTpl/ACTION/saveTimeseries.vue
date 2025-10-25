@@ -1,72 +1,74 @@
 <template>
-    <Form ref="formRef" :model="formState" layout="vertical">
-
-        <Form.Item label="默认TTL(秒)" name="defaultTTL" :rules="[{ required: true, message: '默认TTL(秒)必填!' }]">
-            <InputNumber v-model:value="formState.defaultTTL" :style="{ width: '100%' }">
-            </InputNumber>
-        </Form.Item>
-        <Form.Item name="skipLatestPersistence">
-            <Checkbox v-model:checked="formState.skipLatestPersistence">Skip latest persistence</Checkbox>
-        </Form.Item>
-        <Form.Item name="useServerTs" help="启用此设置可使用消息处理的时间戳，而不是消息的时间戳。如果合并来自多个来源（设备、资产等）的消息，则可用于各种顺序处理。">
-            <Checkbox v-model:checked="formState.useServerTs">使用服务端时间戳</Checkbox>
-        </Form.Item>
-
-    </Form>
+  <Form ref="formRef" :model="formState" layout="vertical">
+    <Form.Item
+      :label="t('tb.ruleChain.nodeAction.defaultTTL')"
+      name="defaultTTL"
+      :rules="[{ required: true, message: t('tb.ruleChain.nodeAction.defaultTTLRequired') }]"
+    >
+      <InputNumber v-model:value="formState.defaultTTL" :style="{ width: '100%' }" />
+    </Form.Item>
+    <Form.Item name="skipLatestPersistence">
+      <Checkbox v-model:checked="formState.skipLatestPersistence">{{
+        t('tb.ruleChain.nodeAction.skipLatestPersistence')
+      }}</Checkbox>
+    </Form.Item>
+    <Form.Item name="useServerTs" :help="t('tb.ruleChain.nodeAction.useServerTsHelp')">
+      <Checkbox v-model:checked="formState.useServerTs">{{ t('tb.ruleChain.nodeAction.useServerTs') }}</Checkbox>
+    </Form.Item>
+  </Form>
 </template>
 <script lang="ts">
-export default defineComponent({
-    name: "save-timeseries",
-});
+  export default defineComponent({
+    name: 'save-timeseries',
+  });
 </script>
-<script lang="ts" setup >
-import { ref, watch, defineComponent, reactive } from 'vue';
-import { Form, InputNumber, Checkbox } from 'ant-design-vue';
-import { FormInstance } from 'ant-design-vue/lib/form';
+<script lang="ts" setup>
+  import { ref, watch, defineComponent, reactive } from 'vue';
+  import { Form, InputNumber, Checkbox } from 'ant-design-vue';
+  import { FormInstance } from 'ant-design-vue/lib/form';
+  import { useI18n } from '/@/hooks/web/useI18n';
 
-interface Configuration {
-    defaultTTL: number,
-    skipLatestPersistence: boolean,
-    useServerTs: boolean,
-}
+  interface Configuration {
+    defaultTTL: number;
+    skipLatestPersistence: boolean;
+    useServerTs: boolean;
+  }
 
+  const { t } = useI18n('tb');
 
-const props = defineProps({
+  const props = defineProps({
     configuration: {
-        type: Object as PropType<Configuration>,
-        required: true,
+      type: Object as PropType<Configuration>,
+      required: true,
     },
-    ruleChainId: { type: String, default: '' }
+    ruleChainId: { type: String, default: '' },
+  });
 
-});
+  const formRef = ref<FormInstance>();
 
-const formRef = ref<FormInstance>();
-
-const formState = reactive<any>({
+  const formState = reactive<any>({
     defaultTTL: 0,
     skipLatestPersistence: false,
     useServerTs: false,
+  });
 
-});
-
-watch(
+  watch(
     () => props.configuration,
     () => {
-        formState.defaultTTL = props.configuration.defaultTTL;
-        formState.skipLatestPersistence = props.configuration.skipLatestPersistence;
-        formState.useServerTs = props.configuration.useServerTs;
+      formState.defaultTTL = props.configuration.defaultTTL;
+      formState.skipLatestPersistence = props.configuration.skipLatestPersistence;
+      formState.useServerTs = props.configuration.useServerTs;
     },
-    { immediate: true }
-)
+    { immediate: true },
+  );
 
-async function getConfiguration() {
+  async function getConfiguration() {
     try {
-        return await formRef.value?.validate();
+      return await formRef.value?.validate();
     } catch (error: any) {
-        throw error;
+      throw error;
     }
-}
+  }
 
-defineExpose({ getConfiguration })
-
+  defineExpose({ getConfiguration });
 </script>

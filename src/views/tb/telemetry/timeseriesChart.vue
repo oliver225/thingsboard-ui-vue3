@@ -10,25 +10,27 @@
       </template>
       <template #extra>
         <Space>
-          <Tooltip title="全屏">
+          <Tooltip :title="t('tb.telemetry.header.fullscreen')">
             <Icon icon="ant-design:fullscreen-outlined" :size="18" class="cursor-pointer" @click="handleOpenModal" />
           </Tooltip>
           <Popover v-model:open="filterPopoverVisible" trigger="click" placement="bottom">
-            <template #title> 数据过滤 </template>
+            <template #title> {{ t('tb.telemetry.header.dataFilter') }} </template>
             <template #content>
               <div style="width: 360px">
                 <BasicForm @register="registerForm" />
                 <div class="w-full flex">
                   <div class="flex-1"> </div>
                   <Space>
-                    <a-button @click="filterPopoverVisible = false">取消</a-button>
-                    <a-button type="primary" @click="subscribeHistoryData()">更新</a-button>
+                    <a-button @click="filterPopoverVisible = false">{{ t('tb.telemetry.header.cancel') }}</a-button>
+                    <a-button type="primary" @click="subscribeHistoryData()">{{
+                      t('tb.telemetry.header.update')
+                    }}</a-button>
                   </Space>
                 </div>
               </div>
             </template>
 
-            <Tooltip title="数据过滤">
+            <Tooltip :title="t('tb.telemetry.header.dataFilter')">
               <Icon icon="ant-design:clock-circle-outlined" :size="18" class="cursor-pointer" />
             </Tooltip>
           </Popover>
@@ -65,7 +67,7 @@
   import { BasicForm, FormSchema, useForm } from '/@/components/Form';
   import TimeseriesModal from './timeseriesModal.vue';
   import { isArray } from 'lodash-es';
-  import { AGGREGATION_OPTIONS, Aggregation } from '/@/enums/telemetryEnum';
+  import { Aggregation } from '/@/enums/telemetryEnum';
   import { getTimeseries, TelemetryQuery } from '/@/api/tb/telemetry';
   import { WsCmdType } from '/@/enums/wsCmdTypeEnum';
   import { BasicColumn, BasicTable } from '/@/components/Table';
@@ -111,12 +113,12 @@
   const { setOptions } = useECharts(chartRef as Ref<HTMLDivElement>);
 
   const rangePresets = ref([
-    { label: '今天', value: [dayjs().startOf('D'), dayjs()] },
-    { label: '最近1小时', value: [dayjs().subtract(1, 'hour'), dayjs()] },
-    { label: '最近6小时', value: [dayjs().subtract(6, 'hour'), dayjs()] },
-    { label: '最近1天', value: [dayjs().subtract(1, 'day').startOf('D'), dayjs()] },
-    { label: '最近3天', value: [dayjs().subtract(2, 'day').startOf('D'), dayjs()] },
-    { label: '最近7天', value: [dayjs().subtract(6, 'day').startOf('D'), dayjs()] },
+    { label: t('common.search.rangePresets.today'), value: [dayjs().startOf('D'), dayjs()] },
+    { label: t('common.search.rangePresets.last1Hour'), value: [dayjs().subtract(1, 'hour'), dayjs()] },
+    { label: t('common.search.rangePresets.last6Hours'), value: [dayjs().subtract(6, 'hour'), dayjs()] },
+    { label: t('common.search.rangePresets.last1Day'), value: [dayjs().subtract(1, 'day').startOf('D'), dayjs()] },
+    { label: t('common.search.rangePresets.last3Days'), value: [dayjs().subtract(2, 'day').startOf('D'), dayjs()] },
+    { label: t('common.search.rangePresets.last7Days'), value: [dayjs().subtract(6, 'day').startOf('D'), dayjs()] },
   ]);
 
   const inputFormSchemas: FormSchema[] = [
@@ -125,7 +127,7 @@
     { field: 'keys', component: 'Input', defaultValue: keyStr.value, show: false },
     { field: 'orderBy', component: 'Input', defaultValue: 'ASC', show: false },
     {
-      label: t('时间间隔'),
+      label: t('tb.telemetry.timeseries.timeRange'),
       field: 'timeRange',
       component: 'RangePicker',
       defaultValue: [dayjs().subtract(2, 'hour'), dayjs()],
@@ -136,30 +138,30 @@
       },
     },
     {
-      label: t('间隔时间'),
+      label: t('tb.telemetry.timeseries.interval'),
       field: 'interval',
       component: 'Select',
       defaultValue: 60000,
       componentProps: {
         options: [
-          { label: '1秒钟', value: 1000 },
-          { label: '1分钟', value: 60000 },
-          { label: '5分钟', value: 300000 },
-          { label: '10分钟', value: 600000 },
-          { label: '30分钟', value: 1800000 },
-          { label: '1小时', value: 3600000 },
-          { label: '2小时', value: 7800000 },
-          { label: '6小时', value: 21600000 },
-          { label: '12小时', value: 43200000 },
-          { label: '1天', value: 86400000 },
-          { label: '7天', value: 604800000 },
-          { label: '15天', value: 1296000000 },
-          { label: '30天', value: 25920000000 },
+          { label: t('tb.telemetry.timeseries.intervals.s1'), value: 1000 },
+          { label: t('tb.telemetry.timeseries.intervals.m1'), value: 60000 },
+          { label: t('tb.telemetry.timeseries.intervals.m5'), value: 300000 },
+          { label: t('tb.telemetry.timeseries.intervals.m10'), value: 600000 },
+          { label: t('tb.telemetry.timeseries.intervals.m30'), value: 1800000 },
+          { label: t('tb.telemetry.timeseries.intervals.h1'), value: 3600000 },
+          { label: t('tb.telemetry.timeseries.intervals.h2'), value: 7800000 },
+          { label: t('tb.telemetry.timeseries.intervals.h6'), value: 21600000 },
+          { label: t('tb.telemetry.timeseries.intervals.h12'), value: 43200000 },
+          { label: t('tb.telemetry.timeseries.intervals.d1'), value: 86400000 },
+          { label: t('tb.telemetry.timeseries.intervals.d7'), value: 604800000 },
+          { label: t('tb.telemetry.timeseries.intervals.d15'), value: 1296000000 },
+          { label: t('tb.telemetry.timeseries.intervals.d30'), value: 25920000000 },
         ],
       },
     },
     {
-      label: t('数据数量'),
+      label: t('tb.telemetry.timeseries.dataCount'),
       field: 'limit',
       defaultValue: 1000,
       component: 'InputNumber',
@@ -168,25 +170,32 @@
       },
     },
     {
-      label: t('聚合函数'),
+      label: t('tb.telemetry.timeseries.aggregation'),
       field: 'agg',
       component: 'Select',
       defaultValue: Aggregation.NONE,
       componentProps: {
-        options: AGGREGATION_OPTIONS,
+        options: [
+          { label: t('tb.telemetry.timeseries.aggregations.none'), value: Aggregation.NONE },
+          { label: t('tb.telemetry.timeseries.aggregations.min'), value: Aggregation.MIN },
+          { label: t('tb.telemetry.timeseries.aggregations.max'), value: Aggregation.MAX },
+          { label: t('tb.telemetry.timeseries.aggregations.avg'), value: Aggregation.AVG },
+          { label: t('tb.telemetry.timeseries.aggregations.sum'), value: Aggregation.SUM },
+          { label: t('tb.telemetry.timeseries.aggregations.count'), value: Aggregation.COUNT },
+        ],
       },
     },
   ];
 
   const tableColumns: BasicColumn[] = [
     {
-      title: '时间',
+      title: t('tb.telemetry.table.time'),
       dataIndex: 'ts',
       format: 'date|YYYY-MM-DD HH:mm:ss',
       width: 150,
     },
     {
-      title: '数值',
+      title: t('tb.telemetry.table.value'),
       dataIndex: 'value',
     },
   ];

@@ -150,7 +150,7 @@
   } as any);
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-layout-breadcrumb';
+  @prefix-cls: ~'tbv3-layout-breadcrumb';
 
   .@{prefix-cls} {
     display: flex;

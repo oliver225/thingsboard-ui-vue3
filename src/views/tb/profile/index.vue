@@ -33,14 +33,14 @@
 </script>
 <style lang="less">
   .profiles-index {
-    .jeesite-basic-table-header-container {
+    .tbv3-basic-table-header-container {
       // display: none;
       .text-lg {
         display: none;
       }
     }
 
-    .jeesite-basic-table {
+    .tbv3-basic-table {
       padding: 0;
     }
 

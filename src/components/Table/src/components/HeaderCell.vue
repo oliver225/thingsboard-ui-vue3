@@ -28,7 +28,7 @@
   const getHelpMessage = computed(() => props.column?.helpMessage);
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-basic-table-header-cell';
+  @prefix-cls: ~'tbv3-basic-table-header-cell';
 
   .@{prefix-cls} {
     &__help {

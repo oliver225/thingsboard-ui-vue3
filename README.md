@@ -57,8 +57,6 @@ Thingsboard UI Vue3 是 Thingsboard 的前端适配版本。作为一个免费�
 - [Vite](https://vitejs.dev/) 
 - [Vue-v3](https://cn.vuejs.org/) 
 - [Vue-Router-v4](https://next.router.vuejs.org/) 
-- [JeeSite Vue3](https://gitee.com/thinkgem/jeesite-vue/)
-- [Vue-Vben-Admin](https://jeesite.com/front/vben-admin/)
 - [Ant-Design-Vue](https://antdv.com/components/overview-cn/)
 - [AntV x6](https://x6.antv.antgroup.com/)
   

@@ -19,7 +19,7 @@
           />
           <a-input
             v-model:value="searchParam.textSearch"
-            placeholder="输入搜索内容"
+            :placeholder="t('common.search.searchText')"
             allow-clear
             @change="reload"
             style="width: 240px"
@@ -31,8 +31,8 @@
         </div>
       </template>
       <template #actionStatus="{ record }">
-        <Tag color="success" v-if="record.actionStatus == 'SUCCESS'">成功</Tag>
-        <Tag color="error" v-if="record.actionStatus == 'FAILURE'">失败</Tag>
+        <Tag color="success" v-if="record.actionStatus == 'SUCCESS'">{{ t('tb.auditLog.table.success') }}</Tag>
+        <Tag color="error" v-if="record.actionStatus == 'FAILURE'">{{ t('tb.auditLog.table.failure') }}</Tag>
       </template>
     </BasicTable>
     <DetailModal @register="registerModal" />
@@ -79,16 +79,16 @@
   });
 
   const getTitle = {
-    value: router.currentRoute.value.meta.title || '审计日志',
+    value: router.currentRoute.value.meta.title || t('tb.auditLog.title'),
   };
 
   const rangePresets = ref([
-    { label: '今天', value: [dayjs().startOf('D'), dayjs()] },
-    { label: '最近1小时', value: [dayjs().subtract(1, 'hour'), dayjs()] },
-    { label: '最近6小时', value: [dayjs().subtract(6, 'hour'), dayjs()] },
-    { label: '最近1天', value: [dayjs().subtract(1, 'day').startOf('D'), dayjs()] },
-    { label: '最近3天', value: [dayjs().subtract(2, 'day').startOf('D'), dayjs()] },
-    { label: '最近7天', value: [dayjs().subtract(6, 'day').startOf('D'), dayjs()] },
+    { label: t('common.search.rangePresets.today'), value: [dayjs().startOf('D'), dayjs()] },
+    { label: t('common.search.rangePresets.last1Hour'), value: [dayjs().subtract(1, 'hour'), dayjs()] },
+    { label: t('common.search.rangePresets.last6Hours'), value: [dayjs().subtract(6, 'hour'), dayjs()] },
+    { label: t('common.search.rangePresets.last1Day'), value: [dayjs().subtract(1, 'day').startOf('D'), dayjs()] },
+    { label: t('common.search.rangePresets.last3Days'), value: [dayjs().subtract(2, 'day').startOf('D'), dayjs()] },
+    { label: t('common.search.rangePresets.last7Days'), value: [dayjs().subtract(6, 'day').startOf('D'), dayjs()] },
   ]);
 
   const searchParam = reactive({
@@ -97,7 +97,7 @@
   });
   const tableColumns: BasicColumn[] = [
     {
-      title: t('操作时间'),
+      title: t('tb.auditLog.table.actionTime'),
       dataIndex: 'createdTime',
       key: 'createdTime',
       format: 'date|YYYY-MM-DD HH:mm:ss',
@@ -106,14 +106,14 @@
       align: 'center',
     },
     {
-      title: t('操作用户'),
+      title: t('tb.auditLog.table.actionUser'),
       dataIndex: 'userName',
       key: 'userName',
       sorter: true,
       align: 'left',
     },
     {
-      title: t('操作实体'),
+      title: t('tb.auditLog.table.actionEntity'),
       dataIndex: 'entityId.entityType',
       key: 'entityId.entityType',
       align: 'left',
@@ -122,7 +122,7 @@
       format: (text: any) => (text ? ENTITY_TYPE_OPTIONS.find((item) => item.value === text)?.label || text : ''),
     },
     {
-      title: t('实体名称'),
+      title: t('tb.auditLog.table.entityName'),
       dataIndex: 'entityName',
       key: 'entityName',
       sorter: true,
@@ -130,7 +130,7 @@
       ifShow: isEmpty(props.entityType),
     },
     {
-      title: t('操作类型'),
+      title: t('tb.auditLog.table.actionType'),
       dataIndex: 'actionType',
       key: 'actionTypes',
       align: 'left',
@@ -139,7 +139,7 @@
       format: (text: any) => (text ? ACTION_TYPE_OPTIONS.find((item) => item.value === text)?.label || text : ''),
     },
     {
-      title: t('状态'),
+      title: t('tb.auditLog.table.status'),
       dataIndex: 'actionStatus',
       key: 'actionStatus',
       sorter: true,
@@ -154,14 +154,8 @@
     actions: (record: Recordable) => [
       {
         icon: 'ant-design:appstore-outlined',
-        title: t('详情'),
+        title: t('tb.auditLog.action.detail'),
         onClick: handleDetail.bind(this, { ...record }),
-      },
-      {
-        icon: 'ant-design:delete-outlined',
-        color: 'error',
-        title: t('删除资源'),
-        onClick: handleDelete.bind(this, { ...record }),
       },
     ],
   };
@@ -200,30 +194,6 @@
     } else {
       return await getAuditLogByEntityId(param, props.entityType, props.entityId);
     }
-  }
-
-  async function handleDelete(record: Recordable) {
-    createConfirm({
-      iconType: 'error',
-      title: `确定删除租户配置[${record.name}]吗？`,
-      content: '请注意：确认后，租户配置和所有相关数据将不可恢复。',
-      centered: false,
-      okText: '删除',
-      okButtonProps: {
-        type: 'primary',
-        danger: true,
-      },
-      onOk: async () => {
-        // try {
-        //   await deleteTenantProfile(record.id.id);
-        //   showMessage('删除租户配置成功！');
-        // } catch (error: any) {
-        //   console.log(error);
-        // } finally {
-        //   handleSuccess();
-        // }
-      },
-    });
   }
 
   function handleSuccess() {

@@ -45,6 +45,11 @@ export default {
     search: '搜索图标',
     copy: '复制图标成功!',
   },
+  notification: {
+    gotIt: '知道了',
+    viewAll: '查看全部',
+    markAllRead: '全部已读',
+  },
   menu: {
     search: '菜单搜索',
   },

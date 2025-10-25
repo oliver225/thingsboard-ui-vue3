@@ -41,7 +41,7 @@
   });
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-st-login';
+  @prefix-cls: ~'tbv3-st-login';
 
   .@{prefix-cls} {
     position: fixed;

@@ -6,7 +6,7 @@
     </template>
     <BasicForm @register="registerForm">
       <template #debugMode="{ model, field }">
-        <Checkbox v-model:checked="model[field]">调试模式</Checkbox>
+        <Checkbox v-model:checked="model[field]">{{ t('tb.ruleChain.form.debugMode') }}</Checkbox>
       </template>
     </BasicForm>
   </BasicModal>
@@ -33,19 +33,19 @@
   const record = ref<RuleChain>({} as RuleChain);
   const getTitle = computed(() => ({
     icon: meta.icon || 'ant-design:book-outlined',
-    value: record.value.id?.id ? t('编辑规则链') : t('新增规则链'),
+    value: record.value.id?.id ? t('tb.ruleChain.action.edit') : t('tb.ruleChain.action.add'),
   }));
 
   const inputFormSchemas: FormSchema[] = [
     { field: 'type', component: 'Input', defaultValue: 'CORE', show: false },
     { field: 'tenantId', component: 'Input', defaultValue: userStore.getUserInfo.tenantId, show: false },
     {
-      label: t('规则链名称'),
+      label: t('tb.ruleChain.form.name'),
       field: 'name',
       component: 'Input',
       componentProps: {
         maxlength: 100,
-        placeholder: '请输入规则链名称',
+        placeholder: t('tb.ruleChain.form.namePlaceholder'),
       },
       required: true,
     },
@@ -56,7 +56,7 @@
       slot: 'debugMode',
     },
     {
-      label: t('描 述 信 息'),
+      label: t('tb.ruleChain.form.description'),
       field: 'additionalInfo.description',
       component: 'InputTextArea',
       componentProps: {
@@ -91,7 +91,7 @@
 
       // console.log('submit', params, data, record);
       const res = await saveRuleChain({ ...data, id: record.value.id });
-      showMessage(`${record.value.id?.id ? '编辑' : '新增'}规则链成功！`);
+      showMessage(record.value.id?.id ? t('tb.ruleChain.form.editSuccess') : t('tb.ruleChain.form.addSuccess'));
       setTimeout(closeModal);
       emit('success', data);
     } catch (error: any) {

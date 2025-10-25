@@ -128,7 +128,7 @@
   });
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-layout-sideBar';
+  @prefix-cls: ~'tbv3-layout-sideBar';
 
   .ant-layout .ant-layout-sider.@{prefix-cls} {
     z-index: @layout-sider-fixed-z-index;

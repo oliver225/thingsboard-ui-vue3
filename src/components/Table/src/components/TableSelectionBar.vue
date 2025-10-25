@@ -35,7 +35,7 @@
 </script>
 
 <style lang="less">
-  @prefix-cls: ~'jeesite-table-select-bar';
+  @prefix-cls: ~'tbv3-table-select-bar';
 
   .@{prefix-cls} {
     flex-grow: 1;

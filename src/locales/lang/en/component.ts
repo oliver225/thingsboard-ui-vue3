@@ -43,6 +43,11 @@ export default {
     search: 'Search icon',
     copy: 'Copy icon successfully!',
   },
+  notification: {
+    gotIt: 'Got it',
+    viewAll: 'View All',
+    markAllRead: 'Mark All Read',
+  },
   menu: {
     search: 'Menu search',
   },

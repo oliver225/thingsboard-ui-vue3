@@ -3,30 +3,11 @@ import { AlarmSeverity } from '/@/enums/alarmEnum';
 import { ProvisionType, TransportType } from '/@/enums/deviceEnum';
 import { defHttp } from '/@/utils/http/axios';
 import { EntityType } from '/@/enums/entityTypeEnum';
-
-export interface DynamicValue {
-  sourceType: 'CURRENT_TENANT' | 'CURRENT_CUSTOMER' | 'CURRENT_USER' | 'CURRENT_DEVICE';
-  sourceAttribute: string;
-  inherit: boolean;
-}
+import { DynamicValue, KeyFilterPredicate } from '../model/entityQuery/keyFilter';
 
 export interface EntityKey {
   type: 'ATTRIBUTE' | 'TIME_SERIES' | 'ENTITY_FIELD' | 'CONSTANT';
   key?: string;
-}
-
-export interface Predicate {
-  type: 'STRING' | 'NUMERIC' | 'BOOLEAN' | 'COMPLEX';
-  //STRING
-  operation: 'EQUAL' | 'NOT_EQUAL' | 'STARTS_WITH' | 'ENDS_WITH' | 'CONTAINS' | 'NOT_CONTAINS' | 'IN' | 'NOT_IN';
-  ignoreCase: boolean;
-  value: { defaultValue: any; userValue: object; dynamicValue: DynamicValue };
-  //NUMERIC
-  //operation: 'EQUAL' | 'NOT_EQUAL' | 'GREATER' | 'LESS' | 'GREATER_OR_EQUAL' | 'LESS_OR_EQUAL';
-  //BOOLEAN
-  //operation: 'EQUAL' | 'NOT_EQUAL';
-  //COMPLEX
-  predicates: Predicate;
 }
 
 export interface Spec {
@@ -39,7 +20,7 @@ export interface ConditionItem {
   key: EntityKey;
   valueType: 'STRING' | 'NUMERIC' | 'BOOLEAN' | 'DATE_TIME';
   value?: object;
-  predicate: Predicate;
+  predicate: KeyFilterPredicate;
 }
 
 export interface Condition {
@@ -48,7 +29,7 @@ export interface Condition {
 }
 export interface Schedule {
   type: 'ANY_TIME' | 'SPECIFIC_TIME' | 'CUSTOM';
-  dynamicValue?: DynamicValue;
+  dynamicValue?: DynamicValue<string>;
   timezone: 'Asia/Shanghai';
   //SPECIFIC_TIME
   daysOfWeek?: [1 | 2 | 3 | 4 | 5 | 6 | 7];
@@ -204,5 +185,17 @@ export function getAttributesKeys(deviceProfileId?: string) {
   return defHttp.get<[string]>({
     url: '/api/deviceProfile/devices/keys/attributes',
     params: { deviceProfileId: deviceProfileId },
+  });
+}
+
+export interface DeviceProfileName {
+  id: EntityId<EntityType.DEVICE_PROFILE>;
+  name: string;
+}
+
+export function getDeviceProfileName(activeOnly: boolean = false) {
+  return defHttp.get<DeviceProfileName[]>({
+    url: '/api/deviceProfile/names',
+    params: { activeOnly },
   });
 }

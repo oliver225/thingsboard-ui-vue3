@@ -30,7 +30,7 @@
   });
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-layout-content';
+  @prefix-cls: ~'tbv3-layout-content';
 
   .@{prefix-cls} {
     position: relative;

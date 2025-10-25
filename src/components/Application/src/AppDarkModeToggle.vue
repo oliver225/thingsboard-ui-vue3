@@ -35,7 +35,7 @@
   }
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-dark-switch';
+  @prefix-cls: ~'tbv3-dark-switch';
 
   html[data-theme='dark'] {
     .@{prefix-cls} {

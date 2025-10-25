@@ -9,7 +9,7 @@
     "org.thingsboard.rule.engine.filter.TbMsgTypeFilterNode": "message-type-filter",
     "org.thingsboard.rule.engine.filter.TbMsgTypeSwitchNode": "message-type-switch",
     "org.thingsboard.rule.engine.geo.TbGpsGeofencingFilterNode": "gps-geofencing-filter",
-    "org.thingsboard.rule.engine.filter.TbJsFilterNode": "script",
+    "org.thingsboard.rule.engine.filter.TbJsFilterNode": "filter-script",
     "org.thingsboard.rule.engine.filter.TbJsSwitchNode": "switch",
 
     "org.thingsboard.rule.engine.metadata.CalculateDeltaNode":"calculate-delta",
@@ -28,7 +28,7 @@
     "org.thingsboard.rule.engine.transform.TbCopyKeysNode":"copy-key-value-pairs",
     "org.thingsboard.rule.engine.transform.TbDeleteKeysNode":"delete-key-value-pairs",
     "org.thingsboard.rule.engine.transform.TbJsonPathNode":"json-path",
-    "org.thingsboard.rule.engine.transform.TbTransformMsgNode":"script",
+    "org.thingsboard.rule.engine.transform.TbTransformMsgNode":"transform-script",
     "org.thingsboard.rule.engine.transform.TbRenameKeysNode":"rename-keys",
     "org.thingsboard.rule.engine.deduplication.TbMsgDeduplicationNode":"deduplication",
     "org.thingsboard.rule.engine.transform.TbSplitArrayMsgNod":"split-array-msg",

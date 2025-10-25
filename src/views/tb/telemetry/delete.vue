@@ -11,12 +11,12 @@
   >
     <template #title>
       <Icon :icon="getTitle.icon" class="pr-1 m-1" color="red" />
-      <span> 删除遥测数据 </span>
+      <span> {{ t('tb.telemetry.deleteModal.title') }} </span>
     </template>
 
     <BasicForm @register="registerForm">
       <template #info>
-        删除的点位：<br />
+        {{ t('tb.telemetry.deleteModal.infoPrefix') }}<br />
         <Space wrap>
           <Tag v-for="(key, index) in record?.keys" :key="index">{{ key }}</Tag>
         </Space>
@@ -24,13 +24,13 @@
       <template #deleteAllDataForKeys="{ model, field }">
         <div class="w-full">
           <Radio.Group v-model:value="model[field]" button-style="solid" @change="handleDelAllDataChange">
-            <Radio.Button :value="true">删除所有</Radio.Button>
-            <Radio.Button :value="false">根据时间段删除</Radio.Button>
+            <Radio.Button :value="true">{{ t('tb.telemetry.deleteModal.deleteAll') }}</Radio.Button>
+            <Radio.Button :value="false">{{ t('tb.telemetry.deleteModal.deleteByTime') }}</Radio.Button>
           </Radio.Group>
         </div>
       </template>
       <template #rewriteLatestIfDeleted="{ model, field }">
-        <Checkbox v-model:checked="model[field]">重写最后一条数据</Checkbox>
+        <Checkbox v-model:checked="model[field]">{{ t('tb.telemetry.deleteModal.rewriteLatest') }}</Checkbox>
       </template>
     </BasicForm>
   </BasicModal>
@@ -54,7 +54,7 @@
 
   const getTitle = computed(() => ({
     icon: 'ant-design:delete-outlined',
-    value: t('删除数据'),
+    value: t('tb.telemetry.deleteModal.title'),
   }));
 
   const inputFormSchemas: FormSchema[] = [
@@ -76,7 +76,7 @@
         showTime: true,
       },
       ifShow: false,
-      rules: [{ required: true, message: t('请选择时间区域') }],
+      rules: [{ required: true, message: t('tb.telemetry.deleteModal.rangeRequired') }],
     },
     {
       field: 'rewriteLatestIfDeleted',
@@ -105,7 +105,7 @@
   async function handleDelete() {
     try {
       if (isEmpty(record.value)) {
-        showMessage('没有找到需要删除的遥测数据！', 'error');
+        showMessage(t('tb.telemetry.deleteModal.notFound'), 'error');
         return;
       }
       const data = await validate();
@@ -116,7 +116,7 @@
         data.endTs = dayjs(tmp[1]).valueOf();
       }
       await deleteEntityTimeseries({ ...record.value, ...data, keys: record.value.keys.join(',') });
-      showMessage(`删除数据成功！`);
+      showMessage(t('tb.telemetry.deleteModal.success'));
       setTimeout(closeModal);
       emit('success', {});
     } catch (error: any) {

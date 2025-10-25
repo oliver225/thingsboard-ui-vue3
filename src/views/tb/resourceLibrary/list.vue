@@ -7,16 +7,18 @@
 
       <template #tableTitle>
         <div class="space-x-2">
-          <a-button type="primary" @click="handleForm({})"> <Icon icon="i-fluent:add-12-filled" /> 新增资源 </a-button>
+          <a-button type="primary" @click="handleForm({})">
+            <Icon icon="i-fluent:add-12-filled" /> {{ t('tb.resource.action.add') }}
+          </a-button>
           <Select v-model:value="searchParam.resourceType" @change="reload" style="width: 130px">
-            <Select.Option value="">全部 </Select.Option>
+            <Select.Option value="">{{ t('tb.resource.filter.all') }} </Select.Option>
             <Select.Option v-for="item in RESOURCE_TYPE_OPTIONS" :key="item.value" :value="item.value">{{
               item.label
             }}</Select.Option>
           </Select>
           <a-input
             v-model:value="searchParam.textSearch"
-            placeholder="输入搜索内容"
+            :placeholder="t('common.search.searchText')"
             allow-clear
             @change="reload"
             style="width: 240px"
@@ -67,7 +69,7 @@
   const { createConfirm, showMessage } = useMessage();
 
   const getTitle = {
-    value: router.currentRoute.value.meta.title || '资源库',
+    value: router.currentRoute.value.meta.title || t('tb.resource.title'),
   };
 
   const searchParam = reactive({
@@ -76,7 +78,7 @@
   });
   const tableColumns: BasicColumn[] = [
     {
-      title: t('标题'),
+      title: t('tb.resource.table.title'),
       dataIndex: 'title',
       key: 'title',
       sorter: true,
@@ -85,20 +87,20 @@
       slot: 'firstColumn',
     },
     {
-      title: '资源Key',
+      title: t('tb.resource.table.resourceKey'),
       dataIndex: 'resourceKey',
       key: 'resourceKey',
       width: 120,
     },
     {
-      title: '资源类型',
+      title: t('tb.resource.table.resourceType'),
       dataIndex: 'resourceType',
       key: 'resourceType',
       width: 160,
       format: (text: any) => (text ? RESOURCE_TYPE_OPTIONS.find((item) => item.value === text)?.label || text : ''),
     },
     {
-      title: '系统',
+      title: t('tb.resource.table.system'),
       dataIndex: 'tenantId',
       key: 'tenantId',
       width: 80,
@@ -106,7 +108,7 @@
       slot: 'isSystem',
     },
     {
-      title: t('创建时间'),
+      title: t('tb.resource.table.createdTime'),
       dataIndex: 'createdTime',
       key: 'createdTime',
       format: 'date|YYYY-MM-DD HH:mm:ss',
@@ -121,13 +123,13 @@
     actions: (record: Recordable) => [
       {
         icon: 'ant-design:download-outlined',
-        title: t('导出资源'),
+        title: t('tb.resource.action.download'),
         onClick: handleDownload.bind(this, { ...record }),
       },
       {
         icon: 'ant-design:delete-outlined',
         color: 'error',
-        title: t('删除资源'),
+        title: t('tb.resource.action.delete'),
         onClick: handleDelete.bind(this, { ...record }),
       },
     ],
@@ -162,10 +164,10 @@
   async function handleDelete(record: Recordable) {
     const modalFunc = createConfirm({
       iconType: 'error',
-      title: `确定删除资源[${record.title}]吗？`,
-      content: '请注意：确认后，资源将不可恢复。',
+      title: t('tb.resource.action.deleteConfirm', { title: record.title }),
+      content: t('tb.resource.action.deleteConfirmContent'),
       centered: false,
-      okText: '删除',
+      okText: t('common.delText'),
       okButtonProps: {
         type: 'primary',
         danger: true,
@@ -174,7 +176,7 @@
       onOk: async () => {
         try {
           await deleteResource(record.id.id);
-          showMessage('删除资源成功！');
+          showMessage(t('tb.resource.action.deleteSuccess'));
         } catch (error: any) {
           console.log(error);
         } finally {

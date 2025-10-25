@@ -1,15 +1,17 @@
 <template>
   <div class="widget-type-list">
     <BasicTable @register="registerTable">
-      <template #headerTop>
+      <!-- <template #headerTop>
         <div class="text-lg font-bold my-2"> {{ t(getTitle.value) }} </div>
-      </template>
+      </template> -->
       <template #tableTitle>
         <div class="space-x-2">
-          <a-button type="primary" @click="handleForm({})"> <Icon icon="i-fluent:add-12-filled" /> 新增部件 </a-button>
+          <a-button type="primary" @click="handleForm({})">
+            <Icon icon="i-fluent:add-12-filled" /> {{ t('tb.widgetType.action.add') }}
+          </a-button>
           <a-input
             v-model:value="searchParam.textSearch"
-            placeholder="输入搜索内容"
+            :placeholder="t('common.search.searchText')"
             allow-clear
             @change="reload"
             style="width: 240px"
@@ -56,7 +58,7 @@
   const { createConfirm, showMessage } = useMessage();
 
   const getTitle = {
-    value: router.currentRoute.value.meta.title || '部件',
+    value: router.currentRoute.value.meta.title || t('tb.widgetType.title'),
   };
 
   const searchParam = reactive({
@@ -64,7 +66,7 @@
   });
   const tableColumns: BasicColumn[] = [
     {
-      title: t('标题'),
+      title: t('tb.widgetType.table.title'),
       dataIndex: 'name',
       key: 'name',
       sorter: true,
@@ -73,7 +75,7 @@
       slot: 'firstColumn',
     },
     {
-      title: '部件类型',
+      title: t('tb.widgetType.table.type'),
       dataIndex: 'widgetType',
       key: 'widgetType',
       align: 'center',
@@ -81,7 +83,7 @@
       format: (text: any) => (text ? WIDGET_TYPE_OPTIONS.find((item) => item.value === text)?.label || text : ''),
     },
     {
-      title: '系统',
+      title: t('tb.widgetType.table.system'),
       dataIndex: 'tenantId',
       key: 'tenantId',
       width: 80,
@@ -89,7 +91,7 @@
       slot: 'isSystem',
     },
     {
-      title: '过时的',
+      title: t('tb.widgetType.table.deprecated'),
       dataIndex: 'deprecated',
       key: 'deprecated',
       width: 80,
@@ -97,7 +99,7 @@
       slot: 'deprecated',
     },
     {
-      title: t('创建时间'),
+      title: t('tb.widgetType.table.createdTime'),
       dataIndex: 'createdTime',
       key: 'createdTime',
       format: 'date|YYYY-MM-DD HH:mm:ss',
@@ -112,13 +114,13 @@
     actions: (record: Recordable) => [
       {
         icon: 'ant-design:download-outlined',
-        title: t('导出部件包'),
+        title: t('tb.widgetType.action.export'),
         onClick: handleDownload.bind(this, { ...record }),
       },
       {
         icon: 'ant-design:delete-outlined',
         color: 'error',
-        title: t('删除部件包'),
+        title: t('tb.widgetType.action.delete'),
         onClick: handleDelete.bind(this, { ...record }),
       },
     ],
@@ -147,10 +149,10 @@
   async function handleDelete(record: Recordable) {
     createConfirm({
       iconType: 'error',
-      title: `确定删除部件[${record.title}]吗？`,
-      content: '请注意：确认后，部件和所有相关数据将不可恢复。',
+      title: t('tb.widgetType.action.deleteConfirm', { name: record.title }),
+      content: t('tb.widgetType.action.deleteConfirmContent'),
       centered: false,
-      okText: '删除',
+      okText: t('tb.widgetType.action.deleteText'),
       okButtonProps: {
         type: 'primary',
         danger: true,
@@ -158,7 +160,7 @@
       onOk: async () => {
         try {
           await deleteWidgetType(record.id.id);
-          showMessage('删除部件成功！');
+          showMessage(t('tb.widgetType.action.deleteSuccess'));
         } catch (error: any) {
           console.log(error);
         } finally {

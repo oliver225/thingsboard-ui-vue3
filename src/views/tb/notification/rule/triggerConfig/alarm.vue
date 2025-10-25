@@ -13,41 +13,41 @@
   const { t } = useI18n('tb');
 
   const notifyOnOptions = [
-    { value: 'CREATED', label: '报警创建' },
-    { value: 'SEVERITY_CHANGED', label: '等级改变' },
-    { value: 'ACKNOWLEDGED', label: '已确认' },
-    { value: 'CLEARED', label: '已清除' },
+    { value: 'CREATED', label: t('tb.notification.ruleTrigger.alarm.created') },
+    { value: 'SEVERITY_CHANGED', label: t('tb.notification.ruleTrigger.alarm.severityChanged') },
+    { value: 'ACKNOWLEDGED', label: t('tb.notification.ruleTrigger.alarm.acknowledged') },
+    { value: 'CLEARED', label: t('tb.notification.ruleTrigger.alarm.cleared') },
   ];
 
   const inputFormSchemas: FormSchema[] = [
     { field: 'triggerConfig.triggerType', component: 'Input', defaultValue: NotificationType.ALARM, show: false },
     {
-      label: t('报警类型'),
-      subLabel: t('不选择为任意等级'),
+      label: t('tb.notification.ruleTrigger.alarm.alarmType'),
+      subLabel: t('tb.notification.ruleTrigger.selectAny'),
       field: 'triggerConfig.alarmTypes',
       component: 'Select',
       componentProps: {
         options: [],
         mode: 'tags',
         open: false,
-        placeholder: '任意报警类型',
+        placeholder: t('tb.notification.ruleTrigger.alarm.anyAlarmType'),
       },
       colProps: { lg: 24, md: 24 },
     },
     {
-      label: t('报警等级'),
-      subLabel: t('不选择为任意等级'),
+      label: t('tb.notification.ruleTrigger.alarm.alarmSeverity'),
+      subLabel: t('tb.notification.ruleTrigger.selectAny'),
       field: 'triggerConfig.alarmSeverities',
       component: 'Select',
       componentProps: {
         mode: 'multiple',
         options: ALARM_SEVERITY_OPTIONS,
-        placeholder: '任意报警等级',
+        placeholder: t('tb.notification.ruleTrigger.alarm.anyAlarmSeverity'),
       },
       colProps: { lg: 24, md: 24 },
     },
     {
-      label: t('何时报警'),
+      label: t('tb.notification.ruleTrigger.alarm.notifyOn'),
       field: 'triggerConfig.notifyOn',
       component: 'Select',
       defaultValue: ['CREATED'],
@@ -59,8 +59,8 @@
       colProps: { lg: 24, md: 24 },
     },
     {
-      label: t('停止通知'),
-      subLabel: t('不选择为任意状态'),
+      label: t('tb.notification.ruleTrigger.alarm.stopNotify'),
+      subLabel: t('tb.notification.ruleTrigger.selectAny'),
       field: 'triggerConfig.alarmStatuses',
       component: 'Select',
       componentProps: {
@@ -71,7 +71,7 @@
     },
 
     {
-      label: t('描述信息'),
+      label: t('tb.notification.ruleTrigger.description'),
       field: 'additionalConfig.description',
       component: 'InputTextArea',
       componentProps: {
@@ -112,6 +112,5 @@
   defineExpose({ getFieldsValue, validate: validateTrigger, resetFields, setFieldsValue: setTriggerFieldsValue });
 </script>
 <style lang="less">
-  .trigger-config-alarm {
-  }
+  /* removed empty rule .trigger-config-alarm */
 </style>

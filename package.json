@@ -1,6 +1,6 @@
 {
   "name": "thingsboard-ui-vue",
-  "version": "4.1.0",
+  "version": "4.2.0",
   "type": "module",
   "private": true,
   "scripts": {
@@ -75,6 +75,7 @@
     "vue-json-pretty": "2.4.0",
     "vue-router": "4.5.0",
     "vue-types": "6.0.0",
+    "vue-web-terminal": "3",
     "xlsx": "0.18.5"
   },
   "devDependencies": {

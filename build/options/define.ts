@@ -1,8 +1,4 @@
-/**
- * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
- * No deletion without permission, or be held responsible to law.
- * @author ThinkGem
- */
+
 import { PackageJson, readPackageJSON } from 'pkg-types';
 import dayjs from 'dayjs';
 

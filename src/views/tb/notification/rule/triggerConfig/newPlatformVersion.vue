@@ -17,7 +17,7 @@
       show: false,
     },
     {
-      label: t('描述信息'),
+  label: t('tb.notification.ruleTrigger.description'),
       field: 'additionalConfig.description',
       component: 'InputTextArea',
       componentProps: {
@@ -41,6 +41,5 @@
   defineExpose({ getFieldsValue, validate, resetFields, setFieldsValue: setTriggerFieldsValue });
 </script>
 <style lang="less">
-  .trigger-config-entities-limit {
-  }
+  /* removed empty rule .trigger-config-entities-limit */
 </style>

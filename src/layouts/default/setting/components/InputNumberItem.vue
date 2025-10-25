@@ -37,7 +37,7 @@
   });
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-setting-input-number-item';
+  @prefix-cls: ~'tbv3-setting-input-number-item';
 
   .@{prefix-cls} {
     display: flex;

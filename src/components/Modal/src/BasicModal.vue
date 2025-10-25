@@ -239,7 +239,7 @@
 </script>
 
 <style lang="less">
-  @prefix-cls: ~'jeesite-basic-modal';
+  @prefix-cls: ~'tbv3-basic-modal';
 
   .ant-modal.@{prefix-cls} {
     .ant-modal {

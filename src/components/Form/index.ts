@@ -6,11 +6,11 @@ export * from './src/types/formItem';
 export { useComponentRegister } from './src/hooks/useComponentRegister';
 export { useForm } from './src/hooks/useForm';
 
-export { default as Select } from './src/components/JeeSiteSelect.vue';
-export { default as TreeSelect } from './src/components/JeeSiteTreeSelect.vue';
-export { default as RadioGroup } from './src/components/JeeSiteRadioGroup.vue';
-export { default as RadioButtonGroup } from './src/components/JeeSiteRadioButtonGroup.vue';
-export { default as CheckboxGroup } from './src/components/JeeSiteCheckboxGroup.vue';
+export { default as Select } from './src/components/TbV3Select.vue';
+export { default as TreeSelect } from './src/components/TbV3TreeSelect.vue';
+export { default as RadioGroup } from './src/components/TbV3RadioGroup.vue';
+export { default as RadioButtonGroup } from './src/components/TbV3RadioButtonGroup.vue';
+export { default as CheckboxGroup } from './src/components/TbV3CheckboxGroup.vue';
 export { default as FormGroup } from './src/components/FormGroup.vue';
 
 export { BasicForm };

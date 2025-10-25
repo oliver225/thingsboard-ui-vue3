@@ -14,7 +14,7 @@
     </template>
   </a-input>
 </template>
-<script lang="ts" setup name="JeeSiteValidCode">
+<script lang="ts" setup name="TbV3ValidCode">
   import { onMounted, ref, watch } from 'vue';
   import { useDesign } from '/@/hooks/web/useDesign';
   import { useRuleFormItem } from '/@/hooks/component/useFormItem';
@@ -34,7 +34,7 @@
   const { ctxPath } = useGlobSetting();
   const userStore = useUserStore();
 
-  const { prefixCls } = useDesign('jeesite-valid-code');
+  const { prefixCls } = useDesign('tbv3-valid-code');
   const [state] = useRuleFormItem(props);
 
   const getValidCodeImg = ref('');
@@ -57,7 +57,7 @@
   });
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-countdown-input';
+  @prefix-cls: ~'tbv3-countdown-input';
 
   .@{prefix-cls} {
     .ant-input-group-addon {

@@ -1,0 +1,38 @@
+export default {
+  title: '事件',
+  table: {
+    createdTime: '事件時間',
+    server: '伺服器',
+    method: '方法',
+    error: '錯誤',
+    event: '事件',
+    status: '狀態',
+    messagesProcessed: '消息處理',
+    errorsOccurred: '錯誤發生',
+    message: '消息',
+    type: '類型',
+    entityType: '實體類型',
+    entityId: '實體ID',
+    msgId: '消息ID',
+    msgType: '消息類型',
+    relationType: '關聯類型',
+    data: '數據',
+    metadata: '元數據',
+    success: '成功',
+    failure: '失敗',
+  },
+  action: {
+    clearAll: '清除所有事件',
+    clearAllConfirm: '確認清空所有事件？',
+    clearAllSuccess: '清空所有事件成功！',
+    confirm: '確認',
+  },
+
+  eventType: {
+    ERROR: '錯誤',
+    LC_EVENT: '生命週期事件',
+    STATS: '類型統計',
+    DEBUG_RULE_NODE: '測試',
+    DEBUG_RULE_CHAIN: '測試',
+  },
+};

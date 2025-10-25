@@ -1,8 +1,4 @@
-<!--
- * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
- * No deletion without permission, or be held responsible to law.
- * @author Vben、ThinkGem
--->
+
 <template>
   <Form
     v-bind="getBindValue"
@@ -283,7 +279,7 @@
   defineExpose(formActionType);
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-basic-form';
+  @prefix-cls: ~'tbv3-basic-form';
 
   .@{prefix-cls} {
     padding-top: 8px;
@@ -355,7 +351,7 @@
         margin-bottom: 7px !important;
       }
 
-      .jeesite-basic-help {
+      .tbv3-basic-help {
         margin-left: 3px;
       }
 

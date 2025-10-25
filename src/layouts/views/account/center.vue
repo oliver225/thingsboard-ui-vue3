@@ -13,12 +13,12 @@
           <Tabs.TabPane key="2" :tab="t('sys.account.securityTab')">
             <SecureSettings />
           </Tabs.TabPane>
-          <Tabs.TabPane key="3" :tab="t('通知设置')">
+          <Tabs.TabPane key="3" :tab="t('sys.account.notificationTab')">
             <NotifictionSetting />
           </Tabs.TabPane>
-          <Tabs.TabPane key="4" :tab="t('sys.account.bindingTab')">
+          <!-- <Tabs.TabPane key="4" :tab="t('sys.account.bindingTab')">
             <Oauth2Binder />
-          </Tabs.TabPane>
+          </Tabs.TabPane> -->
         </Tabs>
       </div>
     </ScrollContainer>

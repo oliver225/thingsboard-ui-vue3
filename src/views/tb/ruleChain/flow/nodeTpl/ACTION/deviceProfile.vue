@@ -1,69 +1,66 @@
 <template>
-    <Form ref="formRef" :model="formState" layout="vertical">
-
-        <Form.Item name="fetchAlarmRulesStateOnStart">
-            <Checkbox v-model:value="formState.fetchAlarmRulesStateOnStart">
-                保持报警规则状态
-            </Checkbox>
-        </Form.Item>
-        <Form.Item name="persistAlarmRulesState">
-            <Checkbox v-model:value="formState.persistAlarmRulesState">
-                获取报警规则状态
-            </Checkbox>
-        </Form.Item>
-
-    </Form>
+  <Form ref="formRef" :model="formState" layout="vertical">
+    <Form.Item name="fetchAlarmRulesStateOnStart">
+      <Checkbox v-model:value="formState.fetchAlarmRulesStateOnStart">
+        {{ t('tb.ruleChain.nodeAction.fetchAlarmRulesStateOnStart') }}
+      </Checkbox>
+    </Form.Item>
+    <Form.Item name="persistAlarmRulesState">
+      <Checkbox v-model:value="formState.persistAlarmRulesState">
+        {{ t('tb.ruleChain.nodeAction.persistAlarmRulesState') }}
+      </Checkbox>
+    </Form.Item>
+  </Form>
 </template>
 <script lang="ts">
-export default defineComponent({
-    name: "device-profile",
-});
+  export default defineComponent({
+    name: 'device-profile',
+  });
 </script>
-<script lang="ts" setup >
-import { ref, watch, defineComponent, reactive } from 'vue';
-import { Form, Checkbox } from 'ant-design-vue';
-import { FormInstance } from 'ant-design-vue/lib/form';
+<script lang="ts" setup>
+  import { ref, watch, defineComponent, reactive } from 'vue';
+  import { Form, Checkbox } from 'ant-design-vue';
+  import { FormInstance } from 'ant-design-vue/lib/form';
+  import { useI18n } from '/@/hooks/web/useI18n';
 
-interface Configuration {
-    fetchAlarmRulesStateOnStart: boolean,
-    persistAlarmRulesState: boolean,
+  interface Configuration {
+    fetchAlarmRulesStateOnStart: boolean;
+    persistAlarmRulesState: boolean;
+  }
 
-}
+  const { t } = useI18n('tb');
 
-
-const props = defineProps({
+  const props = defineProps({
     configuration: {
-        type: Object as PropType<Configuration>,
-        required: true,
+      type: Object as PropType<Configuration>,
+      required: true,
     },
-    ruleChainId: { type: String, default: '' }
+    ruleChainId: { type: String, default: '' },
+  });
 
-});
+  const formRef = ref<FormInstance>();
 
-const formRef = ref<FormInstance>();
-
-const formState = reactive<any>({
+  const formState = reactive<any>({
     fetchAlarmRulesStateOnStart: false,
     persistAlarmRulesState: false,
-});
+  });
 
-watch(
+  watch(
     () => props.configuration,
     () => {
-        formState.fetchAlarmRulesStateOnStart = props.configuration.fetchAlarmRulesStateOnStart;
-        formState.persistAlarmRulesState = props.configuration.persistAlarmRulesState;
+      formState.fetchAlarmRulesStateOnStart = props.configuration.fetchAlarmRulesStateOnStart;
+      formState.persistAlarmRulesState = props.configuration.persistAlarmRulesState;
     },
-    { immediate: true }
-)
+    { immediate: true },
+  );
 
-async function getConfiguration() {
+  async function getConfiguration() {
     try {
-        return await formRef.value?.validate();
+      return await formRef.value?.validate();
     } catch (error: any) {
-        throw error;
+      throw error;
     }
-}
+  }
 
-defineExpose({ getConfiguration })
-
+  defineExpose({ getConfiguration });
 </script>

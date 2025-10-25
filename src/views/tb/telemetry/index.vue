@@ -7,7 +7,7 @@
             <Segmented v-model:value="selectedScope" :options="typeTabList" @change="handleScopeChange" />
           </div>
           <Space :size="1" class="mx-4">
-            <Tooltip title="添加属性" v-if="selectedScope != Scope.CLIENT_SCOPE">
+            <Tooltip :title="t('tb.telemetry.header.addAttribute')" v-if="selectedScope != Scope.CLIENT_SCOPE">
               <Icon
                 icon="ant-design:plus-outlined"
                 :size="20"
@@ -15,13 +15,16 @@
                 @click="handledAttributeForm({})"
               />
             </Tooltip>
-            <Tooltip title="刷新数据" v-if="selectedScope != LATEST_TELEMETRY">
+            <Tooltip :title="t('tb.telemetry.header.refresh')" v-if="selectedScope != LATEST_TELEMETRY">
               <Icon icon="ant-design:redo-outlined" :size="20" class="cursor-pointer" @click="fetchAttributes" />
             </Tooltip>
-            <Tooltip title="查询名称">
+            <Tooltip :title="t('tb.telemetry.header.searchName')">
               <Icon icon="ant-design:search-outlined" :size="20" class="cursor-pointer" />
             </Tooltip>
-            <Tooltip title="查看图表" v-if="selectedScope == LATEST_TELEMETRY && showChartView == false">
+            <Tooltip
+              :title="t('tb.telemetry.header.viewChart')"
+              v-if="selectedScope == LATEST_TELEMETRY && showChartView == false"
+            >
               <Icon
                 icon="ant-design:line-chart-outlined"
                 :size="20"
@@ -33,7 +36,10 @@
                 "
               />
             </Tooltip>
-            <Tooltip title="查看表格" v-if="selectedScope == LATEST_TELEMETRY && showChartView == true">
+            <Tooltip
+              :title="t('tb.telemetry.header.viewTable')"
+              v-if="selectedScope == LATEST_TELEMETRY && showChartView == true"
+            >
               <Icon
                 icon="ant-design:insert-row-below-outlined"
                 :size="20"
@@ -103,8 +109,8 @@
   import TimeseriesModal from './timeseriesModal.vue';
   import AttributeModal from './attributeFrom.vue';
   import DeleteModal from './delete.vue';
-  import { isNull } from '/@/utils/is';
   import { WsCmdType } from '/@/enums/wsCmdTypeEnum';
+  import { EntityType } from '/@/enums/entityTypeEnum';
   const LATEST_TELEMETRY = 'LATEST_TELEMETRY';
 
   const props = defineProps({
@@ -135,18 +141,21 @@
   const LATEST_TELEMETRY_CMD_ID = ref(0);
   const ATTRIBUTE_CMD_ID = ref(0);
 
+  const telemetryHistoryData = ref<any[]>([]);
+  const clientScopeHistoryData = ref<any[]>([]);
+
   const showChartView = ref(false);
 
   const typeTabList = reactive([
-    { value: LATEST_TELEMETRY, label: '遥测数据', className: 'segment-tab' },
-    { value: Scope.CLIENT_SCOPE, label: '客户端属性', className: 'segment-tab' },
-    { value: Scope.SERVER_SCOPE, label: '服务端属性', className: 'segment-tab' },
-    { value: Scope.SHARED_SCOPE, label: '共享属性', className: 'segment-tab' },
+    { value: LATEST_TELEMETRY, label: t('tb.telemetry.segmented.latest'), className: 'segment-tab' },
+    { value: Scope.CLIENT_SCOPE, label: t('tb.telemetry.segmented.client'), className: 'segment-tab' },
+    { value: Scope.SERVER_SCOPE, label: t('tb.telemetry.segmented.server'), className: 'segment-tab' },
+    { value: Scope.SHARED_SCOPE, label: t('tb.telemetry.segmented.shared'), className: 'segment-tab' },
   ]);
 
   const tableColumns: BasicColumn[] = [
     {
-      title: t('名称'),
+      title: t('tb.telemetry.table.name'),
       dataIndex: 'key',
       key: 'key',
       sorter: true,
@@ -154,14 +163,14 @@
       slot: 'nameSlot',
     },
     {
-      title: t('数值'),
+      title: t('tb.telemetry.table.value'),
       dataIndex: 'value',
       key: 'value',
       align: 'right',
       slot: 'valueColumn',
     },
     {
-      title: t('最后更新时间'),
+      title: t('tb.telemetry.table.lastUpdateTs'),
       dataIndex: 'lastUpdateTs',
       key: 'lastUpdateTs',
       format: 'date|YYYY-MM-DD HH:mm:ss',
@@ -176,20 +185,20 @@
     actions: (record: Recordable) => [
       {
         icon: 'i-clarity:note-edit-line',
-        title: t('编辑'),
+        title: t('tb.telemetry.action.edit'),
         onClick: handledAttributeForm.bind(this, { ...record }),
         ifShow: selectedScope.value == Scope.SERVER_SCOPE || selectedScope.value == Scope.SHARED_SCOPE,
       },
       {
         icon: 'ant-design:line-chart-outlined',
-        title: t('查看图表'),
+        title: t('tb.telemetry.action.viewChart'),
         ifShow: selectedScope.value == LATEST_TELEMETRY,
         onClick: handleTimeseriesModal.bind(this, { ...record }),
       },
       {
         icon: 'ant-design:delete-outlined',
         color: 'error',
-        title: t('删除'),
+        title: t('tb.telemetry.action.delete'),
         ifShow: userStore.getAuthority == Authority.TENANT_ADMIN,
         onClick: handleDelete.bind(this, { ...record }),
       },
@@ -246,6 +255,9 @@
         lastUpdateTs: kvEntity.lastUpdateTs,
         property: kvEntity.property,
       }));
+      if (selectedScope.value == Scope.CLIENT_SCOPE) {
+        clientScopeHistoryData.value = dataSource.value;
+      }
     } catch (error: any) {
       console.log('error', error);
     } finally {
@@ -269,6 +281,7 @@
   }
 
   async function subClientScopeAttribute() {
+    clientScopeHistoryData.value = [];
     ATTRIBUTE_CMD_ID.value = getAndIncrementCmdId();
     const sendResult = await websocketSend(
       ATTRIBUTE_CMD_ID.value,
@@ -291,6 +304,7 @@
   }
 
   async function subLatestTimeseries() {
+    telemetryHistoryData.value = [];
     LATEST_TELEMETRY_CMD_ID.value = getAndIncrementCmdId();
     const sendResult = await websocketSend(
       LATEST_TELEMETRY_CMD_ID.value,
@@ -318,6 +332,7 @@
           lastUpdateTs: kvRecord[key].data[0].ts,
           property: kvRecord[key].property,
         }));
+        telemetryHistoryData.value = dataSource.value;
       } catch (error: any) {
         console.log('error', error);
       } finally {
@@ -352,23 +367,37 @@
   }
 
   function onWebsocketMessage(data: any) {
-    dataSource.value = Object.keys(data.data).map((key) => {
+    const receivedData = Object.keys(data.data).map((key) => {
       return {
         key: key,
         value: data.data[key][0][1],
         lastUpdateTs: data.data[key][0][0],
       };
     });
+    function mergeByKey(oldArr: any[], newArr: any[]) {
+      const map = new Map();
+      for (const item of oldArr) map.set(item.key, item);
+      for (const item of newArr) map.set(item.key, item);
+      return Array.from(map.values());
+    }
+    if (selectedScope.value == Scope.CLIENT_SCOPE) {
+      clientScopeHistoryData.value = mergeByKey(clientScopeHistoryData.value, receivedData);
+      dataSource.value = clientScopeHistoryData.value;
+    }
+    if (selectedScope.value == LATEST_TELEMETRY) {
+      telemetryHistoryData.value = mergeByKey(telemetryHistoryData.value, receivedData);
+      dataSource.value = telemetryHistoryData.value;
+    }
   }
 
   function handleDelete(data: any) {
     if (LATEST_TELEMETRY != selectedScope.value) {
       createConfirm({
         iconType: 'error',
-        title: `确定删除属性[${data.key}]吗？`,
-        content: '注意,确认后所有选中的属性都会被删除。',
+        title: t('tb.telemetry.action.deleteAttrConfirm', { key: data.key }),
+        content: t('tb.telemetry.action.deleteAttrConfirmContent'),
         centered: false,
-        okText: '删除',
+        okText: t('tb.telemetry.deleteModal.deleteText'),
         okButtonProps: {
           type: 'primary',
           danger: true,
@@ -376,7 +405,7 @@
         onOk: async () => {
           try {
             await deleteEntityAttributes(entityId.value, selectedScope.value as Scope, [data.key]);
-            showMessage(`删除${data.key}属性成功！`);
+            showMessage(t('tb.telemetry.action.deleteAttrSuccess', { key: data.key }));
           } catch (error: any) {
             console.log(error);
           } finally {

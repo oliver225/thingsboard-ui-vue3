@@ -9,7 +9,11 @@
     @ok="close"
   >
     <template #title>
-      {{ t(isSuccess ? '发送成功' : '发送失败') }}
+      {{
+        isSuccess
+          ? t('tb.notification.request.stats.sendSuccessTitle')
+          : t('tb.notification.request.stats.sendFailTitle')
+      }}
     </template>
     <div class="stats-card-container">
       <div class="error" v-if="!isEmpty(stats?.error)">
@@ -20,7 +24,10 @@
           <p class="title">
             <Icon :icon="'ant-design:message-outlined'" color="red" />
             <!-- <ChatBubbleErrorIcon style="color: red;" /> -->
-            <span> {{ Object.keys(data).length }}&nbsp;{{ getErrorMethod(method) }} 失败</span>
+            <span>
+              {{ Object.keys(data).length }}&nbsp;{{ getErrorMethod(method) }}
+              {{ t('tb.notification.request.table.failed') }}
+            </span>
           </p>
           <List class="error-item" size="small">
             <ListItem v-for="(content, user, index2) in data" :key="index2">
@@ -43,7 +50,7 @@
               Object.keys(stats?.sent)
                 .map((key) => Number.parseInt(stats?.sent[key]))
                 .reduce((a, b) => a + b, 0)
-            }}&nbsp;已经发送</span
+            }}&nbsp;{{ t('tb.notification.request.stats.sent') }}</span
           >
         </p>
         <p class="sent-item" v-for="(number, method, index) in stats?.sent" :key="index">
@@ -82,17 +89,11 @@
   });
 
   function getErrorMethod(method: string) {
-    if (method == 'WEB') {
-      return 'Web';
-    } else if (method == 'SMS') {
-      return '短信';
-    } else if (method == 'EMAIL') {
-      return 'Email';
-    } else if (method == 'SLACK') {
-      return 'Slack';
-    } else {
-      return method;
-    }
+    if (method == 'WEB') return t('tb.notification.template.method.web');
+    if (method == 'SMS') return t('tb.notification.template.method.sms');
+    if (method == 'EMAIL') return t('tb.notification.template.method.email');
+    if (method == 'SLACK') return t('tb.notification.template.method.slack');
+    return method;
   }
 
   function close() {

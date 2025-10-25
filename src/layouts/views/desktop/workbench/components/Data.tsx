@@ -56,7 +56,7 @@ export const navItems: NavItem[] = [
 export const dynamicInfoItems: DynamicInfoItem[] = [
   {
     avatar: 'icons/dynamic-avatar-4.svg',
-    name: 'ThinkGem',
+    name: '王刚',
     date: '刚刚',
     desc: `在 <a>开源组</a> 创建了项目 <a>Vue</a>`,
   },
@@ -64,11 +64,11 @@ export const dynamicInfoItems: DynamicInfoItem[] = [
     avatar: 'icons/dynamic-avatar-2.svg',
     name: '果汁',
     date: '1个小时前',
-    desc: `关注了 <a>JeeSite</a> `,
+    desc: `关注了 <a>oliver</a> `,
   },
   {
     avatar: 'icons/dynamic-avatar-3.svg',
-    name: 'JeeSite',
+    name: 'oliver',
     date: '1天前',
     desc: `发布了 <a>个人动态</a> `,
   },
@@ -80,25 +80,25 @@ export const dynamicInfoItems: DynamicInfoItem[] = [
   },
   {
     avatar: 'icons/dynamic-avatar-4.svg',
-    name: 'ThinkGem',
+    name: 'oliver',
     date: '3天前',
     desc: `回复了 <a>杰克</a> 的问题 <a>如何进行项目优化？</a>`,
   },
   {
     avatar: 'icons/dynamic-avatar-6.svg',
-    name: 'JeeSite',
+    name: 'oliver',
     date: '1周前',
     desc: `关闭了问题 <a>如何运行项目</a> `,
   },
   {
     avatar: 'icons/dynamic-avatar-1.svg',
-    name: '彩虹',
+    name: 'oliver',
     date: '1周前',
     desc: `发布了 <a>个人动态</a> `,
   },
   {
     avatar: 'icons/dynamic-avatar-1.svg',
-    name: '彩虹',
+    name: 'oliver',
     date: '2021-09-01 20:00',
     desc: `推送了代码到 <a>Gitee</a>`,
   },
@@ -146,7 +146,7 @@ export const groupItems: GroupItem[] = [
     date: '2021-09-01',
   },
   {
-    title: 'JeeSite',
+    title: 'TbV3',
     icon: 'i-ion:logo-javascript',
     color: '#4daf1bc9',
     desc: '路是走出来的，而不是空想出来的。',

@@ -1,5 +1,5 @@
 <template>
-  <Card size="small" title="客户" class="cursor-pointer" @click="go('/customer/list')">
+  <Card size="small" :title="t('tb.desktop.cards.customer')" class="cursor-pointer" @click="go('/customer/list')">
     <template #extra>
       <Icon icon="ant-design:team-outlined" :size="24" color="purple" />
     </template>
@@ -7,7 +7,7 @@
     <Row v-else class="py-4 px-4">
       <Col span="12">
         <div class="ant-statistic">
-          <div class="ant-statistic-title mb-1"> 客户 </div>
+          <div class="ant-statistic-title mb-1">{{ t('tb.desktop.cards.customer') }}</div>
           <div class="ant-statistic-content">
             <CountTo :endVal="customerTotal" class="ant-statistic-content-value-int text-2xl" />
           </div>
@@ -15,7 +15,7 @@
       </Col>
       <Col span="12">
         <div class="ant-statistic">
-          <div class="ant-statistic-title mb-1"> 客户用户 </div>
+          <div class="ant-statistic-title mb-1">{{ t('tb.desktop.cards.customerUser') }}</div>
           <div class="ant-statistic-content">
             <CountTo :endVal="customerUserTotal" class="ant-statistic-content-value-int text-2xl" />
           </div>
@@ -39,7 +39,9 @@
   import { EntityType } from '/@/enums/entityTypeEnum';
   import { Authority } from '/@/enums/authorityEnum';
   import { WsCmdType } from '/@/enums/wsCmdTypeEnum';
+  import { useI18n } from '/@/hooks/web/useI18n';
 
+  const { t } = useI18n();
   const go = useGo();
 
   const CUSTOMER_COUNT_CMD_ID = ref(0);

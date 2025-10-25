@@ -1,0 +1,43 @@
+export default {
+  title: 'Tenant',
+  table: {
+    title: 'Tenant Name',
+    tenantProfile: 'Tenant Profile',
+    city: 'City',
+    phone: 'Phone',
+    address: 'Address',
+    createdTime: 'Created Time',
+  },
+  form: {
+    title: 'Tenant Name',
+    tenantProfile: 'Tenant Profile',
+    phone: 'Mobile Phone',
+    phoneRule: 'Please enter a valid mobile phone number',
+    zip: 'ZIP Code',
+    email: 'Email',
+    emailRule: 'Please enter a valid email address',
+    area: 'Region',
+    areaRequired: 'Please select region',
+    address: 'Address',
+    address2: 'Address 2',
+    description: 'Description',
+  },
+  action: {
+    add: 'Add Tenant',
+    edit: 'Edit Tenant',
+    addSuccess: 'Add tenant success!',
+    editSuccess: 'Edit tenant success!',
+    adminList: 'Tenant Admin',
+    delete: 'Delete Tenant',
+    deleteConfirm: 'Are you sure to delete tenant [{name}]?',
+    deleteConfirmContent:
+      'Please note that after confirmation, the tenant and all related data will not be recoverable.',
+    deleteSuccess: 'Delete tenant success!',
+    tenantEmpty: 'Tenant is empty!',
+  },
+  detail: {
+    detail: 'Tenant Detail',
+    copyId: 'Copy Tenant ID',
+    copyIdSuccess: 'Copy tenant ID success!',
+  },
+};

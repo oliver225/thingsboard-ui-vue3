@@ -327,7 +327,7 @@
   });
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-layout-mix-sider';
+  @prefix-cls: ~'tbv3-layout-mix-sider';
   @width: 80px;
   .@{prefix-cls} {
     position: fixed;

@@ -80,7 +80,7 @@ export async function downloadByUrl({
   let name = res.headers['content-disposition'];
   name = name && name.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/);
   name = name && name.length >= 1 && name[1].replace("utf-8'zh_cn'", '');
-  name = (name && decodeURIComponent(name)) || fileName || 'jeesite';
+  name = (name && decodeURIComponent(name)) || fileName || 'tbv3';
   downloadByData(res.data, name);
   // axios({
   //   url: url,
@@ -92,7 +92,7 @@ export async function downloadByUrl({
   //     let name = response.headers['content-disposition'];
   //     name = name && name.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/);
   //     name = name && name.length >= 1 && name[1].replace("utf-8'zh_cn'", '');
-  //     name = name && (decodeURIComponent(name) || fileName || 'jeesite');
+  //     name = name && (decodeURIComponent(name) || fileName || 'tbv3');
   //     downloadByData(response.data, name);
   //   })
   //   .catch((error) => {
@@ -128,4 +128,14 @@ export async function downloadByUrl({
 
   // openWindow(url, { target });
   return true;
+}
+
+// 读取文件内容
+export function readFileAsText(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsText(file);
+    reader.onload = () => resolve(String(reader.result || ''));
+    reader.onerror = (error) => reject(error);
+  });
 }

@@ -1,8 +1,4 @@
-<!--
- * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
- * No deletion without permission, or be held responsible to law.
- * @author Vben、ThinkGem
--->
+
 <template>
   <div :class="[prefixCls, getAlign]" @click="onCellClick">
     <template v-for="(action, index) in getActions" :key="`${index}-${action.label}`">
@@ -141,7 +137,7 @@
       function getTooltip(data: string | TooltipProps): TooltipProps {
         return {
           getPopupContainer: () => unref((table as any)?.wrapRef.value) ?? document.body,
-          placement: 'bottom',
+          placement: 'top',
           ...(isString(data) ? { title: data } : data),
         };
       }
@@ -160,7 +156,7 @@
   });
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-basic-table-action';
+  @prefix-cls: ~'tbv3-basic-table-action';
 
   .@{prefix-cls} {
     display: flex;

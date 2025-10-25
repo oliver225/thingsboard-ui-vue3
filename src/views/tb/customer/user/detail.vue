@@ -5,7 +5,7 @@
         <Icon :icon="getTitle.icon" :size="24" />
         <div class="flex flex-col">
           <span class="text-base font-semibold">{{ getTitle.value || '· · · ·' }}</span>
-          <span class="text-sm">客户用户详情</span>
+          <span class="text-sm">{{ t('tb.user.detail.detail') }}</span>
         </div>
       </div>
     </template>
@@ -22,24 +22,24 @@
     <div v-show="tabActiveKey == DetailTabItemEnum.DETAIL.key">
       <div class="space-x-4">
         <a-button type="primary" @click="handleAdminLogin">
-          <Icon :icon="'ant-design:login-outlined'" />以用户身份登录
+          <Icon :icon="'ant-design:login-outlined'" />{{ t('tb.user.action.loginAsUser') }}
         </a-button>
         <a-button
           v-show="record.additionalInfo?.userActivated == false"
           type="primary"
           @click="handleShowActivationLink"
         >
-          <Icon :icon="'mdi:account-key-outline'" />显示激活链接
+          <Icon :icon="'mdi:account-key-outline'" />{{ t('tb.user.action.showActivationLink') }}
         </a-button>
         <a-button
           v-show="record.additionalInfo?.userActivated == false"
           type="primary"
           @click="handleSendActivationEmail"
         >
-          <Icon :icon="'mdi:account-file-text'" />重新发送激活邮件
+          <Icon :icon="'mdi:account-file-text'" />{{ t('tb.user.action.resendActivationMail') }}
         </a-button>
         <a-button type="primary success" @click="handleEditUser">
-          <Icon :icon="'i-clarity:note-edit-line'" />编辑用户
+          <Icon :icon="'i-clarity:note-edit-line'" />{{ t('tb.user.action.edit') }}
         </a-button>
         <a-button
           type="primary"
@@ -48,7 +48,7 @@
           @click="handleDisableAccount"
         >
           <Icon :icon="'mdi:account-off-outline'" />
-          停用账户
+          {{ t('tb.user.action.disableAccount') }}
         </a-button>
         <a-button
           type="primary"
@@ -58,24 +58,35 @@
           "
           @click="handleEnableAccount"
         >
-          <Icon :icon="'mdi:account-check-outline'" />启用账户
+          <Icon :icon="'mdi:account-check-outline'" />{{ t('tb.user.action.enableAccount') }}
         </a-button>
         <a-button type="primary" danger @click="handleDeleteUser">
-          <Icon :icon="'ant-design:delete-outlined'" />删除用户
+          <Icon :icon="'ant-design:delete-outlined'" />{{ t('tb.user.action.delete') }}
         </a-button>
       </div>
       <div class="space-x-4 my-4">
         <a-button @click="handleCopyUserId">
           <Icon :icon="'ant-design:copy-filled'" />
-          复制用户ID
+          {{ t('tb.user.action.copyUserId') }}
         </a-button>
       </div>
       <Description @register="register" size="default">
+        <template #userStatus="{ val }">
+          <Tag color="error" v-if="record?.additionalInfo?.userActivated === false">
+            {{ t('tb.user.detail.notActivated') }}
+          </Tag>
+          <Tag color="processing" v-if="record?.additionalInfo?.userActivated === true">
+            {{ t('tb.user.detail.activated') }}
+          </Tag>
+          <Tag color="error" v-if="record?.additionalInfo?.userCredentialsEnabled === false">
+            {{ t('tb.user.detail.accountDisabled') }}
+          </Tag>
+        </template>
         <template #defaultDashboardFullscreen="{ val }">
-          <Checkbox :checked="val">默认全屏</Checkbox>
+          <Checkbox :checked="val">{{ t('tb.user.form.defaultDashboardFullscreen') }}</Checkbox>
         </template>
         <template #homeDashboardHideToolbar="{ val }">
-          <Checkbox :checked="val">隐藏工具栏</Checkbox>
+          <Checkbox :checked="val">{{ t('tb.user.form.homeDashboardHideToolbar') }}</Checkbox>
         </template>
       </Description>
     </div>
@@ -108,7 +119,7 @@
   import { Icon } from '/@/components/Icon';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
   import { getUserById, sendActivationEmail, setUserCredentialsEnabled, getProxyActivationLink } from '/@/api/tb/user';
-  import { Tabs, TabPane, Checkbox } from 'ant-design-vue';
+  import { Tabs, TabPane, Checkbox, Tag } from 'ant-design-vue';
   import { DescItem, Description, useDescription } from '/@/components/Description';
   import Telemetry from '/@/views/tb/telemetry/index.vue';
   import Relation from '/@/views/tb/relation/list.vue';
@@ -141,33 +152,39 @@
 
   const descSchema: DescItem[] = [
     {
-      label: t('电子邮件'),
+      label: t('tb.user.form.email'),
       field: 'email',
       span: 4,
     },
     {
-      label: t('姓名'),
+      label: t('tb.user.form.firstName'),
       field: 'firstName',
-      span: 4,
-    },
-    {
-      label: t('手机号码'),
-      field: 'phone',
-      span: 2,
-    },
-    {
-      label: t('职务'),
-      field: 'lastName',
       span: 2,
     },
 
     {
-      label: t('描述信息'),
+      label: t('tb.user.form.lastName'),
+      field: 'lastName',
+      span: 2,
+    },
+    {
+      label: t('tb.user.form.status'),
+      field: 'userStatus',
+      span: 2,
+      slot: 'userStatus',
+    },
+    {
+      label: t('tb.user.form.phone'),
+      field: 'phone',
+      span: 2,
+    },
+    {
+      label: t('tb.user.form.description'),
       field: 'additionalInfo.description',
       span: 4,
     },
     {
-      label: t('默认仪表盘'),
+      label: t('tb.user.form.defaultDashboard'),
       field: 'additionalInfo.defaultDashboardTitle',
       span: 2,
     },
@@ -178,7 +195,7 @@
       span: 2,
     },
     {
-      label: t('首页仪表盘'),
+      label: t('tb.user.form.homeDashboard'),
       field: 'additionalInfo.homeDashboardTitle',
       span: 2,
     },
@@ -223,7 +240,7 @@
   }
 
   function handleCopyUserId() {
-    copyToClipboard(record.value.id.id, '复制用户ID成功！');
+    copyToClipboard(record.value.id.id, t('tb.user.action.copyUserIdSuccess'));
   }
 
   function handleDeleteUser() {
@@ -239,10 +256,10 @@
   async function handleDisableAccount() {
     const modalFunc = createConfirm({
       iconType: 'error',
-      title: `确定停用用户[${record.value.firstName || record.value.email}]吗？`,
-      content: '停用后，用户账户将不可用。',
+      title: t('tb.user.action.disableAccountConfirm', { name: record.value.firstName || record.value.email }),
+      content: t('tb.user.action.disableAccountConfirmContent'),
       centered: false,
-      okText: '停用',
+      okText: t('tb.user.action.disableAccount'),
       okButtonProps: {
         type: 'primary',
         danger: true,
@@ -251,7 +268,7 @@
       onOk: async () => {
         try {
           await setUserCredentialsEnabled(record?.value?.id.id, false);
-          showMessage('停用用户账户成功！');
+          showMessage(t('tb.user.action.disableAccountSuccess'));
         } catch (error: any) {
           console.log(error);
         } finally {
@@ -265,7 +282,7 @@
     if (record?.value?.id.id) {
       try {
         await setUserCredentialsEnabled(record?.value?.id.id, true);
-        showMessage('启用用户账户成功！');
+        showMessage(t('tb.user.action.enableAccountSuccess'));
       } finally {
         record.value = await getUserById(record?.value?.id.id);
       }
@@ -279,13 +296,13 @@
       createConfirm({
         iconType: 'success',
         icon: () => h(Icon, { icon: 'ant-design:info-circle-filled', style: { color: 'blue' } }),
-        title: '用户激活链接',
+        title: t('tb.user.action.activationLink'),
         content: h('a', { href: activationLink, target: '_blank' }, `${activationLink}`),
         width: '50%',
-        okText: '确认',
-        cancelText: '复制',
+        okText: t('common.okText'),
+        cancelText: t('common.copyText'),
         maskClosable: false,
-        onCancel: () => copyToClipboard(activationLink, '复制用户激活链接成功！'),
+        onCancel: () => copyToClipboard(activationLink, t('tb.user.action.copyActivationLinkSuccess')),
       });
     } catch (error) {
       console.log(error);
@@ -295,7 +312,7 @@
   async function handleSendActivationEmail() {
     try {
       await sendActivationEmail(record.value.email);
-      showMessage('激活电子邮件已成功发送！', 'success');
+      showMessage(t('tb.user.action.sendActivationMailSuccess'), 'success');
     } catch (error) {
       console.log(error);
     }

@@ -7,7 +7,7 @@
           <span class="text-base font-semibold">{{ getTitle.value || '· · · ·' }}</span>
           <span class="text-sm">
             {{ COMPONENTS_DESCRIPTOR_TYPE_OPTIONS.find((item) => item.value == descriptor?.type)?.label }} -
-            {{ descriptor.name || '规则节点' }}</span
+            {{ descriptor.name || t('tb.ruleChain.node.nodeDetailTitle') }}</span
           >
         </div>
       </div>
@@ -24,14 +24,16 @@
     </template>
     <div v-show="tabActiveKey == DetailTabItemEnum.DETAIL.key">
       <Descriptions layout="vertical" bordered :column="1">
-        <Descriptions.Item label="节点名称">
+        <Descriptions.Item :label="t('tb.ruleChain.node.name')">
           {{ record.name }}
           <span :style="{ float: 'right' }">
-            <Switch :checked="record.debugMode" size="small" /><span class="ml-2">调试模式</span>
+            <DebugSetting v-model:value="record.debugSettings" :edit-able="false" />
           </span>
         </Descriptions.Item>
 
-        <Descriptions.Item label="描述信息">{{ record.additionalInfo?.description }}</Descriptions.Item>
+        <Descriptions.Item :label="t('tb.ruleChain.node.description')">{{
+          record.additionalInfo?.description
+        }}</Descriptions.Item>
       </Descriptions>
     </div>
     <Event
@@ -68,6 +70,7 @@
   import { COMPONENTS_DESCRIPTOR_TYPE_OPTIONS } from '/@/enums/componentEnum';
   import Event from '/@/views/tb/event/index.vue';
   import { DetailTabItemEnum } from '/@/enums/detailTabEnum';
+  import DebugSetting from './components/DebugSetting.vue';
 
   const emit = defineEmits(['edit', 'register']);
 
@@ -89,7 +92,7 @@
     DetailTabItemEnum.EVENT,
     {
       key: 'HELP',
-      label: '帮助',
+      label: t('tb.ruleChain.node.help'),
       icon: 'ant-design:question-circle-outlined',
     },
   ];

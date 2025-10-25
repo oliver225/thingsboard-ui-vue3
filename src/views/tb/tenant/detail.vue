@@ -5,7 +5,7 @@
         <Icon :icon="getTitle.icon" :size="24" />
         <div class="flex flex-col">
           <span class="text-base font-semibold">{{ getTitle.value || '· · · ·' }}</span>
-          <span class="text-sm">租户详情</span>
+          <span class="text-sm">{{ t('tb.tenant.detail.detail') }}</span>
         </div>
       </div>
     </template>
@@ -22,19 +22,19 @@
     <div v-show="tabActiveKey == DetailTabItemEnum.DETAIL.key">
       <div class="space-x-4">
         <a-button type="primary" @click="handleTenantAdmin">
-          <Icon :icon="'ant-design:team-outlined'" />租户管理员
+          <Icon :icon="'ant-design:team-outlined'" />{{ t('tb.tenant.action.adminList') }}
         </a-button>
         <a-button type="primary success" @click="handleEditTenant">
-          <Icon :icon="'i-clarity:note-edit-line'" />编辑租户
+          <Icon :icon="'i-clarity:note-edit-line'" />{{ t('tb.tenant.action.edit') }}
         </a-button>
         <a-button type="primary" danger @click="handleDeleteTenant">
-          <Icon :icon="'ant-design:delete-outlined'" />租删租户
+          <Icon :icon="'ant-design:delete-outlined'" />{{ t('tb.tenant.action.delete') }}
         </a-button>
       </div>
       <div class="space-x-4 my-4">
         <a-button @click="handleCopyTenantId">
           <Icon :icon="'ant-design:copy-filled'" />
-          复制租户ID
+          {{ t('tb.tenant.detail.copyId') }}
         </a-button>
       </div>
       <Description @register="register" size="default">
@@ -109,50 +109,50 @@
 
   const descSchema: DescItem[] = [
     {
-      label: t('租户名称'),
+      label: t('tb.tenant.form.title'),
       field: 'title',
       span: 4,
     },
     {
-      label: t('租户配置'),
+      label: t('tb.tenant.form.tenantProfile'),
       field: 'tenantProfileName',
       span: 2,
     },
     {
-      label: t('手机号码'),
+      label: t('tb.tenant.form.phone'),
       field: 'phone',
       span: 2,
     },
     {
-      label: t('邮政编码'),
+      label: t('tb.tenant.form.zip'),
       field: 'zip',
       span: 2,
     },
     {
-      label: t('邮箱地址'),
+      label: t('tb.tenant.form.email'),
       field: 'email',
       span: 2,
     },
     {
-      label: t('省市区域'),
+      label: t('tb.tenant.form.area'),
       field: 'state',
       span: 4,
       slot: 'state',
     },
 
     {
-      label: t('详细地址'),
+      label: t('tb.tenant.form.address'),
       field: 'address',
       span: 4,
     },
     {
-      label: t('备用地址'),
+      label: t('tb.tenant.form.address2'),
       field: 'address2',
       span: 4,
     },
 
     {
-      label: t('描述信息'),
+      label: t('tb.tenant.form.description'),
       field: 'additionalInfo.description',
       span: 4,
     },
@@ -183,7 +183,7 @@
   }
 
   function handleCopyTenantId() {
-    copyToClipboard(record.value.id.id, '复制租户ID成功！');
+    copyToClipboard(record.value.id.id, t('tb.tenant.detail.copyIdSuccess'));
   }
 
   function handleDeleteTenant() {

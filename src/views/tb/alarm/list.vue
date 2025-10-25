@@ -19,7 +19,7 @@
           />
           <a-input
             v-model:value="searchParam.textSearch"
-            placeholder="输入搜索内容"
+            :placeholder="t('common.search.searchText')"
             allow-clear
             @change="reload"
             style="width: 240px"
@@ -57,12 +57,14 @@
   import { getAlarmInfoList, deleteAlarm, getAlarmInfoByEntity } from '/@/api/tb/alarm';
   import DetailModal from './detail.vue';
   import { ALARM_SEVERITY_OPTIONS, ALARM_SHOW_STATUS_OPTIONS, ALARM_STATUS_OPTIONS } from '/@/enums/alarmEnum';
-  import dayjs from 'dayjs';
+  import dayjs, { Dayjs } from 'dayjs';
   import { Authority } from '/@/enums/authorityEnum';
   import { isEmpty } from 'lodash-es';
   import { usePermission } from '/@/hooks/web/usePermission';
+  import { EntityType } from '/@/enums/entityTypeEnum';
+  import { router } from '/@/router';
 
-  const { t } = useI18n('tb');
+  const { t } = useI18n('tb.alarm');
   const { hasPermission } = usePermission();
   const { createConfirm, showMessage } = useMessage();
 
@@ -78,25 +80,28 @@
   });
 
   const getTitle = {
-    value: '报警',
+    value: router.currentRoute.value.meta.title || t('tb.alarm.title'),
   };
 
   const rangePresets = ref([
-    { label: '今天', value: [dayjs().startOf('D'), dayjs()] },
-    { label: '最近1小时', value: [dayjs().subtract(1, 'hour'), dayjs()] },
-    { label: '最近6小时', value: [dayjs().subtract(6, 'hour'), dayjs()] },
-    { label: '最近1天', value: [dayjs().subtract(1, 'day').startOf('D'), dayjs()] },
-    { label: '最近3天', value: [dayjs().subtract(2, 'day').startOf('D'), dayjs()] },
-    { label: '最近7天', value: [dayjs().subtract(6, 'day').startOf('D'), dayjs()] },
+    { label: t('common.search.rangePresets.today'), value: [dayjs().startOf('D'), dayjs()] },
+    { label: t('common.search.rangePresets.last1Hour'), value: [dayjs().subtract(1, 'hour'), dayjs()] },
+    { label: t('common.search.rangePresets.last6Hours'), value: [dayjs().subtract(6, 'hour'), dayjs()] },
+    { label: t('common.search.rangePresets.last1Day'), value: [dayjs().subtract(1, 'day').startOf('D'), dayjs()] },
+    { label: t('common.search.rangePresets.last3Days'), value: [dayjs().subtract(2, 'day').startOf('D'), dayjs()] },
+    { label: t('common.search.rangePresets.last7Days'), value: [dayjs().subtract(6, 'day').startOf('D'), dayjs()] },
   ]);
 
-  const searchParam = reactive({
+  const searchParam = reactive<{
+    textSearch: string;
+    timeRange?: [Dayjs, Dayjs];
+  }>({
     textSearch: '',
-    timeRange: [],
+    timeRange: undefined,
   });
   const tableColumns: BasicColumn[] = [
     {
-      title: t('发起者'),
+      title: t('tb.alarm.table.originator'),
       dataIndex: 'originatorName',
       key: 'originatorName',
       sorter: true,
@@ -105,22 +110,21 @@
       ifShow: isEmpty(props.entityType),
     },
     {
-      title: t('报警类型'),
+      title: t('tb.alarm.table.alarmType'),
       dataIndex: 'type',
       key: 'type',
       width: 200,
       align: 'center',
       fixed: 'left',
     },
-
     {
-      title: '委托人',
+      title: t('tb.alarm.table.assignee'),
       dataIndex: 'assignee.firstName',
       key: 'assignee.firstName',
       align: 'center',
     },
     {
-      title: '报警等级',
+      title: t('tb.alarm.table.severity'),
       dataIndex: 'severity',
       key: 'severityList',
       align: 'center',
@@ -129,7 +133,7 @@
       slot: 'severity',
     },
     {
-      title: '报警状态',
+      title: t('tb.alarm.table.status'),
       dataIndex: 'status',
       key: 'statusList',
       align: 'center',
@@ -138,7 +142,7 @@
       format: (text: any) => (text ? ALARM_SHOW_STATUS_OPTIONS.find((item) => item.value === text)?.label || text : ''),
     },
     {
-      title: t('创建时间'),
+      title: t('tb.alarm.table.createdTime'),
       dataIndex: 'createdTime',
       key: 'createdTime',
       format: 'date|YYYY-MM-DD HH:mm:ss',
@@ -153,13 +157,13 @@
     actions: (record: Recordable) => [
       {
         icon: 'ant-design:appstore-outlined',
-        title: t('报警详情'),
+        title: t('tb.alarm.action.alarmDetail'),
         onClick: handleDetail.bind(this, { ...record }),
       },
       {
         icon: 'ant-design:delete-outlined',
         color: 'error',
-        title: t('删除报警'),
+        title: t('tb.alarm.action.deleteAlarm'),
         ifShow: hasPermission(Authority.TENANT_ADMIN),
         onClick: handleDelete.bind(this, { ...record }),
       },
@@ -207,10 +211,10 @@
   async function handleDelete(record: Recordable) {
     createConfirm({
       iconType: 'error',
-      title: `确定删除报警[${record.name}]吗？`,
-      content: '请注意：确认后，报警关数据将不可恢复。',
+      title: t('tb.alarm.action.deleteAlarmConfirm', { name: record.name }),
+      content: t('tb.alarm.action.deleteAlarmConfirmContent'),
       centered: false,
-      okText: '删除',
+      okText: t('common.delText'),
       okButtonProps: {
         type: 'primary',
         danger: true,
@@ -218,7 +222,7 @@
       onOk: async () => {
         try {
           await deleteAlarm(record.id.id);
-          showMessage('删除报警成功！');
+          showMessage(t('tb.alarm.action.deleteAlarmSuccess'));
         } catch (error: any) {
           console.log(error);
         } finally {

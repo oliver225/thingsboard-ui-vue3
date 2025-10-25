@@ -1,8 +1,4 @@
-<!--
- * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
- * No deletion without permission, or be held responsible to law.
- * @author Vben、ThinkGem
--->
+
 <template>
   <span :class="getClass" @click="handleClick" @dblclick="handleDblClick">
     <Spin v-if="props.loading" size="small" :style="$attrs.iconStyle" />
@@ -81,7 +77,7 @@
   }
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-basic-arrow';
+  @prefix-cls: ~'tbv3-basic-arrow';
 
   .@{prefix-cls} {
     display: inline-block;

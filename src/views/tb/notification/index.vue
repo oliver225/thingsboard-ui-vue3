@@ -14,7 +14,7 @@
       </TabPane>
       <template #rightExtra>
         <a-button v-if="!hasPermission(Authority.CUSTOMER_USER)" type="primary" @click="handleSendRequest()">
-          <Icon icon="ant-design:send-outlined" /> 发送通知
+          <Icon icon="ant-design:send-outlined" /> {{ t('tb.notification.action.send') }}
         </a-button>
       </template>
     </Tabs>
@@ -59,7 +59,7 @@
         label: t(routerItem.meta.title),
         title: t(routerItem.meta.title),
         path: routerItem.path,
-        componentFn: routerItem.components.default,
+        componentFn: routerItem.components?.default,
       };
     });
     tabActiveKey.value = tabPanes.value[0].key;
@@ -78,14 +78,14 @@
 </script>
 <style lang="less">
   .notification-index {
-    .jeesite-basic-table-header-container {
+    .tbv3-basic-table-header-container {
       // display: none;
       .text-lg {
         display: none;
       }
     }
 
-    .jeesite-basic-table {
+    .tbv3-basic-table {
       padding: 0;
     }
   }

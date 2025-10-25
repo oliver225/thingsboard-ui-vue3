@@ -3,11 +3,14 @@
 </template>
 
 <script lang="ts" setup>
-  import { computed, ref } from 'vue';
+  import { computed, ref, toRaw } from 'vue';
   import { FormSchema } from '/@/components/Form';
+  import { useMessage } from '/@/hooks/web/useMessage';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { AuthenticationForgetPassword } from '/@/components/Authentication';
+  import { resetPasswordByEmail } from '/@/api/tb/noauth';
   const { t } = useI18n();
+  const { showMessage, notification } = useMessage();
 
   defineOptions({ name: 'ForgetPassword' });
 
@@ -22,8 +25,8 @@
         label: t('sys.login.account'),
         componentProps: {
           options: [
-            { label: '使用电子邮箱找回您的密码', value: 'email' },
-            { label: '使用手机号码找回您的密码', value: 'mobile' },
+            { label: t('sys.login.passwordRetrieveByEmail'), value: 'email' },
+            { label: t('sys.login.passwordRetrieveByMobile'), value: 'mobile' },
           ],
           disabled: true,
           size: 'large',
@@ -37,12 +40,32 @@
           placeholder: t('sys.login.emailPlaceholder'),
           size: 'large',
         },
-        rules: [{ required: true }, { type: 'email', message: '请输入正确的邮箱地址' }],
+        rules: [{ required: true }, { type: 'email', message: t('sys.login.emailFormatError') }],
       },
     ];
   });
 
-  function handleSubmit(value: Recordable<any>) {
-    console.log('reset email:', value);
+  async function handleSubmit(data: Recordable<any>) {
+    try {
+      if (!data) return;
+      loading.value = true;
+      const res = await resetPasswordByEmail(toRaw(data.email));
+      notification.success({
+        message: t('sys.login.passwordResetLinkSent'),
+        duration: 0,
+      });
+    } catch (error: any) {
+      const err: string = error?.toString?.() ?? '';
+      if (error?.code === 'ECONNABORTED' && err.indexOf('timeout of') !== -1) {
+        showMessage(t('sys.api.apiTimeoutMessage'));
+      } else if (err.indexOf('Network Error') !== -1) {
+        showMessage(t('sys.api.networkExceptionMsg'));
+      } else if (error?.code === 'ERR_BAD_RESPONSE') {
+        showMessage(t('sys.api.apiRequestFailed'));
+      }
+      console.log(error);
+    } finally {
+      loading.value = false;
+    }
   }
 </script>

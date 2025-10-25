@@ -1,8 +1,4 @@
-/**
- * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
- * No deletion without permission, or be held responsible to law.
- * @author ThinkGem
- */
+
 import type { BuildOptions } from 'vite';
 
 // 兼容 Chrome 内核最低版本的浏览器，如 360、QQ 浏览器

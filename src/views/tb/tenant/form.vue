@@ -20,7 +20,7 @@
   import { tenantProfileInfoList, getTenantProfileInfoDefault } from '/@/api/tb/tenantProfile';
   import { isEmpty } from 'lodash-es';
   import { useCascaderAreaData } from '@vant/area-data';
-import { EntityType } from '/@/enums/entityTypeEnum';
+  import { EntityType } from '/@/enums/entityTypeEnum';
 
   const emit = defineEmits(['success', 'register']);
 
@@ -30,12 +30,12 @@ import { EntityType } from '/@/enums/entityTypeEnum';
   const record = ref<TenantInfo>({} as TenantInfo);
   const getTitle = computed(() => ({
     icon: meta.icon || 'ant-design:book-outlined',
-    value: record.value.id?.id ? t('编辑租户') : t('新增租户'),
+    value: record.value.id?.id ? t('tb.tenant.action.edit') : t('tb.tenant.action.add'),
   }));
 
   const inputFormSchemas: FormSchema[] = [
     {
-      label: t('租户名称'),
+      label: t('tb.tenant.form.title'),
       field: 'title',
       component: 'Input',
       componentProps: {
@@ -53,7 +53,7 @@ import { EntityType } from '/@/enums/entityTypeEnum';
       },
     },
     {
-      label: t('租户配置'),
+      label: t('tb.tenant.form.tenantProfile'),
       field: 'tenantProfileId.id',
       component: 'Select',
       componentProps: {
@@ -69,40 +69,40 @@ import { EntityType } from '/@/enums/entityTypeEnum';
       colProps: { lg: 24, md: 24 },
     },
     {
-      label: t('手机号码'),
+      label: t('tb.tenant.form.phone'),
       field: 'phone',
       component: 'Input',
       required: true,
-      rules: [{ required: true }, { pattern: /^1[3-9]\d{9}$/, message: t('请填写正确的手机号码') }],
+      rules: [{ required: true }, { pattern: /^(1[3-9]\d{9}|09\d{8})$/, message: t('tb.tenant.form.phoneRule') }],
     },
     {
-      label: t('邮政编码'),
+      label: t('tb.tenant.form.zip'),
       field: 'zip',
       component: 'Input',
     },
     {
-      label: t('邮箱地址'),
+      label: t('tb.tenant.form.email'),
       field: 'email',
       component: 'Input',
       componentProps: {
         maxlength: 100,
       },
       colProps: { lg: 24, md: 24 },
-      rules: [{ type: 'email', message: t('请填写正确的邮箱地址') }],
+      rules: [{ type: 'email', message: t('tb.tenant.form.emailRule') }],
     },
     {
-      label: t('省市区域'),
+      label: t('tb.tenant.form.area'),
       field: 'areaList',
       component: 'Cascader',
       componentProps: {
         options: useCascaderAreaData(),
         fieldNames: { label: 'text', value: 'value', children: 'children' },
       },
-      rules: [{ required: true, message: t('选择省市区域') }],
+      rules: [{ required: true, message: t('tb.tenant.form.areaRequired') }],
       colProps: { lg: 24, md: 24 },
     },
     {
-      label: t('详细地址'),
+      label: t('tb.tenant.form.address'),
       field: 'address',
       component: 'Input',
       componentProps: {
@@ -112,7 +112,7 @@ import { EntityType } from '/@/enums/entityTypeEnum';
       colProps: { lg: 24, md: 24 },
     },
     {
-      label: t('备用地址'),
+      label: t('tb.tenant.form.address2'),
       field: 'address2',
       component: 'Input',
       componentProps: {
@@ -122,7 +122,7 @@ import { EntityType } from '/@/enums/entityTypeEnum';
     },
 
     {
-      label: t('描述信息'),
+      label: t('tb.tenant.form.description'),
       field: 'additionalInfo.description',
       component: 'InputTextArea',
       componentProps: {
@@ -166,7 +166,7 @@ import { EntityType } from '/@/enums/entityTypeEnum';
       data.country = data.areaList[2];
       // console.log('submit', params, data, record);
       const res = await tenantSave({ ...data, id: record.value.id });
-      showMessage(`${record.value.id?.id ? '编辑' : '新增'}租户成功！`);
+      showMessage(record.value.id?.id ? t('tb.tenant.action.editSuccess') : t('tb.tenant.action.addSuccess'));
       setTimeout(closeModal);
       emit('success', data);
     } catch (error: any) {

@@ -1,3 +1,7 @@
+import { useI18n } from '/@/hooks/web/useI18n';
+
+const { t } = useI18n();
+
 // 权限
 export enum Authority {
   // ADMIN (code 0)
@@ -17,9 +21,9 @@ export enum Authority {
 }
 
 export const AUTHORITY_OPTIONS = [
-  { value: Authority.SYS_ADMIN, label: '系统管理员' },
-  { value: Authority.TENANT_ADMIN, label: '租户管理员' },
-  { value: Authority.CUSTOMER_USER, label: '客户' },
-  { value: Authority.REFRESH_TOKEN, label: '刷新Token' },
-  { value: Authority.PRE_VERIFICATION_TOKEN, label: '验证Token' },
+  { value: Authority.SYS_ADMIN, label: t('tb.authority.sysAdmin') },
+  { value: Authority.TENANT_ADMIN, label: t('tb.authority.tenantAdmin') },
+  { value: Authority.CUSTOMER_USER, label: t('tb.authority.customerUser') },
+  { value: Authority.REFRESH_TOKEN, label: t('tb.authority.refreshToken') },
+  { value: Authority.PRE_VERIFICATION_TOKEN, label: t('tb.authority.preVerificationToken') },
 ];

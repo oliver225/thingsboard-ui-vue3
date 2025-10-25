@@ -5,7 +5,7 @@
         <Icon :icon="getTitle.icon" :size="24" />
         <div class="flex flex-col">
           <span class="text-base font-semibold">{{ getTitle.value || '· · · ·' }}</span>
-          <span class="text-sm">客户详情</span>
+          <span class="text-sm">{{ t('tb.customer.detail.detail') }}</span>
         </div>
       </div>
     </template>
@@ -22,19 +22,19 @@
     <div v-show="tabActiveKey == DetailTabItemEnum.DETAIL.key">
       <div class="space-x-4">
         <a-button type="primary" @click="handleCustomerUser" v-if="record.title != 'Public'">
-          <Icon :icon="'ant-design:team-outlined'" />客户用户
+          <Icon :icon="'ant-design:team-outlined'" />{{ t('tb.customer.action.customerUser') }}
         </a-button>
         <a-button type="primary success" @click="handleEditCustomer" v-if="record.title != 'Public'">
-          <Icon :icon="'i-clarity:note-edit-line'" />编辑客户
+          <Icon :icon="'i-clarity:note-edit-line'" />{{ t('tb.customer.action.edit') }}
         </a-button>
         <a-button type="primary" danger @click="handleDeleteCustomer" v-if="record.title != 'Public'">
-          <Icon :icon="'ant-design:delete-outlined'" />删除客户
+          <Icon :icon="'ant-design:delete-outlined'" />{{ t('tb.customer.action.delete') }}
         </a-button>
       </div>
       <div class="space-x-4 my-4">
         <a-button @click="handleCopyCustomerId">
           <Icon :icon="'ant-design:copy-filled'" />
-          复制客户ID
+          {{ t('tb.customer.action.copyId') }}
         </a-button>
       </div>
       <Description @register="register" size="default">
@@ -118,45 +118,45 @@
 
   const descSchema: DescItem[] = [
     {
-      label: t('租户名称'),
+      label: t('tb.customer.table.name'),
       field: 'title',
       span: 4,
     },
     {
-      label: t('手机号码'),
+      label: t('tb.customer.form.phone'),
       field: 'phone',
       span: 2,
     },
     {
-      label: t('邮政编码'),
+      label: t('tb.customer.table.zip'),
       field: 'zip',
       span: 2,
     },
     {
-      label: t('邮箱地址'),
+      label: t('tb.customer.table.email'),
       field: 'email',
       span: 2,
     },
     {
-      label: t('省市区域'),
+      label: t('tb.customer.table.stateArea'),
       field: 'state',
       span: 4,
       slot: 'state',
     },
 
     {
-      label: t('详细地址'),
+      label: t('tb.customer.table.address'),
       field: 'address',
       span: 4,
     },
     {
-      label: t('备用地址'),
+      label: t('tb.customer.table.address2'),
       field: 'address2',
       span: 4,
     },
 
     {
-      label: t('描述信息'),
+      label: t('tb.customer.table.description'),
       field: 'additionalInfo.description',
       span: 4,
     },
@@ -187,7 +187,7 @@
   }
 
   function handleCopyCustomerId() {
-    copyToClipboard(record.value.id.id, '复制客户ID成功！');
+    copyToClipboard(record.value.id.id, t('tb.customer.action.copyIdSuccess'));
   }
 
   function handleDeleteCustomer() {

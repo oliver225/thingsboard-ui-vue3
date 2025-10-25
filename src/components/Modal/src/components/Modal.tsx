@@ -19,7 +19,7 @@ export default defineComponent({
     });
 
     return () => {
-      const propsData = { class: 'jeesite-basic-modal', ...unref(attrs), ...props } as Recordable;
+      const propsData = { class: 'tbv3-basic-modal', ...unref(attrs), ...props } as Recordable;
       return <Modal {...propsData}>{extendSlots(slots)}</Modal>;
     };
   },

@@ -1,8 +1,14 @@
 <template>
-  <BasicModal v-bind="$attrs" :footer="null" :can-fullscreen="false" @register="registerModal">
+  <BasicModal
+    v-bind="$attrs"
+    :show-ok-btn="false"
+    :cancel-text="t('common.closeText')"
+    :can-fullscreen="false"
+    @register="registerModal"
+  >
     <template #title>
       <Icon icon="i-clarity:note-edit-line" class="pr-1 m-1" />
-      <span> 编辑图片 </span>
+      <span>{{ t('tb.images.action.editImage') }}</span>
     </template>
     <div class="w-full">
       <Input v-model:value="record.title" />
@@ -11,10 +17,10 @@
     <div class="rounded border-slate-200 bg-slate-100 mt-4 p-4">
       <div class="flex justify-between px-1">
         <Space :size="25">
-          <Tooltip title="下载图片">
+          <Tooltip :title="t('tb.images.action.downloadImage')">
             <Icon :size="26" icon="ant-design:download-outlined" @click="handleDownload" />
           </Tooltip>
-          <Tooltip title="嵌入图片">
+          <Tooltip :title="t('tb.images.action.embedImage')">
             <Icon :size="26" icon="ant-design:code-outlined" @click="handleEmbedImage" />
           </Tooltip>
         </Space>
@@ -22,7 +28,7 @@
           type="primary"
           v-if="!!!(userStore.getAuthority == Authority.TENANT_ADMIN && record.link?.indexOf('system') > -1)"
         >
-          更新图片
+          {{ t('tb.images.action.updateImage') }}
         </a-button>
       </div>
       <div class="h-100 my-2">
@@ -50,11 +56,13 @@
   import { updateImageInfo, imagePreview } from '/@/api/tb/images';
   import { Authority } from '/@/enums/authorityEnum';
   import { useUserStore } from '/@/store/modules/user';
+  import { useI18n } from '/@/hooks/web/useI18n';
 
   const emit = defineEmits(['register', 'embed', 'download']);
 
   const record = ref<ResourceInfo>({} as ResourceInfo);
   const userStore = useUserStore();
+  const { t } = useI18n('tb');
 
   const [registerModal, { setModalProps }] = useModalInner(async (data) => {
     setModalProps({ loading: true });

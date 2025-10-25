@@ -1,6 +1,9 @@
 export default {
+  all: 'All',
   okText: 'OK',
   closeText: 'Close',
+  copyText: 'Copy',
+  copySuccess: 'Copied successfully',
   cancelText: 'Cancel',
   loadingText: 'Loading...',
   saveText: 'Save',
@@ -10,6 +13,8 @@ export default {
   submitText: 'Submit',
   searchText: 'Search',
   queryText: 'Search',
+  selectAllText: 'Select All',
+  pasteText: 'Paste',
 
   showText: 'Show',
   hideText: 'Hide',
@@ -24,6 +29,7 @@ export default {
   dark: 'Dark',
 
   notYetRealized: 'Not yet realized',
+  wip: 'Is Development。。。',
   validateError: 'The information you have filled in is incorrect, please correct it according to the prompt.',
 
   settingsSave: 'Your Settings have cached locally',
@@ -31,4 +37,23 @@ export default {
 
   comma: ',',
   selectedItems: 'Select {0} items',
+  realtime: 'Realtime',
+  history: 'History',
+  action: 'Action',
+
+  search: {
+    searchText: 'Enter search content',
+    rangePresets: {
+      today: 'Today',
+      thisMonth: 'This month',
+      thisQuarter: 'This quarter',
+      thisYear: 'This year',
+
+      last1Hour: 'Last 1 hour',
+      last6Hours: 'Last 6 hours',
+      last1Day: 'Last 1 day',
+      last3Days: 'Last 3 days',
+      last7Days: 'Last 7 days',
+    },
+  },
 };

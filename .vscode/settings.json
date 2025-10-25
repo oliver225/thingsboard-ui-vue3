@@ -164,5 +164,9 @@
     "vueuse",
     "yarn",
     "zxcvbn"
-  ]
+  ],
+  "i18n-mage.workspace.languagePath": "src/locales/lang",
+  "i18n-mage.i18nFeatures.framework": "vue-i18n",
+  "i18n-mage.i18nFeatures.namespaceStrategy": "full",
+  "i18n-mage.writeRules.indentType": "space"
 }

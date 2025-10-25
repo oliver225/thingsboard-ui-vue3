@@ -1,5 +1,5 @@
 <template>
-  <Card size="small" title="报警" class="cursor-pointer" @click="go('/alarm/list')">
+  <Card size="small" :title="t('tb.desktop.cards.alarm')" class="cursor-pointer" @click="go('/alarm/list')">
     <template #extra>
       <Icon icon="ant-design:alert-outlined" :size="24" color="blue" />
     </template>
@@ -7,7 +7,7 @@
     <Row v-else class="py-4 px-4">
       <Col span="8">
         <div class="ant-statistic">
-          <div class="ant-statistic-title mb-1 text-rose-500"> 危险 </div>
+          <div class="ant-statistic-title mb-1 text-rose-500">{{ t('tb.desktop.cards.critical') }}</div>
           <div class="ant-statistic-content">
             <CountTo :endVal="criticalAlarmCount" color="red" class="ant-statistic-content-value-int text-2xl" />
             <Icon icon="ant-design:warning-twotone" color="red" :size="24" class="ml-1" />
@@ -16,7 +16,7 @@
       </Col>
       <Col span="8">
         <div class="ant-statistic">
-          <div class="ant-statistic-title mb-1"> 指定给我 </div>
+          <div class="ant-statistic-title mb-1">{{ t('tb.desktop.cards.assignedToMe') }}</div>
           <div class="ant-statistic-content">
             <CountTo :endVal="assignToMeAlarmCount" class="ant-statistic-content-value-int text-2xl" />
           </div>
@@ -24,7 +24,7 @@
       </Col>
       <Col span="8">
         <div class="ant-statistic">
-          <div class="ant-statistic-title mb-1"> 全部 </div>
+          <div class="ant-statistic-title mb-1">{{ t('tb.desktop.cards.total') }}</div>
           <div class="ant-statistic-content">
             <CountTo :endVal="total" class="ant-statistic-content-value-int text-2xl" />
           </div>
@@ -46,7 +46,9 @@
   import { onMounted, onUnmounted, ref } from 'vue';
   import { useUserStore } from '/@/store/modules/user';
   import { WsCmdType } from '/@/enums/wsCmdTypeEnum';
+  import { useI18n } from '/@/hooks/web/useI18n';
 
+  const { t } = useI18n();
   const go = useGo();
 
   const { getUserInfo } = useUserStore();

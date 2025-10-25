@@ -2,7 +2,8 @@
   <BasicModal
     v-bind="$attrs"
     :showFooter="true"
-    :showCancelBtn="false"
+    :showOkBtn="false"
+    :cancelText="t('common.closeText')"
     @ok="closeModal()"
     @register="registerModal"
     width="50%"
@@ -11,8 +12,8 @@
       <Icon :icon="getTitle.icon" class="pr-1 m-1" />
       <span> {{ getTitle.value }} </span>
     </template>
-    <div class="border border-solid border-neutral-300 p-1">
-      <JsonPreview :data="record.actionData" />
+    <div class="border border-solid border-gray-400 h-120">
+      <CodeEditor v-model:value="record.actionData" :readonly="true" :mode="MODE.JSON" />
     </div>
   </BasicModal>
 </template>
@@ -22,7 +23,7 @@
   import { router } from '/@/router';
   import { Icon } from '/@/components/Icon';
   import { BasicModal, useModalInner } from '/@/components/Modal';
-  import { JsonPreview } from '/@/components/CodeEditor';
+  import { CodeEditor, MODE } from '/@/components/CodeEditor';
   import { AuditLog } from '/@/api/tb/auditLog';
 
   const emit = defineEmits(['success', 'register']);
@@ -32,7 +33,7 @@
   const record = ref<AuditLog>({} as AuditLog);
   const getTitle = computed(() => ({
     icon: meta.icon || 'ant-design:book-outlined',
-    value: t('审计日志详情'),
+    value: t('tb.auditLog.detail.detailTitle'),
   }));
 
   const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {

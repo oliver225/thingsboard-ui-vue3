@@ -2,7 +2,10 @@
   <div class="delivery-method-slack">
     <Alert type="info" show-icon>
       <template #message>
-        <p>输入字段支持模板化。 <a href="https://thingsboard.io/" target="_blank">查看文档</a></p>
+        <p>
+          {{ t('tb.notification.template.delivery.tipSupportTemplate') }}
+          <a href="https://thingsboard.io/" target="_blank">{{ t('tb.notification.template.delivery.viewDocs') }}</a>
+        </p>
       </template>
     </Alert>
     <BasicForm @register="registerForm" />
@@ -21,7 +24,7 @@
     { field: 'method', component: 'Input', defaultValue: 'SLACK', show: false },
     { field: 'enabled', component: 'Checkbox', defaultValue: true, show: false },
     {
-      label: t('  '),
+      label: t('tb.notification.template.delivery.body'),
       field: 'body',
       component: 'InputTextArea',
       componentProps: {

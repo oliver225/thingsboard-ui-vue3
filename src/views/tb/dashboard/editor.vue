@@ -47,7 +47,7 @@
 
   // 使用环境变量配置ThingsBoard基础地址
   const frameSrc = computed(() => {
-    const tbBaseUrl = 'http://127.0.0.1:8080';
+    const { tbBaseUrl } = useGlobSetting();
     return `${tbBaseUrl}/dashboards/${dashboardId.value}`;
   });
 

@@ -211,7 +211,7 @@
 </script>
 
 <style lang="less">
-  @prefix-cls: ~'jeesite-cropper-am';
+  @prefix-cls: ~'tbv3-cropper-am';
 
   .@{prefix-cls} {
     display: flex;

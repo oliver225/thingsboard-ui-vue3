@@ -1,9 +1,3 @@
-/**
- * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
- * No deletion without permission, or be held responsible to law.
- * @description 超强兼容表单字段各种数据类型的支持
- * @author Vben、ThinkGem
- */
 import type { UnwrapRef, Ref } from 'vue';
 import { reactive, readonly, computed, getCurrentInstance, watchEffect, unref, nextTick, toRaw } from 'vue';
 
@@ -26,11 +20,11 @@ export function useRuleFormItem<T extends Recordable>(
   const hasUpdateLabelValueEmit = hasOwnProperty.call(emitsOptions, 'update:labelValue');
 
   const isMultiple = computed(() => {
-    if (['JeeSiteCheckboxGroup'].includes(compName)) {
+    if (['TbV3CheckboxGroup'].includes(compName)) {
       return true;
     }
     if (
-      ['JeeSiteSelect', 'JeeSiteTreeSelect'].includes(compName) &&
+      ['TbV3Select', 'TbV3TreeSelect'].includes(compName) &&
       (props.mode === 'multiple' || props.mode === 'tags' || props.treeCheckable === true)
     ) {
       return true;

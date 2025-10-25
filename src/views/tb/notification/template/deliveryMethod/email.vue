@@ -2,7 +2,10 @@
   <div class="delivery-method-sms">
     <Alert type="info" show-icon>
       <template #message>
-        <p>输入字段支持模板化。 <a href="https://thingsboard.io/" target="_blank">查看文档</a></p>
+        <p>
+          {{ t('tb.notification.template.delivery.tipSupportTemplate') }}
+          <a href="https://thingsboard.io/" target="_blank">{{ t('tb.notification.template.delivery.viewDocs') }}</a>
+        </p>
       </template>
     </Alert>
     <Form ref="formRef" :model="formState" layout="vertical">
@@ -12,10 +15,10 @@
       <Form.Item name="enabled" :hidden="true">
         <Checkbox v-model:checked="formState.enabled" />
       </Form.Item>
-      <Form.Item label="主题" name="subject" :rules="[{ required: true }]">
+      <Form.Item :label="t('tb.notification.template.delivery.subject')" name="subject" :rules="[{ required: true }]">
         <Input v-model:value="formState.subject" />
       </Form.Item>
-      <Form.Item label="消息" name="body" :rules="[{ required: true }]">
+      <Form.Item :label="t('tb.notification.template.delivery.body')" name="body" :rules="[{ required: true }]">
         <WangEditor v-model:value="formState.body" />
       </Form.Item>
     </Form>

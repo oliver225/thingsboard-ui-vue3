@@ -67,6 +67,8 @@ export default {
     placeholder: 'Please enter the lock screen password or user password',
   },
   login: {
+    signUpSubtitle: 'Create your account to get started',
+
     welcomeBack: 'Welcome Back',
     loginSubtitle: 'Enter account information to log in',
     qrcodeSubtitle: 'Use mobile phone scan code login',
@@ -74,6 +76,7 @@ export default {
     alreadyHaveAccount: 'Already have an account?',
 
     techSupport: 'Technical Support',
+    thirdPartyLogin: 'Third Party Login',
 
     createPassword: 'Create Password',
     backSignIn: 'Back sign in',
@@ -120,6 +123,21 @@ export default {
     email: 'Email',
     smsCode: 'SMS code',
     emailCode: 'Email code',
+
+    // create password page additions
+    createPasswordSubtitle: 'Create password to activate your account',
+    pageErrorTitle: 'Page Error',
+    activateLinkError: 'The activation link is invalid, please request a new one!',
+    createPasswordSuccess: 'Password created successfully!',
+    createPasswordSuccessDesc: "Password created successfully, let's get started",
+    passwordResetLinkSent: 'Password reset link has been sent successfully!',
+    passwordRetrieveByEmail: 'Use email to retrieve your password',
+    passwordRetrieveByMobile: 'Use mobile number to retrieve your password',
+    emailFormatError: 'Please enter a valid email address',
+    passwordStrength: 'Password strength',
+    // sms code send related
+    sendCode: 'Send Code',
+    sendText: 'Resend in {0}s',
   },
   account: {
     center: 'Account Center',
@@ -131,6 +149,7 @@ export default {
 
     basicTab: 'Basic Setting',
     securityTab: 'Security Setting',
+    notificationTab: 'Notification Setting',
     bindingTab: 'Account Binding',
 
     userName: 'Nick name',
@@ -147,5 +166,40 @@ export default {
     newPasswordInputTip: 'Please input new password',
     newPasswordNotBlank: 'Password not blank',
     newPasswordNotEquals: 'The two password entries are inconsistent',
+
+    // user info page additions
+    lastLogin: 'Last login:',
+    emailRequired: 'Email is required',
+    emailFormatError: 'Please enter a valid email address',
+    firstName: 'First Name',
+    position: 'Position',
+    phoneRequired: 'Mobile number is required',
+    phoneFormatError: 'Please enter a valid mobile number',
+    description: 'Description',
+    updateUserInfoSuccess: 'User info updated successfully',
+    // password modify page additions
+    jwtToken: 'JWT Token',
+    jwtTokenExpirePrefix: 'Token valid until',
+    copyJwtToken: 'Copy JWT Token',
+    copyJwtTokenSuccess: 'Copied JWT token successfully!',
+    changePassword: 'Change Password',
+    abandonUpdate: 'Reset',
+    passwordRequirements: 'Password Requirements',
+    policyMinLength: 'At least {count} characters',
+    policyMaxLength: 'At most {count} characters',
+    policyMinDigits: 'At least {count} digits',
+    policyMinUppercase: 'At least {count} uppercase letters',
+    policyMinLowercase: 'At least {count} lowercase letters',
+    policyMinSpecial: 'At least {count} special characters',
+    policyNoWhitespace: 'No spaces allowed',
+    changePasswordSuccess: 'Password changed successfully!',
+    newPasswordSameAsCurrent: 'The new password cannot be the same as the current password',
+    policyErrorMinLength: 'Password must be at least {count} characters',
+    policyErrorMaxLength: 'Password must be at most {count} characters',
+    policyErrorMinDigits: 'Password must contain at least {count} digits',
+    policyErrorMinUppercase: 'Password must contain at least {count} uppercase letters',
+    policyErrorMinLowercase: 'Password must contain at least {count} lowercase letters',
+    policyErrorMinSpecial: 'Password must contain at least {count} special characters',
+    policyErrorWhitespace: 'Password cannot contain spaces',
   },
 };

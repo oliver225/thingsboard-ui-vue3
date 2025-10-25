@@ -1,8 +1,4 @@
-<!--
- * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
- * No deletion without permission, or be held responsible to law.
- * @author Vben、ThinkGem
--->
+
 <template>
   <img
     v-if="isImgIcon"
@@ -32,7 +28,7 @@
   const attrs = useAttrs();
   const elRef = ref<ElRef>(null);
   const getClass = computed(() => {
-    const prefixCls = 'jeesite-icon';
+    const prefixCls = 'tbv3-icon';
     return [
       attrs.class,
       `${prefixCls} anticon`,
@@ -97,7 +93,7 @@
   onMounted(update);
 </script>
 <style lang="less">
-  .jeesite-icon {
+  .tbv3-icon {
     display: inline-flex !important;
     justify-content: center;
     align-items: center;

@@ -63,13 +63,13 @@
   });
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-basic-modal-close';
+  @prefix-cls: ~'tbv3-basic-modal-close';
   .@{prefix-cls} {
     float: right;
     text-align: right;
     margin-right: 10px;
 
-    .jeesite-icon {
+    .tbv3-icon {
       padding: 16px 9px;
       font-size: 18px;
       color: @text-color-base !important;

@@ -8,16 +8,12 @@
       </template>
       <template #tableTitle>
         <div class="space-x-2">
-          <a-button
-            type="primary"
-            @click="handleForm({})"
-            v-show="hasPermission(Authority.TENANT_ADMIN)"
-          >
-            <Icon icon="i-fluent:add-12-filled" /> 新增设备
+          <a-button type="primary" @click="handleForm({})" v-show="hasPermission(Authority.TENANT_ADMIN)">
+            <Icon icon="i-fluent:add-12-filled" /> {{ t('tb.device.action.add') }}
           </a-button>
           <a-input
             v-model:value="searchParam.textSearch"
-            placeholder="输入搜索内容"
+            :placeholder="t('common.search.searchText')"
             allow-clear
             @change="reload"
             style="width: 240px"
@@ -34,8 +30,8 @@
         </a>
       </template>
       <template #active="{ record }">
-        <Tag v-if="record.active == true" color="success">在线</Tag>
-        <Tag v-if="record.active == false" color="error">离线</Tag>
+        <Tag v-if="record.active == true" color="success">{{ t('tb.device.table.online') }}</Tag>
+        <Tag v-if="record.active == false" color="error">{{ t('tb.device.table.offline') }}</Tag>
       </template>
       <template #gateway="{ record }">
         <Checkbox :checked="record.additionalInfo?.gateway || false" />
@@ -88,7 +84,6 @@
   import { usePermission } from '/@/hooks/web/usePermission';
   import { getDeviceProfileInfoList } from '/@/api/tb/deviceProfile';
   import { router } from '/@/router';
-  import { onBeforeRouteUpdate } from 'vue-router';
 
   const userStore = useUserStore();
 
@@ -97,7 +92,7 @@
   const { createConfirm, showMessage } = useMessage();
 
   const getTitle = {
-    value: '设备',
+    value: router.currentRoute.value.meta.title || t('tb.device.title'),
   };
 
   const deviceProfileList = ref<any[]>([]);
@@ -107,7 +102,7 @@
   });
   const tableColumns: BasicColumn[] = [
     {
-      title: t('名称'),
+      title: t('tb.device.table.name'),
       dataIndex: 'name',
       key: 'name',
       sorter: true,
@@ -117,7 +112,7 @@
       ellipsis: false,
     },
     {
-      title: '产品',
+      title: t('tb.device.table.deviceProfile'),
       dataIndex: 'deviceProfileName',
       key: 'deviceProfileId',
       align: 'left',
@@ -126,14 +121,14 @@
       filters: deviceProfileList.value.map((item) => ({ text: item.name, value: item.id.id })),
     },
     {
-      title: '标签',
+      title: t('tb.device.table.label'),
       dataIndex: 'label',
       key: 'label',
       align: 'left',
       ellipsis: false,
     },
     {
-      title: '客户',
+      title: t('tb.device.table.customer'),
       dataIndex: 'customerTitle',
       key: 'customerTitle',
       align: 'left',
@@ -141,7 +136,7 @@
       ifShow: hasPermission(Authority.TENANT_ADMIN),
     },
     {
-      title: '状态',
+      title: t('tb.device.table.status'),
       dataIndex: 'active',
       key: 'active',
       align: 'center',
@@ -149,12 +144,12 @@
       slot: 'active',
       filterMultiple: false,
       filters: [
-        { text: '在线', value: 'true' },
-        { text: '离线', value: 'false' },
+        { text: t('tb.device.table.online'), value: 'true' },
+        { text: t('tb.device.table.offline'), value: 'false' },
       ],
     },
     {
-      title: '公开',
+      title: t('tb.device.table.public'),
       dataIndex: 'customerIsPublic',
       key: 'customerIsPublic',
       width: 80,
@@ -163,7 +158,7 @@
       ifShow: hasPermission(Authority.TENANT_ADMIN),
     },
     {
-      title: '网关',
+      title: t('tb.device.table.gateway'),
       dataIndex: 'gateway',
       key: 'gateway',
       width: 80,
@@ -171,7 +166,7 @@
       slot: 'gateway',
     },
     {
-      title: t('创建时间'),
+      title: t('tb.device.table.createdTime'),
       dataIndex: 'createdTime',
       key: 'createdTime',
       format: 'date|YYYY-MM-DD HH:mm:ss',
@@ -186,31 +181,31 @@
     actions: (record: Recordable) => [
       {
         icon: 'ant-design:share-alt-outlined',
-        title: t('设为公开'),
+        title: t('tb.device.action.setPublic'),
         ifShow: hasPermission(Authority.TENANT_ADMIN) && !!!record.customerTitle,
         onClick: handleAssignToPublic.bind(this, { ...record }),
       },
       {
         icon: 'ant-design:contacts-outlined',
-        title: t('分配客户'),
+        title: t('tb.device.action.assignCustomer'),
         ifShow: hasPermission(Authority.TENANT_ADMIN) && !!!record.customerTitle,
         onClick: handleAssignCustomer.bind(this, { ...record }),
       },
       {
         icon: 'ant-design:rollback-outlined',
-        title: t('取消分配客户'),
+        title: t('tb.device.action.unassignCustomer'),
         ifShow: hasPermission(Authority.TENANT_ADMIN) && !!record.customerTitle,
         onClick: handleUnAssignFromCustomer.bind(this, { ...record }),
       },
       {
         icon: 'ant-design:safety-outlined',
-        title: t('管理凭证'),
+        title: t('tb.device.action.manageCredentials'),
         onClick: handleCredentials.bind(this, { ...record }),
       },
       {
         icon: 'ant-design:delete-outlined',
         color: 'error',
-        title: t('删除设备配置'),
+        title: t('tb.device.action.delete'),
         ifShow: hasPermission(Authority.TENANT_ADMIN),
         onClick: handleDelete.bind(this, { ...record }),
       },
@@ -253,7 +248,7 @@
     }).then((result) => {
       deviceProfileList.value = result.data;
       updateColumn({
-        title: '产品',
+        title: t('tb.device.table.deviceProfile'),
         dataIndex: 'deviceProfileName',
         key: 'deviceProfileId',
         align: 'left',
@@ -273,10 +268,10 @@
   async function handleDelete(record: Recordable) {
     createConfirm({
       iconType: 'error',
-      title: `确定删除设备[${record.name}]吗？`,
-      content: '请注意：确认后，设备和所有相关数据将不可恢复。',
+      title: t('tb.device.action.deleteConfirm', { name: record.name }),
+      content: t('tb.device.action.deleteConfirmContent'),
       centered: false,
-      okText: '删除',
+      okText: t('tb.device.action.delete'),
       okButtonProps: {
         type: 'primary',
         danger: true,
@@ -284,7 +279,7 @@
       onOk: async () => {
         try {
           await deleteDevice(record.id.id);
-          showMessage('删除设备配置成功！');
+          showMessage(t('tb.device.action.deleteSuccess'));
         } catch (error: any) {
           console.log(error);
         } finally {
@@ -301,17 +296,17 @@
   function handleAssignToPublic(record: Recordable) {
     createConfirm({
       iconType: 'info',
-      title: `确定要将设备[${record.name}]设为公开吗？`,
-      content: '请注意：确认后，设备及其所有数据将被公开并被他人访问。',
+      title: t('tb.device.action.setPublicConfirm', { name: record.name }),
+      content: t('tb.device.action.setPublicConfirmContent'),
       centered: false,
-      okText: '确认',
+      okText: t('tb.device.action.setPublic'),
       okButtonProps: {
         type: 'primary',
       },
       onOk: async () => {
         try {
           await assignDeviceToPublicCustomer(record.id.id);
-          showMessage('设备设置为公开成功！');
+          showMessage(t('tb.device.action.setPublicSuccess'));
         } catch (error: any) {
           console.log(error);
         } finally {
@@ -328,17 +323,17 @@
   function handleUnAssignFromCustomer(record: Recordable) {
     createConfirm({
       iconType: 'info',
-      title: `确定要将设备[${record.name}]设为私有吗？`,
-      content: '请注意：确认后，设备及其所有数据将被私有化，无法被他人访问。',
+      title: t('tb.device.action.unassignCustomerConfirm', { name: record.name }),
+      content: t('tb.device.action.unassignCustomerConfirmContent'),
       centered: false,
-      okText: '确认',
+      okText: t('tb.device.action.unassignCustomer'),
       okButtonProps: {
         type: 'primary',
       },
       onOk: async () => {
         try {
           await unAssignDeviceFromCustomer(record.id.id);
-          showMessage('设备设为私有成功！');
+          showMessage(t('tb.device.action.unassignCustomerSuccess'));
         } catch (error: any) {
           console.log(error);
         } finally {

@@ -94,7 +94,7 @@
   });
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-header-lock-modal';
+  @prefix-cls: ~'tbv3-header-lock-modal';
 
   .@{prefix-cls} {
     &__entry {

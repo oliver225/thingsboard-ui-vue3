@@ -105,7 +105,7 @@
   });
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-layout-multiple-header';
+  @prefix-cls: ~'tbv3-layout-multiple-header';
 
   .@{prefix-cls} {
     transition: width 0.2s;

@@ -25,7 +25,7 @@ export default (expandCollapse: Fn, handleTableExpand: Fn, expandedRowRender = f
           if (expandedRowRender) {
             props.onExpand(props.record, _e);
           } else {
-            // 提升展开折叠性能 by jeesite
+            // 提升展开折叠性能 by tbv3
             const expanded = await expandCollapse(props.record);
             handleTableExpand(expanded, props.record);
           }
@@ -33,7 +33,7 @@ export default (expandCollapse: Fn, handleTableExpand: Fn, expandedRowRender = f
         onDblclick={async (_e: Event) => {
           if (expandedRowRender) return;
           if (children || childList) return;
-          // 当没有子节点的时候，尝试强制加载非正常状态的节点 by jeesite
+          // 当没有子节点的时候，尝试强制加载非正常状态的节点 by tbv3
           const expanded = await expandCollapse(props.record, false, true);
           handleTableExpand(expanded, props.record);
         }}

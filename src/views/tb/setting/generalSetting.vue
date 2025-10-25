@@ -1,22 +1,25 @@
 <template>
   <Spin :spinning="dataLoading">
     <div class="general-setting">
-      <div class="text-lg font-bold my-4">基本设置</div>
+      <div class="text-lg font-bold my-4">{{ t('tb.setting.general.title') }}</div>
       <Form ref="formRef" :model="formState" layout="vertical">
         <Form.Item
-          label="基本URL"
+          :label="t('tb.setting.general.baseUrl')"
           :name="['jsonValue', 'baseUrl']"
-          :rules="[{ required: true, message: '请输入基本URL!' }]"
+          :rules="[{ required: true, message: t('tb.setting.general.baseUrlRequired') }]"
         >
-          <Input v-model:value="formState.jsonValue.baseUrl" placeholder="请输入基本URL" />
+          <Input
+            v-model:value="formState.jsonValue.baseUrl"
+            :placeholder="t('tb.setting.general.baseUrlPlaceholder')"
+          />
         </Form.Item>
         <Form.Item
           :name="['jsonValue', 'prohibitDifferentUrl']"
-          help="应为生产环境启用此设置。禁用时可能会导致安全问题"
+          :help="t('tb.setting.general.prohibitDifferentUrlHelp')"
         >
           <div class="border border-solid border-neutral-300 rounded-md px-4 py-3">
             <Switch size="small" v-model:checked="formState.jsonValue.prohibitDifferentUrl" />
-            <span class="ml-2"> 禁止从客户端请求头中使用主机名 </span>
+            <span class="ml-2"> {{ t('tb.setting.general.prohibitDifferentUrl') }} </span>
           </div>
         </Form.Item>
       </Form>
@@ -25,11 +28,11 @@
         <Space>
           <a-button @click="fetchData">
             <Icon :icon="'ant-design:reload-outlined'" />
-            重置
+            {{ t('tb.setting.connectivity.reset') }}
           </a-button>
           <a-button :loading="dataLoading" type="primary" @click="handleSubmit">
             <Icon :icon="'ant-design:check-outlined'" />
-            保存
+            {{ t('tb.setting.connectivity.save') }}
           </a-button>
         </Space>
       </div>
@@ -96,7 +99,7 @@
       // console.log('submit', params, data, record);
       const res = await saveAdminSetting({ ...record.value, ...data });
       fetchData();
-      showMessage('保存通用配置成功！');
+      showMessage(t('tb.setting.general.saveSuccess'));
     } catch (error: any) {
       if (error && error.errorFields) {
         showMessage(t('common.validateError'));

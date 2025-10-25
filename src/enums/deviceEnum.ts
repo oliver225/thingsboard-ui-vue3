@@ -1,3 +1,7 @@
+import { useI18n } from '/@/hooks/web/useI18n';
+
+const { t } = useI18n();
+
 export enum TransportType {
   DEFAULT = 'DEFAULT',
   MQTT = 'MQTT',
@@ -22,19 +26,23 @@ export enum ProvisionType {
 }
 
 export const TRANSPORT_TYPE_OPTIONS = [
-  { value: TransportType.DEFAULT, label: '默认' },
+  { value: TransportType.DEFAULT, label: t('tb.deviceProfile.table.default') },
   { value: TransportType.MQTT, label: 'MQTT' },
   { value: TransportType.COAP, label: 'CoAP' },
   { value: TransportType.TCP, label: 'TCP' },
   { value: TransportType.LWM2M, label: 'LWM2M' },
   { value: TransportType.SNMP, label: 'SNMP' },
-
 ];
 
 export const PROVISION_TYPE_OPTIONS = [
-  { value: ProvisionType.DISABLED, label: '禁用' },
-  { value: ProvisionType.ALLOW_CREATE_NEW_DEVICES, label: '允许创建新设备' },
-  { value: ProvisionType.CHECK_PRE_PROVISIONED_DEVICES, label: '检查与配置的设备' },
-  { value: ProvisionType.X509_CERTIFICATE_CHAIN, label: 'X509证书链' },
-
+  { value: ProvisionType.DISABLED, label: t('tb.deviceProfile.provision.type.disabled') },
+  { value: ProvisionType.ALLOW_CREATE_NEW_DEVICES, label: t('tb.deviceProfile.provision.type.allowCreateNewDevices') },
+  {
+    value: ProvisionType.CHECK_PRE_PROVISIONED_DEVICES,
+    label: t('tb.deviceProfile.provision.type.checkPreProvisionedDevices'),
+  },
+  {
+    value: ProvisionType.X509_CERTIFICATE_CHAIN,
+    label: t('tb.deviceProfile.provision.type.x509CertificateChain'),
+  },
 ];

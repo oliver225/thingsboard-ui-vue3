@@ -7,57 +7,69 @@
     <Form ref="formRef" :model="formState" layout="vertical">
       <Row :gutter="20">
         <Col :span="12">
-          <Form.Item label="标题" name="title" :rules="[{ required: true, message: '请输入标题!' }]">
-            <Input v-model:value="formState.title" placeholder="请输入标题" />
+          <Form.Item
+            :label="t('tb.otaPackage.form.title')"
+            name="title"
+            :rules="[{ required: true, message: t('tb.otaPackage.form.titleRequired') }]"
+          >
+            <Input v-model:value="formState.title" :placeholder="t('tb.otaPackage.form.titlePlaceholder')" />
           </Form.Item>
         </Col>
         <Col :span="12">
-          <Form.Item label="版本" name="version" :rules="[{ required: true, message: '请输入版本!' }]">
-            <Input v-model:value="formState.version" placeholder="请输入版本" />
+          <Form.Item
+            :label="t('tb.otaPackage.form.version')"
+            name="version"
+            :rules="[{ required: true, message: t('tb.otaPackage.form.versionRequired') }]"
+          >
+            <Input v-model:value="formState.version" :placeholder="t('tb.otaPackage.form.versionPlaceholder')" />
           </Form.Item>
         </Col>
       </Row>
-      <Form.Item label="版本标签" name="tag" help="自定义标签应与您设备报告的软件包版本相匹配。">
-        <Input v-model:value="formState.tag" placeholder="请输入版本标签" />
+      <Form.Item :label="t('tb.otaPackage.form.tag')" name="tag" :help="t('tb.otaPackage.form.tagHelp')">
+        <Input v-model:value="formState.tag" :placeholder="t('tb.otaPackage.form.tagPlaceholder')" />
       </Form.Item>
       <Form.Item :name="['deviceProfileId', 'entityType']" v-show="false">
         <Input v-model:value="formState.deviceProfileId.entityType" />
       </Form.Item>
       <Form.Item
-        label="设备配置"
+        :label="t('tb.otaPackage.form.deviceProfile')"
         :name="['deviceProfileId', 'id']"
-        :rules="[{ required: true, message: '请选择设备配置' }]"
-        help="上传的包仅适用于具有所选配置的设备。"
+        :rules="[{ required: true, message: t('tb.otaPackage.form.deviceProfileRequired') }]"
+        :help="t('tb.otaPackage.form.deviceProfileHelp')"
       >
         <Select
           v-model:value="formState.deviceProfileId.id"
           :options="deviceProfileOptions"
-          placeholder="请选择设备配置"
+          :placeholder="t('tb.otaPackage.form.deviceProfilePlaceholder')"
         />
       </Form.Item>
       <Form.Item
-        label="包类型"
+        :label="t('tb.otaPackage.form.type')"
         name="type"
-        :rules="[{ required: true, message: '请选择包类型' }]"
-        help="上传包后，您将无法修改标题、版本、设备配置和包类型"
+        :rules="[{ required: true, message: t('tb.otaPackage.form.typeRequired') }]"
+        :help="t('tb.otaPackage.form.typeHelp')"
       >
-        <Select v-model:value="formState.type" :defaultValue="'FIRMWARE'" placeholder="请选择包类型">
-          <Select.Option value="FIRMWARE">固件</Select.Option>
-          <Select.Option value="SOFTWARE">软件</Select.Option>
+        <Select v-model:value="formState.type" :defaultValue="'FIRMWARE'" :placeholder="t('tb.otaPackage.form.type')">
+          <Select.Option value="FIRMWARE">{{ t('tb.otaPackage.form.firmware') }}</Select.Option>
+          <Select.Option value="SOFTWARE">{{ t('tb.otaPackage.form.software') }}</Select.Option>
         </Select>
       </Form.Item>
       <Form.Item name="isURL">
         <RadioGroup
           v-model:value="formState.isURL"
           :options="[
-            { label: '上传二进制文件', value: false },
-            { label: '使用外部URL', value: true },
+            { label: t('tb.otaPackage.form.uploadBinary'), value: false },
+            { label: t('tb.otaPackage.form.useExternalURL'), value: true },
           ]"
         />
       </Form.Item>
       <template v-if="formState.isURL == true">
-        <Form.Item label="直接URL" name="url" :rules="[{ required: true, message: '请输入直接URL' }]">
-          <Input v-model:value="formState.url" placeholder="请输入直接URL" />
+        <Form.Item
+          :label="t('tb.otaPackage.form.url')"
+          name="url"
+          :rules="[{ required: true, message: t('tb.otaPackage.form.urlRequired') }]"
+        >
+          <Input v-model:value="formState.url" :placeholder="t('tb.otaPackage.form.urlPlaceholder')" />
         </Form.Item>
       </template>
       <template v-else>
@@ -66,31 +78,40 @@
             <p class="ant-upload-drag-icon">
               <Icon :icon="'ant-design:upload-outlined'" />
             </p>
-            <p class="ant-upload-text">拖放或者点击选择一个文件</p>
+            <p class="ant-upload-text">{{ t('tb.otaPackage.form.dragTip') }}</p>
           </Upload.Dragger>
         </Form.Item>
 
         <Form.Item name="autoCheck">
-          <Checkbox v-model:checked="formState.autoCheck" @change="handleAutoCheckChange">自动生成校验和</Checkbox>
+          <Checkbox v-model:checked="formState.autoCheck" @change="handleAutoCheckChange">{{
+            t('tb.otaPackage.form.autoCheck')
+          }}</Checkbox>
         </Form.Item>
         <template v-if="formState.autoCheck == false">
           <Row :gutter="20">
             <Col :span="10">
-              <Form.Item label="校验和算法" name="checksumAlgorithm">
+              <Form.Item :label="t('tb.otaPackage.form.checksumAlgorithm')" name="checksumAlgorithm">
                 <Select v-model:value="formState.checksumAlgorithm" :options="CHECK_SUM_ALGORITHM_OPTIONS" />
               </Form.Item>
             </Col>
             <Col :span="14">
-              <Form.Item label="校验和" name="checksum" help="如果校验和为空，会自动生成">
-                <Input v-model:value="formState.checksum" placeholder="请输入校验和" />
+              <Form.Item
+                :label="t('tb.otaPackage.form.checksum')"
+                name="checksum"
+                :help="t('tb.otaPackage.form.checksumHelp')"
+              >
+                <Input v-model:value="formState.checksum" :placeholder="t('tb.otaPackage.form.checksumPlaceholder')" />
               </Form.Item>
             </Col>
           </Row>
         </template>
       </template>
 
-      <Form.Item label="说明" :name="['additionalInfo', 'description']">
-        <Textarea v-model:value="formState.additionalInfo.description" />
+      <Form.Item :label="t('tb.otaPackage.form.description')" :name="['additionalInfo', 'description']">
+        <Textarea
+          v-model:value="formState.additionalInfo.description"
+          :placeholder="t('tb.otaPackage.form.descriptionPlaceholder')"
+        />
       </Form.Item>
     </Form>
   </BasicModal>
@@ -122,7 +143,7 @@
 
   const getTitle = computed(() => ({
     icon: meta.icon || 'ant-design:book-outlined',
-    value: record.value.id?.id ? t('编辑OTA包') : t('添加OTA包'),
+    value: record.value.id?.id ? t('tb.otaPackage.action.edit') : t('tb.otaPackage.action.add'),
   }));
 
   const deviceProfileOptions = ref<Array<any>>();
@@ -177,7 +198,7 @@
 
   function validatorFile() {
     if (formState.isURL == false && fileList.value.length < 1) {
-      return Promise.reject('请选择一个软件包！');
+      return Promise.reject(t('tb.otaPackage.form.fileRequired'));
     } else {
       return Promise.resolve();
     }
@@ -219,7 +240,7 @@
           });
         }
       });
-      showMessage(`${record.value.id?.id ? '修改' : '添加'}OTA包成功！`);
+      showMessage(record.value.id?.id ? t('tb.otaPackage.form.editSuccess') : t('tb.otaPackage.form.addSuccess'));
       setTimeout(closeModal);
       emit('success', data);
     } catch (error: any) {

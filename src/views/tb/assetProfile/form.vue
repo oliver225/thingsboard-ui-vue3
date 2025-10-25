@@ -6,19 +6,23 @@
     </template>
     <BasicForm @register="registerForm">
       <template #defaultQueueName="{ model, field }">
-        <Select v-model:value="model[field]" placeholder="请选择队列" :allow-clear="true">
+        <Select
+          v-model:value="model[field]"
+          :placeholder="t('tb.assetProfile.form.queuePlaceholder')"
+          :allow-clear="true"
+        >
           <Select.Option v-for="(option, index) in queueOptions" :key="index" :value="option.value">
             {{ option.label }}
             <p>
               <Tag>
-                <small>提交策略:</small>
+                <small>{{ t('tb.assetProfile.form.queueSubmitStrategy') }}</small>
                 {{
                   SUBMIT_STRATEGY_OPTIONS.find((item) => item.value === option.submitStrategy)?.label ||
                   option.submitStrategy
                 }}
               </Tag>
               <Tag>
-                <small>处理策略:</small>
+                <small>{{ t('tb.assetProfile.form.queueProcessingStrategy') }}</small>
                 {{
                   PROCESSING_STRATEGY_OPTIONS.find((item) => item.value === option.processingStrategy)?.label ||
                   option.processingStrategy
@@ -42,12 +46,14 @@
 
   import { BasicForm, FormSchema, useForm } from '/@/components/Form';
   import { BasicModal, useModalInner } from '/@/components/Modal';
+  import { EntityType } from '/@/enums/entityTypeEnum';
   // import { currentTenantDashboardList } from '/@/api/things/dashboard';
   import { ruleChainList } from '/@/api/tb/ruleChain';
   import { queueList } from '/@/api/tb/queue';
   import { saveAssetProfile, getAssetProfileById, AssetProfile } from '/@/api/tb/assetProfile';
   import { PROCESSING_STRATEGY_OPTIONS, SUBMIT_STRATEGY_OPTIONS } from '/@/enums/queueEnum';
   import { isEmpty } from 'lodash-es';
+  import { currentTenantDashboardList } from '/@/api/tb/dashboard';
 
   const emit = defineEmits(['success', 'register']);
 
@@ -58,7 +64,7 @@
   const record = ref<AssetProfile>({} as AssetProfile);
   const getTitle = computed(() => ({
     icon: meta.icon || 'ant-design:book-outlined',
-    value: record.value.id?.id ? t('编辑资产配置') : t('新增资产配置'),
+    value: record.value.id?.id ? t('tb.assetProfile.action.edit') : t('tb.assetProfile.action.add'),
   }));
 
   const queueOptions = ref<any[]>([]);
@@ -67,22 +73,22 @@
     { field: 'tenantId', component: 'Input', defaultValue: userStore.getUserInfo?.tenantId, show: false },
     { field: 'default', component: 'Checkbox', defaultValue: false, show: false },
     {
-      label: t('资产配置名称'),
+      label: t('tb.assetProfile.form.name'),
       field: 'name',
       component: 'Input',
       componentProps: {
         maxlength: 100,
-        placeholder: '请输资产配置名称',
+        placeholder: t('tb.assetProfile.form.namePlaceholder'),
       },
       required: true,
     },
 
     {
-      label: t('默认规则链'),
+      label: t('tb.assetProfile.form.defaultRuleChain'),
       field: 'defaultRuleChainId.id',
       component: 'Select',
       componentProps: {
-        placeholder: '请选择默认规则链',
+        placeholder: t('tb.assetProfile.form.defaultRuleChainPlaceholder'),
         immediate: true,
         allowClear: true,
         resultField: 'data',
@@ -93,32 +99,34 @@
         api: (args: any) => ruleChainList(args, 'CORE'),
       },
     },
-    // {
-    //   label: t('移动端仪表盘'),
-    //   field: 'defaultDashboardId.id',
-    //   component: 'Select',
-    //   componentProps: {
-    //     placeholder: '请选择移动端仪表盘',
-    //     immediate: true,
-    //     allowClear: true,
-    //     resultField: 'data',
-    //     params: { pageSize: 50, page: 0, sortProperty: 'title', sortOrder: 'ASC' },
-    //     mapFn: (item) => { return { label: item.title, value: item.id.id } },
-    //     api: (args: any) => currentTenantDashboardList(args,),
-    //   },
-    // },
     {
-      label: t('队列'),
+      label: t('tb.assetProfile.form.mobileDashboard'),
+      field: 'defaultDashboardId.id',
+      component: 'Select',
+      componentProps: {
+        placeholder: t('tb.assetProfile.form.mobileDashboardPlaceholder'),
+        immediate: true,
+        allowClear: true,
+        resultField: 'data',
+        params: { pageSize: 50, page: 0, sortProperty: 'title', sortOrder: 'ASC' },
+        mapFn: (item) => {
+          return { label: item.title, value: item.id.id };
+        },
+        api: (args: any) => currentTenantDashboardList(args),
+      },
+    },
+    {
+      label: t('tb.assetProfile.form.queue'),
       field: 'defaultQueueName',
       component: 'Select',
       slot: 'defaultQueueName',
     },
     {
-      label: t('边缘规则链'),
+      label: t('tb.assetProfile.form.edgeRuleChain'),
       field: 'defaultEdgeRuleChainId.id',
       component: 'Select',
       componentProps: {
-        placeholder: '请选择边缘规则链',
+        placeholder: t('tb.assetProfile.form.edgeRuleChainPlaceholder'),
         allowClear: true,
         immediate: true,
         resultField: 'data',
@@ -131,7 +139,7 @@
     },
     //image
     {
-      label: t('描述信息'),
+      label: t('tb.assetProfile.form.description'),
       field: 'description',
       component: 'InputTextArea',
       componentProps: {
@@ -168,14 +176,17 @@
       data.defaultRuleChainId = isEmpty(data.defaultRuleChainId.id)
         ? null
         : { entityType: EntityType.RULE_CHAIN, id: data.defaultRuleChainId.id };
-      // data.defaultDashboardId = isEmpty(data.defaultDashboardId.id) ? null : { entityType: EntityType.DASHBOARD, id: data.defaultDashboardId.id }
+      data.defaultDashboardId = isEmpty(data.defaultDashboardId.id)
+        ? null
+        : { entityType: EntityType.DASHBOARD, id: data.defaultDashboardId.id };
       data.defaultEdgeRuleChainId = isEmpty(data.defaultEdgeRuleChainId.id)
         ? null
         : { entityType: EntityType.RULE_CHAIN, id: data.defaultEdgeRuleChainId.id };
 
-      // console.log('submit', params, data, record);
       const res = await saveAssetProfile({ ...data, id: record.value.id });
-      showMessage(`${record.value.id?.id ? '编辑' : '新增'}资产配置成功！`);
+      showMessage(
+        record.value.id?.id ? t('tb.assetProfile.action.editSuccess') : t('tb.assetProfile.action.addSuccess'),
+      );
       setTimeout(closeModal);
       emit('success', data);
     } catch (error: any) {

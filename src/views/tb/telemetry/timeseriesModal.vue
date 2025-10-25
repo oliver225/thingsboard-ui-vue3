@@ -15,8 +15,8 @@
       </span>
       <span class="ml-4">
         <RadioGroup v-model:value="showChart" size="small" button-style="solid">
-          <RadioButton :value="true"> 图表 </RadioButton>
-          <RadioButton :value="false">表格 </RadioButton>
+          <RadioButton :value="true"> {{ t('tb.telemetry.timeseries.chart') }} </RadioButton>
+          <RadioButton :value="false">{{ t('tb.telemetry.timeseries.table') }} </RadioButton>
         </RadioGroup>
       </span>
     </template>
@@ -63,22 +63,22 @@
   const showChart = ref(true);
 
   const rangePresets = ref([
-    { label: '今天', value: [dayjs().startOf('D'), dayjs()] },
-    { label: '最近1小时', value: [dayjs().subtract(1, 'hour'), dayjs()] },
-    { label: '最近6小时', value: [dayjs().subtract(6, 'hour'), dayjs()] },
-    { label: '最近1天', value: [dayjs().subtract(1, 'day').startOf('D'), dayjs()] },
-    { label: '最近3天', value: [dayjs().subtract(2, 'day').startOf('D'), dayjs()] },
-    { label: '最近7天', value: [dayjs().subtract(6, 'day').startOf('D'), dayjs()] },
+    { label: t('common.search.rangePresets.today'), value: [dayjs().startOf('D'), dayjs()] },
+    { label: t('common.search.rangePresets.last1Hour'), value: [dayjs().subtract(1, 'hour'), dayjs()] },
+    { label: t('common.search.rangePresets.last6Hours'), value: [dayjs().subtract(6, 'hour'), dayjs()] },
+    { label: t('common.search.rangePresets.last1Day'), value: [dayjs().subtract(1, 'day').startOf('D'), dayjs()] },
+    { label: t('common.search.rangePresets.last3Days'), value: [dayjs().subtract(2, 'day').startOf('D'), dayjs()] },
+    { label: t('common.search.rangePresets.last7Days'), value: [dayjs().subtract(6, 'day').startOf('D'), dayjs()] },
   ]);
 
   const tableColumns: BasicColumn[] = [
     {
-      title: '时间',
+      title: t('tb.telemetry.table.time'),
       dataIndex: 'ts',
       format: 'date|YYYY-MM-DD HH:mm:ss',
     },
     {
-      title: '数值',
+      title: t('tb.telemetry.table.value'),
       dataIndex: 'value',
     },
   ];
@@ -89,7 +89,7 @@
     { field: 'keys', component: 'Input', show: false },
     { field: 'orderBy', component: 'Input', defaultValue: 'ASC', show: false },
     {
-      label: t('时间间隔'),
+      label: t('tb.telemetry.timeseries.timeRange'),
       field: 'timeRange',
       component: 'RangePicker',
       defaultValue: [dayjs().subtract(2, 'hour'), dayjs()],
@@ -102,31 +102,31 @@
       colProps: { lg: 10, md: 12 },
     },
     {
-      label: t('间隔时间'),
+      label: t('tb.telemetry.timeseries.interval'),
       field: 'interval',
       component: 'Select',
       defaultValue: 60000,
       componentProps: {
         options: [
-          { label: '1秒钟', value: 1000 },
-          { label: '1分钟', value: 60000 },
-          { label: '5分钟', value: 300000 },
-          { label: '10分钟', value: 600000 },
-          { label: '30分钟', value: 1800000 },
-          { label: '1小时', value: 3600000 },
-          { label: '2小时', value: 7800000 },
-          { label: '6小时', value: 21600000 },
-          { label: '12小时', value: 43200000 },
-          { label: '1天', value: 86400000 },
-          { label: '7天', value: 604800000 },
-          { label: '15天', value: 1296000000 },
-          { label: '30天', value: 25920000000 },
+          { label: t('tb.telemetry.timeseries.intervals.s1'), value: 1000 },
+          { label: t('tb.telemetry.timeseries.intervals.m1'), value: 60000 },
+          { label: t('tb.telemetry.timeseries.intervals.m5'), value: 300000 },
+          { label: t('tb.telemetry.timeseries.intervals.m10'), value: 600000 },
+          { label: t('tb.telemetry.timeseries.intervals.m30'), value: 1800000 },
+          { label: t('tb.telemetry.timeseries.intervals.h1'), value: 3600000 },
+          { label: t('tb.telemetry.timeseries.intervals.h2'), value: 7800000 },
+          { label: t('tb.telemetry.timeseries.intervals.h6'), value: 21600000 },
+          { label: t('tb.telemetry.timeseries.intervals.h12'), value: 43200000 },
+          { label: t('tb.telemetry.timeseries.intervals.d1'), value: 86400000 },
+          { label: t('tb.telemetry.timeseries.intervals.d7'), value: 604800000 },
+          { label: t('tb.telemetry.timeseries.intervals.d15'), value: 1296000000 },
+          { label: t('tb.telemetry.timeseries.intervals.d30'), value: 25920000000 },
         ],
         onChange: () => subscribeHistoryData(),
       },
     },
     // {
-    //   label: t('数据数量'),
+    //   label: t('tb.telemetry.timeseries.dataCount'),
     //   field: 'limit',
     //   defaultValue: 1000,
     //   component: 'InputNumber',
@@ -136,18 +136,18 @@
     //   },
     // },
     {
-      label: t('聚合函数'),
+      label: t('tb.telemetry.timeseries.aggregation'),
       field: 'agg',
       component: 'Select',
       defaultValue: 'NONE',
       componentProps: {
         options: [
-          { label: '无', value: 'NONE' },
-          { label: '最小值', value: 'MIN' },
-          { label: '最大值', value: 'MAX' },
-          { label: '平均数', value: 'AVG' },
-          { label: '求和', value: 'SUM' },
-          { label: '计数', value: 'COUNT' },
+          { label: t('tb.telemetry.timeseries.aggregations.none'), value: 'NONE' },
+          { label: t('tb.telemetry.timeseries.aggregations.min'), value: 'MIN' },
+          { label: t('tb.telemetry.timeseries.aggregations.max'), value: 'MAX' },
+          { label: t('tb.telemetry.timeseries.aggregations.avg'), value: 'AVG' },
+          { label: t('tb.telemetry.timeseries.aggregations.sum'), value: 'SUM' },
+          { label: t('tb.telemetry.timeseries.aggregations.count'), value: 'COUNT' },
         ],
         onChange: () => subscribeHistoryData(),
       },

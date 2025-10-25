@@ -14,12 +14,12 @@ import {
   Divider,
 } from 'ant-design-vue';
 
-import JeeSiteText from './components/JeeSiteText.vue';
-import JeeSiteSelect from './components/JeeSiteSelect.vue';
-import JeeSiteTreeSelect from './components/JeeSiteTreeSelect.vue';
-import JeeSiteRadioGroup from './components/JeeSiteRadioGroup.vue';
-import JeeSiteCheckboxGroup from './components/JeeSiteCheckboxGroup.vue';
-import JeeSiteRadioButtonGroup from './components/JeeSiteRadioButtonGroup.vue';
+import TbV3Text from './components/TbV3Text.vue';
+import TbV3Select from './components/TbV3Select.vue';
+import TbV3TreeSelect from './components/TbV3TreeSelect.vue';
+import TbV3RadioGroup from './components/TbV3RadioGroup.vue';
+import TbV3CheckboxGroup from './components/TbV3CheckboxGroup.vue';
+import TbV3RadioButtonGroup from './components/TbV3RadioButtonGroup.vue';
 import FormGroup from './components/FormGroup.vue';
 
 import { StrengthMeter } from '/@/components/StrengthMeter';
@@ -36,14 +36,14 @@ componentMap.set('InputTextArea', Input.TextArea);
 componentMap.set('InputNumber', InputNumber);
 componentMap.set('AutoComplete', AutoComplete);
 
-componentMap.set('Text', JeeSiteText);
-componentMap.set('Select', JeeSiteSelect); //Select);
-componentMap.set('TreeSelect', JeeSiteTreeSelect); //TreeSelect);
+componentMap.set('Text', TbV3Text);
+componentMap.set('Select', TbV3Select); //Select);
+componentMap.set('TreeSelect', TbV3TreeSelect); //TreeSelect);
 componentMap.set('Switch', Switch);
-componentMap.set('RadioButtonGroup', JeeSiteRadioButtonGroup);
-componentMap.set('RadioGroup', JeeSiteRadioGroup); //Radio.Group);
+componentMap.set('RadioButtonGroup', TbV3RadioButtonGroup);
+componentMap.set('RadioGroup', TbV3RadioGroup); //Radio.Group);
 componentMap.set('Checkbox', Checkbox);
-componentMap.set('CheckboxGroup', JeeSiteCheckboxGroup); //Checkbox.Group);
+componentMap.set('CheckboxGroup', TbV3CheckboxGroup); //Checkbox.Group);
 componentMap.set('Cascader', Cascader);
 componentMap.set('Slider', Slider);
 componentMap.set('Rate', Rate);

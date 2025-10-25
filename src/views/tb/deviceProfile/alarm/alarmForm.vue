@@ -9,7 +9,7 @@
         {{ alarm.alarmType }}
       </template>
       <template #action>
-        <Tooltip :title="'删除'" class="mr-2">
+        <Tooltip :title="t('tb.deviceProfile.alarm.delete')" class="mr-2">
           <Icon
             class="cursor-pointer"
             :icon="'ant-design:delete-outlined'"
@@ -21,41 +21,46 @@
       </template>
       <div class="flex items-center mb-4">
         <div class="">
-          <label class="float-right ml-4 mr-2">报警类型：</label>
+          <label class="float-right ml-4 mr-2">{{ t('tb.deviceProfile.alarm.alarmType') }}</label>
         </div>
-        <Input class="flex-1" placeholder="请输入报警类型" v-model:value="alarm.alarmType"></Input>
+        <Input
+          class="flex-1"
+          :placeholder="t('tb.deviceProfile.alarm.alarmTypePlaceholder')"
+          v-model:value="alarm.alarmType"
+        />
       </div>
       <div class="ml-4 mb-4 flex items-center">
-        <Checkbox v-model:checked="alarm.propagate">传播报警</Checkbox>
+        <Checkbox v-model:checked="alarm.propagate">{{ t('tb.deviceProfile.alarm.propagateAlarm') }}</Checkbox>
       </div>
       <div v-if="alarm.propagate == true" class="mb-4">
         <div class="flex items-center">
           <div class="">
-            <label class="float-right ml-4 mr-2">要传递的关联类型：</label>
+            <label class="float-right ml-4 mr-2">{{ t('tb.deviceProfile.alarm.relationTypesLabel') }}</label>
           </div>
           <Select
             class="flex-1"
             :allowClear="true"
-            placeholder="要传递的关联类型"
+            :placeholder="t('tb.deviceProfile.alarm.relationTypesPlaceholder')"
             mode="tags"
             :open="false"
             v-model:value="alarm.propagateRelationTypes"
-          >
-          </Select>
+          />
         </div>
-        <span class="text-help ml-38">如果未选择传递关联类型，则将不按关联类型过滤而传递告警。</span>
+        <span class="text-help ml-38">{{ t('tb.deviceProfile.alarm.relationTypesHelp') }}</span>
       </div>
 
       <div class="ml-4 mb-4 flex items-center">
-        <Checkbox v-model:checked="alarm.propagateToOwner">向实体所有者（客户或租户）传播警报</Checkbox>
+        <Checkbox v-model:checked="alarm.propagateToOwner">{{ t('tb.deviceProfile.alarm.propagateToOwner') }}</Checkbox>
       </div>
       <div class="ml-4 mb-4 flex items-center">
-        <Checkbox v-model:checked="alarm.propagateToTenant">向租户传播警报</Checkbox>
+        <Checkbox v-model:checked="alarm.propagateToTenant">{{
+          t('tb.deviceProfile.alarm.propagateToTenant')
+        }}</Checkbox>
       </div>
-      <span>创建告警规则:</span>
+      <span>{{ t('tb.deviceProfile.alarm.createAlarmRules') }}</span>
       <div class="mb-4 mt-2">
         <div v-if="(alarm.createRulesList?.length || 0) < 1" class="flex justify-center p-2">
-          <span class="text-base text-red-500">请添加创建告警规则</span>
+          <span class="text-base text-red-500">{{ t('tb.deviceProfile.alarm.needCreateRule') }}</span>
         </div>
         <div v-else>
           <div
@@ -66,30 +71,29 @@
             <div class="md:w-13/14 border border-solid border-neutral-400 rounded p-2 mb-2">
               <div class="md:flex">
                 <div class="md:w-1/4 w-full border-r-1 border-slate-300 pr-1">
-                  <div>报警等级</div>
+                  <div>{{ t('tb.deviceProfile.alarm.alarmLevel') }}</div>
                   <Select
                     class="w-full"
-                    placeholder="报警等级"
+                    :placeholder="t('tb.deviceProfile.alarm.alarmLevel')"
                     v-model:value="item.severity"
                     :options="ALARM_SEVERITY_OPTIONS"
-                  >
-                  </Select>
+                  />
                 </div>
                 <div class="md:w-3/4 w-full pl-2">
                   <div class="flex items-center mb-4">
-                    <label class="float-right mr-2 md:w-1/7">条件：</label>
+                    <label class="float-right mr-2 md:w-1/7">{{ t('tb.deviceProfile.alarm.condition') }}</label>
                     <Condition class="md:w-6/7 w-full" v-model:value="item.rule.condition" />
                   </div>
                   <div class="flex items-center mb-4">
-                    <label class="float-right mr-2 md:w-1/5">启用规则：</label>
+                    <label class="float-right mr-2 md:w-1/5">{{ t('tb.deviceProfile.alarm.schedule') }}</label>
                     <Schedule class="flex-1 w-full md:w-4/5" v-model:value="item.rule.schedule" />
                   </div>
                   <div class="flex items-center mb-4">
-                    <label class="float-right mr-2 md:w-1/5">详情模板：</label>
+                    <label class="float-right mr-2 md:w-1/5">{{ t('tb.deviceProfile.alarm.detailsTemplate') }}</label>
                     <Detail class="flex-1 w-full md:w-4/5" v-model:value="item.rule.alarmDetails" />
                   </div>
                   <div class="flex items-center">
-                    <label class="float-right mr-2">移动仪表盘：</label>
+                    <label class="float-right mr-2">{{ t('tb.deviceProfile.alarm.mobileDashboard') }}</label>
                     <Select
                       class="flex-1 w-full"
                       :allowClear="true"
@@ -101,7 +105,7 @@
               </div>
             </div>
             <div class="md:w-1/14">
-              <Tooltip :title="'移除'" class="mx-2">
+              <Tooltip :title="t('tb.deviceProfile.common.delete')" class="mx-2">
                 <Icon
                   class="cursor-pointer"
                   :icon="'ant-design:minus-circle-outlined'"
@@ -119,38 +123,38 @@
           size="small"
           @click="handleAddCreateRule(index)"
         >
-          <Icon icon="ant-design:plus-circle-outlined" />添加创建条件
+          <Icon icon="ant-design:plus-circle-outlined" />{{ t('tb.deviceProfile.alarm.addCreateRule') }}
         </a-button>
       </div>
 
-      <span>清除告警规则:</span>
+      <span>{{ t('tb.deviceProfile.alarm.clearAlarmRules') }}</span>
       <div class="mb-4 mt-2">
         <div v-if="alarm.clearRule != undefined" class="flex items-center">
           <div class="md:w-13/14 border border-solid border-neutral-400 rounded p-2 mb-2">
             <div class="flex items-center mb-4">
-              <label class="float-right mr-2 md:w-1/7">条件：</label>
+              <label class="float-right mr-2 md:w-1/7">{{ t('tb.deviceProfile.alarm.condition') }}</label>
               <Condition class="flex-1 w-full md:w-6/7" v-model:value="alarm.clearRule.condition" />
             </div>
             <div class="flex items-center mb-4">
-              <label class="float-right mr-2 md:w-1/6">启用规则：</label>
+              <label class="float-right mr-2 md:w-1/6">{{ t('tb.deviceProfile.alarm.schedule') }}</label>
               <Schedule class="flex-1 w-full md:w-5/6" v-model:value="alarm.clearRule.schedule" />
             </div>
             <div class="flex items-center mb-4">
-              <label class="float-right mr-2 md:w-1/6">详情模板：</label>
+              <label class="float-right mr-2 md:w-1/6">{{ t('tb.deviceProfile.alarm.detailsTemplate') }}</label>
               <Detail class="flex-1 w-full md:w-5/6" v-model:value="alarm.clearRule.alarmDetails" />
             </div>
             <div class="flex items-center">
-              <label class="float-right mr-2">移动仪表盘：</label>
+              <label class="float-right mr-2">{{ t('tb.deviceProfile.alarm.mobileDashboard') }}</label>
               <Select
                 class="flex-1 w-full"
                 :allowClear="true"
                 v-model:value="alarm.clearRule.dashboardId.id"
                 :options="dashboardList"
-              ></Select>
+              />
             </div>
           </div>
           <div class="md:w-1/14">
-            <Tooltip :title="'移除'" class="mx-2">
+            <Tooltip :title="t('tb.deviceProfile.common.delete')" class="mx-2">
               <Icon
                 class="cursor-pointer"
                 :icon="'ant-design:minus-circle-outlined'"
@@ -162,13 +166,13 @@
           </div>
         </div>
         <a-button v-if="alarm.clearRule == undefined" type="default" size="small" @click="handleAddClearRule(index)">
-          <Icon icon="ant-design:plus-circle-outlined" />添加创建条件
+          <Icon icon="ant-design:plus-circle-outlined" />{{ t('tb.deviceProfile.alarm.addClearRule') }}
         </a-button>
       </div>
     </CollapseContainer>
 
     <a-button type="primary" size="small" @click="handleAddAlarm">
-      <Icon icon="i-fluent:add-12-filled" />添加报警规则
+      <Icon icon="i-fluent:add-12-filled" />{{ t('tb.deviceProfile.alarm.addAlarmRule') }}
     </a-button>
   </div>
 </template>
@@ -178,6 +182,7 @@
   import { Icon } from '/@/components/Icon';
   import { buildUUID } from '/@/utils/uuid';
   import { currentTenantDashboardList } from '/@/api/tb/dashboard';
+  import { EntityType } from '/@/enums/entityTypeEnum';
   import { AlarmSeverity, ALARM_SEVERITY_OPTIONS } from '/@/enums/alarmEnum';
   import { Tooltip, Input, Checkbox, Select } from 'ant-design-vue';
   import { Alarm, AlarmRule } from '/@/api/tb/deviceProfile';
@@ -187,9 +192,11 @@
   import Schedule from './Schedule.vue';
   import Detail from './Detail.vue';
   import { isEmpty } from 'lodash-es';
+  import { useI18n } from '/@/hooks/web/useI18n';
 
   const emit = defineEmits(['success', 'register']);
   const { showMessage } = useMessage();
+  const { t } = useI18n('tb');
 
   const dashboardList = ref<any[]>([]);
   const alarmList = ref<Array<Alarm>>([]);
@@ -227,8 +234,8 @@
     const data: Array<any> = [];
     alarmList.value.forEach((item) => {
       if (item.clearRule && isEmpty(item.clearRule.condition)) {
-        showMessage('清除告警条件不能为空', 'error');
-        throw new Error('清除告警条件不能为空');
+        showMessage(t('tb.deviceProfile.alarm.clearAlarmConditionEmpty'), 'error');
+        throw new Error(t('tb.deviceProfile.alarm.clearAlarmConditionEmpty'));
       }
       const clearRule = isEmpty(item.clearRule)
         ? undefined
@@ -239,13 +246,13 @@
       const createRules = {};
       if (item.createRulesList) {
         if (item.createRulesList?.length < 1) {
-          showMessage('创建告警规则不能没有', 'error');
-          throw new Error('创建告警规则不能没有');
+          showMessage(t('tb.deviceProfile.alarm.createAlarmRulesEmpty'), 'error');
+          throw new Error(t('tb.deviceProfile.alarm.createAlarmRulesEmpty'));
         }
         item.createRulesList.forEach((createRuleItem) => {
           if (isEmpty(createRuleItem.rule.condition)) {
-            showMessage('创建告警规则不能为空', 'error');
-            throw new Error('创建告警规则不能为空');
+            showMessage(t('tb.deviceProfile.alarm.createAlarmRuleEmpty'), 'error');
+            throw new Error(t('tb.deviceProfile.alarm.createAlarmRuleEmpty'));
           }
           createRules[createRuleItem.severity] = {
             ...createRuleItem.rule,

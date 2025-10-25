@@ -3,17 +3,17 @@
     <BasicTable @register="registerTable">
       <template #headerTop>
         <div class="text-lg font-bold my-2">
-          {{ t('图形库') }}
+          {{ t('tb.images.title') }}
         </div>
       </template>
       <template #tableTitle>
         <div class="space-x-2">
           <Button type="primary" @click="handleUpload({})">
-            <Icon icon="ant-design:upload-outlined" /> 上传图片
+            <Icon icon="ant-design:upload-outlined" /> {{ t('tb.images.action.uploadImage') }}
           </Button>
           <Input
             v-model:value="searchParam.textSearch"
-            placeholder="输入搜索内容"
+            :placeholder="t('common.search.searchText')"
             allow-clear
             @change="reload()"
             style="width: 240px"
@@ -23,7 +23,9 @@
             </template>
           </Input>
           <template v-if="hasPermission(Authority.TENANT_ADMIN)">
-            <Checkbox v-model:checked="searchParam.includeSystemImages" @change="reload()"> 包含系统图像 </Checkbox>
+            <Checkbox v-model:checked="searchParam.includeSystemImages" @change="reload()">
+              {{ t('tb.images.select.includeSystemImages') }}
+            </Checkbox>
           </template>
         </div>
       </template>
@@ -73,7 +75,7 @@
 
   const tableColumns: BasicColumn[] = [
     {
-      title: t('名称'),
+      title: t('tb.images.table.name'),
       dataIndex: 'title',
       key: 'title',
       sorter: true,
@@ -82,7 +84,7 @@
       slot: 'firstColumn',
     },
     {
-      title: '系统',
+      title: t('tb.images.table.system'),
       dataIndex: 'link',
       key: 'link',
       ifShow: hasPermission(Authority.TENANT_ADMIN),
@@ -96,7 +98,7 @@
     width: 100,
     actions: (record: Recordable) => [
       {
-        label: t('选择'),
+        label: t('tb.images.select.choose'),
         type: 'primary',
         onClick: handleSelected.bind(this, { ...record }),
       },

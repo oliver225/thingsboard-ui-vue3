@@ -6,9 +6,11 @@
         <div class="flex flex-col">
           <span class="text-base font-semibold">
             {{ getTitle.value || '· · · ·' }}
-            <Tag class="text-base font-normal" color="success" v-if="record.default == true">默认</Tag>
+            <Tag class="text-base font-normal" color="success" v-if="record.default == true">{{
+              t('tb.deviceProfile.detail.defaultTag')
+            }}</Tag>
           </span>
-          <span class="text-sm">设备配置详情</span>
+          <span class="text-sm">{{ t('tb.deviceProfile.detail.detail') }}</span>
         </div>
       </div>
     </template>
@@ -29,10 +31,10 @@
           @click="handleSetDefault"
           v-if="!(record.name == 'TbServiceQueue' || record.default == true)"
         >
-          <Icon :icon="'ant-design:flag-outlined'" />设为默认设备配置
+          <Icon :icon="'ant-design:flag-outlined'" />{{ t('tb.deviceProfile.action.setDefault') }}
         </a-button>
         <a-button type="primary success" @click="handleEditDeviceProfile">
-          <Icon :icon="'i-clarity:note-edit-line'" />编辑设备配置
+          <Icon :icon="'i-clarity:note-edit-line'" />{{ t('tb.deviceProfile.action.edit') }}
         </a-button>
         <a-button
           type="primary"
@@ -40,13 +42,13 @@
           @click="handleDeleteDeviceProfile"
           v-if="!(record.name == 'TbServiceQueue' || record.default == true)"
         >
-          <Icon :icon="'ant-design:delete-outlined'" />删除设备配置
+          <Icon :icon="'ant-design:delete-outlined'" />{{ t('tb.deviceProfile.action.delete') }}
         </a-button>
       </div>
       <div class="space-x-4 my-4">
         <a-button @click="handleCopyDeviceProfileId">
           <Icon :icon="'ant-design:copy-filled'" />
-          复制设备配置ID
+          {{ t('tb.deviceProfile.action.copyId') }}
         </a-button>
       </div>
       <Description @register="register" size="default">
@@ -82,6 +84,12 @@
       :entityType="EntityType.DEVICE_PROFILE"
       :entityId="record?.id?.id"
     />
+
+    <CalculatedField
+      v-if="tabActiveKey == DetailTabItemEnum.CALCULATED.key"
+      :entityType="EntityType.DEVICE_PROFILE"
+      :entityId="record?.id?.id"
+    />
   </BasicDrawer>
 </template>
 <script lang="ts" setup name="ViewsTbDeviceProfileDetail">
@@ -105,6 +113,7 @@
   import TransportForm from './transport/transportForm.vue';
   import AlarmForm from './alarm/alarmForm.vue';
   import ProvisionForm from './provisionForm.vue';
+  import CalculatedField from '/@/views/tb/calculatedField/list.vue';
   import { ProvisionType, TransportType } from '/@/enums/deviceEnum';
   import { DetailTabItemEnum } from '/@/enums/detailTabEnum';
 
@@ -128,23 +137,23 @@
   const tabList = hasPermission(Authority.TENANT_ADMIN)
     ? [
         DetailTabItemEnum.DETAIL,
-        { key: 'TRANSPORT', label: '传输配置', icon: 'ant-design:cloud-upload-outlined' },
+        { key: 'TRANSPORT', label: t('tb.deviceProfile.steps.transport'), icon: 'ant-design:cloud-upload-outlined' },
         DetailTabItemEnum.CALCULATED,
         {
           ...DetailTabItemEnum.ALARM,
-          label: `${DetailTabItemEnum.ALARM.label}(${record.value.profileData?.alarms?.length || 0})`,
+          label: `${t('tb.deviceProfile.steps.alarm')}(${record.value.profileData?.alarms?.length || 0})`,
         },
-        { key: 'PROVISION', label: '设备预配置', icon: 'ant-design:file-protect-outlined' },
+        { key: 'PROVISION', label: t('tb.deviceProfile.steps.provision'), icon: 'ant-design:file-protect-outlined' },
         DetailTabItemEnum.AUDIT_LOG,
       ]
     : [
         DetailTabItemEnum.DETAIL,
-        { key: 'TRANSPORT', label: '传输配置', icon: 'ant-design:cloud-upload-outlined' },
+        { key: 'TRANSPORT', label: t('tb.deviceProfile.steps.transport'), icon: 'ant-design:cloud-upload-outlined' },
         {
           ...DetailTabItemEnum.ALARM,
-          label: `${DetailTabItemEnum.ALARM.label}(${record.value.profileData?.alarms?.length || 0})`,
+          label: `${t('tb.deviceProfile.steps.alarm')}(${record.value.profileData?.alarms?.length || 0})`,
         },
-        { key: 'PROVISION', label: '设备预配置', icon: 'ant-design:file-protect-outlined' },
+        { key: 'PROVISION', label: t('tb.deviceProfile.steps.provision'), icon: 'ant-design:file-protect-outlined' },
       ];
 
   const transportFrom = ref<any>(null);
@@ -153,41 +162,41 @@
 
   const descSchema: DescItem[] = [
     {
-      label: t('资产配置名称'),
+      label: t('tb.deviceProfile.form.name'),
       field: 'name',
       span: 4,
     },
     {
-      label: t('默认规则链'),
+      label: t('tb.deviceProfile.form.defaultRuleChain'),
       field: 'defaultRuleChain',
       slot: 'defaultRuleChain',
       span: 4,
     },
     {
-      label: t('移动端仪表盘'),
+      label: t('tb.deviceProfile.form.mobileDashboard'),
       field: 'defaultDashboard',
       slot: 'defaultDashboard',
       span: 4,
     },
     {
-      label: t('队列'),
+      label: t('tb.deviceProfile.form.queue'),
       field: 'defaultQueueName',
       span: 4,
     },
     {
-      label: t('边缘规则链'),
+      label: t('tb.deviceProfile.form.edgeRuleChain'),
       field: 'defaultEdgeRuleChain',
       slot: 'defaultEdgeRuleChain',
       span: 4,
     },
     {
-      label: t('图片'),
+      label: t('tb.deviceProfile.detail.image'),
       field: 'image',
       slot: 'image',
       span: 4,
     },
     {
-      label: t('描述信息'),
+      label: t('tb.deviceProfile.form.description'),
       field: 'description',
       span: 4,
     },
@@ -241,11 +250,14 @@
       } else if (tabActiveKey.value == 'PROVISION') {
         nextTick(() => {
           if (provisionFrom.value != null) {
+            const provisionConfig = record.value?.profileData?.provisionConfiguration;
             provisionFrom.value.setFieldsValue(
-              {
-                ...record.value?.profileData?.provisionConfiguration,
-                provisionDeviceKey: record.value?.provisionDeviceKey,
-              } || { type: ProvisionType.DISABLED, provisionDeviceKey: null },
+              provisionConfig
+                ? {
+                    ...provisionConfig,
+                    provisionDeviceKey: record.value?.provisionDeviceKey,
+                  }
+                : { type: ProvisionType.DISABLED, provisionDeviceKey: null },
             );
           }
         });
@@ -260,7 +272,7 @@
   }
 
   function handleCopyDeviceProfileId() {
-    copyToClipboard(record.value.id.id, '复制设备配置ID成功！');
+    copyToClipboard(record.value.id.id, t('tb.deviceProfile.action.copyIdSuccess'));
   }
 
   function handleDeleteDeviceProfile() {

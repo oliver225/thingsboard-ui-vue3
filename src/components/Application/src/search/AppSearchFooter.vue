@@ -18,7 +18,7 @@
   const { t } = useI18n();
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-app-search-footer';
+  @prefix-cls: ~'tbv3-app-search-footer';
 
   .@{prefix-cls} {
     position: relative;

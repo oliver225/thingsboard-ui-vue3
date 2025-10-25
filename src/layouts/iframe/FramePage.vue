@@ -1,12 +1,8 @@
-<!--
- * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
- * No deletion without permission, or be held responsible to law.
- * @author Vben、ThinkGem
--->
+
 <template>
   <div :class="prefixCls" :style="getWrapStyle">
     <Spin :spinning="loading" size="large" :style="getWrapStyle">
-      <div class="overflow-hidden">
+      <div class="overflow-hidden" :style="getWrapStyle">
         <iframe
           :src="frameSrc"
           :class="`${prefixCls}__main ${props.frame?.name}`"
@@ -111,7 +107,7 @@
   }
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-iframe-page';
+  @prefix-cls: ~'tbv3-iframe-page';
 
   .@{prefix-cls} {
     .ant-spin-nested-loading {

@@ -171,7 +171,7 @@
   });
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-cropper-image';
+  @prefix-cls: ~'tbv3-cropper-image';
 
   .@{prefix-cls} {
     &--circled {

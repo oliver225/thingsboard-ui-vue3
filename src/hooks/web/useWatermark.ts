@@ -7,7 +7,8 @@ const watermarkSymbol = 'watermark-dom';
 const updateWatermarkText = ref<string | null>(null);
 
 type UseWatermarkRes = {
-  setWatermark: (str: string) => void;
+  // 支持传入字符串(可包含\n换行) 或 字符串数组
+  setWatermark: (str: string | string[]) => void;
   clear: () => void;
   clearAll: () => void;
   waterMarkOptions?: waterMarkOptionsType;
@@ -39,8 +40,8 @@ function findTargetNode(el) {
 
 function createBase64(str: string, waterMarkOptions: waterMarkOptionsType) {
   const can = document.createElement('canvas');
-  const width = 300;
-  const height = 240;
+  const width = 460;
+  const height = 240; // 基础高度
   Object.assign(can, { width, height });
 
   const cans = can.getContext('2d');
@@ -51,12 +52,19 @@ function createBase64(str: string, waterMarkOptions: waterMarkOptionsType) {
     const textAlign = waterMarkOptions?.textAlign || 'left';
     const textBaseline = waterMarkOptions?.textBaseline || 'middle';
     const rotate = waterMarkOptions?.rotate || 20;
+    const lineGap = fontSize + 8; // 行间距 (可按需后续加入配置)
+    const lines = str.split(/\r?\n/).filter((l) => l.trim() !== '');
     cans.rotate((-rotate * Math.PI) / 180);
     cans.font = `${fontSize}px ${fontFamily}`;
     cans.fillStyle = fontColor;
     cans.textAlign = textAlign;
     cans.textBaseline = textBaseline;
-    cans.fillText(str, width / 20, height);
+    // 使多行文本大致垂直居中
+    const totalHeight = (lines.length - 1) * lineGap;
+    const startY = height / 2 - totalHeight / 2;
+    lines.forEach((line, idx) => {
+      cans.fillText(line, width / 20, startY + idx * lineGap);
+    });
   }
   return can.toDataURL('image/png');
 }
@@ -153,21 +161,22 @@ export function useWatermark(
     }
   }
 
-  const createWatermark = (str: string) => {
+  const createWatermark = (input: string | string[]) => {
+    const text = Array.isArray(input) ? input.join('\n') : input;
     if (unref(watermarkEl) && sourceMap.has(domSymbol)) {
-      updateWatermarkText.value = str;
-      updateWatermark({ str });
+      updateWatermarkText.value = text;
+      updateWatermark({ str: text });
       return;
     }
     const div = document.createElement('div');
-    div['data-watermark-text'] = str; //自定义属性 用于恢复水印
-    updateWatermarkText.value = str;
+    div['data-watermark-text'] = text; //自定义属性 用于恢复水印
+    updateWatermarkText.value = text;
     watermarkEl.value = div;
-    resetWatermarkStyle(div, str, waterMarkOptions);
+    resetWatermarkStyle(div, text, waterMarkOptions);
     const el = unref(appendEl);
     if (!el) return;
     const { clientHeight: height, clientWidth: width } = el;
-    updateWatermark({ str, width, height });
+    updateWatermark({ str: text, width, height });
     el.appendChild(div);
     sourceMap.set(domSymbol, {
       setWatermark,
@@ -184,7 +193,7 @@ export function useWatermark(
     });
   };
 
-  function setWatermark(str: string) {
+  function setWatermark(str: string | string[]) {
     createWatermark(str);
     addResizeListener(document.documentElement, func);
     const instance = getCurrentInstance();

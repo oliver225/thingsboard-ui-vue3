@@ -5,16 +5,21 @@
         <Segmented v-model:value="apiType" :options="apiTypeList" @change="reload()" />
       </template>
       <template #caseSlot="{ column, record }">
-        <Button size="small" type="primary" @click="handelShowCasemModal(record)"> 示例报文 </Button>
+        <Button size="small" type="primary" @click="handelShowCasemModal(record)">
+          {{ t('tb.device.detail.exampleMessage') }}
+        </Button>
       </template>
     </BasicTable>
 
-    <BasicModal v-model:open="showCaseModal">
-      <template #title>示例报文( {{ showTopic.function }})</template>
+    <BasicModal v-model:open="showCaseModal" :showOkBtn="false" :cancelText="t('common.closeText')">
+      <template #title>{{ t('tb.device.detail.exampleMessage') }}( {{ showTopic.function }})</template>
       <div class="pl-2 pb-2 text-lg font-bold">
         {{ showTopic.topic }}
       </div>
-      <CodeEditor v-model:value="showTopic.case" :mode="MODE.JSON" class="border border-solid border-gray-400" />
+
+      <div class="border border-solid border-gray-400 h-46">
+        <CodeEditor v-model:value="showTopic.case" :mode="MODE.JSON" />
+      </div>
     </BasicModal>
   </div>
 </template>
@@ -28,6 +33,8 @@
   import { DeviceInfo, getDeviceInfoById, DeviceCredentials, getDeviceCredentialsByDeviceId } from '/@/api/tb/device';
   import { onMounted } from 'vue';
   import { CredentialsType } from '/@/enums/deviceEnum';
+  import { EntityType } from '/@/enums/entityTypeEnum';
+  import { useI18n } from '/@/hooks/web/useI18n';
 
   const props = defineProps({
     entityType: {
@@ -45,11 +52,12 @@
   const deviceInfo = ref<DeviceInfo>({} as DeviceInfo);
   const credentials = ref<DeviceCredentials>({} as DeviceCredentials);
 
+  const { t } = useI18n('tb');
   const apiTypeList = reactive([
-    { value: 'MQTT_DEVICE', label: 'MQTT 设备', className: 'segment-tab' },
-    { value: 'MQTT_GATEWAY', label: 'MQTT 网关', className: 'segment-tab' },
-    { value: 'HTTP', label: 'HTTP 设备', className: 'segment-tab' },
-    { value: 'COAP', label: 'COAP 设备', className: 'segment-tab' },
+    { value: 'MQTT_DEVICE', label: t('tb.device.detail.mqttDevice'), className: 'segment-tab' },
+    { value: 'MQTT_GATEWAY', label: t('tb.device.detail.mqttGateway'), className: 'segment-tab' },
+    { value: 'HTTP', label: t('tb.device.detail.httpDevice'), className: 'segment-tab' },
+    { value: 'COAP', label: t('tb.device.detail.coapDevice'), className: 'segment-tab' },
   ]);
   const apiType = ref('MQTT_DEVICE');
   const showCaseModal = ref(false);

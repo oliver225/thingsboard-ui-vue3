@@ -82,7 +82,7 @@
   });
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-image-preview';
+  @prefix-cls: ~'tbv3-image-preview';
 
   .@{prefix-cls} {
     .ant-image {

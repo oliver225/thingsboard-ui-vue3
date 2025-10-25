@@ -1,8 +1,3 @@
-/**
- * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
- * No deletion without permission, or be held responsible to law.
- * @author Vben、Think Gem
- */
 import { isArray, isFunction, isObject, isString, isNullOrUnDef } from '/@/utils/is';
 import { dateUtil } from '/@/utils/dateUtil';
 import { unref } from 'vue';

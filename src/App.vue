@@ -1,7 +1,7 @@
 <template>
   <StyleProvider hash-priority="high" :transformers="[legacyLogicalPropertiesTransformer]">
     <ConfigProvider :locale="getAntdLocale" :theme="getTheme">
-      <AppProvider prefixCls="jeesite">
+      <AppProvider prefixCls="tbv3">
         <RouterView />
       </AppProvider>
     </ConfigProvider>
@@ -15,12 +15,15 @@
   import { ThemeEnum } from '/@/enums/appEnum';
   import { useLocale } from '/@/locales/useLocale';
   import { useTitle } from '/@/hooks/web/useTitle';
+  import { useWatermark } from '/@/hooks/web/useWatermark';
   import { darkPrimaryColor } from '../build/theme/themeConfig';
   import 'dayjs/locale/zh-cn';
+  import 'dayjs/locale/zh-tw';
 
   // support Multi-language
   const { getAntdLocale } = useLocale();
   const { getDarkMode, getThemeColor } = useRootSetting();
+  const { setWatermark, clear, clearAll } = useWatermark();
 
   const getTheme = computed(() => {
     const isDark = unref(getDarkMode) === ThemeEnum.DARK;

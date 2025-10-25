@@ -7,10 +7,10 @@
       <Form.Item name="enabled" :hidden="true">
         <Checkbox v-model:checked="formState.enabled" />
       </Form.Item>
-      <Form.Item label="主题" name="subject" :rules="[{ required: true }]">
+      <Form.Item :label="t('tb.notification.template.delivery.subject')" name="subject" :rules="[{ required: true }]">
         <Input v-model:value="formState.subject" />
       </Form.Item>
-      <Form.Item label="消息" name="body" :rules="[{ required: true }]">
+      <Form.Item :label="t('tb.notification.template.delivery.body')" name="body" :rules="[{ required: true }]">
         <Input.TextArea v-model:value="formState.body" />
       </Form.Item>
       <CollapseContainer
@@ -22,18 +22,24 @@
           <Form.Item :name="['additionalConfig', 'icon', 'enabled']">
             <div class="mt-5">
               <Switch v-model:checked="formState.additionalConfig.icon.enabled" @change="handleIconEnableChange" />
-              <span class="ml-4">显示图标</span>
+              <span class="ml-4">{{ t('tb.notification.template.delivery.showIcon') }}</span>
             </div>
           </Form.Item>
         </template>
         <Row :gutter="12">
           <Col :span="12">
-            <Form.Item label="选择图标" :name="['additionalConfig', 'icon', 'icon']">
+            <Form.Item
+              :label="t('tb.notification.template.delivery.chooseIcon')"
+              :name="['additionalConfig', 'icon', 'icon']"
+            >
               <IconPicker v-model:value="formState.additionalConfig.icon.icon" :copy="true" />
             </Form.Item>
           </Col>
           <Col :span="12">
-            <Form.Item label="选择颜色" :name="['additionalConfig', 'icon', 'color']">
+            <Form.Item
+              :label="t('tb.notification.template.delivery.chooseColor')"
+              :name="['additionalConfig', 'icon', 'color']"
+            >
               <ColorPicker v-model:value="formState.additionalConfig.icon.color" />
             </Form.Item>
           </Col>
@@ -51,12 +57,12 @@
                 v-model:checked="formState.additionalConfig.actionButtonConfig.enabled"
                 @change="handleActionButtonEnableChange"
               />
-              <span class="ml-4">操作按钮</span>
+              <span class="ml-4">{{ t('tb.notification.template.delivery.actionButton') }}</span>
             </div>
           </Form.Item>
         </template>
         <Form.Item
-          label="按钮文本"
+          :label="t('tb.notification.template.delivery.buttonText')"
           :name="['additionalConfig', 'actionButtonConfig', 'text']"
           :rules="[{ required: true }]"
           v-if="formState.additionalConfig.actionButtonConfig.enabled == true"
@@ -66,7 +72,7 @@
         <Row :gutter="12">
           <Col :span="8">
             <Form.Item
-              label="操作类型"
+              :label="t('tb.notification.template.delivery.actionType')"
               :name="['additionalConfig', 'actionButtonConfig', 'linkType']"
               :rules="[{ required: true }]"
               v-if="formState.additionalConfig.actionButtonConfig.enabled == true"
@@ -75,14 +81,16 @@
                 v-model:value="formState.additionalConfig.actionButtonConfig.linkType"
                 @change="handleActionButtonLinkTypeChange"
               >
-                <Select.Option value="LINK">连接地址</Select.Option>
-                <Select.Option value="DASHBOARD">仪表盘</Select.Option>
+                <Select.Option value="LINK">{{ t('tb.notification.template.delivery.linkType.link') }}</Select.Option>
+                <Select.Option value="DASHBOARD">{{
+                  t('tb.notification.template.delivery.linkType.dashboard')
+                }}</Select.Option>
               </Select>
             </Form.Item>
           </Col>
           <Col :span="16">
             <Form.Item
-              label="连接地址"
+              :label="t('tb.notification.template.delivery.linkAddress')"
               :name="['additionalConfig', 'actionButtonConfig', 'link']"
               :rules="[{ required: true }]"
               v-if="formState.additionalConfig.actionButtonConfig.enabled == true"

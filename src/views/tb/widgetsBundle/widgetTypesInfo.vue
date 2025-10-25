@@ -5,7 +5,7 @@
         <Icon :icon="getTitle.icon" class="pr-3 m-1 drawer-title-icon" />
         <div class="flex flex-col">
           <span class="text-lg font-bold">{{ getTitle.value || '· · · ·' }}({{ widgetTypeList.length }})</span>
-          <span class="text-sm">部件列表</span>
+          <span class="text-sm">{{ t('tb.widgetsBundle.detail.widgetList') }}</span>
         </div>
       </div>
     </template>

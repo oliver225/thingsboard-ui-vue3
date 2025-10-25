@@ -51,6 +51,8 @@ export interface UserInfo {
     lastLoginTs: number;
     userActivated?: boolean;
     userCredentialsEnabled?: boolean;
+    lang?: string; //语言
+    unitSystem?: string; //单位制
   };
   createdTime: number;
 }
@@ -58,6 +60,12 @@ export interface UserInfo {
 export interface JwtPair {
   token: string;
   refreshToken: string;
+}
+
+export interface DebugSettings {
+  failuresEnabled: boolean;
+  allEnabled: boolean;
+  allEnabledUntil: number;
 }
 
 export interface BeforeMiniState {

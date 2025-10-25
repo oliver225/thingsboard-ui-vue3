@@ -9,7 +9,7 @@ import { checkStatus } from './checkStatus';
 import { useGlobSetting } from '/@/hooks/setting';
 import { useMessage } from '/@/hooks/web/useMessage';
 import { RequestEnum, ContentTypeEnum } from '/@/enums/httpEnum';
-import { isString } from '/@/utils/is';
+import { isEmpty, isString } from '/@/utils/is';
 import { getToken } from '/@/utils/auth';
 import { setObjToUrlParams, deepMerge } from '/@/utils';
 import { useErrorLogStoreWithOut } from '/@/store/modules/errorLog';
@@ -93,7 +93,7 @@ const transform: AxiosTransform = {
         if (Reflect.has(config, 'data') && config.data && Object.keys(config.data).length > 0) {
           config.data = data;
           config.params = params;
-        } else {
+        } else if (!isEmpty(params)) {
           // 非GET请求如果没有提供data，则将params视为data
           config.data = params;
           config.params = undefined;

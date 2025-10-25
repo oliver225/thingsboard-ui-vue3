@@ -52,7 +52,7 @@
   });
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-setting-menu-type-picker';
+  @prefix-cls: ~'tbv3-setting-menu-type-picker';
 
   .@{prefix-cls} {
     display: flex;

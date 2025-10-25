@@ -10,7 +10,7 @@ import {
 
 import { CacheTypeEnum } from '/@/enums/cacheEnum';
 
-export type LocaleType = 'zh_CN' | 'en' | 'ru' | 'ja' | 'ko';
+export type LocaleType = 'zh_CN' | 'zh_TW' | 'en_US' | 'ru' | 'ja' | 'ko';
 
 export interface MenuSetting {
   bgColor: string;
@@ -147,8 +147,12 @@ export interface GlobConfig {
   shortName: string;
   // context-path，如：/api
   ctxPath: string;
+  // (deprecated) admin context-path alias, kept for backward compatibility
+  ctxAdminPath?: string;
   //websokcet-path
   websocketPath: string;
+  // thingsboard 基础地址
+  tbBaseUrl: string;
 }
 
 export interface GlobEnvConfig {
@@ -162,4 +166,6 @@ export interface GlobEnvConfig {
   VITE_GLOB_API_URL_WEBSOCKET: string;
   // Project abbreviation
   VITE_GLOB_APP_SHORT_NAME: string;
+  // thingsboard 基础地址
+  VITE_GLOB_TB_BASE_URL: string;
 }

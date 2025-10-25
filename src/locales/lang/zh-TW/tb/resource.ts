@@ -1,0 +1,41 @@
+export default {
+  title: '資源庫',
+  table: {
+    title: '標題',
+    resourceKey: '資源Key',
+    resourceType: '資源類型',
+    createdTime: '建立時間',
+    system: '系統',
+  },
+  form: {
+    title: '標題',
+    titlePlaceholder: '請輸入標題',
+    resourceType: '資源類型',
+    resourceTypePlaceholder: '請選擇資源類型',
+    upload: '上傳檔案',
+    uploadTip: '拖曳或點擊選擇檔案',
+    fileRequired: '請選擇一個檔案!',
+    addSuccess: '新增資源成功！',
+    editSuccess: '編輯資源成功！',
+  },
+  action: {
+    add: '新增資源',
+    edit: '編輯資源',
+    download: '匯出資源',
+    delete: '刪除資源',
+    deleteConfirm: '確定刪除資源[{title}]嗎？',
+    deleteConfirmContent: '請注意：確認後，資源及其相關資料將無法復原。',
+    deleteSuccess: '刪除資源成功！',
+    copyId: '複製資源ID',
+    copyIdSuccess: '複製資源ID成功！',
+  },
+  detail: {
+    title: '資源詳情',
+    tab: '詳情',
+    resourceKey: '資源Key',
+    fileName: '檔案名稱',
+  },
+  filter: {
+    all: '全部',
+  },
+};

@@ -18,6 +18,7 @@ declare global {
     VITE_PROXY: [string, string, boolean][];
     VITE_GLOB_APP_TITLE: string;
     VITE_GLOB_APP_SHORT_NAME: string;
+    VITE_GLOB_TB_BASE_URL: string;
     VITE_DROP_CONSOLE: boolean;
     VITE_BUILD_COMPRESS: 'gzip' | 'brotli' | 'none';
     VITE_BUILD_COMPRESS_DELETE_ORIGIN_FILE: boolean;

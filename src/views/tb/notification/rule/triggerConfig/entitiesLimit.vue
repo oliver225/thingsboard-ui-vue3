@@ -56,8 +56,8 @@
       show: false,
     },
     {
-      label: t('实体过滤'),
-      subLabel: t('不选择是所有实体'),
+      label: t('tb.notification.ruleTrigger.entitiesLimit.entityFilter'),
+      subLabel: t('tb.notification.ruleTrigger.entitiesLimit.allEntities'),
       field: 'triggerConfig.entityTypes',
       component: 'Select',
       componentProps: {
@@ -68,7 +68,7 @@
     },
     {
       labelWidth: 60,
-      label: t('阈值'),
+      label: t('tb.notification.ruleTrigger.entitiesLimit.threshold'),
       defaultValue: 0.8,
       field: 'triggerConfig.threshold',
       component: 'Input',
@@ -76,7 +76,7 @@
       colProps: { lg: 24, md: 24 },
     },
     {
-      label: t('描述信息'),
+      label: t('tb.notification.ruleTrigger.description'),
       field: 'additionalConfig.description',
       component: 'InputTextArea',
       componentProps: {
@@ -108,6 +108,5 @@
   defineExpose({ getFieldsValue, validate: validateTrigger, resetFields, setFieldsValue: setTriggerFieldsValue });
 </script>
 <style lang="less">
-  .trigger-config-entities-limit {
-  }
+  /* removed empty rule .trigger-config-entities-limit */
 </style>

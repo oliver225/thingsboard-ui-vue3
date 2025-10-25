@@ -3,8 +3,12 @@
     <Form.Item :name="['templateId', 'entityType']" v-show="false">
       <Input v-model:value="formState.templateId.entityType" />
     </Form.Item>
-    <Form.Item label="模版" :name="['templateId', 'id']" :rules="[{ required: true, message: '请选择模板!' }]">
-      <Select v-model:value="formState.templateId.id" placeholder="请选择通知模版">
+    <Form.Item
+      :label="t('tb.ruleChain.nodeAction.template')"
+      :name="['templateId', 'id']"
+      :rules="[{ required: true, message: t('tb.ruleChain.nodeAction.templateRequired') }]"
+    >
+      <Select v-model:value="formState.templateId.id" :placeholder="t('tb.ruleChain.nodeAction.templatePlaceholder')">
         <Select.Option v-for="(option, index) in templateOptions" :key="index" :value="option.value">
           {{ option.label }}
           <Tag v-for="(method, index) in option.deliveryMethods" :key="index">
@@ -13,8 +17,16 @@
         </Select.Option>
       </Select>
     </Form.Item>
-    <Form.Item label="收件人" name="targets" :rules="[{ required: true, message: '请选择收件人!' }]">
-      <Select v-model:value="formState.targets" mode="multiple" placeholder="请选择收件人">
+    <Form.Item
+      :label="t('tb.ruleChain.nodeAction.recipients')"
+      name="targets"
+      :rules="[{ required: true, message: t('tb.ruleChain.nodeAction.recipientsRequired') }]"
+    >
+      <Select
+        v-model:value="formState.targets"
+        mode="multiple"
+        :placeholder="t('tb.ruleChain.nodeAction.recipientsPlaceholder')"
+      >
         <Select.Option v-for="(option, index) in targetOptions" :key="index" :value="option.value">
           {{ option.label }}
         </Select.Option>
@@ -32,6 +44,7 @@
   import { Form, Input, Select, Tag } from 'ant-design-vue';
   import { FormInstance } from 'ant-design-vue/lib/form';
   import { notificationTemplateList } from '/@/api/tb/notificationTemplate';
+  import { useI18n } from '/@/hooks/web/useI18n';
   import { NotificationType } from '/@/enums/notificationEnum';
   import { notificationTargetList } from '/@/api/tb/notificationTarget';
   import { EntityType } from '/@/enums/entityTypeEnum';
@@ -40,6 +53,8 @@
     templateId: EntityId<EntityType.NOTIFICATION_TEMPLATE>;
     targets: [string];
   }
+
+  const { t } = useI18n('tb');
 
   const props = defineProps({
     configuration: {

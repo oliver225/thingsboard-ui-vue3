@@ -9,7 +9,7 @@
       <template #toolbar>
         <Tooltip placement="bottom">
           <template #title>
-            <span>{{ t('新增关联') }}</span>
+            <span>{{ t('tb.relation.action.add') }}</span>
           </template>
           <Icon
             icon="ant-design:plus-outlined"
@@ -26,13 +26,13 @@
             v-model:value="direction"
             @change="handleDirectionChange"
             :options="[
-              { label: '向外(From)', value: 'From' },
-              { label: '向内(To)', value: 'To' },
+              { label: t('tb.relation.direction.outgoing'), value: 'From' },
+              { label: t('tb.relation.direction.incoming'), value: 'To' },
             ]"
           />
           <a-input
             v-model:value="searchParam.textSearch"
-            placeholder="输入搜索内容"
+            :placeholder="t('common.search.searchText')"
             allow-clear
             @change="reload()"
             style="width: 240px"
@@ -51,17 +51,19 @@
       </template>
       <template #extra="{ record }">
         <span v-if="direction == 'To'">
-          从
+          {{ t('tb.relation.common.from') }}
           <strong>
             {{ ENTITY_TYPE_OPTIONS.find((item) => item.value === record.from.entityType)?.label }} ({{
               record.fromName
             }})
           </strong>
           <Tag color="blue">{{ record.type }}</Tag>
-          当前{{ ENTITY_TYPE_OPTIONS.find((item) => item.value === props.entityType)?.label }}
+          {{ t('tb.relation.common.current')
+          }}{{ ENTITY_TYPE_OPTIONS.find((item) => item.value === props.entityType)?.label }}
         </span>
         <span v-if="direction == 'From'">
-          从 当前{{ ENTITY_TYPE_OPTIONS.find((item) => item.value === props.entityType)?.label }}
+          {{ t('tb.relation.common.from') }} {{ t('tb.relation.common.current')
+          }}{{ ENTITY_TYPE_OPTIONS.find((item) => item.value === props.entityType)?.label }}
           <Tag color="blue">{{ record.type }}</Tag>
           <strong>
             {{ ENTITY_TYPE_OPTIONS.find((item) => item.value === record.to.entityType)?.label }} ({{ record.toName }})
@@ -100,7 +102,7 @@
   const { createConfirm, showMessage } = useMessage();
 
   const getTitle = {
-    value: router.currentRoute.value.meta.title || '关联',
+    value: router.currentRoute.value.meta.title || t('tb.relation.title'),
   };
 
   const props = defineProps({
@@ -121,14 +123,14 @@
   });
   const tableColumns: BasicColumn[] = [
     {
-      title: '类型',
+      title: t('tb.relation.table.type'),
       key: 'type',
       dataIndex: 'type',
       width: 140,
       sorter: true,
     },
     {
-      title: t('到实体类型'),
+      title: t('tb.relation.table.toEntityType'),
       dataIndex: 'to.entityType',
       key: 'to.entityType',
       width: 140,
@@ -136,14 +138,14 @@
       ifShow: direction.value == 'From',
     },
     {
-      title: t('到实体名称'),
+      title: t('tb.relation.table.toEntityName'),
       dataIndex: 'toName',
       key: 'toName',
       slot: 'toName',
       ifShow: direction.value == 'From',
     },
     {
-      title: t('从实体类型'),
+      title: t('tb.relation.table.fromEntityType'),
       dataIndex: 'from.entityType',
       key: 'from.entityType',
       width: 140,
@@ -151,14 +153,14 @@
       ifShow: direction.value == 'To',
     },
     {
-      title: t('从实体名称'),
+      title: t('tb.relation.table.fromEntityName'),
       dataIndex: 'fromName',
       key: 'fromName',
       slot: 'fromName',
       ifShow: direction.value == 'To',
     },
     {
-      title: t('描述'),
+      title: t('tb.relation.table.description'),
       dataIndex: 'extra',
       align: 'left',
       slot: 'extra',
@@ -171,7 +173,7 @@
     actions: (record: Recordable) => [
       {
         icon: 'i-clarity:note-edit-line',
-        title: t('编辑关联'),
+        title: t('tb.relation.action.edit'),
         ifShow: hasPermission(Authority.TENANT_ADMIN),
         color: 'success',
         onClick: handleForm.bind(this, { ...record }),
@@ -179,7 +181,7 @@
       {
         icon: 'ant-design:delete-outlined',
         color: 'error',
-        title: t('删除关联'),
+        title: t('tb.relation.action.delete'),
         ifShow: hasPermission(Authority.TENANT_ADMIN),
         onClick: handleDelete.bind(this, { ...record }),
       },
@@ -210,10 +212,14 @@
   async function handleDelete(record: Recordable) {
     createConfirm({
       iconType: 'error',
-      title: `确定从实体[${direction.value == 'From' ? record.toName : record.fromName}]删除关联吗？`,
-      content: `确定删除后，当前实体将与实体 '${direction.value == 'From' ? record.toName : record.fromName}' 取消关联`,
+      title: t('tb.relation.confirm.deleteTitle', {
+        name: direction.value == 'From' ? record.toName : record.fromName,
+      }),
+      content: t('tb.relation.confirm.deleteContent', {
+        name: direction.value == 'From' ? record.toName : record.fromName,
+      }),
       centered: false,
-      okText: '删除',
+      okText: t('tb.relation.confirm.deleteOk'),
       okButtonProps: {
         type: 'primary',
         danger: true,
@@ -227,7 +233,7 @@
             toId: record.to.id,
             toType: record.to.entityType,
           });
-          showMessage('删除关联成功！');
+          showMessage(t('tb.relation.action.deleteSuccess'));
         } catch (error: any) {
           console.log(error);
         } finally {
@@ -253,28 +259,28 @@
     reload();
     updateColumn([
       {
-        title: t('到实体类型'),
+        title: t('tb.relation.table.toEntityType'),
         dataIndex: 'to.entityType',
         key: 'to.entityType',
         format: (text: any) => (text ? ENTITY_TYPE_OPTIONS.find((item) => item.value === text)?.label || text : ''),
         ifShow: value == 'From',
       },
       {
-        title: t('到实体名称'),
+        title: t('tb.relation.table.toEntityName'),
         dataIndex: 'toName',
         key: 'toName',
         slot: 'toName',
         ifShow: value == 'From',
       },
       {
-        title: t('从实体类型'),
+        title: t('tb.relation.table.fromEntityType'),
         dataIndex: 'from.entityType',
         key: 'from.entityType',
         format: (text: any) => (text ? ENTITY_TYPE_OPTIONS.find((item) => item.value === text)?.label || text : ''),
         ifShow: value == 'To',
       },
       {
-        title: t('从实体名称'),
+        title: t('tb.relation.table.fromEntityName'),
         dataIndex: 'fromName',
         key: 'fromName',
         slot: 'fromName',

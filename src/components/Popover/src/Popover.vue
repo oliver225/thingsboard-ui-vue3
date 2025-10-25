@@ -1,14 +1,9 @@
-<!--
- * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
- * No deletion without permission, or be held responsible to law.
- * @author ThinkGem
--->
 <template>
   <Popover
     :trigger="trigger"
     v-bind="$attrs"
     v-model:open="open"
-    overlayClassName="jeesite-basic-popover"
+    overlayClassName="tbv3-basic-popover"
     :mouseEnterDelay="0.05"
     :placement="placement"
   >
@@ -140,7 +135,7 @@
   });
 </script>
 <style lang="less">
-  .ant-popover.jeesite-basic-popover {
+  .ant-popover.tbv3-basic-popover {
     .ant-popover-content,
     .ant-popover-inner,
     .ant-menu-horizontal {
@@ -177,7 +172,7 @@
   }
 
   html[data-theme='dark'] {
-    .ant-popover.jeesite-basic-popover {
+    .ant-popover.tbv3-basic-popover {
       .ant-menu-horizontal:not(.ant-menu-dark) {
         > .ant-menu-item:hover,
         > .ant-menu-submenu:hover,

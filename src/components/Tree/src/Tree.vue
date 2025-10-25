@@ -1,9 +1,3 @@
-<!--
- * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
- * No deletion without permission, or be held responsible to law.
- * @description 树结构生成封装兼容并统一多种数据格式
- * @author Vben、ThinkGem
--->
 <script lang="tsx">
   import type { FieldNames, Keys, CheckKeys, TreeActionType, TreeItem } from './typing';
 
@@ -570,7 +564,7 @@
         if (!el || el.clientHeight <= 0) return;
         if (!el.parentElement?.classList.contains('sidebar-content')) return;
         let height = el.clientHeight;
-        const header = el.querySelector('.jeesite-basic-tree-header');
+        const header = el.querySelector('.tbv3-basic-tree-header');
         if (header) height -= header.clientHeight;
         treeHeight.value = height - 5;
       };
@@ -619,7 +613,7 @@
   });
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-basic-tree';
+  @prefix-cls: ~'tbv3-basic-tree';
 
   .@{prefix-cls} {
     background-color: @component-background;

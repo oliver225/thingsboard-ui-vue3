@@ -1,8 +1,4 @@
-<!--
- * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
- * No deletion without permission, or be held responsible to law.
- * @author Vben、ThinkGem
--->
+
 <template>
   <Tooltip placement="topRight">
     <template #title>
@@ -382,7 +378,7 @@
   });
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-basic-column-setting';
+  @prefix-cls: ~'tbv3-basic-column-setting';
 
   .table-column-drag-icon {
     margin: 0 5px;

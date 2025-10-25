@@ -11,7 +11,7 @@
     props: {
       prefixCls: {
         type: String,
-        default: 'jeesite',
+        default: 'tbv3',
       },
     },
     setup(props, { slots }) {

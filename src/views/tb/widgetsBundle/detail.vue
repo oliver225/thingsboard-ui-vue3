@@ -5,29 +5,29 @@
         <Icon :icon="getTitle.icon" :size="24" />
         <div class="flex flex-col">
           <span class="text-base font-semibold">{{ getTitle.value || '· · · ·' }}</span>
-          <span class="text-sm">部件包详情</span>
+          <span class="text-sm">{{ t('tb.widgetsBundle.detail.detail') }}</span>
         </div>
       </div>
     </template>
     <div v-show="tabActiveKey == 'DETAIL'">
       <div class="space-x-4">
         <a-button type="primary" @click="handleOpen">
-          <Icon :icon="'ant-design:folder-open-outlined'" />打开部件包
+          <Icon :icon="'ant-design:folder-open-outlined'" />{{ t('tb.widgetsBundle.action.open') }}
         </a-button>
         <a-button type="primary" @click="handleDownload">
-          <Icon :icon="'ant-design:download-outlined'" />导出部件包
+          <Icon :icon="'ant-design:download-outlined'" />{{ t('tb.widgetsBundle.action.export') }}
         </a-button>
         <a-button type="primary success" @click="handleEdit">
-          <Icon :icon="'i-clarity:note-edit-line'" />编辑部件包
+          <Icon :icon="'i-clarity:note-edit-line'" />{{ t('tb.widgetsBundle.action.edit') }}
         </a-button>
         <a-button type="primary" danger @click="handleDelete">
-          <Icon :icon="'ant-design:delete-outlined'" />租删部件包
+          <Icon :icon="'ant-design:delete-outlined'" />{{ t('tb.widgetsBundle.action.delete') }}
         </a-button>
       </div>
       <div class="space-x-4 my-4">
         <a-button @click="handleCopyWidgetsBundleId">
           <Icon :icon="'ant-design:copy-filled'" />
-          复制部件包ID
+          {{ t('tb.widgetsBundle.action.copyId') }}
         </a-button>
       </div>
       <Description @register="register" size="default" />
@@ -61,12 +61,12 @@
 
   const descSchema: DescItem[] = [
     {
-      label: t('标题'),
+      label: t('tb.widgetsBundle.table.title'),
       field: 'title',
       span: 4,
     },
     {
-      label: t('描述信息'),
+      label: t('tb.widgetsBundle.table.description'),
       field: 'description',
       span: 4,
     },
@@ -97,7 +97,7 @@
   }
 
   function handleCopyWidgetsBundleId() {
-    copyToClipboard(record.value.id.id, '复制部件包ID成功！');
+    copyToClipboard(record.value.id.id, t('tb.widgetsBundle.action.copyIdSuccess'));
   }
 
   function handleDelete() {

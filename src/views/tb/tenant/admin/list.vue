@@ -7,11 +7,11 @@
       <template #tableTitle>
         <div class="space-x-2">
           <a-button type="primary" @click="handleForm({})">
-            <Icon icon="i-fluent:add-12-filled" /> 新增管理员
+            <Icon icon="i-fluent:add-12-filled" /> {{ t('tb.user.admin.action.add') }}
           </a-button>
           <a-input
             v-model:value="searchParam.textSearch"
-            placeholder="输入搜索内容"
+            :placeholder="t('common.search.searchText')"
             allow-clear
             @change="reload"
             style="width: 240px"
@@ -60,7 +60,7 @@
   const { createConfirm, showMessage, notification } = useMessage();
 
   const getTitle = {
-    value: router.currentRoute.value.meta.title || '租户管理员',
+    value: router.currentRoute.value.meta.title || t('tb.user.admin.title'),
   };
 
   const tenantInfo = ref<TenantInfo>({} as TenantInfo);
@@ -70,7 +70,7 @@
   });
   const tableColumns: BasicColumn[] = [
     {
-      title: t('电子邮件'),
+      title: t('tb.user.table.email'),
       dataIndex: 'email',
       key: 'email',
       sorter: true,
@@ -79,32 +79,32 @@
       slot: 'firstColumn',
     },
     {
-      title: '姓名',
+      title: t('tb.user.table.firstName'),
       dataIndex: 'firstName',
       width: 230,
       key: 'firstName',
     },
     {
-      title: '职务',
+      title: t('tb.user.table.lastName'),
       dataIndex: 'lastName',
       key: 'lastName',
       width: 230,
     },
     {
-      title: '手机号码',
+      title: t('tb.user.table.phone'),
       dataIndex: 'phone',
       key: 'phone',
       width: 140,
     },
     {
-      title: '描述信息',
+      title: t('tb.user.table.description'),
       dataIndex: 'additionalInfo.description',
       key: 'additionalInfo.description',
       ellipsis: true,
     },
 
     {
-      title: t('创建时间'),
+      title: t('tb.user.table.createdTime'),
       dataIndex: 'createdTime',
       key: 'createdTime',
       format: 'date|YYYY-MM-DD HH:mm:ss',
@@ -119,13 +119,13 @@
     actions: (record: Recordable) => [
       {
         icon: 'ant-design:login-outlined',
-        title: t('以管理员身份登录'),
+        title: t('tb.user.admin.action.loginAsAdmin'),
         onClick: handleLoginUser.bind(this, { ...record }),
       },
       {
         icon: 'ant-design:delete-outlined',
         color: 'error',
-        title: t('删除管理员'),
+        title: t('tb.user.admin.action.delete'),
         onClick: handleDelete.bind(this, { ...record }),
       },
     ],
@@ -152,7 +152,7 @@
   async function fetchData(params: any) {
     const tenantId = router.currentRoute.value.params.tenantId as string;
     if (isEmpty(tenantId)) {
-      return Promise.reject(new Error('租户为空！'));
+      return Promise.reject(new Error(t('tb.user.admin.action.tenantEmpty')));
     }
     return tenantInfoById(tenantId).then((res) => {
       tenantInfo.value = res;
@@ -195,10 +195,10 @@
   async function handleDelete(record: Recordable) {
     const modalFunc = createConfirm({
       iconType: 'error',
-      title: `确定删除管理员[${record.name}]吗？`,
-      content: '请注意：确认后，管理员和所有相关数据将不可恢复。',
+      title: t('tb.user.admin.action.deleteConfirm', { name: record.name }),
+      content: t('tb.user.admin.action.deleteConfirmContent'),
       centered: false,
-      okText: '删除',
+      okText: t('tb.user.admin.action.delete'),
       okButtonProps: {
         type: 'primary',
         danger: true,
@@ -207,7 +207,7 @@
       onOk: async () => {
         try {
           await deleteUser(record.id.id);
-          showMessage('删除管理员成功！');
+          showMessage(t('tb.user.admin.action.deleteSuccess'));
         } catch (error: any) {
           console.log(error);
         } finally {

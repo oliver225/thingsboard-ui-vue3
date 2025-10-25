@@ -1,5 +1,5 @@
 <template>
-  <div class="jeesite-basic-tree-header flex items-center px-2 py-1.5">
+  <div class="tbv3-basic-tree-header flex items-center px-2 py-1.5">
     <slot name="headerTitle" v-if="$slots.headerTitle"></slot>
     <BasicTitle :helpMessage="helpMessage" v-if="!$slots.headerTitle && title">
       {{ title }}
@@ -184,19 +184,19 @@
 </script>
 <style lang="less">
   html[data-theme='dark'] {
-    .jeesite-basic-tree-header {
+    .tbv3-basic-tree-header {
       border-bottom: 1px solid #303030;
       color: rgb(255 255 255 / 75%);
     }
   }
 
-  .jeesite-basic-tree-header {
+  .tbv3-basic-tree-header {
     border-bottom: 1px solid #f0f0f0;
     color: @text-color-base;
     min-height: 35px;
     overflow: hidden;
 
-    .jeesite-basic-title {
+    .tbv3-basic-title {
       font-size: 16px;
       line-height: 15px;
       font-weight: normal;

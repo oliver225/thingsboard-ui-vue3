@@ -1,17 +1,17 @@
 <template>
   <Spin :spinning="dataLoading">
     <div class="jwt-setting">
-      <div class="text-lg font-bold my-4">JWT 安全设置</div>
+      <div class="text-lg font-bold my-4">{{ t('tb.setting.jwt.title') }}</div>
       <BasicForm @register="registerForm" />
       <div class="footer">
         <Space>
           <a-button @click="fetchData">
             <Icon :icon="'ant-design:reload-outlined'" />
-            重置
+            {{ t('tb.setting.connectivity.reset') }}
           </a-button>
           <a-button :loading="dataLoading" type="primary" @click="handleSubmit">
             <Icon :icon="'ant-design:check-outlined'" />
-            保存
+            {{ t('tb.setting.connectivity.save') }}
           </a-button>
         </Space>
       </div>
@@ -34,39 +34,39 @@
 
   const inputFormSchemas: FormSchema[] = [
     {
-      label: t('发行者签名'),
+      label: t('tb.setting.jwt.issuerSigningKey'),
       field: 'tokenIssuer',
       component: 'Input',
       componentProps: {
-        placeholder: t('请输入发行者签名'),
+        placeholder: t('tb.setting.jwt.issuerSigningKeyPlaceholder'),
       },
       required: true,
     },
     {
-      label: t('签名秘钥'),
+      label: t('tb.setting.jwt.tokenSigningKey'),
       field: 'tokenSigningKey',
       component: 'Input',
       componentProps: {
-        placeholder: t('请输入tokenSigningKe'),
+        placeholder: t('tb.setting.jwt.tokenSigningKeyPlaceholder'),
       },
       required: true,
     },
     {
-      label: t('令牌过期时间'),
+      label: t('tb.setting.jwt.tokenExpirationTime'),
       field: 'tokenExpirationTime',
       component: 'InputNumber',
       componentProps: {
         min: 10,
-        addonAfter: '秒',
+        addonAfter: t('tb.setting.jwt.unitSecond'),
       },
       required: true,
     },
     {
-      label: t('令牌刷新时间'),
+      label: t('tb.setting.jwt.refreshTokenExpirationTime'),
       field: 'refreshTokenExpTime',
       component: 'InputNumber',
       componentProps: {
-        addonAfter: '秒',
+        addonAfter: t('tb.setting.jwt.unitSecond'),
         min: 10,
       },
       required: true,
@@ -107,7 +107,7 @@
       // console.log('submit', params, data, record);
       const res = await saveJwtSetting({ ...record.value, ...data });
       fetchData();
-      showMessage('保存JWT配置成功！');
+      showMessage(t('tb.setting.jwt.saveSuccess'));
     } catch (error: any) {
       if (error && error.errorFields) {
         showMessage(t('common.validateError'));

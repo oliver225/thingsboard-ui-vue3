@@ -1,8 +1,4 @@
-/**
- * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
- * No deletion without permission, or be held responsible to law.
- * @author ThinkGem
- */
+
 import { type PluginOption } from 'vite';
 // import path from 'path';
 import {
@@ -17,7 +13,6 @@ import { generateModifyVars } from './modifyVars';
 
 /**
  * Vite plugin for website theme color switching
- * https://gitee.com/thinkgem/vite-plugin-theme-vite3
  */
 export function configThemePlugin(isBuild: boolean): PluginOption[] {
   const colors = generateColors({
@@ -47,8 +42,8 @@ export function configThemePlugin(isBuild: boolean): PluginOption[] {
       //   case '.ant-steps-item-icon > .ant-steps-icon':
       //   case '.ant-select-item-option-selected:not(.ant-select-item-option-disabled)':
       //   case '.ant-menu-item-selected':
-      //   case '.ant-drawer .jeesite-basic-drawer .ant-drawer-body':
-      //   case '.jeesite-basic-drawer-footer':
+      //   case '.ant-drawer .tbv3-basic-drawer .ant-drawer-body':
+      //   case '.tbv3-basic-drawer-footer':
       //     return s;
       //   default:
       //     // 按钮被重新定制过，需要过滤掉class防止覆盖

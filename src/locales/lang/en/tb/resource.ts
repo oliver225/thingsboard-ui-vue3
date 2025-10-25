@@ -1,0 +1,41 @@
+export default {
+  title: 'Resource Library',
+  table: {
+    title: 'Title',
+    resourceKey: 'Resource Key',
+    resourceType: 'Resource Type',
+    createdTime: 'Created Time',
+    system: 'System',
+  },
+  form: {
+    title: 'Title',
+    titlePlaceholder: 'Please enter title',
+    resourceType: 'Resource Type',
+    resourceTypePlaceholder: 'Please select resource type',
+    upload: 'Upload file',
+    uploadTip: 'Drag or click to select a file',
+    fileRequired: 'Please select one file!',
+    addSuccess: 'Resource added successfully!',
+    editSuccess: 'Resource updated successfully!',
+  },
+  action: {
+    add: 'Add Resource',
+    edit: 'Edit Resource',
+    download: 'Download Resource',
+    delete: 'Delete Resource',
+    deleteConfirm: 'Confirm delete resource {title}?',
+    deleteConfirmContent: 'After confirmation, the resource and all related data will NOT be recoverable.',
+    deleteSuccess: 'Delete resource success!',
+    copyId: 'Copy Resource ID',
+    copyIdSuccess: 'Resource ID copied successfully!',
+  },
+  detail: {
+    title: 'Resource Detail',
+    tab: 'Detail',
+    resourceKey: 'Resource Key',
+    fileName: 'File Name',
+  },
+  filter: {
+    all: 'All',
+  },
+};

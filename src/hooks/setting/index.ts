@@ -13,6 +13,7 @@ export const useGlobSetting = (): Readonly<GlobConfig> => {
     VITE_GLOB_APP_SHORT_NAME,
     VITE_GLOB_API_URL_PREFIX,
     VITE_PROXY,
+    VITE_GLOB_TB_BASE_URL,
   } = getAppEnvConfig();
 
   const ctxPath = ((): string => {
@@ -46,7 +47,9 @@ export const useGlobSetting = (): Readonly<GlobConfig> => {
     shortName: VITE_GLOB_APP_SHORT_NAME,
     urlPrefix: VITE_GLOB_API_URL_PREFIX,
     ctxPath: ctxPath,
+    ctxAdminPath: ctxPath,
     websocketPath: websocketPath,
+    tbBaseUrl: VITE_GLOB_TB_BASE_URL,
   };
   globCache = glob;
   return glob as Readonly<GlobConfig>;

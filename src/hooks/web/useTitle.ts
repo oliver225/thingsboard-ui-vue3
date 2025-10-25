@@ -1,8 +1,4 @@
-/**
- * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
- * No deletion without permission, or be held responsible to law.
- * @author ThinkGem
- */
+
 import { watch, unref } from 'vue';
 import { useI18n } from '/@/hooks/web/useI18n';
 import { useTitle as usePageTitle } from '@vueuse/core';

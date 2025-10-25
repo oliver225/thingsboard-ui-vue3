@@ -43,7 +43,7 @@
   });
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-layout-sider-wrapper';
+  @prefix-cls: ~'tbv3-layout-sider-wrapper';
 
   .@{prefix-cls} {
     .ant-drawer-body {

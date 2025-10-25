@@ -1,5 +1,5 @@
 <template>
-  <div v-if="props.sidebar" :class="`${prefixCls}-sidebar md:hidden lg:block think gem`">
+  <div v-if="props.sidebar" :class="`${prefixCls}-sidebar md:hidden lg:block`">
     <span :class="[prefixCls, `${prefixCls}--${props.theme}`]" class="flex">
       <img :class="`${prefixCls}__header`" :src="getUserInfo.avatarUrl" />
       <span :class="`${prefixCls}__info`">
@@ -23,7 +23,7 @@
           <span :class="`${prefixCls}__name__title`">
             {{ getUserInfo.firstName || '未命名' }}
             <span :class="`${prefixCls}__name__tag`">
-              {{ AUTHORITY_OPTIONS.filter((item) => item.value === getUserInfo.authority)[0]?.label }}
+              {{ t(AUTHORITY_OPTIONS.filter((item) => item.value === getUserInfo.authority)[0]?.label) }}
             </span>
           </span>
           <span :class="`${prefixCls}__name__subTitle`">
@@ -191,7 +191,7 @@
   });
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-header-user-dropdown';
+  @prefix-cls: ~'tbv3-header-user-dropdown';
   @menu-dark-subsidiary-color: rgba(255, 255, 255, 0.7);
 
   .@{prefix-cls} {

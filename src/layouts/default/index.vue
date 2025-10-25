@@ -71,7 +71,7 @@
   });
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-default-layout';
+  @prefix-cls: ~'tbv3-default-layout';
   .ant-layout.@{prefix-cls} {
     display: flex;
     width: 100%;

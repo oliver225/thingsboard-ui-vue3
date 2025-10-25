@@ -113,11 +113,6 @@
               </Col>
             </Row>
           </Col>
-          <Col span="24">
-            <Card size="small">
-              <GeoMap height="600px" />
-            </Card>
-          </Col>
         </Row>
       </Col>
     </Row>
@@ -129,7 +124,6 @@
   import { CountTo } from '/@/components/CountTo/index';
   import { useWebsocketStore } from '/@/store/modules/websocket';
   import { useGo } from '/@/hooks/web/usePage';
-  import GeoMap from '../components/chart/GeoMap.vue';
   import MessageTransportBar from '../components/chart/MessageTransportBar.vue';
   import StorageDataPointsBar from '../components/chart/StorageDataPointsBar.vue';
   import CpuStateLine from '../components/chart/CpuStateLine.vue';

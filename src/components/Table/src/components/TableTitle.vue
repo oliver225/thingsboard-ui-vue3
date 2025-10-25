@@ -43,7 +43,7 @@
   });
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-basic-table-title';
+  @prefix-cls: ~'tbv3-basic-table-title';
 
   .@{prefix-cls} {
     display: flex;

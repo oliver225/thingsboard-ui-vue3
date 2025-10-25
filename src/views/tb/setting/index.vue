@@ -5,71 +5,72 @@
         <Tabs.TabPane key="10">
           <template #tab>
             <Icon :icon="'ant-design:global-outlined'" size="18" />
-            基本设置
+            {{ t('tb.setting.tabs.general') }}
           </template>
           <GeneralSetting />
         </Tabs.TabPane>
         <Tabs.TabPane key="40">
           <template #tab>
             <Icon :icon="'ant-design:api-outlined'" size="18" />
-            设备连接
+            {{ t('tb.setting.tabs.connectivity') }}
           </template>
           <ConnectivitySetting />
         </Tabs.TabPane>
         <Tabs.TabPane key="60">
           <template #tab>
             <Icon :icon="'ant-design:mail-outlined'" size="18" />
-            邮件配置
+            {{ t('tb.setting.tabs.mail') }}
           </template>
           <MailSetting />
         </Tabs.TabPane>
         <Tabs.TabPane key="80">
           <template #tab>
             <Icon :icon="'ant-design:message-outlined'" size="18" />
-            短信配置
+            {{ t('tb.setting.tabs.sms') }}
           </template>
           <SmsSetting />
         </Tabs.TabPane>
         <Tabs.TabPane key="100">
           <template #tab>
             <Icon :icon="'ant-design:branches-outlined'" size="18" />
-            队列设置
+            {{ t('tb.setting.tabs.queue') }}
           </template>
           <QueueList />
         </Tabs.TabPane>
         <Tabs.TabPane key="120">
           <template #tab>
             <Icon :icon="'ant-design:safety-outlined'" size="18" />
-            安全设置
+            {{ t('tb.setting.tabs.security') }}
           </template>
           <SecuritySetting />
         </Tabs.TabPane>
         <Tabs.TabPane key="160">
           <template #tab>
             <Icon :icon="'ant-design:trophy-outlined'" size="18" />
-            JWT设置
+            {{ t('tb.setting.tabs.jwt') }}
           </template>
           <JwtSetting />
         </Tabs.TabPane>
         <Tabs.TabPane key="200">
           <template #tab>
             <Icon :icon="'ant-design:verified-outlined'" size="18" />
-            双因素身份验证
+            {{ t('tb.setting.tabs.twoFactorAuth') }}
           </template>
-          双因素身份验证
+          {{ t('tb.setting.tabs.twoFactorAuth') }}
         </Tabs.TabPane>
         <Tabs.TabPane key="240">
           <template #tab>
             <Icon :icon="'ant-design:contacts-outlined'" size="18" />
-            OAuth2
+            {{ t('tb.setting.tabs.oauth2') }}
           </template>
-          OAuth2
+          {{ t('tb.setting.tabs.oauth2') }}
         </Tabs.TabPane>
       </Tabs>
     </div>
   </PageWrapper>
 </template>
 <script lang="ts" setup name="ViewsTbSettingIndex">
+  import { useI18n } from '/@/hooks/web/useI18n';
   import { Tabs } from 'ant-design-vue';
   import { Icon } from '/@/components/Icon';
   import { PageWrapper } from '/@/components/Page';
@@ -80,6 +81,8 @@
   import QueueList from '../queue/list.vue';
   import SecuritySetting from './securitySetting.vue';
   import JwtSetting from './jwtSetting.vue';
+
+  const { t } = useI18n('tb');
 </script>
 <style lang="less">
   .admin-setting {
@@ -92,7 +95,7 @@
     }
 
     .queue-list {
-      .jeesite-basic-table {
+      .tbv3-basic-table {
         padding: 0;
       }
     }

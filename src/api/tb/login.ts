@@ -7,6 +7,21 @@ export interface LoginParams {
   password: string;
 }
 
+export interface publicLoginParams {
+  publicId: string;
+}
+
+export const publicLoginApi = (params: publicLoginParams, mode: ErrorMessageMode = 'message') => {
+  return defHttp.postJson<JwtPair>(
+    {
+      url: '/api/auth/login/public',
+      data: params,
+      timeout: 20 * 1000,
+    },
+    { errorMessageMode: mode },
+  );
+};
+
 export const loginApi = (params: LoginParams, mode: ErrorMessageMode = 'message') => {
   return defHttp.postJson<JwtPair>(
     {

@@ -12,71 +12,77 @@
       <span> {{ getTitle.value }} </span>
     </template>
     <Form ref="formRef" :model="formState" layout="vertical">
-      <Form.Item label="视图名称" name="name" :rules="[{ required: true, message: '请输入实体视图名称!' }]">
-        <Input v-model:value="formState.name" placeholder="请输入实体视图名称" />
+      <Form.Item
+        :label="t('tb.entityView.form.name')"
+        name="name"
+        :rules="[{ required: true, message: t('tb.entityView.form.nameRequired') }]"
+      >
+        <Input v-model:value="formState.name" :placeholder="t('tb.entityView.form.namePlaceholder')" />
       </Form.Item>
-      <Form.Item label="视图类型" name="type" :rules="[{ required: true, message: '请输入实体视图类型!' }]">
-        <Input v-model:value="formState.type" placeholder="请输入实体视图类型" />
+      <Form.Item
+        :label="t('tb.entityView.form.type')"
+        name="type"
+        :rules="[{ required: true, message: t('tb.entityView.form.typeRequired') }]"
+      >
+        <Input v-model:value="formState.type" :placeholder="t('tb.entityView.form.typePlaceholder')" />
       </Form.Item>
       <Row :gutter="16">
         <Col :span="6">
           <Form.Item
-            label="目标实体类型"
+            :label="t('tb.entityView.form.entityType')"
             :name="['entityId', 'entityType']"
-            :rules="[{ required: true, message: '请选择目标实体类型!' }]"
+            :rules="[{ required: true, message: t('tb.entityView.form.entityTypeRequired') }]"
           >
             <Select
               v-model:value="formState.entityId.entityType"
-              placeholder="请选择目标实体类型"
+              :placeholder="t('tb.entityView.form.entityTypePlaceholder')"
               @change="handleEntityTypeChange"
             >
-              <Select.Option :value="EntityType.DEVICE">设备</Select.Option>
-              <Select.Option :value="EntityType.ASSET">资产</Select.Option>
+              <Select.Option :value="EntityType.DEVICE">{{ t('tb.device.title') }}</Select.Option>
+              <Select.Option :value="EntityType.ASSET">{{ t('tb.asset.title') }}</Select.Option>
             </Select>
           </Form.Item>
         </Col>
         <Col :span="18">
           <Form.Item
-            label="目标设备"
+            :label="t('tb.entityView.form.targetDevice')"
             :name="['entityId', 'id']"
-            :rules="[{ required: true, message: '请选择目标设备!' }]"
+            :rules="[{ required: true, message: t('tb.entityView.form.deviceRequired') }]"
             v-if="EntityType.DEVICE == formState.entityId?.entityType"
           >
             <Select
               v-model:value="formState.entityId.id"
-              placeholder="请选择目标设备"
+              :placeholder="t('tb.entityView.form.targetDevicePlaceholder')"
               :options="entityIdOptions"
               :loading="selectFetchLoading"
-            >
-            </Select>
+            />
           </Form.Item>
           <Form.Item
-            label="目标资产"
+            :label="t('tb.entityView.form.targetAsset')"
             :name="['entityId', 'id']"
-            :rules="[{ required: true, message: '请选择目标资产!' }]"
+            :rules="[{ required: true, message: t('tb.entityView.form.assetRequired') }]"
             v-if="EntityType.ASSET == formState.entityId?.entityType"
           >
             <Select
               v-model:value="formState.entityId.id"
-              placeholder="请选择目标资产"
+              :placeholder="t('tb.entityView.form.targetAssetPlaceholder')"
               :options="entityIdOptions"
               :loading="selectFetchLoading"
-            >
-            </Select>
+            />
           </Form.Item>
         </Col>
       </Row>
-      <CollapseContainer title="属性传播" class="border border-solid border-neutral-300 mb-4">
+      <CollapseContainer
+        :title="t('tb.entityView.form.attributesPropagation')"
+        class="border border-solid border-neutral-300 mb-4"
+      >
         <div class="p-4">
-          <p class="text-help">每次保存或更新这个实体视图时将自动从目标实体复制指定的属性。</p>
-          <p class="text-help">由于性能原因目标实体属性不会在每次属性更改时传递到实体视图。</p>
-          <p class="text-help"
-            >你可以通过配置"<strong>copy to view</strong>"规则链中的规则节点，并将"<strong>Post attributes</strong
-            >"和"<strong>attributes Updated</strong>"消息链接到新规则节点，从而启用自动传递。</p
-          >
+          <p class="text-help">{{ t('tb.entityView.form.help.attr1') }}</p>
+          <p class="text-help">{{ t('tb.entityView.form.help.attr2') }}</p>
+          <p class="text-help" v-html="t('tb.entityView.form.help.attr3')"></p>
         </div>
 
-        <Form.Item label="客户端属性" :name="['keys', 'attributes', 'cs']">
+        <Form.Item :label="t('tb.entityView.form.clientAttributes')" :name="['keys', 'attributes', 'cs']">
           <Select
             v-model:value="formState.keys.attributes.cs"
             :options="clientScopeOptions"
@@ -84,11 +90,10 @@
             :loading="selectFetchLoading"
             @focus="fetchClientScopeAttribute"
             :allow-clear="true"
-            placeholder="请选择客户端属性"
-          >
-          </Select>
+            :placeholder="t('tb.entityView.form.clientAttributesPlaceholder')"
+          />
         </Form.Item>
-        <Form.Item label="共享属性" :name="['keys', 'attributes', 'sh']">
+        <Form.Item :label="t('tb.entityView.form.sharedAttributes')" :name="['keys', 'attributes', 'sh']">
           <Select
             v-model:value="formState.keys.attributes.sh"
             :options="sharedScopeOptions"
@@ -96,11 +101,10 @@
             :loading="selectFetchLoading"
             @focus="fetchSharedScopeAttribute"
             :allow-clear="true"
-            placeholder="请选择共享属性"
-          >
-          </Select>
+            :placeholder="t('tb.entityView.form.sharedAttributesPlaceholder')"
+          />
         </Form.Item>
-        <Form.Item label="服务端属性" :name="['keys', 'attributes', 'ss']">
+        <Form.Item :label="t('tb.entityView.form.serverAttributes')" :name="['keys', 'attributes', 'ss']">
           <Select
             v-model:value="formState.keys.attributes.ss"
             :options="serverScopeOptions"
@@ -108,18 +112,18 @@
             :loading="selectFetchLoading"
             @focus="fetchServerScopeAttribute"
             :allow-clear="true"
-            placeholder="请选择服务端属性"
-          >
-          </Select>
+            :placeholder="t('tb.entityView.form.serverAttributesPlaceholder')"
+          />
         </Form.Item>
       </CollapseContainer>
-      <CollapseContainer title="时间序列数据" class="border border-solid border-neutral-300 mb-4">
+      <CollapseContainer
+        :title="t('tb.entityView.form.timeseriesData')"
+        class="border border-solid border-neutral-300 mb-4"
+      >
         <div class="p-4">
-          <p class="text-help"
-            >配置目标实体的 Timeseries 数据键,以便实体视图可以访问这些键。此 Timeseries 数据是只读的。</p
-          >
+          <p class="text-help">{{ t('tb.entityView.form.help.ts') }}</p>
         </div>
-        <Form.Item label="遥测数据" :name="['keys', 'timeseries']">
+        <Form.Item :label="t('tb.entityView.form.telemetry')" :name="['keys', 'timeseries']">
           <Select
             v-model:value="formState.keys.timeseries"
             :options="timeseriesOptions"
@@ -127,32 +131,33 @@
             :loading="selectFetchLoading"
             :allow-clear="true"
             @focus="fetchTimeseriesAttribute"
-            placeholder="请选择遥测数据"
-          >
-          </Select>
+            :placeholder="t('tb.entityView.form.telemetryPlaceholder')"
+          />
         </Form.Item>
       </CollapseContainer>
-      <Form.Item label="开始时间" :name="['startTimeMs']">
+      <Form.Item :label="t('tb.entityView.form.startTime')" :name="['startTimeMs']">
         <DatePicker
           v-model:value="formState.startTimeMs"
           :showTime="{ format: 'HH:mm' }"
           :format="'YYYY-MM-DD HH:mm'"
-          placeholder="开始时间"
-        >
-        </DatePicker>
+          :placeholder="t('tb.entityView.form.startTimePlaceholder')"
+        />
       </Form.Item>
-      <Form.Item label="结束时间" :name="['endTimeMs']">
+      <Form.Item :label="t('tb.entityView.form.endTime')" :name="['endTimeMs']">
         <DatePicker
           v-model:value="formState.endTimeMs"
           :showTime="{ format: 'HH:mm' }"
           :format="'YYYY-MM-DD HH:mm'"
-          placeholder="结束时间"
-        >
-        </DatePicker>
+          :placeholder="t('tb.entityView.form.endTimePlaceholder')"
+        />
       </Form.Item>
 
-      <Form.Item label="描述信息" :name="['additionalInfo', 'description']">
-        <Textarea v-model:value="formState.additionalInfo.description" placeholder="输入实体视图描述信息" :rows="3" />
+      <Form.Item :label="t('tb.entityView.form.description')" :name="['additionalInfo', 'description']">
+        <Textarea
+          v-model:value="formState.additionalInfo.description"
+          :placeholder="t('tb.entityView.form.descriptionPlaceholder')"
+          :rows="3"
+        />
       </Form.Item>
     </Form>
   </BasicModal>
@@ -192,7 +197,7 @@
   const record = ref<EntityViewInfo>({} as EntityViewInfo);
   const getTitle = computed(() => ({
     icon: meta.icon || 'ant-design:book-outlined',
-    value: record.value.id?.id ? t('编辑实体视图') : t('新增实体视图'),
+    value: record.value.id?.id ? t('tb.entityView.action.edit') : t('tb.entityView.action.add'),
   }));
 
   const entityIdOptions = ref<Array<any>>([]);
@@ -255,7 +260,7 @@
     try {
       const data = await formRef.value?.validate();
       if (data == undefined) {
-        throw new Error('数据为空');
+        throw new Error(t('tb.entityView.form.dataEmpty'));
       }
       setModalProps({ confirmLoading: true });
       data.keys.timeseries = formState.keys.timeseries;
@@ -269,7 +274,7 @@
         data.endTimeMs = dayjs(data.endTimeMs, 'YYYY-MM-DD HH:mm').valueOf();
       }
       const res = await saveEntityView({ ...data, id: record.value.id });
-      showMessage(`${record.value.id?.id ? '编辑' : '新增'}实体视图成功！`);
+      showMessage(record.value.id?.id ? t('tb.entityView.action.editSuccess') : t('tb.entityView.action.addSuccess'));
       setTimeout(closeModal);
       emit('success', data);
     } catch (error: any) {

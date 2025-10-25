@@ -46,7 +46,7 @@
 </script>
 
 <style lang="less">
-  @prefix-cls: ~'jeesite-basic-drawer-header';
+  @prefix-cls: ~'tbv3-basic-drawer-header';
   @footer-height: 60px;
 
   .@{prefix-cls} {

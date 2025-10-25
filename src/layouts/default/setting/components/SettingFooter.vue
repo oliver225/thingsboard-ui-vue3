@@ -89,7 +89,7 @@
   });
 </script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-setting-footer';
+  @prefix-cls: ~'tbv3-setting-footer';
 
   .@{prefix-cls} {
     display: flex;

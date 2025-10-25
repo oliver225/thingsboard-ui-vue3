@@ -1,18 +1,14 @@
-<!--
- * Copyright (c) 2013-Now http://jeesite.com All rights reserved.
- * No deletion without permission, or be held responsible to law.
- * @author Vben、ThinkGem
--->
+
 <template>
-  <div v-bind="$attrs" class="jeesite-form-group">
+  <div v-bind="$attrs" class="tbv3-form-group">
     <div class="title">
       <slot></slot>
     </div>
   </div>
 </template>
-<script lang="ts" setup name="JeeSiteFormGroup"></script>
+<script lang="ts" setup name="TbV3FormGroup"></script>
 <style lang="less">
-  @prefix-cls: ~'jeesite-form-group';
+  @prefix-cls: ~'tbv3-form-group';
 
   .@{prefix-cls} {
     .title {

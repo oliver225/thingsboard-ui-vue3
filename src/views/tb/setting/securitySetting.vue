@@ -2,19 +2,19 @@
   <ScrollContainer :style="{ maxHeight: domHeight + 'px' }">
     <Spin :spinning="dataLoading">
       <div class="security-setting">
-        <div class="text-lg font-bold my-4">安全策略</div>
+        <div class="text-lg font-bold my-4">{{ t('tb.setting.security.title') }}</div>
 
         <Form ref="formRef" :model="formState" layout="vertical">
-          <CollapseContainer title="基本策略" :canExpan="false" class="border border-solid border-neutral-300 mb-4">
+          <CollapseContainer :title="t('tb.setting.security.basicPolicy')" :canExpan="false" class="border border-solid border-neutral-300 mb-4">
             <div class="px-4">
-              <Form.Item label="登录失败之前，最大登录尝试次数" name="maxFailedLoginAttempts">
+              <Form.Item :label="t('tb.setting.security.maxFailedLoginAttempts')" name="maxFailedLoginAttempts">
                 <InputNumber v-model:value="formState.maxFailedLoginAttempts" :min="0" style="width: calc(50%)" />
               </Form.Item>
-              <Form.Item label="如果用户帐户锁定，请发送通知到电子邮件" name="userLockoutNotificationEmail">
+              <Form.Item :label="t('tb.setting.security.userLockoutNotificationEmail')" name="userLockoutNotificationEmail">
                 <Input v-model:value="formState.userLockoutNotificationEmail" />
               </Form.Item>
               <Form.Item
-                label="User activation link TTL in hours"
+                :label="t('tb.setting.security.userActivationLinkTtl')"
                 name="userActivationTokenTtl"
                 :rules="[{ required: true }]"
               >
@@ -26,7 +26,7 @@
                 />
               </Form.Item>
               <Form.Item
-                label="Password reset link TTL in hours"
+                :label="t('tb.setting.security.passwordResetLinkTtl')"
                 name="passwordResetTokenTtl"
                 :rules="[{ required: true }]"
               >
@@ -37,17 +37,17 @@
                   style="width: calc(50%)"
                 />
               </Form.Item>
-              <Form.Item label="Mobile secret key length" name="mobileSecretKeyLength" :rules="[{ required: true }]">
+              <Form.Item :label="t('tb.setting.security.mobileSecretKeyLength')" name="mobileSecretKeyLength" :rules="[{ required: true }]">
                 <InputNumber v-model:value="formState.mobileSecretKeyLength" :min="1" style="width: calc(50%)" />
               </Form.Item>
             </div>
           </CollapseContainer>
-          <CollapseContainer title="密码策略" :canExpan="false" class="border border-solid border-neutral-300 mb-4">
+          <CollapseContainer :title="t('tb.setting.security.passwordPolicy')" :canExpan="false" class="border border-solid border-neutral-300 mb-4">
             <div class="px-4">
               <Row :gutter="24">
                 <Col :span="12">
                   <Form.Item
-                    label="最小密码长度"
+                    :label="t('tb.setting.security.minimumPasswordLength')"
                     :name="['passwordPolicy', 'minimumLength']"
                     :rules="[{ required: true }]"
                   >
@@ -60,7 +60,7 @@
                 </Col>
                 <Col :span="12">
                   <Form.Item
-                    label="最大密码长度"
+                    :label="t('tb.setting.security.maximumPasswordLength')"
                     :name="['passwordPolicy', 'maximumLength']"
                     :rules="[{ required: true }]"
                   >
@@ -72,7 +72,7 @@
                   </Form.Item>
                 </Col>
                 <Col :span="12">
-                  <Form.Item label="最少大写字母位数" :name="['passwordPolicy', 'minimumUppercaseLetters']">
+                  <Form.Item :label="t('tb.setting.security.minimumUppercaseLetters')" :name="['passwordPolicy', 'minimumUppercaseLetters']">
                     <InputNumber
                       v-model:value="formState.passwordPolicy.minimumUppercaseLetters"
                       :min="0"
@@ -81,7 +81,7 @@
                   </Form.Item>
                 </Col>
                 <Col :span="12">
-                  <Form.Item label="最少小写字母位数" :name="['passwordPolicy', 'minimumLowercaseLetters']">
+                  <Form.Item :label="t('tb.setting.security.minimumLowercaseLetters')" :name="['passwordPolicy', 'minimumLowercaseLetters']">
                     <InputNumber
                       v-model:value="formState.passwordPolicy.minimumLowercaseLetters"
                       :min="0"
@@ -90,7 +90,7 @@
                   </Form.Item>
                 </Col>
                 <Col :span="12">
-                  <Form.Item label="最少数字位数" :name="['passwordPolicy', 'minimumDigits']">
+                  <Form.Item :label="t('tb.setting.security.minimumDigits')" :name="['passwordPolicy', 'minimumDigits']">
                     <InputNumber
                       v-model:value="formState.passwordPolicy.minimumDigits"
                       :min="0"
@@ -99,7 +99,7 @@
                   </Form.Item>
                 </Col>
                 <Col :span="12">
-                  <Form.Item label="最少特殊字符位数" :name="['passwordPolicy', 'minimumSpecialCharacters']">
+                  <Form.Item :label="t('tb.setting.security.minimumSpecialCharacters')" :name="['passwordPolicy', 'minimumSpecialCharacters']">
                     <InputNumber
                       v-model:value="formState.passwordPolicy.minimumSpecialCharacters"
                       :min="0"
@@ -109,13 +109,13 @@
                 </Col>
                 <Col :span="12">
                   <Form.Item :name="['passwordPolicy', 'allowWhitespaces']">
-                    <Checkbox v-model:checked="formState.passwordPolicy.allowWhitespaces"> 允许包含空格 </Checkbox>
+                    <Checkbox v-model:checked="formState.passwordPolicy.allowWhitespaces"> {{ t('tb.setting.security.allowWhitespaces') }} </Checkbox>
                   </Form.Item>
                 </Col>
                 <Col :span="12">
                   <Form.Item :name="['passwordPolicy', 'forceUserToResetPasswordIfNotValid']">
                     <Checkbox v-model:checked="formState.passwordPolicy.forceUserToResetPasswordIfNotValid">
-                      如果密码不可用则强制重置密码
+                      {{ t('tb.setting.security.forceUserToResetPassword') }}
                     </Checkbox>
                   </Form.Item>
                 </Col>
@@ -127,11 +127,11 @@
           <Space>
             <a-button @click="fetchData">
               <Icon :icon="'ant-design:reload-outlined'" />
-              重置
+              {{ t('tb.setting.connectivity.reset') }}
             </a-button>
             <a-button :loading="dataLoading" type="primary" @click="handleSubmit">
               <Icon :icon="'ant-design:check-outlined'" />
-              保存
+              {{ t('tb.setting.connectivity.save') }}
             </a-button>
           </Space>
         </div>
@@ -227,7 +227,7 @@
       // console.log('submit', params, data, record);
       const res = await saveSecuritySettings({ ...record.value, ...data });
       fetchData();
-      showMessage('保存安全策略成功！');
+      showMessage(t('tb.setting.security.saveSuccess'));
     } catch (error: any) {
       if (error && error.errorFields) {
         showMessage(t('common.validateError'));

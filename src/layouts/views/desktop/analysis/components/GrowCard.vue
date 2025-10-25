@@ -75,7 +75,7 @@
         total: 120000,
         color: 'orange',
         action: '周',
-        url: 'https://gitee.com/thinkgem/jeesite-vue',
+        url: 'https://gitee.com/oliver225/thingsboard-ui-vue3',
       },
       {
         title: '官方网站',
@@ -84,7 +84,7 @@
         total: 99999,
         color: 'purple',
         action: '月',
-        url: 'http://jeesite.com',
+        url: 'https://gitee.com/oliver225/thingsboard-ui-vue3',
       },
     ];
     // 此处写后端 API 获取 list 数据

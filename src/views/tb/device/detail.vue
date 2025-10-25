@@ -5,7 +5,7 @@
         <Icon :icon="getTitle.icon" :size="24" />
         <div class="flex flex-col">
           <span class="text-base font-semibold">{{ getTitle.value || '· · · ·' }}</span>
-          <span class="text-sm">设备详情</span>
+          <span class="text-sm">{{ t('tb.device.detail.detail') }}</span>
         </div>
       </div>
     </template>
@@ -26,49 +26,49 @@
           @click="handleAssignToPublic"
           v-if="hasPermission(Authority.TENANT_ADMIN) && !!!record.customerTitle"
         >
-          <Icon :icon="'ant-design:share-alt-outlined'" />设为公开
+          <Icon :icon="'ant-design:share-alt-outlined'" />{{ t('tb.device.detail.setPublic') }}
         </a-button>
         <a-button
           type="primary"
           @click="handleAssignCustomer"
           v-if="hasPermission(Authority.TENANT_ADMIN) && !!!record.customerTitle"
         >
-          <Icon :icon="'ant-design:contacts-outlined'" />分配客户
+          <Icon :icon="'ant-design:contacts-outlined'" />{{ t('tb.device.detail.assignCustomer') }}
         </a-button>
         <a-button
           type="primary"
           @click="handleUnAssignFromCustomer"
           v-if="hasPermission(Authority.TENANT_ADMIN) && !!record.customerTitle"
         >
-          <Icon :icon="'ant-design:rollback-outlined'" />取消分配客户
+          <Icon :icon="'ant-design:rollback-outlined'" />{{ t('tb.device.detail.unassignCustomer') }}
         </a-button>
         <a-button type="primary" @click="handleCredentials">
-          <Icon :icon="'ant-design:safety-outlined'" />管理凭证
+          <Icon :icon="'ant-design:safety-outlined'" />{{ t('tb.device.detail.manageCredentials') }}
         </a-button>
         <a-button type="primary success" @click="handleEditDevice" v-if="hasPermission(Authority.TENANT_ADMIN)">
-          <Icon :icon="'i-clarity:note-edit-line'" />编辑设备
+          <Icon :icon="'i-clarity:note-edit-line'" />{{ t('tb.device.detail.editDevice') }}
         </a-button>
         <a-button type="primary" danger @click="handleDeleteDevice" v-if="hasPermission(Authority.TENANT_ADMIN)">
-          <Icon :icon="'ant-design:delete-outlined'" />删除设备
+          <Icon :icon="'ant-design:delete-outlined'" />{{ t('tb.device.detail.deleteDevice') }}
         </a-button>
       </div>
       <div class="space-x-4 my-4">
         <a-button @click="handleCopyDeviceId">
           <Icon :icon="'ant-design:copy-filled'" />
-          复制设备ID
+          {{ t('tb.device.detail.copyDeviceId') }}
         </a-button>
         <a-button @click="handleCopyAccessToken" v-if="credentials.credentialsType == CredentialsType.ACCESS_TOKEN">
           <Icon :icon="'ant-design:safety-outlined'" />
-          复制访问令牌
+          {{ t('tb.device.detail.copyAccessToken') }}
         </a-button>
         <a-button @click="handleCopyMqttValue" v-if="credentials.credentialsType == CredentialsType.MQTT_BASIC">
           <Icon :icon="'ant-design:safety-outlined'" />
-          复制MQTT 凭证
+          {{ t('tb.device.detail.copyMqttCredentials') }}
         </a-button>
       </div>
       <Description @register="register" size="default">
         <template #gateway="{ data }">
-          <Checkbox :checked="data.additionalInfo?.gateway || false" /> 是否网关
+          <Checkbox :checked="data.additionalInfo?.gateway || false" /> {{ t('tb.device.detail.isGateway') }}
         </template>
       </Description>
     </div>
@@ -80,6 +80,12 @@
 
     <Telemetry
       v-if="tabActiveKey == DetailTabItemEnum.TELEMETRY.key"
+      :entityType="EntityType.DEVICE"
+      :entityId="record?.id?.id"
+    />
+
+    <CalculatedField
+      v-if="tabActiveKey == DetailTabItemEnum.CALCULATED.key"
       :entityType="EntityType.DEVICE"
       :entityId="record?.id?.id"
     />
@@ -129,6 +135,7 @@
   import Relation from '/@/views/tb/relation/list.vue';
   import Event from '/@/views/tb/event/index.vue';
   import DeviceAPI from '/@/views/tb/device/deviceApi.vue';
+  import CalculatedField from '/@/views/tb/calculatedField/list.vue';
   import { EntityType } from '/@/enums/entityTypeEnum';
   import { DetailTabItemEnum } from '/@/enums/detailTabEnum';
 
@@ -178,35 +185,35 @@
       ];
   const descSchema: DescItem[] = [
     {
-      label: t('设备名称'),
+      label: t('tb.device.table.name'),
       field: 'name',
       span: 2,
     },
     {
-      label: t('标签'),
+      label: t('tb.device.table.label'),
       field: 'label',
       span: 2,
     },
     {
-      label: t('设备配置'),
+      label: t('tb.device.form.deviceProfile'),
       field: 'deviceProfileName',
       span: 2,
     },
     {
-      label: t('网关'),
+      label: t('tb.device.form.isGateway'),
       field: 'additionalInfo.gateway',
       span: 2,
       slot: 'gateway',
     },
     {
-      label: t('分配的客户'),
+      label: t('tb.device.form.assignCustomer'),
       field: 'customerTitle',
       span: 4,
       show: () => hasPermission(Authority.TENANT_ADMIN),
     },
 
     {
-      label: t('描述信息'),
+      label: t('tb.device.form.description'),
       field: 'additionalInfo.description',
       span: 4,
     },
@@ -240,7 +247,7 @@
   }
 
   function handleCopyDeviceId() {
-    copyToClipboard(record.value.id.id, '复制设备ID成功！');
+    copyToClipboard(record.value.id.id, t('tb.device.action.copyDeviceIdSuccess'));
   }
 
   function handleDeleteDevice() {
@@ -274,11 +281,12 @@
   }
 
   function handleCopyAccessToken() {
-    copyToClipboard(credentials.value.credentialsId, '复制访问令牌成功！');
+    copyToClipboard(credentials.value.credentialsId, t('tb.device.action.copyAccessTokenSuccess'));
   }
 
   function handleCopyMqttValue() {
-    copyToClipboard(credentials.value.credentialsValue, '复制MQTT访问凭证成功！');
+    // 使用 action 下的 MQTT 凭证成功复制提示
+    copyToClipboard(credentials.value.credentialsValue, t('tb.device.action.copyMqttCredentialsSuccess'));
   }
 </script>
 

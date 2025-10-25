@@ -3,12 +3,14 @@
     <BasicForm @register="registerForm">
       <template #onlyUserComments="{ model, field }">
         <div class="flex items-center mb-2">
-          <Switch size="small" v-model:checked="model[field]" /> <span class="ml-2">只有用户评论时通知</span>
+          <Switch size="small" v-model:checked="model[field]" />
+          <span class="ml-2">{{ t('tb.notification.ruleTrigger.alarmComment.onlyUserComments') }}</span>
         </div>
       </template>
       <template #notifyOnCommentUpdate="{ model, field }">
         <div class="flex items-center mb-2">
-          <Switch size="small" v-model:checked="model[field]" /> <span class="ml-2">评论更新时通知</span>
+          <Switch size="small" v-model:checked="model[field]" />
+          <span class="ml-2">{{ t('tb.notification.ruleTrigger.alarmComment.commentUpdate') }}</span>
         </div>
       </template>
     </BasicForm>
@@ -32,39 +34,39 @@
       show: false,
     },
     {
-      label: t('报警类型'),
-      subLabel: t('不选择为任意等级'),
+      label: t('tb.notification.ruleTrigger.alarm.alarmType'),
+      subLabel: t('tb.notification.ruleTrigger.selectAny'),
       field: 'triggerConfig.alarmTypes',
       component: 'Select',
       componentProps: {
         options: [],
         mode: 'tags',
         open: false,
-        placeholder: '任意报警类型',
+        placeholder: t('tb.notification.ruleTrigger.alarm.anyAlarmType'),
       },
       colProps: { lg: 24, md: 24 },
     },
     {
-      label: t('报警等级'),
-      subLabel: t('不选择为任意等级'),
+      label: t('tb.notification.ruleTrigger.alarm.alarmSeverity'),
+      subLabel: t('tb.notification.ruleTrigger.selectAny'),
       field: 'triggerConfig.alarmSeverities',
       component: 'Select',
       componentProps: {
         mode: 'multiple',
         options: ALARM_SEVERITY_OPTIONS,
-        placeholder: '任意报警等级',
+        placeholder: t('tb.notification.ruleTrigger.alarm.anyAlarmSeverity'),
       },
       colProps: { lg: 24, md: 24 },
     },
     {
-      label: t('报警状态'),
-      subLabel: t('不选择为任意状态'),
+      label: t('tb.notification.ruleTrigger.alarm.alarmStatus'),
+      subLabel: t('tb.notification.ruleTrigger.selectAny'),
       field: 'triggerConfig.alarmStatuses',
       component: 'Select',
       componentProps: {
         mode: 'multiple',
         options: ALARM_STATUS_OPTIONS,
-        placeholder: '任意报警状态',
+        placeholder: t('tb.notification.ruleTrigger.alarm.anyAlarmStatus'),
       },
 
       colProps: { lg: 24, md: 24 },
@@ -85,7 +87,7 @@
     },
 
     {
-      label: t('描述信息'),
+      label: t('tb.notification.ruleTrigger.description'),
       field: 'additionalConfig.description',
       component: 'InputTextArea',
       componentProps: {
@@ -123,6 +125,5 @@
   defineExpose({ getFieldsValue, validate: validateTrigger, resetFields, setFieldsValue: setTriggerFieldsValue });
 </script>
 <style lang="less">
-  .trigger-config-alarm-comment {
-  }
+  /* removed empty rule .trigger-config-alarm-comment */
 </style>
