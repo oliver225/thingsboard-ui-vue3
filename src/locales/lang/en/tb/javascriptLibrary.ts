@@ -1,0 +1,40 @@
+export default {
+  title: 'JavaScript Library',
+  table: {
+    title: 'Title',
+    resourceType: 'Resource Type',
+    resourceSubType: 'JavaScript Type',
+    createdTime: 'Created Time',
+    system: 'System',
+  },
+  form: {
+    title: 'Title',
+    titlePlaceholder: 'Please enter title',
+    resourceSubType: 'JavaScript Type',
+    resourceSubTypePlaceholder: 'Please select resource type',
+    upload: 'JavaScript File',
+    uploadTip: 'Drag or click to select a file',
+    fileRequired: 'Please select one file!',
+    addSuccess: 'Resource added successfully!',
+    editSuccess: 'Resource updated successfully!',
+  },
+  action: {
+    add: 'Add JavaScript',
+    edit: 'Add JavaScript',
+    download: 'Download JavaScript',
+    delete: 'Delete JavaScript',
+    deleteConfirm: 'Confirm delete JavaScript [{title}]？',
+    deleteConfirmContent: 'After confirmation, the resource and all related data will NOT be recoverable.',
+    deleteSuccess: 'Delete JavaScript Success！',
+    copyId: 'Copy Resource ID',
+    copyIdSuccess: 'Resource ID copied successfully!',
+  },
+  detail: {
+    title: 'JavaScript Detail',
+    tab: 'Detail',
+    fileName: 'File Name',
+  },
+  filter: {
+    all: 'All',
+  },
+};

@@ -44,9 +44,10 @@ export interface LwM2mObject {
 }
 
 export function saveResource(data?: Resource | any) {
-  return defHttp.post<Resource>({
+  return defHttp.postJson<Resource>({
     url: '/api/resource',
     data,
+    timeout: 300000,
   });
 }
 
@@ -65,6 +66,7 @@ export function getResourceInfoById(resourceId: string) {
 export function resourceDownload(resourceId: string) {
   return defHttp.get<any>({
     url: `/api/resource/${resourceId}/download`,
+    responseType: 'blob',
   });
 }
 

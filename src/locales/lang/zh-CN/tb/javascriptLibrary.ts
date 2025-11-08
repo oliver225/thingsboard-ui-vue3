@@ -1,0 +1,40 @@
+export default {
+  title: 'JavaScript库',
+  table: {
+    title: '标题',
+    resourceType: '资源类型',
+    resourceSubType: 'JavaScript类型',
+    createdTime: '创建时间',
+    system: '系统',
+  },
+  form: {
+    title: '标题',
+    titlePlaceholder: '请输入标题',
+    resourceSubType: 'JavaScript类型',
+    resourceSubTypePlaceholder: '请选择资源类型',
+    upload: 'JavaScript文件',
+    uploadTip: '拖拽或点击选择文件',
+    fileRequired: '请选择一个文件!',
+    addSuccess: '新增资源成功！',
+    editSuccess: '编辑资源成功！',
+  },
+  action: {
+    add: '新增JavaScript',
+    edit: '编辑JavaScript',
+    download: '下载JavaScript',
+    delete: '删除JavaScript',
+    deleteConfirm: '确定删除JavaScript资源[{title}]吗？',
+    deleteConfirmContent: '请注意：确认后，资源及其相关数据将不可恢复。',
+    deleteSuccess: '删除JavaScript资源成功！',
+    copyId: '复制资源ID',
+    copyIdSuccess: '复制资源ID成功！',
+  },
+  detail: {
+    title: 'JavaScript详情',
+    tab: '详情',
+    fileName: '文件名称',
+  },
+  filter: {
+    all: '全部',
+  },
+};

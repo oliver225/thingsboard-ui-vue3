@@ -1,5 +1,3 @@
-import dashboard from './dashboard';
-
 export default {
   home: 'Home',
   deviceIn: 'Device Access',
@@ -12,6 +10,7 @@ export default {
   resource: 'Resource',
   widgetsBundle: 'Widgets Bundle',
   widgetType: 'Widget Type',
+  javascriptLibrary: 'JavaScript Library',
   resourceLibrary: 'Resource Library',
   notification_center: 'Notification Center',
   notification_list: 'Notification List',

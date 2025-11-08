@@ -50,14 +50,11 @@ export function imagePreview(link: string, etag?: string) {
 }
 
 export function downloadImage(link: string, etag?: string) {
-  return defHttp.get(
-    {
-      url: `${link}`,
-      headers: { 'If-None-Match': etag },
-      responseType: 'blob',
-    },
-    { isReturnNativeResponse: true, joinPrefix: false },
-  );
+  return defHttp.get({
+    url: `${link}`,
+    headers: { 'If-None-Match': etag },
+    responseType: 'blob',
+  });
 }
 
 export function getSvg(type: string, key: string) {
@@ -93,11 +90,12 @@ export function updateImagePublicStatus(link: string, isPublic: boolean) {
 export function uploadImage(
   file: File | Blob,
   title: string,
+  imageSubType?: string,
   onUploadProgress?: (progressEvent: AxiosProgressEvent) => void,
 ) {
   return defHttp.post<ResourceInfo>({
     url: `/api/image`,
-    data: { file: file, title: title },
+    data: { file: file, title: title, imageSubType: imageSubType || 'IMAGE' },
     headers: { 'Content-type': ContentTypeEnum.FORM_DATA },
     onUploadProgress,
   });

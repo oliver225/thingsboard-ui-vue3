@@ -10,6 +10,7 @@ export default {
   resource: '资源',
   widgetsBundle: '部件包',
   widgetType: '部件',
+  javascriptLibrary: 'JavaScript库',
   resourceLibrary: '资源库',
   notification_center: '通知中心',
   notification_list: '通知列表',
