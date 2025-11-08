@@ -1,19 +1,16 @@
 <template>
   <div class="border border-solid border-neutral-300 p-2 rounded m">
-    <p class="text-base font-bold">{{ t('tb.ruleChain.nodeAction.rpc_call_reply.title') }}</p>
+    <p class="text-base font-bold">{{ t('tb.ruleChain.nodeAction.rest_call_reply.title') }}</p>
 
     <div class="mb-4 text-sm text-neutral-600 p-2 border-rounded bg-neutral-100">
-      {{ t('tb.ruleChain.nodeAction.rpc_call_reply.tip') }}
+      {{ t('tb.ruleChain.nodeAction.rest_call_reply.tip') }}
     </div>
     <Form ref="formRef" :model="formState" layout="vertical">
-      <div class="grid grid-cols-3 gap-4">
-        <Form.Item :label="t('tb.ruleChain.nodeAction.rpc_call_reply.serviceId')" name="serviceIdMetaDataAttribute">
+      <div class="grid grid-cols-2 gap-4">
+        <Form.Item :label="t('tb.ruleChain.nodeAction.rest_call_reply.serviceId')" name="serviceIdMetaDataAttribute">
           <Input v-model:value="formState.serviceIdMetaDataAttribute" />
         </Form.Item>
-        <Form.Item :label="t('tb.ruleChain.nodeAction.rpc_call_reply.sessionId')" name="sessionIdMetaDataAttribute">
-          <Input v-model:value="formState.sessionIdMetaDataAttribute" />
-        </Form.Item>
-        <Form.Item :label="t('tb.ruleChain.nodeAction.rpc_call_reply.requestId')" name="requestIdMetaDataAttribute">
+        <Form.Item :label="t('tb.ruleChain.nodeAction.rest_call_reply.requestId')" name="requestIdMetaDataAttribute">
           <Input v-model:value="formState.requestIdMetaDataAttribute" />
         </Form.Item>
       </div>
@@ -22,7 +19,7 @@
 </template>
 <script lang="ts">
   export default defineComponent({
-    name: 'rpc-call-reply',
+    name: 'rest-call-reply',
   });
 </script>
 <script lang="ts" setup>
@@ -34,7 +31,6 @@
   interface Configuration {
     requestIdMetaDataAttribute: string;
     serviceIdMetaDataAttribute: string;
-    sessionIdMetaDataAttribute: string;
   }
 
   const { t } = useI18n('tb');
@@ -50,9 +46,8 @@
   const formRef = ref<FormInstance>();
 
   const formState = reactive<any>({
-    requestIdMetaDataAttribute: 'requestId',
+    requestIdMetaDataAttribute: 'requestUUID',
     serviceIdMetaDataAttribute: 'serviceId',
-    sessionIdMetaDataAttribute: 'sessionId',
   });
 
   watch(
@@ -60,7 +55,6 @@
     () => {
       formState.requestIdMetaDataAttribute = props.configuration.requestIdMetaDataAttribute;
       formState.serviceIdMetaDataAttribute = props.configuration.serviceIdMetaDataAttribute;
-      formState.sessionIdMetaDataAttribute = props.configuration.sessionIdMetaDataAttribute;
     },
     { immediate: true },
   );

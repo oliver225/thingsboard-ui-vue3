@@ -1,5 +1,10 @@
 <template>
   <Form ref="formRef" :model="formState" layout="vertical">
+    <Form.Item name="forwardMsgToDefaultRuleChain">
+      <Checkbox v-model:checked="formState.forwardMsgToDefaultRuleChain">
+        Forward message to the originator's default rule chain
+      </Checkbox>
+    </Form.Item>
     <Form.Item
       :label="t('tb.ruleChain.nodeAction.ruleChain')"
       name="ruleChainId"
@@ -20,13 +25,14 @@
 </script>
 <script lang="ts" setup>
   import { ref, watch, defineComponent, reactive, onMounted } from 'vue';
-  import { Form, Select } from 'ant-design-vue';
+  import { Form, Select, Checkbox } from 'ant-design-vue';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { FormInstance } from 'ant-design-vue/lib/form';
   import { ruleChainList } from '/@/api/tb/ruleChain';
 
   interface Configuration {
     ruleChainId: string;
+    forwardMsgToDefaultRuleChain: boolean;
   }
 
   const props = defineProps({
@@ -45,12 +51,14 @@
 
   const formState = reactive<any>({
     ruleChainId: undefined,
+    forwardMsgToDefaultRuleChain: false,
   });
 
   watch(
     () => props.configuration,
     () => {
       formState.ruleChainId = props.configuration.ruleChainId;
+      formState.forwardMsgToDefaultRuleChain = props.configuration.forwardMsgToDefaultRuleChain;
     },
     { immediate: true },
   );

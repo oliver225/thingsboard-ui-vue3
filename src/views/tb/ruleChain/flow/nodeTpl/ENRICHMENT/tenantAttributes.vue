@@ -58,7 +58,11 @@
     </div>
     <Form.Item name="fetchTo">
       <div class="flex justify-between items-center border border-solid border-neutral-300 rounded-md py-2 px-4">
-        <span>{{ t('tb.ruleChain.nodeAction.addMappedAttributesTo') }}</span>
+        <span>{{
+          formState.dataToFetch == 'ATTRIBUTES'
+            ? t('tb.ruleChain.nodeAction.addMappedAttributesTo')
+            : t('tb.ruleChain.nodeAction.addMappedTelemetryTo')
+        }}</span>
         <Radio.Group v-model:value="formState.fetchTo" button-style="solid">
           <Radio.Button value="DATA">Message</Radio.Button>
           <Radio.Button value="METADATA">Metadata</Radio.Button>
@@ -172,7 +176,6 @@
 
   .mapping-table {
     width: 100%;
-    align: 'center';
     border: 1px solid @border-color-base;
     border-radius: 4px;
 

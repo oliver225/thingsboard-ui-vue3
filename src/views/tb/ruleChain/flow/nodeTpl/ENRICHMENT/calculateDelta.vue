@@ -7,7 +7,7 @@
           name="inputValueKey"
           :rules="[{ required: true, message: t('tb.ruleChain.nodeAction.inputValueRequired') }]"
         >
-          <Input v-model:value="formState.inputValueKey"> </Input>
+          <Input v-model:value="formState.inputValueKey" />
         </Form.Item>
       </Col>
       <Col :span="12">
@@ -16,12 +16,12 @@
           name="outputValueKey"
           :rules="[{ required: true, message: t('tb.ruleChain.nodeAction.outputValueRequired') }]"
         >
-          <Input v-model:value="formState.outputValueKey"> </Input>
+          <Input v-model:value="formState.outputValueKey" />
         </Form.Item>
       </Col>
     </Row>
     <Form.Item :label="t('tb.ruleChain.nodeAction.decimalPlaces')" name="round">
-      <InputNumber v-model:value="formState.round" style="width: 100%"> </InputNumber>
+      <InputNumber v-model:value="formState.round" :min="0" :max="15" style="width: 100%" />
     </Form.Item>
     <Form.Item
       name="tellFailureIfDeltaIsNegative"
@@ -33,15 +33,32 @@
         </Checkbox>
       </div>
     </Form.Item>
-    <Form.Item name="useCache">
-      <div class="border border-neutral-300 rounded-md px-4 py-2" :help="t('tb.ruleChain.nodeAction.useCacheHelp')">
+    <Form.Item name="useCache" :help="t('tb.ruleChain.nodeAction.useCacheHelp')">
+      <div class="border border-solid border-neutral-300 rounded-md px-4 py-2">
         <Checkbox v-model:checked="formState.useCache"> {{ t('tb.ruleChain.nodeAction.useCache') }} </Checkbox>
       </div>
     </Form.Item>
     <Form.Item name="addPeriodBetweenMsgs" :help="t('tb.ruleChain.nodeAction.addPeriodBetweenMsgsHelp')">
-      <div class="border border-neutral-300 rounded-md px-4 py-2">
+      <div class="border border-solid border-neutral-300 rounded-md px-4 py-2">
         <Checkbox v-model:checked="formState.addPeriodBetweenMsgs">
           {{ t('tb.ruleChain.nodeAction.addPeriodBetweenMsgs') }}
+        </Checkbox>
+      </div>
+    </Form.Item>
+    <Form.Item
+      v-if="formState.addPeriodBetweenMsgs == true"
+      name="periodValueKey"
+      label="Period value key"
+      :defaultValue="'periodInMs'"
+      :rules="[{ required: true }]"
+    >
+      <Input v-model:value="formState.periodValueKey" />
+    </Form.Item>
+
+    <Form.Item name="excludeZeroDeltas" :help="t('tb.ruleChain.nodeAction.calculateDelta.excludeZeroDeltas_help')">
+      <div class="border border-solid border-neutral-300 rounded-md px-4 py-2">
+        <Checkbox v-model:checked="formState.excludeZeroDeltas">
+          {{ t('tb.ruleChain.nodeAction.calculateDelta.excludeZeroDeltas') }}
         </Checkbox>
       </div>
     </Form.Item>
@@ -67,6 +84,7 @@
     useCache: boolean;
     addPeriodBetweenMsgs: boolean;
     tellFailureIfDeltaIsNegative: boolean;
+    excludeZeroDeltas: false;
   }
 
   const { t } = useI18n('tb');
@@ -88,6 +106,7 @@
     tellFailureIfDeltaIsNegative: true,
     useCache: true,
     addPeriodBetweenMsgs: false,
+    excludeZeroDeltas: false,
     periodValueKey: 'periodInMs',
   });
 

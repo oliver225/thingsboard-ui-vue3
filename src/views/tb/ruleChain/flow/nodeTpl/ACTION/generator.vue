@@ -12,7 +12,7 @@
       name="periodInSeconds"
       :rules="[{ required: true, message: t('tb.ruleChain.nodeAction.periodInSecondsRequired') }]"
     >
-      <InputNumber v-model:value="formState.periodInSeconds" :min="0" :style="{ width: '100%' }" />
+      <InputNumber v-model:value="formState.periodInSeconds" :min="1" :style="{ width: '100%' }" />
     </Form.Item>
     <Row :gutter="20">
       <Col :span="8">
@@ -26,29 +26,6 @@
         </Form.Item>
       </Col>
     </Row>
-    <Form.Item :label="t('tb.ruleChain.nodeAction.queue')" name="queueName">
-      <Select v-model:value="formState.queueName">
-        <Select.Option v-for="(option, index) in queueOptions" :key="index" :value="option.value">
-          {{ option.label }}
-          <p>
-            <Tag>
-              <small>{{ t('tb.ruleChain.nodeAction.submitStrategy') }}</small>
-              {{
-                SUBMIT_STRATEGY_OPTIONS.find((item) => item.value === option.submitStrategy)?.label ||
-                option.submitStrategy
-              }}
-            </Tag>
-            <Tag>
-              <small>{{ t('tb.ruleChain.nodeAction.processingStrategy') }}</small>
-              {{
-                PROCESSING_STRATEGY_OPTIONS.find((item) => item.value === option.processingStrategy)?.label ||
-                option.processingStrategy
-              }}
-            </Tag>
-          </p>
-        </Select.Option>
-      </Select>
-    </Form.Item>
     <Form.Item name="scriptLang">
       <div class="flex justify-center mb-2">
         <Radio.Group v-model:value="formState.scriptLang" button-style="solid">
@@ -87,6 +64,29 @@
       <Button class="mt-2" type="primary" @click="handleTestScript">{{
         t('tb.ruleChain.nodeAction.testGenerateFunction')
       }}</Button>
+    </Form.Item>
+    <Form.Item :label="t('tb.ruleChain.nodeAction.queue')" name="queueName">
+      <Select v-model:value="formState.queueName">
+        <Select.Option v-for="(option, index) in queueOptions" :key="index" :value="option.value">
+          {{ option.label }}
+          <p>
+            <Tag>
+              <small>{{ t('tb.ruleChain.nodeAction.submitStrategy') }}</small>
+              {{
+                SUBMIT_STRATEGY_OPTIONS.find((item) => item.value === option.submitStrategy)?.label ||
+                option.submitStrategy
+              }}
+            </Tag>
+            <Tag>
+              <small>{{ t('tb.ruleChain.nodeAction.processingStrategy') }}</small>
+              {{
+                PROCESSING_STRATEGY_OPTIONS.find((item) => item.value === option.processingStrategy)?.label ||
+                option.processingStrategy
+              }}
+            </Tag>
+          </p>
+        </Select.Option>
+      </Select>
     </Form.Item>
   </Form>
 
@@ -144,7 +144,7 @@
       item.value == EntityType.CUSTOMER ||
       item.value == EntityType.USER ||
       item.value == EntityType.DASHBOARD ||
-      item.value == EntityType.EDGE
+      item.value == EntityType.RULE_NODE
     );
   });
 

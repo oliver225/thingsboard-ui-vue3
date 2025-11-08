@@ -28,14 +28,14 @@
         </Select.Option>
       </Select>
     </Form.Item>
-    <div class="border border-neutral-400 p-2 rounded mt-3">
+    <div class="border border-solid border-neutral-400 p-2 rounded mt-3">
       <p class="text-base font-bold">{{ t('tb.ruleChain.nodeAction.parameters') }}</p>
       <div class="p-4">
         <Row
           :gutter="20"
           v-for="(argument, index) in formState.arguments"
           :key="index"
-          class="border border-neutral-400 p-2 mb-3 rounded"
+          class="border border-solid border-neutral-400 p-2 mb-3 rounded"
         >
           <Col :span="2">
             <div class="h-full place-content-center">
@@ -99,7 +99,7 @@
         }}</Button>
       </div>
     </div>
-    <div class="border border-neutral-400 p-2 rounded mt-3" v-if="formState.operation == 'CUSTOM'">
+    <div class="border border-solid border-neutral-400 p-2 rounded mt-3" v-if="formState.operation == 'CUSTOM'">
       <p class="text-base font-bold">{{ t('tb.ruleChain.nodeAction.mathExpression') }}</p>
       <div class="p-2">
         <Form.Item
@@ -111,7 +111,7 @@
         </Form.Item>
       </div>
     </div>
-    <div class="border border-neutral-400 p-2 rounded mt-3">
+    <div class="border border-solid border-neutral-400 p-2 rounded mt-3">
       <p class="text-base font-bold">{{ t('tb.ruleChain.nodeAction.result') }}</p>
       <div class="p-2">
         <Form.Item :label="t('tb.ruleChain.nodeAction.type')" :name="['result', 'type']" :rules="[{ required: true }]">

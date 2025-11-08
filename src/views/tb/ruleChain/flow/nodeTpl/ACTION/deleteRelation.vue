@@ -1,17 +1,25 @@
 <template>
   <Form ref="formRef" :model="formState" layout="vertical">
-    <Form.Item name="deleteForSingleEntity" :help="t('tb.ruleChain.nodeAction.deleteForSingleEntityHelp')">
-      <Checkbox v-model:checked="formState.deleteForSingleEntity">{{
-        t('tb.ruleChain.nodeAction.deleteForSingleEntity')
-      }}</Checkbox>
-    </Form.Item>
     <Form.Item :label="t('tb.ruleChain.nodeAction.direction')" name="direction">
       <Select v-model:value="formState.direction">
         <Select.Option value="FROM">{{ t('tb.ruleChain.nodeAction.directionFrom') }}</Select.Option>
         <Select.Option value="TO">{{ t('tb.ruleChain.nodeAction.directionTo') }}</Select.Option>
       </Select>
     </Form.Item>
-    <Row :gutter="20">
+    <Form.Item
+      :label="t('tb.ruleChain.nodeAction.relationType')"
+      name="relationType"
+      :rules="[{ required: true, message: t('tb.ruleChain.nodeAction.relationTypeRequired') }]"
+      :help="t('tb.ruleChain.nodeAction.customerNamePatternHelp')"
+    >
+      <Input v-model:value="formState.relationType" />
+    </Form.Item>
+    <Form.Item name="deleteForSingleEntity" :help="t('tb.ruleChain.nodeAction.deleteForSingleEntityHelp')">
+      <Checkbox v-model:checked="formState.deleteForSingleEntity">{{
+        t('tb.ruleChain.nodeAction.deleteForSingleEntity')
+      }}</Checkbox>
+    </Form.Item>
+    <Row :gutter="20" v-if="formState.deleteForSingleEntity == true">
       <Col :span="8">
         <Form.Item
           :label="t('tb.ruleChain.nodeAction.entityType')"
@@ -32,28 +40,6 @@
         </Form.Item>
       </Col>
     </Row>
-    <Form.Item
-      :label="t('tb.ruleChain.nodeAction.relationType')"
-      name="relationType"
-      :rules="[{ required: true, message: t('tb.ruleChain.nodeAction.relationTypeRequired') }]"
-      :help="t('tb.ruleChain.nodeAction.customerNamePatternHelp')"
-    >
-      <Input v-model:value="formState.relationType" />
-    </Form.Item>
-
-    <Form.Item
-      :label="t('tb.ruleChain.nodeAction.entityCacheExpiration')"
-      name="entityCacheExpiration"
-      :rules="[{ required: true, message: t('tb.ruleChain.nodeAction.entityCacheExpirationRequired') }]"
-      :help="t('tb.ruleChain.nodeAction.entityCacheExpirationHelp')"
-    >
-      <InputNumber
-        v-model:value="formState.entityCacheExpiration"
-        :min="0"
-        :addon-after="t('tb.ruleChain.nodeAction.unitSecond')"
-        :style="{ width: '100%' }"
-      />
-    </Form.Item>
   </Form>
 </template>
 <script lang="ts">
@@ -71,7 +57,6 @@
   interface Configuration {
     deleteForSingleEntity: boolean;
     direction: 'FROM' | 'TO';
-    entityCacheExpiration: boolean;
     entityNamePattern: string;
     entityType: string;
     entityTypePattern: string;
@@ -106,7 +91,6 @@
   const formState = reactive<any>({
     deleteForSingleEntity: true,
     direction: 'FROM',
-    entityCacheExpiration: 300,
     entityNamePattern: undefined,
     entityType: undefined,
     entityTypePattern: undefined,
@@ -118,7 +102,6 @@
     () => {
       formState.deleteForSingleEntity = props.configuration.deleteForSingleEntity;
       formState.direction = props.configuration.direction;
-      formState.entityCacheExpiration = props.configuration.entityCacheExpiration;
       formState.entityNamePattern = props.configuration.entityNamePattern;
       formState.entityType = props.configuration.entityType;
       formState.entityTypePattern = props.configuration.entityTypePattern;

@@ -13,19 +13,6 @@
         {{ t('tb.ruleChain.nodeAction.createNewCustomer') }}
       </Checkbox>
     </Form.Item>
-    <Form.Item
-      :label="t('tb.ruleChain.nodeAction.customerCacheExpiration')"
-      name="customerCacheExpiration"
-      :rules="[{ required: true, message: t('tb.ruleChain.nodeAction.customerCacheExpirationRequired') }]"
-      :help="t('tb.ruleChain.nodeAction.customerCacheExpirationHelp')"
-    >
-      <InputNumber
-        v-model:value="formState.customerCacheExpiration"
-        :min="0"
-        :addon-after="t('tb.ruleChain.nodeAction.unitSecond')"
-        :style="{ width: '100%' }"
-      />
-    </Form.Item>
   </Form>
 </template>
 <script lang="ts">
@@ -41,7 +28,6 @@
 
   interface Configuration {
     createCustomerIfNotExists: boolean;
-    customerCacheExpiration: number;
     customerNamePattern: string;
   }
 
@@ -59,7 +45,6 @@
 
   const formState = reactive<any>({
     createCustomerIfNotExists: false,
-    customerCacheExpiration: 300,
     customerNamePattern: '',
   });
 
@@ -67,7 +52,6 @@
     () => props.configuration,
     () => {
       formState.createCustomerIfNotExists = props.configuration.createCustomerIfNotExists;
-      formState.customerCacheExpiration = props.configuration.customerCacheExpiration;
       formState.customerNamePattern = props.configuration.customerNamePattern;
     },
     { immediate: true },

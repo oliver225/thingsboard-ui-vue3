@@ -66,7 +66,7 @@
           name="centerLongitude"
           :rules="[{ required: true, message: t('tb.ruleChain.nodeAction.centerLongitudeRequired') }]"
         >
-          <InputNumber v-model:value="formState.centerLatitude" :style="{ width: '100%' }" :step="0.01" />
+          <InputNumber v-model:value="formState.centerLongitude" :style="{ width: '100%' }" :step="0.01" />
         </Form.Item>
       </Col>
       <Col :span="12">
@@ -88,7 +88,45 @@
         </Form.Item>
       </Col>
     </Row>
-    <Row :gutter="20">
+
+    <!-- Presence monitoring strategy -->
+    <Form.Item name="reportPresenceStatusOnEachMessage">
+      <div class="mb-4">
+        <div class="flex items-center justify-between mb-3">
+          <span class="font-medium">{{ t('tb.ruleChain.nodeAction.presenceMonitoringStrategy') }}</span>
+          <div class="flex gap-2">
+            <Button
+              :type="formState.reportPresenceStatusOnEachMessage ? 'primary' : 'default'"
+              @click="formState.reportPresenceStatusOnEachMessage = true"
+            >
+              {{ t('tb.ruleChain.nodeAction.onEachMessage') }}
+            </Button>
+            <Button
+              :type="!formState.reportPresenceStatusOnEachMessage ? 'primary' : 'default'"
+              @click="formState.reportPresenceStatusOnEachMessage = false"
+            >
+              {{ t('tb.ruleChain.nodeAction.onFirstMessage') }}
+            </Button>
+          </div>
+        </div>
+
+        <!-- Description for "On each message" mode -->
+        <div
+          v-if="formState.reportPresenceStatusOnEachMessage"
+          class="border border-neutral-300 rounded-md px-4 py-3 bg-neutral-100"
+        >
+          <span class="text-neutral-600">{{ t('tb.ruleChain.nodeAction.onEachMessageDescription') }}</span>
+        </div>
+
+        <!-- Description for "On first message" mode -->
+        <div v-else class="border border-neutral-300 rounded-md px-4 py-3 bg-neutral-100">
+          <span class="text-neutral-600">{{ t('tb.ruleChain.nodeAction.onFirstMessageDescription') }}</span>
+        </div>
+      </div>
+    </Form.Item>
+
+    <!-- Duration settings - only show when "On first message" is selected -->
+    <Row :gutter="20" v-if="!formState.reportPresenceStatusOnEachMessage">
       <Col :span="12">
         <Form.Item
           :label="t('tb.ruleChain.nodeAction.minInsideDuration')"
@@ -100,7 +138,7 @@
       </Col>
       <Col :span="12">
         <Form.Item
-          :label="t('tb.ruleChain.nodeAction.unit')"
+          :label="t('tb.ruleChain.nodeAction.minInsideDurationTimeUnit')"
           name="minInsideDurationTimeUnit"
           :rules="[{ required: true }]"
         >
@@ -118,7 +156,7 @@
       </Col>
       <Col :span="12">
         <Form.Item
-          :label="t('tb.ruleChain.nodeAction.unit')"
+          :label="t('tb.ruleChain.nodeAction.minOutsideDurationTimeUnit')"
           name="minOutsideDurationTimeUnit"
           :rules="[{ required: true }]"
         >
@@ -135,7 +173,7 @@
 </script>
 <script lang="ts" setup>
   import { ref, watch, defineComponent, reactive } from 'vue';
-  import { Form, Input, InputNumber, Select, Checkbox, Row, Col } from 'ant-design-vue';
+  import { Form, Input, InputNumber, Select, Checkbox, Row, Col, Button } from 'ant-design-vue';
   import { FormInstance } from 'ant-design-vue/lib/form';
   import { TIME_UNIT_OPTIONS } from '/@/enums/telemetryEnum';
   import { useI18n } from '/@/hooks/web/useI18n';

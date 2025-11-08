@@ -9,6 +9,19 @@
       <Input v-model:value="formState.tableName" />
     </Form.Item>
     <Form.Item
+      :label="t('tb.ruleChain.nodeAction.defaultTtl')"
+      name="defaultTtl"
+      :rules="[{ required: true, message: t('tb.ruleChain.nodeAction.defaultTtlRequired') }]"
+      :help="t('tb.ruleChain.nodeAction.defaultTtlHelp')"
+    >
+      <InputNumber
+        v-model:value="formState.defaultTtl"
+        :addon-after="t('tb.ruleChain.nodeAction.unitSecond')"
+        :style="{ width: '100%' }"
+        :min="0"
+      />
+    </Form.Item>
+    <Form.Item
       :label="t('tb.ruleChain.nodeAction.fieldsMapping')"
       name="fieldsMapping"
       :rules="[{ validator: validatorFieldsMapping }]"
@@ -55,7 +68,7 @@
 <script lang="ts" setup>
   import { ref, watch, defineComponent, reactive } from 'vue';
   import { Icon } from '/@/components/Icon';
-  import { Form, Input, Button, Tooltip } from 'ant-design-vue';
+  import { Form, Input, InputNumber, Button, Tooltip } from 'ant-design-vue';
   import { FormInstance } from 'ant-design-vue/lib/form';
   import { isEmpty } from 'lodash-es';
   import { useI18n } from '/@/hooks/web/useI18n';
@@ -63,6 +76,7 @@
   interface Configuration {
     fieldsMapping: Recordable;
     tableName: string;
+    defaultTtl: number;
   }
 
   const { t } = useI18n('tb');
@@ -82,6 +96,7 @@
   const formState = reactive<any>({
     fieldsMapping: {},
     tableName: undefined,
+    defaultTtl: 0,
   });
 
   watch(
@@ -90,6 +105,7 @@
       mappingList.value = [];
       formState.fieldsMapping = props.configuration.fieldsMapping;
       formState.tableName = props.configuration.tableName;
+      formState.defaultTtl = props.configuration.defaultTtl ?? 0;
       Object.keys(formState.fieldsMapping).forEach((key) => {
         mappingList.value.push({ key: key, value: formState.fieldsMapping[key] });
       });
@@ -145,7 +161,6 @@
 
   .mapping-table {
     width: 100%;
-    align: 'center';
     border: 1px solid @border-color-base;
     border-radius: 4px;
 

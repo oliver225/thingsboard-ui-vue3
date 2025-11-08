@@ -6,6 +6,14 @@
         <Select.Option value="TO">{{ t('tb.ruleChain.nodeAction.directionTo') }}</Select.Option>
       </Select>
     </Form.Item>
+    <Form.Item
+      :label="t('tb.ruleChain.nodeAction.relationType')"
+      name="relationType"
+      :rules="[{ required: true, message: t('tb.ruleChain.nodeAction.relationTypeRequired') }]"
+      :help="t('tb.ruleChain.nodeAction.customerNamePatternHelp')"
+    >
+      <Input v-model:value="formState.relationType" />
+    </Form.Item>
     <Row :gutter="20">
       <Col :span="8">
         <Form.Item
@@ -52,14 +60,6 @@
       {{ t('tb.ruleChain.nodeAction.customerNamePatternHelp') }}
     </div>
     <Form.Item
-      :label="t('tb.ruleChain.nodeAction.relationType')"
-      name="relationType"
-      :rules="[{ required: true, message: t('tb.ruleChain.nodeAction.relationTypeRequired') }]"
-      :help="t('tb.ruleChain.nodeAction.customerNamePatternHelp')"
-    >
-      <Input v-model:value="formState.relationType" />
-    </Form.Item>
-    <Form.Item
       name="createEntityIfNotExists"
       v-if="formState.entityType == EntityType.DEVICE || formState.entityType == EntityType.ASSET"
       :help="t('tb.ruleChain.nodeAction.createNewEntityHelp')"
@@ -81,19 +81,6 @@
         t('tb.ruleChain.nodeAction.changeOriginatorToRelatedEntity')
       }}</Checkbox>
     </Form.Item>
-    <Form.Item
-      :label="t('tb.ruleChain.nodeAction.entityCacheExpiration')"
-      name="entityCacheExpiration"
-      :rules="[{ required: true, message: t('tb.ruleChain.nodeAction.entityCacheExpirationRequired') }]"
-      :help="t('tb.ruleChain.nodeAction.entityCacheExpirationHelp')"
-    >
-      <InputNumber
-        v-model:value="formState.entityCacheExpiration"
-        :min="0"
-        :addon-after="t('tb.ruleChain.nodeAction.unitSecond')"
-        :style="{ width: '100%' }"
-      />
-    </Form.Item>
   </Form>
 </template>
 <script lang="ts">
@@ -103,7 +90,7 @@
 </script>
 <script lang="ts" setup>
   import { ref, watch, defineComponent, reactive } from 'vue';
-  import { Form, Select, Input, InputNumber, Checkbox, Row, Col } from 'ant-design-vue';
+  import { Form, Select, Input, Checkbox, Row, Col } from 'ant-design-vue';
   import { FormInstance } from 'ant-design-vue/lib/form';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { ENTITY_TYPE_OPTIONS, EntityType } from '/@/enums/entityTypeEnum';
@@ -149,7 +136,6 @@
     changeOriginatorToRelatedEntity: false,
     createEntityIfNotExists: false,
     direction: 'FROM',
-    entityCacheExpiration: 300,
     entityNamePattern: undefined,
     entityType: undefined,
     entityTypePattern: undefined,
@@ -163,7 +149,6 @@
       formState.changeOriginatorToRelatedEntity = props.configuration.changeOriginatorToRelatedEntity;
       formState.createEntityIfNotExists = props.configuration.createEntityIfNotExists;
       formState.direction = props.configuration.direction;
-      formState.entityCacheExpiration = props.configuration.entityCacheExpiration;
       formState.entityNamePattern = props.configuration.entityNamePattern;
       formState.entityType = props.configuration.entityType;
       formState.entityTypePattern = props.configuration.entityTypePattern;

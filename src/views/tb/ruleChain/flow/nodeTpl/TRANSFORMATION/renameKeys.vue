@@ -16,7 +16,7 @@
         name="renameKeysMapping"
         :rules="[{ validator: validatorDataMapping }]"
       >
-        <Table class="mapping-table">
+        <table class="mapping-table">
           <tr class="header">
             <th>{{ t('tb.ruleChain.nodeAction.currentKey') }}</th>
             <th>{{ t('tb.ruleChain.nodeAction.renameKey') }}</th>
@@ -29,6 +29,7 @@
             <td>
               <Tooltip :title="t('tb.ruleChain.nodeAction.delete')" class="pl-4">
                 <Icon
+                  v-if="mappingList.length > 1"
                   :icon="'ant-design:delete-outlined'"
                   :size="20"
                   color="red"
@@ -38,7 +39,7 @@
               </Tooltip>
             </td>
           </tr>
-        </Table>
+        </table>
         <Button class="my-4" type="primary" @click="handleAddMapping">{{
           t('tb.ruleChain.nodeAction.addMapping')
         }}</Button>
@@ -53,7 +54,7 @@
 </script>
 <script lang="ts" setup>
   import { ref, watch, defineComponent, reactive } from 'vue';
-  import { Form, Input, Radio, Button, Tooltip, Table } from 'ant-design-vue';
+  import { Form, Input, Radio, Button, Tooltip } from 'ant-design-vue';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { Icon } from '/@/components/Icon';
   import { FormInstance } from 'ant-design-vue/lib/form';

@@ -104,7 +104,6 @@
   import { primaryColor } from '../../../../../build/theme/themeConfig';
   import { ComponentDescriptor, getComponentDescriptorList } from '/@/api/tb/componentDescriptor';
   import {
-    DebugSettings,
     RuleChain,
     RuleChainMetaData,
     getRuleChainById,
@@ -112,6 +111,7 @@
     saveRuleChainMetaData,
   } from '/@/api/tb/ruleChain';
   import { COMPONENTS_DESCRIPTOR_TYPE_OPTIONS, ComponentDescriptorType } from '/@/enums/componentEnum';
+  import { DebugSettings } from '/#/store';
 
   register({
     shape: 'rule-chain-node',
@@ -846,6 +846,7 @@
         };
         const res = await saveRuleChainMetaData(metaData);
         showMessage(t('tb.ruleChain.flow.saveSuccess'));
+        renderMetaData();
       } catch (error: any) {
         if (error && error.errorFields) {
           showMessage(t('common.validateError'));
@@ -853,7 +854,6 @@
         console.log('error', error);
       } finally {
         loading.value = false;
-        renderMetaData();
       }
     }
   }

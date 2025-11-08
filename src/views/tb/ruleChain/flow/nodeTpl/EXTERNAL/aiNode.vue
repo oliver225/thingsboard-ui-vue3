@@ -1,13 +1,7 @@
-<template>
-  <Form ref="formRef" :model="formState" layout="vertical">
-    <Form.Item name="version" v-show="false">
-      <Input v-model:value="formState.version" />
-    </Form.Item>
-  </Form>
-</template>
+<template>ai-node</template>
 <script lang="ts">
   export default defineComponent({
-    name: 'asset-profile-switch',
+    name: 'ai-node',
   });
 </script>
 <script lang="ts" setup>
@@ -15,9 +9,7 @@
   import { Form, Input } from 'ant-design-vue';
   import { FormInstance } from 'ant-design-vue/lib/form';
 
-  interface Configuration {
-    version: number;
-  }
+  interface Configuration {}
 
   const props = defineProps({
     configuration: {
@@ -29,14 +21,12 @@
 
   const formRef = ref<FormInstance>();
 
-  const formState = reactive<any>({
-    version: 0,
-  });
+  const formState = reactive<any>({});
 
   watch(
     () => props.configuration,
     () => {
-      formState.version = props.configuration.version;
+      formState.version = props.configuration;
     },
     { immediate: true },
   );

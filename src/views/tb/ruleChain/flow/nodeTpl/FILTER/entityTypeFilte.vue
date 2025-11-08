@@ -1,7 +1,11 @@
 <template>
   <Form ref="formRef" :model="formState" layout="vertical">
-    <Form.Item :label="t('tb.ruleChain.nodeAction.entityType')" name="originatorTypes" :rules="[{ required: true, message: t('tb.ruleChain.nodeAction.entityTypeRequired') }]">
-      <Select v-model:value="formState.originatorTypes" :options="entityTypeOptions" mode="multiple"> </Select>
+    <Form.Item
+      :label="t('tb.ruleChain.nodeAction.entityType')"
+      name="originatorTypes"
+      :rules="[{ required: true, message: t('tb.ruleChain.nodeAction.entityTypeRequired') }]"
+    >
+      <Select v-model:value="formState.originatorTypes" :options="entityTypeOptions" mode="multiple" />
     </Form.Item>
   </Form>
 </template>

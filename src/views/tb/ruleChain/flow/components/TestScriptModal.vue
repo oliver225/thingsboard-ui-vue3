@@ -150,6 +150,7 @@
   import { useI18n } from '/@/hooks/web/useI18n';
   import { testScript } from '/@/api/tb/ruleChain';
   import { TbMsgType, TB_MSG_TYPE_OPTIONS } from '/@/enums/tbMsgTypeEnum';
+  import { isEmpty } from '/@/utils/is';
 
   interface MetadataItem {
     key: string;
@@ -250,7 +251,11 @@
       // 输出结果
       const res = await testScript(scriptLang.value, testData);
 
-      result.value = res.output;
+      if (!isEmpty(res.error)) {
+        result.value = res.error;
+      } else {
+        result.value = res.output;
+      }
 
       console.log('Test data:', res);
     } catch (error: any) {
