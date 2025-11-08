@@ -33,7 +33,7 @@ Thingsboard UI Vue3 是 Thingsboard 的前端适配版本。作为一个免费�
 
 ## Thingsbaord
  
-   thingsboard：V4.0.1，持续跟进更新中
+   thingsboard：V4.2.0 持续跟进更新中
 
 
 ## 使用技术
