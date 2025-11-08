@@ -1,5 +1,5 @@
 <template>
-  <div class="resource-library-list">
+  <div class="javascript-library-list">
     <BasicTable @register="registerTable">
       <template #headerTop>
         <div class="text-lg font-bold my-2"> {{ t(getTitle.value) }} </div>
@@ -8,11 +8,11 @@
       <template #tableTitle>
         <div class="space-x-2">
           <a-button type="primary" @click="handleForm({})">
-            <Icon icon="i-fluent:add-12-filled" /> {{ t('tb.resource.action.add') }}
+            <Icon icon="i-fluent:add-12-filled" /> {{ t('tb.javascriptLibrary.action.add') }}
           </a-button>
-          <Select v-model:value="searchParam.resourceType" @change="reload" style="width: 130px">
-            <Select.Option value="">{{ t('tb.resource.filter.all') }} </Select.Option>
-            <Select.Option v-for="item in RESOURCE_TYPE_OPTIONS" :key="item.value" :value="item.value">{{
+          <Select v-model:value="searchParam.resourceSubType" @change="() => reload()" style="width: 130px">
+            <Select.Option value="">{{ t('tb.javascriptLibrary.filter.all') }} </Select.Option>
+            <Select.Option v-for="item in JAVASCRIPT_TYPE_OPTIONS" :key="item.value" :value="item.value">{{
               item.label
             }}</Select.Option>
           </Select>
@@ -44,7 +44,7 @@
 </template>
 <script lang="ts">
   export default defineComponent({
-    name: 'ViewsTbResourceLibraryList',
+    name: 'ViewsTbJavaScriptLibraryList',
   });
 </script>
 <script lang="ts" setup>
@@ -63,7 +63,7 @@
   import { Checkbox, Select } from 'ant-design-vue';
   import { isEqual } from 'lodash-es';
   import { SYS_TENANT_ID } from '/#/constant';
-  import { RESOURCE_TYPE_OPTIONS } from '/@/enums/resourceTypeEnum';
+  import { JAVASCRIPT_TYPE_OPTIONS } from '/@/enums/resourceTypeEnum';
   import { downloadByData } from '/@/utils/file/download';
   import { Authority } from '/@/enums/authorityEnum';
   import { usePermission } from '/@/hooks/web/usePermission';
@@ -73,16 +73,17 @@
   const { hasPermission } = usePermission();
 
   const getTitle = {
-    value: router.currentRoute.value.meta.title || t('tb.resource.title'),
+    value: router.currentRoute.value.meta.title || t('tb.javascriptLibrary.title'),
   };
 
   const searchParam = reactive({
     textSearch: '',
-    resourceType: '',
+    resourceType: 'JS_MODULE',
+    resourceSubType: '',
   });
   const tableColumns: BasicColumn[] = [
     {
-      title: t('tb.resource.table.title'),
+      title: t('tb.javascriptLibrary.table.title'),
       dataIndex: 'title',
       key: 'title',
       sorter: true,
@@ -91,20 +92,14 @@
       slot: 'firstColumn',
     },
     {
-      title: t('tb.resource.table.resourceKey'),
-      dataIndex: 'resourceKey',
-      key: 'resourceKey',
-      width: 120,
+      title: t('tb.javascriptLibrary.table.resourceSubType'),
+      dataIndex: 'resourceSubType',
+      key: 'resourceSubType',
+      width: 260,
+      format: (text: any) => (text ? JAVASCRIPT_TYPE_OPTIONS.find((item) => item.value === text)?.label || text : ''),
     },
     {
-      title: t('tb.resource.table.resourceType'),
-      dataIndex: 'resourceType',
-      key: 'resourceType',
-      width: 160,
-      format: (text: any) => (text ? RESOURCE_TYPE_OPTIONS.find((item) => item.value === text)?.label || text : ''),
-    },
-    {
-      title: t('tb.resource.table.system'),
+      title: t('tb.javascriptLibrary.table.system'),
       dataIndex: 'tenantId',
       key: 'tenantId',
       width: 80,
@@ -112,7 +107,7 @@
       slot: 'isSystem',
     },
     {
-      title: t('tb.resource.table.createdTime'),
+      title: t('tb.javascriptLibrary.table.createdTime'),
       dataIndex: 'createdTime',
       key: 'createdTime',
       format: 'date|YYYY-MM-DD HH:mm:ss',
@@ -127,14 +122,14 @@
     actions: (record: Recordable) => [
       {
         icon: 'ant-design:download-outlined',
-        title: t('tb.resource.action.download'),
+        title: t('tb.javascriptLibrary.action.download'),
         onClick: handleDownload.bind(this, { ...record }),
       },
       {
         icon: 'ant-design:delete-outlined',
         color: 'error',
         disabled: !!(hasPermission(Authority.TENANT_ADMIN) && record.link.indexOf('system') > -1),
-        title: t('tb.resource.action.delete'),
+        title: t('tb.javascriptLibrary.action.delete'),
         onClick: handleDelete.bind(this, { ...record }),
       },
     ],
@@ -159,6 +154,7 @@
       ...fetchParam,
       textSearch: searchParam.textSearch,
       resourceType: searchParam.resourceType,
+      resourceSubType: searchParam.resourceSubType,
     };
   }
 
@@ -169,8 +165,8 @@
   async function handleDelete(record: Recordable) {
     const modalFunc = createConfirm({
       iconType: 'error',
-      title: t('tb.resource.action.deleteConfirm', { title: record.title }),
-      content: t('tb.resource.action.deleteConfirmContent'),
+      title: t('tb.javascriptLibrary.action.deleteConfirm', { title: record.title }),
+      content: t('tb.javascriptLibrary.action.deleteConfirmContent'),
       centered: false,
       okText: t('common.delText'),
       okButtonProps: {
@@ -181,7 +177,7 @@
       onOk: async () => {
         try {
           await deleteResource(record.id.id);
-          showMessage(t('tb.resource.action.deleteSuccess'));
+          showMessage(t('tb.javascriptLibrary.action.deleteSuccess'));
         } catch (error: any) {
           console.log(error);
         } finally {
@@ -205,7 +201,3 @@
     openDrawer(true, record);
   }
 </script>
-<style lang="less">
-  .resource-library-list {
-  }
-</style>

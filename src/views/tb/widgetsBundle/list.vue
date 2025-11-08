@@ -64,9 +64,12 @@
   import { isEqual } from 'lodash-es';
   import { SYS_TENANT_ID } from '/#/constant';
   import WidgetTypeInfoList from './widgetTypesInfo.vue';
+  import { Authority } from '/@/enums/authorityEnum';
+  import { usePermission } from '/@/hooks/web/usePermission';
 
   const { t } = useI18n('tb');
   const { createConfirm, showMessage } = useMessage();
+  const { hasPermission } = usePermission();
 
   const getTitle = {
     value: router.currentRoute.value.meta.title || t('tb.widgetsBundle.title'),
@@ -129,6 +132,7 @@
         icon: 'ant-design:delete-outlined',
         color: 'error',
         title: t('tb.widgetsBundle.action.delete'),
+        disabled: !!(hasPermission(Authority.TENANT_ADMIN) && isEqual(SYS_TENANT_ID, record.tenantId)),
         onClick: handleDelete.bind(this, { ...record }),
       },
     ],

@@ -51,6 +51,8 @@
         <Checkbox :checked="record.link.indexOf('system') > -1" />
       </template>
     </BasicTable>
+
+    <SymbolUpload @register="registerUploadModal" @success="handleSuccess()" />
   </div>
 </template>
 <script lang="ts">
@@ -62,6 +64,7 @@
   import { defineComponent, reactive } from 'vue';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { convertBytesToSize } from '/@/utils';
+  import { useModal } from '/@/components/Modal';
   import { BasicTable, BasicColumn, useTable } from '/@/components/Table';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { Icon } from '/@/components/Icon';
@@ -71,6 +74,7 @@
   import { usePermission } from '/@/hooks/web/usePermission';
   import { Authority } from '/@/enums/authorityEnum';
   import { downloadByData } from '/@/utils/file/download';
+  import SymbolUpload from './upload.vue';
 
   const { t } = useI18n('tb');
   const { hasPermission } = usePermission();
@@ -155,6 +159,8 @@
       },
     ],
   };
+
+  const [registerUploadModal, { openModal: openUploadModal }] = useModal();
 
   const [registerTable, { reload }] = useTable({
     rowKey: (record) => record.id.id,
@@ -253,11 +259,8 @@
   }
 
   async function handleDownload(record: Recordable) {
-    const res = await downloadImage(record.link);
-    let name = res.headers['content-disposition'];
-    name = name && name.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/);
-    name = name && name.length >= 1 && name[1].replace("utf-8'zh_cn'", '');
-    downloadByData(res.data, name);
+    const data = await downloadImage(record.link);
+    downloadByData(data, record.fileName);
   }
 
   function handleSuccess() {
@@ -265,7 +268,7 @@
   }
 
   function handleUpload(record: Recordable) {
-    // openUploadModal(true, record);
+    openUploadModal(true, record);
   }
 
   function handleDetail(record: Recordable) {
@@ -273,8 +276,3 @@
     router.push(`/scada-symbol/${path}`);
   }
 </script>
-
-<style lang="less">
-  .scada-symbol-list {
-  }
-</style>

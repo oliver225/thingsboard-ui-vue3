@@ -33,6 +33,11 @@
       <template #deprecated="{ record }">
         <Checkbox :checked="record.deprecate" />
       </template>
+      <template #bundles="{ record }">
+        <Tag class="!mr-2 !border-rounded-md" v-for="bundle in record.bundles" :key="bundle.id.id">
+          {{ bundle.name }}
+        </Tag>
+      </template>
     </BasicTable>
   </div>
 </template>
@@ -49,13 +54,16 @@
   import { Icon } from '/@/components/Icon';
   import { router } from '/@/router';
   import { getWidgetTypeList, deleteWidgetType } from '/@/api/tb/widgetType';
-  import { Checkbox } from 'ant-design-vue';
+  import { Checkbox, Tag } from 'ant-design-vue';
   import { isEqual } from 'lodash-es';
   import { SYS_TENANT_ID } from '/#/constant';
   import { WIDGET_TYPE_OPTIONS } from '/@/enums/widgetTypeEnum';
+  import { Authority } from '/@/enums/authorityEnum';
+  import { usePermission } from '/@/hooks/web/usePermission';
 
   const { t } = useI18n('tb');
   const { createConfirm, showMessage } = useMessage();
+  const { hasPermission } = usePermission();
 
   const getTitle = {
     value: router.currentRoute.value.meta.title || t('tb.widgetType.title'),
@@ -75,11 +83,19 @@
       slot: 'firstColumn',
     },
     {
+      title: t('tb.widgetsBundle.title'),
+      dataIndex: 'bundles',
+      key: 'bundles',
+      align: 'left',
+      width: 300,
+      slot: 'bundles',
+    },
+    {
       title: t('tb.widgetType.table.type'),
       dataIndex: 'widgetType',
       key: 'widgetType',
       align: 'center',
-      width: 180,
+      width: 120,
       format: (text: any) => (text ? WIDGET_TYPE_OPTIONS.find((item) => item.value === text)?.label || text : ''),
     },
     {
@@ -120,6 +136,7 @@
       {
         icon: 'ant-design:delete-outlined',
         color: 'error',
+        disabled: !!(hasPermission(Authority.TENANT_ADMIN) && isEqual(SYS_TENANT_ID, record.tenantId)),
         title: t('tb.widgetType.action.delete'),
         onClick: handleDelete.bind(this, { ...record }),
       },

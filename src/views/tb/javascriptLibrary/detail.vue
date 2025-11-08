@@ -5,27 +5,27 @@
         <Icon :icon="getTitle.icon" :size="24" />
         <div class="flex flex-col">
           <span class="text-base font-semibold"> {{ getTitle.value || '· · · ·' }}</span>
-          <span class="text-sm">{{ t('tb.resource.detail.title') }}</span>
+          <span class="text-sm">{{ t('tb.javascriptLibrary.detail.title') }}</span>
         </div>
       </div>
     </template>
     <Tabs v-model:activeKey="tabActiveKey" class="tb-detail-menu">
       <TabPane key="DETAIL">
         <template #tab>
-          <span> <Icon :icon="'ant-design:appstore-outlined'" /> {{ t('tb.resource.detail.tab') }} </span>
+          <span> <Icon :icon="'ant-design:appstore-outlined'" /> {{ t('tb.javascriptLibrary.detail.tab') }} </span>
         </template>
         <div class="space-x-4">
           <a-button type="primary" @click="handleDownload">
-            <Icon :icon="'ant-design:download-outlined'" />{{ t('tb.resource.action.download') }}
+            <Icon :icon="'ant-design:download-outlined'" />{{ t('tb.javascriptLibrary.action.download') }}
           </a-button>
           <a-button type="primary" danger @click="handleDelete">
-            <Icon :icon="'ant-design:delete-outlined'" />{{ t('tb.resource.action.delete') }}
+            <Icon :icon="'ant-design:delete-outlined'" />{{ t('tb.javascriptLibrary.action.delete') }}
           </a-button>
         </div>
         <div class="space-x-4 my-4">
           <a-button @click="handleCopyResourceId">
             <Icon :icon="'ant-design:copy-filled'" />
-            {{ t('tb.resource.action.copyId') }}
+            {{ t('tb.javascriptLibrary.action.copyId') }}
           </a-button>
         </div>
         <Description @register="register" size="default" />
@@ -33,7 +33,7 @@
     </Tabs>
   </BasicDrawer>
 </template>
-<script lang="ts" setup name="ViewsTbResourceLibraryDetail">
+<script lang="ts" setup name="ViewsTbJavascriptLibraryDetail">
   import { ref, unref, computed } from 'vue';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { useMessage } from '/@/hooks/web/useMessage';
@@ -41,8 +41,9 @@
   import { copyToClipboard } from '/@/utils';
   import { Icon } from '/@/components/Icon';
   import { BasicDrawer, useDrawerInner } from '/@/components/Drawer';
-  import { Resource, getResourceById } from '/@/api/tb/resourceLibrary';
+  import { Resource, getResourceInfoById } from '/@/api/tb/resourceLibrary';
   import { DescItem, Description, useDescription } from '/@/components/Description';
+  import { JAVASCRIPT_TYPE_OPTIONS } from '/@/enums/resourceTypeEnum';
 
   const emit = defineEmits(['delete', 'download', 'register']);
 
@@ -60,22 +61,19 @@
 
   const descSchema: DescItem[] = [
     {
-      label: t('tb.resource.form.title'),
+      label: t('tb.javascriptLibrary.table.resourceSubType'),
+      field: 'resourceSubType',
+      render: (val) => (val ? JAVASCRIPT_TYPE_OPTIONS.find((item) => item.value === val)?.label || val : ''),
+      span: 4,
+    },
+    {
+      label: t('tb.javascriptLibrary.detail.title'),
       field: 'title',
       span: 4,
     },
+
     {
-      label: t('tb.resource.detail.resourceKey'),
-      field: 'resourceKey',
-      span: 4,
-    },
-    {
-      label: t('tb.resource.table.resourceType'),
-      field: 'resourceType',
-      span: 4,
-    },
-    {
-      label: t('tb.resource.detail.fileName'),
+      label: t('tb.javascriptLibrary.detail.fileName'),
       field: 'fileName',
       span: 4,
     },
@@ -88,7 +86,7 @@
     try {
       setDrawerProps({ loading: true });
       await clear();
-      record.value = await getResourceById(data.id.id);
+      record.value = await getResourceInfoById(data.id.id);
       setDescProps({ data: record.value });
     } catch (error: any) {
       if (error.message) {
@@ -106,7 +104,7 @@
   }
 
   function handleCopyResourceId() {
-    copyToClipboard(record.value.id.id, t('tb.resource.action.copyIdSuccess'));
+    copyToClipboard(record.value.id.id, t('tb.javascriptLibrary.action.copyIdSuccess'));
   }
 
   function handleDelete() {
@@ -118,5 +116,4 @@
     emit('download', record.value);
     closeDrawer();
   }
-  function handleOpen() {}
 </script>
