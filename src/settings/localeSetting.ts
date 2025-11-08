@@ -13,7 +13,7 @@ export const localeSetting: LocaleSetting = {
   // Default locale
   fallback: LOCALE.zh_CN,
   // available Locales
-  availableLocales: [LOCALE.ZH_CN, LOCALE.ZH_TW, LOCALE.EN_US],
+  availableLocales: [LOCALE.ZH_CN, LOCALE.EN_US],
 };
 
 // locale list

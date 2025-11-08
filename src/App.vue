@@ -18,7 +18,6 @@
   import { useWatermark } from '/@/hooks/web/useWatermark';
   import { darkPrimaryColor } from '../build/theme/themeConfig';
   import 'dayjs/locale/zh-cn';
-  import 'dayjs/locale/zh-tw';
 
   // support Multi-language
   const { getAntdLocale } = useLocale();
