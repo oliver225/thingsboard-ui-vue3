@@ -11,11 +11,10 @@ const tb: AppRouteModule = {
   name: 'Thingdboard',
   component: LAYOUT,
   redirect: () => {
-    // const { hasPermission } = usePermission();
-    // return {
-    //   path: hasPermission(Authority.SYS_ADMIN) ? '/tenant/list' : '/device/list',
-    // };
-    return { path: '/home' };
+    const { hasPermission } = usePermission();
+    return {
+      path: hasPermission(Authority.SYS_ADMIN) ? '/tenant/list' : '/device/list',
+    };
   },
   meta: {
     icon: 'ant-design:windows-outlined',
@@ -23,26 +22,23 @@ const tb: AppRouteModule = {
     orderNo: 1,
   },
   children: [
+    // {
+    //   path: '/home',
+    //   name: 'TbHome',
+    //   component: IFRAME_BLANK,
+    //   meta: {
+    //     icon: 'ant-design:home-outlined',
+    //     tabIcon: 'ant-design:home-outlined',
+    //     title: t('routes.tb.home'),
+    //     // 使用环境变量配置ThingsBoard基础地址
+    //     frameSrc: `${useGlobSetting().tbBaseUrl}/home`,
+    //   },
+    //   props: {
+    //     offsetX: -254,
+    //     offsetY: -70,
+    //   },
+    // },
     {
-<<<<<<< HEAD
-=======
-      path: '/home',
-      name: 'TbHome',
-      component: IFRAME_BLANK,
-      meta: {
-        icon: 'ant-design:home-outlined',
-        tabIcon: 'ant-design:home-outlined',
-        title: t('routes.tb.home'),
-        // 使用环境变量配置ThingsBoard基础地址
-        frameSrc: `${useGlobSetting().tbBaseUrl}/home`,
-      },
-      props: {
-        offsetX: -254,
-        offsetY: -70,
-      },
-    },
-    {
->>>>>>> vip
       path: '/tenant',
       name: 'Tenant',
       component: LAYOUT,
@@ -129,17 +125,17 @@ const tb: AppRouteModule = {
             authority: [Authority.TENANT_ADMIN, Authority.CUSTOMER_USER],
           },
         },
-        {
-          path: '/dashboard/:dashboardId',
-          name: 'DashboardEditor',
-          component: () => import('/@/views/tb/dashboard/editor.vue'),
-          meta: {
-            icon: 'i-ant-design:layout-filled',
-            tabIcon: 'i-ant-design:layout-filled',
-            title: t('routes.tb.dashboard'),
-            authority: [Authority.TENANT_ADMIN],
-          },
-        },
+        // {
+        //   path: '/dashboard/:dashboardId',
+        //   name: 'DashboardEditor',
+        //   component: () => import('/@/views/tb/dashboard/editor.vue'),
+        //   meta: {
+        //     icon: 'i-ant-design:layout-filled',
+        //     tabIcon: 'i-ant-design:layout-filled',
+        //     title: t('routes.tb.dashboard'),
+        //     authority: [Authority.TENANT_ADMIN],
+        //   },
+        // },
       ],
     },
     {

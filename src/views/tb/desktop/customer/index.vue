@@ -15,9 +15,6 @@
           <Col span="24">
             <EntityCountCard />
           </Col>
-          <Col span="24">
-            <GetStarted />
-          </Col>
         </Row>
       </Col>
     </Row>
@@ -28,7 +25,6 @@
   import AlertCountCard from '../components/AlertCountCard.vue';
   import DeviceCountCard from '../components/DeviceCountCard.vue';
   import EntityCountCard from '../components/EntityCountCard.vue';
-  import GeoMap from '../components/chart/GeoMap.vue';
   import { getViewportOffset } from '/@/utils/domUtils';
   import { onMounted, ref } from 'vue';
   import { useUserStore } from '/@/store/modules/user';

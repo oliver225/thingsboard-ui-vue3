@@ -293,6 +293,6 @@
   }
 
   function handleOpenDashboard(record: Recordable) {
-    router.push({ path: `/dashboard/${record.id.id}` });
+    // router.push({ path: `/dashboard/${record.id.id}` });
   }
 </script>

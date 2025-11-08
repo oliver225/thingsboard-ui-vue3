@@ -14,10 +14,7 @@
           </Col>
           <Col span="6">
             <CustomerCountCard />
-          </Col>
-          <Col span="24">
-            <GeoMap :height="mapHeight + 'px'" :center="mapCity" />
-          </Col>
+          </Col>    
           <Col span="24">
             <Card :tab-list="tabListTitle" :active-tab-key="activeKey" @tabChange="onTabChange">
               <p v-if="activeKey === 'tab1'">
@@ -46,7 +43,6 @@
   import ActiveDeviceCountLine from '../components/chart/ActiveDeviceCountLine.vue';
   import MessageTransportBar from '../components/chart/MessageTransportBar.vue';
   import StorageDataPointsBar from '../components/chart/StorageDataPointsBar.vue';
-  import GeoMap from '../components/chart/GeoMap.vue';
   import { getViewportOffset } from '/@/utils/domUtils';
   import { useWindowSizeFn } from '/@/hooks/event/useWindowSizeFn';
   import { useUserStore } from '/@/store/modules/user';
