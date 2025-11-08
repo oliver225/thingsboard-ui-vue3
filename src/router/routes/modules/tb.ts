@@ -401,6 +401,17 @@ const tb: AppRouteModule = {
           },
         },
         {
+          path: '/javascript-library/list',
+          name: 'JavaSciptLibraryList',
+          component: () => import('/@/views/tb/javascriptLibrary/list.vue'),
+          meta: {
+            icon: 'mdi:language-javascript',
+            tabIcon: 'mdi:language-javascript',
+            title: t('routes.tb.javascriptLibrary'),
+            authority: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN],
+          },
+        },
+        {
           path: '/resource-library/list',
           name: 'ResourceLibraryList',
           component: () => import('/@/views/tb/resourceLibrary/list.vue'),

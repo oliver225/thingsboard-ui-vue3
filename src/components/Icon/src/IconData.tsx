@@ -989,4 +989,5 @@ export default [
   'mdi:account-off-outline',
   'mdi:account-check-outline',
   'mdi:account-file-text',
+  'mdi:language-javascript',
 ];
