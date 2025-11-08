@@ -17,4 +17,11 @@ export default {
     deleteText: 'Delete',
     deleteSuccess: 'Delete widget success!',
   },
+  widgetType: {
+    timeSeries: 'Time Series',
+    latest: 'Latest Data',
+    rpc: 'RPC Widget',
+    static: 'Static Widget',
+    alarm: 'Alarm Widget',
+  },
 };

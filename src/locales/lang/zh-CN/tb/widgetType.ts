@@ -16,4 +16,11 @@ export default {
     deleteText: '删除',
     deleteSuccess: '删除部件成功！',
   },
+  widgetType: {
+    timeSeries: '时间序列',
+    latest: '最新数据',
+    rpc: '控制部件',
+    static: '静态部件',
+    alarm: '告警部件',
+  },
 };
