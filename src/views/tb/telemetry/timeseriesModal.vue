@@ -1,17 +1,18 @@
 <template>
   <BasicModal
     v-bind="$attrs"
-    :footer="false"
-    @register="registerModal"
     width="60%"
-    @height-change="(height) => (modalHeight = height)"
+    :show-ok-btn="false"
+    :show-cancel-btn="false"
+    @register="registerModal"
     @cancel="handleClose"
+    @height-change="(height) => (modalHeight = height)"
   >
     <template #title>
       <span class="font-bold">
-        <template v-if="property?.name"> {{ property.name }} ({{ record?.keys }}) </template>
+        <template v-if="record?.name"> {{ record.name }} ({{ record?.keys }}) </template>
         <template v-else>{{ record?.keys }} </template>
-        {{ property?.dataType?.specs?.unit }}
+        {{ record?.unit }}
       </span>
       <span class="ml-4">
         <RadioGroup v-model:value="showChart" size="small" button-style="solid">
@@ -51,17 +52,17 @@
   import { isArray } from 'lodash-es';
   import dayjs from 'dayjs';
 
+  // ======================== 数据定义 ========================
   const { t } = useI18n('tb');
-
   const modalHeight = ref(502);
-
   const chartRef = ref<HTMLDivElement | null>(null);
   const series = ref<Array<TsData>>([]);
   const LATEST_CMD_ID = ref(0);
+  const record = ref<TelemetryQuery & { name?: string; unit?: string }>();
+  const showChart = ref(false);
+  const minInterval = ref(60000);
 
-  const record = ref<TelemetryQuery>();
-  const showChart = ref(true);
-
+  // ======================== 常量定义 ========================
   const rangePresets = ref([
     { label: t('common.search.rangePresets.today'), value: [dayjs().startOf('D'), dayjs()] },
     { label: t('common.search.rangePresets.last1Hour'), value: [dayjs().subtract(1, 'hour'), dayjs()] },
@@ -71,6 +72,24 @@
     { label: t('common.search.rangePresets.last7Days'), value: [dayjs().subtract(6, 'day').startOf('D'), dayjs()] },
   ]);
 
+  // 时间间隔选项
+  const intervalOptions = ref([
+    { label: t('tb.telemetry.timeseries.intervals.s1'), value: 1000 },
+    { label: t('tb.telemetry.timeseries.intervals.m1'), value: 60000 },
+    { label: t('tb.telemetry.timeseries.intervals.m5'), value: 300000 },
+    { label: t('tb.telemetry.timeseries.intervals.m10'), value: 600000 },
+    { label: t('tb.telemetry.timeseries.intervals.m30'), value: 1800000 },
+    { label: t('tb.telemetry.timeseries.intervals.h1'), value: 3600000 },
+    { label: t('tb.telemetry.timeseries.intervals.h2'), value: 7800000 },
+    { label: t('tb.telemetry.timeseries.intervals.h6'), value: 21600000 },
+    { label: t('tb.telemetry.timeseries.intervals.h12'), value: 43200000 },
+    { label: t('tb.telemetry.timeseries.intervals.d1'), value: 86400000 },
+    { label: t('tb.telemetry.timeseries.intervals.d7'), value: 604800000 },
+    { label: t('tb.telemetry.timeseries.intervals.d15'), value: 1296000000 },
+    { label: t('tb.telemetry.timeseries.intervals.d30'), value: 25920000000 },
+  ]);
+
+  // 表格列定义
   const tableColumns: BasicColumn[] = [
     {
       title: t('tb.telemetry.table.time'),
@@ -83,6 +102,7 @@
     },
   ];
 
+  // ======================== 表单配置 ========================
   const inputFormSchemas: FormSchema[] = [
     { field: 'entityType', component: 'Input', show: false },
     { field: 'entityId', component: 'Input', show: false },
@@ -92,12 +112,12 @@
       label: t('tb.telemetry.timeseries.timeRange'),
       field: 'timeRange',
       component: 'RangePicker',
-      defaultValue: [dayjs().subtract(2, 'hour'), dayjs()],
       componentProps: {
-        presets: rangePresets,
+        presets: rangePresets.value,
         showTime: true,
+        format: 'YYYY-MM-DD HH:mm',
         allowClear: false,
-        onChange: () => subscribeHistoryData(),
+        onChange: handleTimeRangeChange(),
       },
       colProps: { lg: 10, md: 12 },
     },
@@ -105,36 +125,13 @@
       label: t('tb.telemetry.timeseries.interval'),
       field: 'interval',
       component: 'Select',
-      defaultValue: 60000,
       componentProps: {
-        options: [
-          { label: t('tb.telemetry.timeseries.intervals.s1'), value: 1000 },
-          { label: t('tb.telemetry.timeseries.intervals.m1'), value: 60000 },
-          { label: t('tb.telemetry.timeseries.intervals.m5'), value: 300000 },
-          { label: t('tb.telemetry.timeseries.intervals.m10'), value: 600000 },
-          { label: t('tb.telemetry.timeseries.intervals.m30'), value: 1800000 },
-          { label: t('tb.telemetry.timeseries.intervals.h1'), value: 3600000 },
-          { label: t('tb.telemetry.timeseries.intervals.h2'), value: 7800000 },
-          { label: t('tb.telemetry.timeseries.intervals.h6'), value: 21600000 },
-          { label: t('tb.telemetry.timeseries.intervals.h12'), value: 43200000 },
-          { label: t('tb.telemetry.timeseries.intervals.d1'), value: 86400000 },
-          { label: t('tb.telemetry.timeseries.intervals.d7'), value: 604800000 },
-          { label: t('tb.telemetry.timeseries.intervals.d15'), value: 1296000000 },
-          { label: t('tb.telemetry.timeseries.intervals.d30'), value: 25920000000 },
-        ],
+        options: intervalOptions.value
+          .filter((item) => item.value >= minInterval.value)
+          .map((item) => ({ label: item.label, value: item.value })),
         onChange: () => subscribeHistoryData(),
       },
     },
-    // {
-    //   label: t('tb.telemetry.timeseries.dataCount'),
-    //   field: 'limit',
-    //   defaultValue: 1000,
-    //   component: 'InputNumber',
-    //   componentProps: {
-    //     min: 100,
-    //     onChange: () => subscribeHistoryData(),
-    //   },
-    // },
     {
       label: t('tb.telemetry.timeseries.aggregation'),
       field: 'agg',
@@ -154,7 +151,8 @@
     },
   ];
 
-  const [registerForm, { resetFields, setFieldsValue, getFieldsValue, validate }] = useForm({
+  // ======================== 组件初始化 ========================
+  const [registerForm, { resetFields, setFieldsValue, validate, getFieldsValue, updateSchema }] = useForm({
     labelWidth: 100,
     schemas: inputFormSchemas,
     baseColProps: { lg: 6, md: 12 },
@@ -165,8 +163,10 @@
 
   const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
     setModalProps({ loading: true });
+    minInterval.value = 60000;
     showChart.value = false;
-    record.value = { ...data, keys: data.keys };
+    record.value = { ...data, keys: data.keys, timeRange: [dayjs().subtract(2, 'hour'), dayjs()], interval: 60000 };
+
     await resetFields();
     setFieldsValue(record.value);
 
@@ -175,6 +175,33 @@
     setModalProps({ loading: false });
   });
 
+  // ======================== 事件处理函数 ========================
+  /**
+   * 处理时间范围变更
+   */
+  function handleTimeRangeChange() {
+    return (val: any) => {
+      minInterval.value = Math.ceil(Number(val[1] - val[0]) / 700);
+      setFieldsValue({
+        ...getFieldsValue(),
+        interval: intervalOptions.value.find((item) => item.value >= minInterval.value)?.value,
+      });
+      updateSchema({
+        field: 'interval',
+        componentProps: {
+          options: intervalOptions.value
+            .filter((item) => item.value >= minInterval.value)
+            .map((item) => ({ label: item.label, value: item.value })),
+          onChange: () => subscribeHistoryData(),
+        },
+      });
+      subscribeHistoryData();
+    };
+  }
+
+  /**
+   * 发送初始查询请求
+   */
   function sendInitQuery() {
     websocketSend(
       LATEST_CMD_ID.value,
@@ -206,13 +233,18 @@
     );
   }
 
+  /**
+   * 订阅历史数据
+   */
   async function subscribeHistoryData() {
     let data: any = {};
     try {
       data = await validate();
     } catch (error: any) {
-      console.log(error);
+      console.error('表单验证失败:', error);
+      return;
     }
+
     const queryData = {
       timeRange: [dayjs().subtract(2, 'hour'), dayjs()],
       interval: 60000,
@@ -220,6 +252,7 @@
       agg: 'NONE',
       ...data,
     };
+
     websocketSend(
       LATEST_CMD_ID.value,
       {
@@ -244,6 +277,9 @@
     );
   }
 
+  /**
+   * WebSocket消息处理
+   */
   function onWebsocketMessage(data: any) {
     if (data.update && isArray(data.update)) {
       const arrayData = data.update[0].timeseries[record.value?.keys] || [];
@@ -251,104 +287,63 @@
         ts: item.ts,
         value: item.value,
       }));
+
+      // 更新记录名称和单位信息
+      if (data.update[0]?.entity?.name) {
+        record.value = {
+          ...record.value,
+          name: data.update[0]?.entity?.name,
+          unit: data.update[0]?.entity?.additionalInfo?.unit,
+        } as TelemetryQuery & { name?: string; unit?: string };
+      }
+
       series.value.sort((a, b) => a.ts - b.ts);
-      renderChart();
+      // renderChart();
     } else {
       subscribeHistoryData();
     }
   }
 
+  /**
+   * 渲染图表
+   */
   function renderChart() {
-    if (!showChart) {
-      return;
-    }
+    if (!series.value.length) return;
     setOptions({
       tooltip: {
         trigger: 'axis',
-        axisPointer: {
-          lineStyle: {
-            width: 1,
-            color: '#019680',
-          },
-        },
-        formatter: (arg: any) => {
-          if (property.value?.dataType?.specs?.unit) {
-            return `${dayjs(Number.parseInt(arg[0].name)).format('YYYY-MM-DD HH:mm:ss')}<br/>${arg[0].value}(${property.value?.dataType?.specs?.unit})`;
-          }
-          return `${dayjs(Number.parseInt(arg[0].name)).format('YYYY-MM-DD HH:mm:ss')}<br/>${arg[0].value}`;
-        },
+        formatter: (arg: any) =>
+          `${dayjs(Number.parseInt(arg[0].name)).format('YYYY-MM-DD HH:mm:ss')}<br/>${arg[0].value}${
+            record.value?.unit ? `(${record.value.unit})` : ''
+          }`,
       },
       xAxis: {
         type: 'category',
         boundaryGap: false,
-        data: series.value.map((item) => item.ts) || [],
-        splitLine: {
-          show: true,
-          lineStyle: {
-            width: 1,
-            type: 'solid',
-            color: 'rgba(226,226,226,0.5)',
-          },
-        },
-        axisTick: {
-          show: false,
-        },
-        axisLabel: {
-          formatter: (value) => dayjs(Number.parseInt(value)).format(timeFormat.value),
-        },
+        splitLine: { show: true, lineStyle: { width: 1, type: 'solid', color: 'rgba(226,226,226,0.5)' } },
+        data: series.value.map((i) => i.ts),
+        axisLabel: { formatter: (value) => dayjs(Number.parseInt(value)).format(timeFormat.value) },
       },
-      yAxis: [
-        {
-          type: 'value',
-          splitNumber: 4,
-          axisTick: {
-            show: false,
-          },
-          splitArea: {
-            show: true,
-            areaStyle: {
-              color: ['rgba(255,255,255,0.2)', 'rgba(226,226,226,0.2)'],
-            },
-          },
-        },
-      ],
-      grid: { left: '1%', right: '1%', top: '2  %', bottom: 0, containLabel: true },
+      yAxis: {
+        type: 'value',
+        splitNumber: 4,
+        splitArea: { show: true, areaStyle: { color: ['rgba(255,255,255,0.2)', 'rgba(226,226,226,0.2)'] } },
+      },
       series: [
         {
-          smooth: true,
-          data: series.value.map((item) => item.value) || [],
           type: 'line',
+          smooth: true,
+          data: series.value.map((i) => i.value),
           areaStyle: {},
-          itemStyle: {
-            color: '#5ab1ef',
-          },
         },
       ],
+      grid: { left: '1%', right: '1%', top: '2%', bottom: 0, containLabel: true },
     });
   }
 
-  watch(
-    () => modalHeight.value,
-    () => {
-      resize();
-    },
-    { immediate: true },
-  );
-
-  const timeFormat = computed(() => {
-    if (series.value.length > 2) {
-      const diff = Math.abs(series.value[0].ts - series.value[series.value.length - 1].ts);
-      if (diff < 3600 * 1000 * 24) {
-        return 'HH:mm';
-      }
-      if (diff < 3600 * 1000 * 24 * 30) {
-        return 'MM-DD HH时';
-      }
-      return 'YY-MM-DD';
-    }
-    return 'HH:mm';
-  });
-
+  /**
+   * 关闭模态框处理
+   */
   function handleClose() {
     if (LATEST_CMD_ID.value > 0) {
       websocketUnsubscribe(LATEST_CMD_ID.value, {
@@ -358,4 +353,22 @@
     }
     closeModal();
   }
+
+  // ======================== 计算属性 ========================
+  const timeFormat = computed(() => {
+    if (series.value.length < 2) return 'HH:mm';
+
+    const diff = Math.abs(series.value[0].ts - series.value[series.value.length - 1].ts);
+    if (diff < 3600 * 1000 * 24) return 'HH:mm';
+
+    if (diff < 3600 * 1000 * 24 * 30) return 'MM-DD HH时';
+
+    return 'YY-MM-DD';
+  });
+
+  // ======================== 监听器 ========================
+
+  watch(() => modalHeight.value, resize, { immediate: true });
+
+  watch(() => series.value, renderChart);
 </script>
