@@ -60,7 +60,7 @@ export const LoginRoute: AppRouteModule = {
     {
       name: 'Login',
       path: '/auth/login',
-      component: () => import('/@/layouts/views/login/login.vue'),
+      component: () => import('/@/layouts/views/login/Login.vue'),
       meta: {
         title: t('routes.basic.login'),
       },
