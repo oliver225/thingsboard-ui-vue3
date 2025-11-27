@@ -35,6 +35,9 @@
           </Select.Option>
         </Select>
       </template>
+      <template #imageInput="{ model, field }">
+        <ImageUrlInput v-model:value="model[field]" />
+      </template>
     </BasicForm>
     <TransportForm
       ref="transportFrom"
@@ -89,6 +92,7 @@
   import { PROCESSING_STRATEGY_OPTIONS, SUBMIT_STRATEGY_OPTIONS } from '/@/enums/queueEnum';
   import { saveDeviceProfile, getDeviceProfileById, DeviceProfile } from '/@/api/tb/deviceProfile';
   import { EntityType } from '/@/enums/entityTypeEnum';
+  import ImageUrlInput from '/@/views/tb/images/ImageUrlInput.vue';
 
   const emit = defineEmits(['success', 'register']);
 
@@ -186,6 +190,12 @@
         },
         api: (args: any) => ruleChainList(args, 'EDGE'),
       },
+    },
+    {
+      label: t('图片'),
+      field: 'image',
+      component: 'Input',
+      slot: 'imageInput',
     },
     //image
     {

@@ -12,30 +12,33 @@
       <Icon icon="ant-design:upload-outlined" class="pr-1 m-1" />
       <span>{{ t('tb.images.action.uploadImage') }}</span>
     </template>
-    <Form ref="formRef" :model="formState" layout="vertical">
-      <Form.Item name="fileList" :rules="[{ validator: validatorFile }]">
-        <Upload.Dragger
-          v-model:fileList="formState.fileList"
-          accept="image/*"
-          list-type="picture"
-          :maxCount="1"
-          :before-upload="beforeUpload"
-        >
-          <p class="ant-upload-drag-icon">
-            <Icon :icon="'ant-design:upload-outlined'" />
-          </p>
-          <p class="ant-upload-text">{{ t('tb.images.form.dragTip') }}</p>
-        </Upload.Dragger>
-      </Form.Item>
-      <Form.Item
-        v-show="formState.fileList.length > 0"
-        :label="t('tb.images.form.title')"
-        name="title"
-        :rules="[{ required: true, message: t('tb.images.form.titleRequired') }]"
-      >
-        <Input v-model:value="formState.title" :placeholder="t('tb.images.form.titlePlaceholder')" />
-      </Form.Item>
-    </Form>
+    <BasicForm @register="registerForm">
+      <template #dataUpload="{ model, field }">
+        <div class="flex items-center">
+          <div v-if="model.imageBase64" class="h-30 w-30 mr-4">
+            <img class="img-content-clip" :src="model.imageBase64" />
+          </div>
+          <Upload.Dragger
+            class="flex-1"
+            accept="image/*"
+            :max-count="1"
+            :showUploadList="false"
+            :before-upload="
+              async (file) => {
+                model[field] = file;
+                model['imageBase64'] = await imageToBase64(file);
+                return false;
+              }
+            "
+          >
+            <p class="ant-upload-drag-icon">
+              <Icon :icon="'ant-design:upload-outlined'" />
+            </p>
+            <p class="ant-upload-text">{{ t('tb.images.form.dragTip') }}</p>
+          </Upload.Dragger>
+        </div>
+      </template>
+    </BasicForm>
   </BasicModal>
 </template>
 <script lang="ts">
@@ -45,64 +48,62 @@
 </script>
 <script lang="ts" setup>
   import { Icon } from '/@/components/Icon';
-  import { defineComponent, ref, reactive } from 'vue';
-  import { Form, Upload, Input } from 'ant-design-vue';
-  import { FormInstance } from 'ant-design-vue/lib/form';
+  import { defineComponent, ref } from 'vue';
+  import { Upload } from 'ant-design-vue';
+  import { FormSchema, BasicForm, useForm } from '/@/components/Form';
   import { BasicModal, useModalInner } from '/@/components/Modal';
   import { useMessage } from '/@/hooks/web/useMessage';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { ResourceInfo } from '/@/api/tb/resourceLibrary';
   import { uploadImage } from '/@/api/tb/images';
+  import { imageToBase64 } from '/@/utils/file/base64Conver';
 
   const emit = defineEmits(['register', 'success']);
 
   const { t } = useI18n('tb');
   const { showMessage } = useMessage();
 
-  const formRef = ref<FormInstance>();
-
   const record = ref<ResourceInfo>({} as ResourceInfo);
 
-  const formState = reactive<any>({
-    fileList: [],
-    title: '',
+  const inputFormSchemas: FormSchema[] = [
+    {
+      field: 'imageBase64',
+      component: 'Input',
+      show: false,
+    },
+    {
+      label: t('tb.images.form.file'),
+      field: 'file',
+      component: 'Input',
+      slot: 'dataUpload',
+      required: true,
+    },
+    {
+      label: t('tb.images.form.title'),
+      field: 'title',
+      component: 'Input',
+      required: true,
+    },
+  ];
+
+  const [registerForm, { resetFields, validate }] = useForm({
+    labelWidth: 100,
+    schemas: inputFormSchemas,
+    baseColProps: { lg: 24, md: 24 },
   });
 
   const [registerModal, { setModalProps, closeModal }] = useModalInner(async (data) => {
     setModalProps({ loading: true });
-    clear();
+    resetFields();
     record.value = { ...data } as ResourceInfo;
     setModalProps({ loading: false });
   });
 
-  function beforeUpload(file: any) {
-    formState.fileList = [file];
-    formState.title = file.name;
-    return false;
-  }
-
-  function clear() {
-    record.value = {} as ResourceInfo;
-    formState.fileList = [];
-    formState.title = '';
-  }
-
-  function validatorFile() {
-    if (formState.fileList.length < 1) {
-      return Promise.reject(t('tb.images.form.fileRequired'));
-    } else {
-      return Promise.resolve();
-    }
-  }
-
   async function handleSubmit() {
     try {
-      const data = await formRef.value?.validate();
+      const data = await validate();
       setModalProps({ confirmLoading: true });
-      if (data == undefined) {
-        throw new Error(t('tb.images.message.dataEmpty'));
-      }
-      const result = await uploadImage(data.fileList[0].originFileObj, data.title);
+      const result = await uploadImage(data.file, data.title);
       setTimeout(closeModal);
       emit('success', result);
     } catch (error: any) {

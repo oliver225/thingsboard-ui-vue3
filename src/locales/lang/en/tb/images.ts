@@ -3,7 +3,8 @@ export default {
   table: { name: 'Name', createdTime: 'Created Time', resolution: 'Resolution', size: 'File Size', system: 'System' },
   form: {
     upload: 'Upload',
-    title: 'Title',
+    title: 'Preview',
+    file: 'Title',
     titlePlaceholder: 'Please enter title',
     titleRequired: 'Please enter title!',
     fileRequired: 'Please select one image!',

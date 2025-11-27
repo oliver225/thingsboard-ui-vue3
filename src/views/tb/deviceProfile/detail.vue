@@ -62,7 +62,7 @@
           {{ data?.defaultEdgeRuleChain?.name }}
         </template>
         <template #image="{ data }">
-          <Image :src="data?.image" :width="300" />
+          <ImageUrlInput class="m--4" v-if="data.image" v-model:value="data.image" :disabled="true" />
         </template>
       </Description>
     </div>
@@ -116,6 +116,7 @@
   import CalculatedField from '/@/views/tb/calculatedField/list.vue';
   import { ProvisionType, TransportType } from '/@/enums/deviceEnum';
   import { DetailTabItemEnum } from '/@/enums/detailTabEnum';
+  import ImageUrlInput from '/@/views/tb/images/ImageUrlInput.vue';
 
   const userStore = useUserStore();
 

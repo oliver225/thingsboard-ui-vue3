@@ -32,6 +32,9 @@
           </Select.Option>
         </Select>
       </template>
+      <template #imageInput="{ model, field }">
+        <ImageUrlInput v-model:value="model[field]" />
+      </template>
     </BasicForm>
   </BasicModal>
 </template>
@@ -54,6 +57,7 @@
   import { PROCESSING_STRATEGY_OPTIONS, SUBMIT_STRATEGY_OPTIONS } from '/@/enums/queueEnum';
   import { isEmpty } from 'lodash-es';
   import { currentTenantDashboardList } from '/@/api/tb/dashboard';
+  import ImageUrlInput from '/@/views/tb/images/ImageUrlInput.vue';
 
   const emit = defineEmits(['success', 'register']);
 
@@ -136,6 +140,12 @@
         },
         api: (args: any) => ruleChainList(args, 'EDGE'),
       },
+    },
+    {
+      label: t('图片'),
+      field: 'image',
+      component: 'Input',
+      slot: 'imageInput',
     },
     //image
     {

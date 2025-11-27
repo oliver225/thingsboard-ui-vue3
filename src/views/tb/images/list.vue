@@ -51,14 +51,12 @@
       </template>
       <template #itemContainer="{ record }">
         <div class="w-52 h-68 p-2 bg-slate-100">
-          <div class="cursor-pointer h-50 w-full content-center">
-            <img
-              :src="record.publicLink"
-              :alt="record.name"
-              class="cursor-pointer w-full"
-              @click="handleDetail(record)"
-            />
-          </div>
+          <img
+            :src="record.publicLink"
+            :alt="record.name"
+            class="cursor-pointer img-content-clip"
+            @click="handleDetail(record)"
+          />
           <div class="px-1">
             <div class="h-9 font-bold text-ellipsis overflow-hidden whitespace-nowrap">
               {{ record.title }}
@@ -90,7 +88,7 @@
   });
 </script>
 <script lang="ts" setup>
-  import { defineComponent, reactive } from 'vue';
+  import { defineComponent, reactive, unref } from 'vue';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { convertBytesToSize } from '/@/utils';
   import { useModal } from '/@/components/Modal';
@@ -98,7 +96,7 @@
   import { useMessage } from '/@/hooks/web/useMessage';
   import { Icon } from '/@/components/Icon';
   import { router } from '/@/router';
-  import { imageList, deleteImage, downloadImage, imagePreview } from '/@/api/tb/images';
+  import { imageList, deleteImage, downloadImage } from '/@/api/tb/images';
   import { Space, Checkbox, Divider } from 'ant-design-vue';
   import EmbedImage from './embedImage.vue';
   import Detail from './detail.vue';
@@ -110,9 +108,10 @@
   const { t } = useI18n('tb');
   const { hasPermission } = usePermission();
   const { createConfirm, showMessage } = useMessage();
+  const { meta } = unref(router.currentRoute);
 
   const getTitle = {
-    value: router.currentRoute.value.meta.title || t('tb.images.title'),
+    value: meta.title || t('tb.images.title'),
   };
 
   const searchParam = reactive({
@@ -221,11 +220,11 @@
     };
   }
 
-  async function handlePreviewImage(data: any[]) {
-    for (let i = 0; i < data.length; i++) {
-      await fetchPreviewImage(data[i]).then((base64) => (data[i].preview = base64));
-    }
-  }
+  // async function handlePreviewImage(data: any[]) {
+  //   for (let i = 0; i < data.length; i++) {
+  //     await fetchPreviewImage(data[i]).then((base64) => (data[i].preview = base64));
+  //   }
+  // }
 
   async function handleDelete(record: Recordable) {
     createConfirm({
@@ -284,24 +283,21 @@
     });
   }
 
-  async function fetchPreviewImage(record: Recordable) {
-    return new Promise((resolve) => {
-      imagePreview(record.link).then((file) => {
-        let fileReader = new FileReader();
-        fileReader.onloadend = (e) => {
-          resolve(e.target?.result);
-        };
-        fileReader.readAsDataURL(file);
-      });
-    });
-  }
+  // async function fetchPreviewImage(record: Recordable) {
+  //   return new Promise((resolve) => {
+  //     imagePreview(record.link).then((file) => {
+  //       let fileReader = new FileReader();
+  //       fileReader.onloadend = (e) => {
+  //         resolve(e.target?.result);
+  //       };
+  //       fileReader.readAsDataURL(file);
+  //     });
+  //   });
+  // }
 
   async function handleDownload(record: Recordable) {
-    const res = await downloadImage(record.link);
-    let name = res.headers['content-disposition'];
-    name = name && name.match(/filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/);
-    name = name && name.length >= 1 && name[1].replace("utf-8'zh_cn'", '');
-    downloadByData(res.data, name);
+    const data = await downloadImage(record.link);
+    downloadByData(data, record.fileName);
   }
 
   function handleSuccess() {

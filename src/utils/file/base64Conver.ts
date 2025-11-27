@@ -49,6 +49,16 @@ export function fileToBase64(file: File): Promise<string> {
   });
 }
 
+export function imageToBase64(file: File): Promise<string> {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result as string);
+    reader.onerror = (error) => reject(error);
+    // 开始读取文件为 Data URL
+    reader.readAsDataURL(file);
+  });
+}
+
 export function textToBase64(text: string) {
   return window.btoa(unescape(encodeURIComponent(text)));
 }

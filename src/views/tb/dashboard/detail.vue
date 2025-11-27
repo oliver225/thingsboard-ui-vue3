@@ -76,6 +76,9 @@
             <img :src="val" :alt="record.name" class="img-content-clip" />
           </div>
         </template>
+        <template #image="{ data }">
+          <ImageUrlInput class="m--4" v-if="data.image" v-model:value="data.image" :disabled="true" />
+        </template>
       </Description>
     </div>
     <AuditLog
@@ -103,6 +106,7 @@
   import { Dashboard, getDashboardById } from '/@/api/tb/dashboard';
   import { imagePreview } from '/@/api/tb/images';
   import { useGlobSetting } from '/@/hooks/setting';
+  import ImageUrlInput from '/@/views/tb/images/ImageUrlInput.vue';
   const { hasPermission } = usePermission();
 
   const emit = defineEmits(['edit', 'delete', 'assignToPublic', 'assignToCustomer', 'unAssignToPublic', 'register']);
@@ -176,8 +180,8 @@
     },
     {
       label: t('tb.dashboard.detail.image'),
-      field: 'imagePreview',
-      slot: 'imagePreview',
+      field: 'image',
+      slot: 'image',
       span: 4,
     },
   ];

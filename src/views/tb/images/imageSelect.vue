@@ -1,11 +1,16 @@
 <template>
-  <BasicModal v-bind="$attrs" :footer="null" :can-fullscreen="false" width="800px" @register="registerModal">
+  <BasicModal
+    v-bind="$attrs"
+    :show-cancel-btn="false"
+    :show-ok-btn="false"
+    :can-fullscreen="false"
+    width="800px"
+    @register="registerModal"
+  >
+    <template #title>
+      {{ t('tb.images.title') }}
+    </template>
     <BasicTable @register="registerTable">
-      <template #headerTop>
-        <div class="text-lg font-bold my-2">
-          {{ t('tb.images.title') }}
-        </div>
-      </template>
       <template #tableTitle>
         <div class="space-x-2">
           <Button type="primary" @click="handleUpload({})">
@@ -32,7 +37,7 @@
       <template #firstColumn="{ record }">
         <Space>
           <div class="h-10 w-10 bg-white flex justify-center">
-            <img :src="record.publicLink" :alt="record.name" class="cursor-pointer w-full" />
+            <img :src="record.publicLink" :alt="record.name" class="cursor-pointer img-content-clip" />
           </div>
           {{ record.title }}
         </Space>
@@ -48,7 +53,7 @@
   import { Icon } from '/@/components/Icon';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { useModal } from '/@/components/Modal';
-  import { ref, reactive } from 'vue';
+  import { reactive } from 'vue';
   import { Checkbox, Input, Button, Space } from 'ant-design-vue';
   import { BasicTable, BasicColumn, useTable } from '/@/components/Table';
   import { BasicModal, useModalInner } from '/@/components/Modal';

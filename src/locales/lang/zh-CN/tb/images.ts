@@ -3,7 +3,8 @@ export default {
   table: { name: '名称', createdTime: '创建时间', resolution: '分辨率', size: '文件大小', system: '系统' },
   form: {
     upload: '上传',
-    title: '标题',
+    title: '图像标题',
+    file: '图像预览',
     titlePlaceholder: '请输入标题',
     titleRequired: '请输入标题!',
     fileRequired: '请选择一个图片！',

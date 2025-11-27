@@ -31,10 +31,10 @@
           {{ t('tb.images.action.updateImage') }}
         </a-button>
       </div>
-      <div class="h-100 my-2">
+      <div class="h-116 w-full my-2 bg-white">
         <img :src="record.preview" :alt="record.name" class="img-content-clip" />
       </div>
-      <div class="px-1">
+      <div class="px-1 text-slate-400">
         <Space :size="1">
           <template #split>
             <Divider type="vertical" />

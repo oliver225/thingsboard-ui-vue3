@@ -18,6 +18,9 @@
           <span>{{ t('tb.dashboard.form.mobileHide') }}</span>
         </div>
       </template>
+      <template #imageInput="{ model, field }">
+        <ImageUrlInput v-model:value="model[field]" />
+      </template>
     </BasicForm>
   </BasicModal>
 </template>
@@ -35,6 +38,7 @@
   import { usePermission } from '/@/hooks/web/usePermission';
   import { Authority } from '/@/enums/authorityEnum';
   import { Dashboard, getDashboardById, saveDashboard } from '/@/api/tb/dashboard';
+  import ImageUrlInput from '/@/views/tb/images/ImageUrlInput.vue';
 
   const emit = defineEmits(['success', 'register']);
 
@@ -83,6 +87,13 @@
         precision: 0,
       },
     },
+    {
+      label: t('图片'),
+      field: 'image',
+      component: 'Input',
+      slot: 'imageInput',
+    },
+    //image
   ];
 
   const [registerForm, { resetFields, setFieldsValue, updateSchema, validate }] = useForm({
