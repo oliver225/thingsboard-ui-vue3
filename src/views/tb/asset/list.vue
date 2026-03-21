@@ -24,6 +24,14 @@
           </a-input>
         </div>
       </template>
+      <template #toolbar>
+        <div class="flex items-center gap-2">
+          <a-button v-show="hasPermission(Authority.TENANT_ADMIN)" @click="handleUpload()">
+            <Icon icon="ant-design:upload-outlined" />
+            导入
+          </a-button>
+        </div>
+      </template>
       <template #firstColumn="{ record }">
         <a @click="handleDetail({ id: record.id })" :title="record.name">
           {{ record.name }}
@@ -44,6 +52,7 @@
       @unAssignFromCustomer="handleUnAssignFromCustomer"
     />
     <AssignCustomer @register="registerAssignCustomerModal" @success="handleSuccess" />
+    <UploadModel @register="registerUploadModal" @success="handleSuccess" />
   </div>
 </template>
 <script lang="ts">
@@ -52,29 +61,26 @@
   });
 </script>
 <script lang="ts" setup>
-  import { defineComponent, reactive, ref } from 'vue';
+  import { defineComponent, onMounted, reactive, ref } from 'vue';
+  import { router } from '/@/router';
+  import { Checkbox } from 'ant-design-vue';
+  import { Icon } from '/@/components/Icon';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { useModal } from '/@/components/Modal';
   import { useDrawer } from '/@/components/Drawer';
   import { BasicTable, BasicColumn, useTable } from '/@/components/Table';
-  import { useMessage } from '/@/hooks/web/useMessage';
-  import { Icon } from '/@/components/Icon';
-  import { Checkbox } from 'ant-design-vue';
-  import { useUserStore } from '/@/store/modules/user';
-  import {
-    deleteAsset,
-    getTenantAssetInfoList,
-    getCustomerAssetInfoList,
-    unAssignAssetFromCustomer,
-    assignAssetToPublicCustomer,
-  } from '/@/api/tb/asset';
-  import InputForm from './form.vue';
-  import { usePermission } from '/@/hooks/web/usePermission';
-  import DetailDrawer from './detail.vue';
-  import AssignCustomer from './assignCustomer.vue';
   import { Authority } from '/@/enums/authorityEnum';
+  import { useMessage } from '/@/hooks/web/useMessage';
+  import { useUserStore } from '/@/store/modules/user';
+  import { usePermission } from '/@/hooks/web/usePermission';
+  import { deleteAsset } from '/@/api/tb/asset';
   import { assetProfileInfoList } from '/@/api/tb/assetProfile';
-  import { router } from '/@/router';
+  import { getTenantAssetInfoList, getCustomerAssetInfoList } from '/@/api/tb/asset';
+  import { unAssignAssetFromCustomer, assignAssetToPublicCustomer } from '/@/api/tb/asset';
+  import InputForm from './form.vue';
+  import DetailDrawer from './detail.vue';
+  import UploadModel from './uploadModel.vue';
+  import AssignCustomer from './assignCustomer.vue';
 
   const userStore = useUserStore();
 
@@ -177,6 +183,7 @@
     ],
   };
 
+  const [registerUploadModal, { openModal: openUploadModal }] = useModal();
   const [registerAssignCustomerModal, { openModal: openAssignCustomerModal }] = useModal();
   const [registerFormModal, { openModal: openFormModal }] = useModal();
   const [registerDetailDrawer, { openDrawer: openDetailDrawer }] = useDrawer();
@@ -301,5 +308,17 @@
   function handleDetail(record: Recordable) {
     openDetailDrawer(true, record);
   }
+
+  function handleUpload() {
+    openUploadModal(true);
+  }
+
+  onMounted(() => {
+    if (router.currentRoute.value.query.assetId) {
+      const assetId = router.currentRoute.value.query.assetId;
+      router.currentRoute.value.query = {};
+      openDetailDrawer(true, { id: { id: assetId } });
+    }
+  });
 </script>
 <style lang="less"></style>

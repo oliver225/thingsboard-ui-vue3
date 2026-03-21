@@ -1,4 +1,12 @@
-import { BasicModel, DeviceQueryParam, EntitySubtype, Page, RelationsSearchParameters } from '../model/baseModel';
+import {
+  BasicModel,
+  BulkImportRequest,
+  BulkImportResult,
+  DeviceQueryParam,
+  EntitySubtype,
+  Page,
+  RelationsSearchParameters,
+} from '../model/baseModel';
 import { CredentialsType, TransportType } from '/@/enums/deviceEnum';
 import { defHttp } from '/@/utils/http/axios';
 import { EntityType } from '/@/enums/entityTypeEnum';
@@ -196,5 +204,10 @@ export function countByDeviceProfileAndEmptyOtaPackage(otaPackageType: string, d
   });
 }
 
-//TODO 没有写
-export function processDevicesBulkImport() {}
+//导入CSV文件
+export function devicesBulkImport(data: BulkImportRequest) {
+  return defHttp.postJson<BulkImportResult>({
+    url: '/api/device/bulk_import',
+    data,
+  });
+}

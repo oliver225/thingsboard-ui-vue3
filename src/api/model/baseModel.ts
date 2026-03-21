@@ -1,4 +1,5 @@
 import { AlarmSeverity, AlarmStatus } from '/@/enums/alarmEnum';
+import { BulkImportColumnType } from '/@/enums/bulkImportColumnType';
 import { EntityType } from '/@/enums/entityTypeEnum';
 import { EntitySearchDirection, RelationTypeGroup } from '/@/enums/relationEnum';
 
@@ -117,4 +118,26 @@ export interface EntitySubtype {
   tenantId?: EntityId<EntityType.TENANT>;
   entityType?: EntityType;
   type?: string;
+}
+
+export interface BulkImportResult {
+  created: number;
+  updated: number;
+  errors: number;
+  errorsList: Array<string>;
+}
+
+export interface BulkImportRequest {
+  file: string;
+  mapping: {
+    columns: Array<BulkColumn>;
+    delimiter: string;
+    update: boolean;
+    header: boolean;
+  };
+}
+
+export interface BulkColumn {
+  type: BulkImportColumnType;
+  key: string;
 }

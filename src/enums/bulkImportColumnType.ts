@@ -1,0 +1,30 @@
+export enum BulkImportColumnType {
+  NAME = 'NAME',
+  TYPE = 'TYPE',
+  LABEL = 'LABEL',
+  SHARED_ATTRIBUTE = 'SHARED_ATTRIBUTE',
+  SERVER_ATTRIBUTE = 'SERVER_ATTRIBUTE',
+  TIME_SERIES = 'TIME_SERIES',
+  ACCESS_TOKEN = 'ACCESS_TOKEN',
+  MQTT_CLIENT_ID = 'MQTT_CLIENT_ID',
+  MQTT_USER_NAME = 'MQTT_USER_NAME',
+  MQTT_PASSWORD = 'MQTT_PASSWORD',
+  IS_GATEWAY = 'IS_GATEWAY',
+  DESCRIPTION = 'DESCRIPTION',
+  SECRET = 'SECRET',
+}
+
+export const BULK_IMPORT_COLUMN_OPTIONS = [
+  { value: BulkImportColumnType.NAME, label: '名称' },
+  { value: BulkImportColumnType.TYPE, label: '类型' },
+  { value: BulkImportColumnType.LABEL, label: '标签' },
+  { value: BulkImportColumnType.DESCRIPTION, label: '描述' },
+  { value: BulkImportColumnType.SHARED_ATTRIBUTE, label: '共享属性' },
+  { value: BulkImportColumnType.SERVER_ATTRIBUTE, label: '服务端属性' },
+  { value: BulkImportColumnType.TIME_SERIES, label: '遥测数据' },
+  { value: BulkImportColumnType.ACCESS_TOKEN, label: '访问令牌' },
+  { value: BulkImportColumnType.MQTT_CLIENT_ID, label: 'MQTT客户端ID' },
+  { value: BulkImportColumnType.MQTT_USER_NAME, label: 'MQTT用户名' },
+  { value: BulkImportColumnType.MQTT_PASSWORD, label: 'MQTT密码' },
+  { value: BulkImportColumnType.IS_GATEWAY, label: '是否网关' },
+];

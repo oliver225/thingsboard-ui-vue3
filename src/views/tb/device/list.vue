@@ -24,6 +24,14 @@
           </a-input>
         </div>
       </template>
+      <template #toolbar>
+        <div class="flex items-center gap-2">
+          <a-button v-show="hasPermission(Authority.TENANT_ADMIN)" @click="handleUpload()">
+            <Icon icon="ant-design:upload-outlined" />
+            导入
+          </a-button>
+        </div>
+      </template>
       <template #firstColumn="{ record }">
         <a @click="handleDetail({ id: record.id })" :title="record.name">
           {{ record.name }}
@@ -52,6 +60,7 @@
     />
     <AssignCustomer @register="registerAssignCustomerModal" @success="handleSuccess" />
     <Credentials @register="registerCredentialsModal" @success="handleSuccess" />
+    <UploadModel @register="registerUploadModal" @success="handleSuccess" />
   </div>
 </template>
 <script lang="ts">
@@ -61,29 +70,26 @@
 </script>
 <script lang="ts" setup>
   import { defineComponent, onMounted, reactive, ref } from 'vue';
+  import { router } from '/@/router';
+  import { Checkbox, Tag } from 'ant-design-vue';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { useModal } from '/@/components/Modal';
   import { useDrawer } from '/@/components/Drawer';
+  import Icon from '/@/components/Icon/src/Icon.vue';
   import { BasicTable, BasicColumn, useTable } from '/@/components/Table';
   import { useMessage } from '/@/hooks/web/useMessage';
-  import { Icon } from '/@/components/Icon';
-  import { Checkbox, Tag } from 'ant-design-vue';
   import { useUserStore } from '/@/store/modules/user';
-  import {
-    deleteDevice,
-    getTenantDeviceInfoList,
-    getCustomerDeviceInfoList,
-    unAssignDeviceFromCustomer,
-    assignDeviceToPublicCustomer,
-  } from '/@/api/tb/device';
+  import { Authority } from '/@/enums/authorityEnum';
+  import { usePermission } from '/@/hooks/web/usePermission';
+  import { deleteDevice } from '/@/api/tb/device';
+  import { getDeviceProfileInfoList } from '/@/api/tb/deviceProfile';
+  import { getTenantDeviceInfoList, getCustomerDeviceInfoList } from '/@/api/tb/device';
+  import { unAssignDeviceFromCustomer, assignDeviceToPublicCustomer } from '/@/api/tb/device';
   import InputForm from './form.vue';
   import DetailDrawer from './detail.vue';
   import AssignCustomer from './assignCustomer.vue';
   import Credentials from './credentials.vue';
-  import { Authority } from '/@/enums/authorityEnum';
-  import { usePermission } from '/@/hooks/web/usePermission';
-  import { getDeviceProfileInfoList } from '/@/api/tb/deviceProfile';
-  import { router } from '/@/router';
+  import UploadModel from './uploadModel.vue';
 
   const userStore = useUserStore();
 
@@ -212,6 +218,7 @@
     ],
   };
 
+  const [registerUploadModal, { openModal: openUploadModal }] = useModal();
   const [registerCredentialsModal, { openModal: openCredentialsModal }] = useModal();
   const [registerAssignCustomerModal, { openModal: openAssignCustomerModal }] = useModal();
   const [registerFormModal, { openModal: openFormModal }] = useModal();
@@ -349,6 +356,10 @@
 
   function handleDetail(record: Recordable) {
     openDetailDrawer(true, record);
+  }
+
+  function handleUpload() {
+    openUploadModal(true);
   }
 
   onMounted(() => {

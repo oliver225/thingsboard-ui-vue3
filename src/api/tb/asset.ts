@@ -1,4 +1,12 @@
-import { BasicModel, BasicQuery, EntitySubtype, Page, RelationsSearchParameters } from '../model/baseModel';
+import {
+  BasicModel,
+  BasicQuery,
+  BulkImportRequest,
+  BulkImportResult,
+  EntitySubtype,
+  Page,
+  RelationsSearchParameters,
+} from '../model/baseModel';
 import { EntityType } from '/@/enums/entityTypeEnum';
 import { defHttp } from '/@/utils/http/axios';
 
@@ -143,5 +151,10 @@ export function unAssignAssetFromEdge(edgeId: string, assetId: string) {
   });
 }
 
-//TODO 没有写
-export function processAssetsBulkImport() {}
+//导入CSV文件
+export function assetBulkImport(data: BulkImportRequest) {
+  return defHttp.postJson<BulkImportResult>({
+    url: '/api/asset/bulk_import',
+    data,
+  });
+}
