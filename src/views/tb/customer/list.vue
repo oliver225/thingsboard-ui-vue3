@@ -119,13 +119,31 @@
   ];
 
   const actionColumn: BasicColumn = {
-    width: 160,
+    width: 180,
     actions: (record: Recordable) => [
       {
         icon: 'ant-design:team-outlined',
         title: t('tb.customer.action.customerUser'),
         disabled: record.title == 'Public',
         onClick: handleCustomerUser.bind(this, { ...record }),
+      },
+      {
+        icon: 'ant-design:database-outlined',
+        title: t('客户设备'),
+        disabled: record.title == 'Public',
+        onClick: handleCustomerDevice.bind(this, { ...record }),
+      },
+      {
+        icon: 'ant-design:desktop-outlined',
+        title: t('客户资产'),
+        disabled: record.title == 'Public',
+        onClick: handleCustomerAsset.bind(this, { ...record }),
+      },
+      {
+        icon: 'i-ant-design:layout-outlined',
+        title: t('客户仪表板'),
+        disabled: record.title == 'Public',
+        onClick: handleCustomerDashboard.bind(this, { ...record }),
       },
       {
         icon: 'ant-design:delete-outlined',
@@ -186,7 +204,16 @@
   function handleCustomerUser(record: Recordable) {
     router.push(`/customer/${record.id.id}/users`);
   }
+  function handleCustomerDevice(record: Recordable) {
+    router.push(`/customer/${record.id.id}/devices`);
+  }
+  function handleCustomerAsset(record: Recordable) {
+    router.push(`/customer/${record.id.id}/assets`);
+  }
 
+  function handleCustomerDashboard(record: Recordable) {
+    router.push(`/customer/${record.id.id}/dashboards`);
+  }
   function handleSuccess() {
     reload();
   }

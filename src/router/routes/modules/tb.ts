@@ -263,6 +263,39 @@ const tb: AppRouteModule = {
             authority: [Authority.TENANT_ADMIN],
           },
         },
+        {
+          path: '/customer/:customerId/devices',
+          name: 'CustomerDeviceList',
+          component: () => import('/@/views/tb/customer/device/list.vue'),
+          meta: {
+            icon: 'ant-design:database-outlined',
+            tabIcon: 'ant-design:database-outlined',
+            title: t('客户设备'),
+            authority: [Authority.TENANT_ADMIN],
+          },
+        },
+        {
+          path: '/customer/:customerId/assets',
+          name: 'CustomerAssetList',
+          component: () => import('/@/views/tb/customer/asset/list.vue'),
+          meta: {
+            icon: 'ant-design:desktop-outlined',
+            tabIcon: 'ant-design:desktop-outlined',
+            title: t('客户资产'),
+            authority: [Authority.TENANT_ADMIN],
+          },
+        },
+        {
+          path: '/customer/:customerId/dashboards',
+          name: 'CustomerDashboardList',
+          component: () => import('/@/views/tb/customer/dashboard/list.vue'),
+          meta: {
+            icon: 'i-ant-design:layout-outlined',
+            tabIcon: 'i-ant-design:layout-outlined',
+            title: t('客户仪表板'),
+            authority: [Authority.TENANT_ADMIN],
+          },
+        },
       ],
     },
     {
