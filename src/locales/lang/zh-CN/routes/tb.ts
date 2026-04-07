@@ -43,4 +43,7 @@ export default {
     auditLog: '审计日志',
   },
   gateways: '网关',
+  customerDevice: '客户设备',
+  customerAsset: '客户资产',
+  customerDashboard: '客户仪表板',
 };

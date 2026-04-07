@@ -1,85 +1,204 @@
-<div align="center">
+# ThingsBoard UI Vue
 
-  <br>
-  <br>
+A Vue 3 frontend for [ThingsBoard](https://thingsboard.io/) (v4.2.0), built with Vite, TypeScript, and Ant Design Vue. Based on [vue-vben-admin](https://github.com/vbenjs/vue-vben-admin).
 
+[中文文档](./README.zh-CN.md)
 
-  <h1>Thingsboard UI Vue3</h1>
-</div>
+> ⭐ If this project helps you, please give it a star — watch / star / fork appreciated!
 
+## Live Demo
 
+- **URL:** http://thingsboard.yantsing.com/vue/
+- **Username:** 1069035666@qq.com
+- **Password:** 17621315188
 
+> The demo is connected to a real ThingsBoard v4.2.0 instance.
 
-## 介绍
+## Features
 
-Thingsboard UI Vue3 是 Thingsboard 的前端适配版本。作为一个免费开源的前端项目，它采用了最新的 Vue 3、Vite、TypeScript 等主流技术开发，基于[vue-vben-admin](https://github.com/vbenjs/vue-vben-admin), 开箱即用，可用于前端替换，也适合学习参考。
+- **Device Management** — list, create, edit, delete devices; import in bulk
+- **Asset Management** — asset list, profiles, bulk import
+- **Customer Management** — manage customers with their own devices, assets, and dashboards
+- **Dashboard** — data visualization dashboards with widget support
+- **Rule Engine** — visual rule chain editor powered by AntV X6
+- **Entity Views** — custom views over device/asset telemetry
+- **OTA Updates** — manage firmware/software packages for devices
+- **Alarms** — alarm list, filtering, and acknowledgement
+- **Audit Logs** — full audit trail of system operations
+- **Notification Center** — notification rules, templates, recipients, and sent records
+- **Resource Library** — widget bundles, image library, SCADA symbols, JavaScript library
+- **Admin Settings** — system-level configuration (SYS_ADMIN)
+- **Multi-language** — English and Chinese (Simplified), switchable at runtime
+- **Dark Mode** — full dark theme support
+- **Responsive Layout** — adapts to different screen sizes
 
+## Tech Stack
 
-🎉 请大家持续关注，watch、star、fork 一键三连
+| Category | Library / Version |
+|---|---|
+| Framework | Vue 3.5 + TypeScript 5 |
+| Build Tool | Vite 6 |
+| UI Library | Ant Design Vue 4 |
+| State Management | Pinia 2 |
+| Router | Vue Router 4 |
+| Rule Engine Graph | AntV X6 2 |
+| Charts | ECharts 5 |
+| Code Editor | Monaco Editor |
+| i18n | Vue I18n 11 |
+| HTTP | Axios |
+| CSS | UnoCSS + Less |
 
-## 升级提示
+## ThingsBoard Compatibility
 
-该版本为最新版本，适配thingsboard 4.2.0 版本。与其他版本不兼容，如果你是新项目，建议使用最新版本。如果你想查看3.x 版本  请查看其他分支
+| UI Version | ThingsBoard Version |
+|---|---|
+| v4.x (this branch) | v4.2.0 |
+| v3.x | v3.x (see other branches) |
 
+## Prerequisites
 
+- Node.js >= 18
+- pnpm >= 8
 
-## 预览地址
-  thingsboard:   http://thingsboard.yantsing.com/vue/
-   
-   用户名：1069035666@qq.com (我的邮箱)
+## Getting Started
 
-   密码: 17621315188 (我的微信，欢迎讨论交流)
+**1. Clone the repository**
 
+```bash
+git clone https://github.com/oliver225/thingsboard-ui-vue.git
+cd thingsboard-ui-vue
+```
 
-## Thingsbaord
- 
-   thingsboard：V4.2.0 持续跟进更新中
+**2. Install dependencies**
 
+```bash
+pnpm install
+```
 
-## 使用技术
+**3. Configure environment**
 
-- [Vite](https://vitejs.dev/) 
-- [Vue-v3](https://cn.vuejs.org/) 
-- [Vue-Router-v4](https://next.router.vuejs.org/) 
-- [Ant-Design-Vue](https://antdv.com/components/overview-cn/)
-- [AntV x6](https://x6.antv.antgroup.com/)
-  
-## 启动
-- 打开 .env.development 文件，修改后台接口：
-  ```bash
-  # 代理设置，可配置多个，不能换行，格式：[访问接口的根路径, 代理地址, 是否保持Host头]
-   VITE_PROXY = [["/api","http://127.0.0.1:8080/api",false]]
-  # 访问接口的根路径
-   VITE_GLOB_API_URL =
-- 运行、打包
-   ```bash
-   # 安装依赖
-   pnpm install
-   # 开发环境运行
-   yarn serve
-   # 编译打包后运行访问
-   yarn preview
-   # 打包
-   yarn build
-## 规则引擎
-- [AntV x6](https://x6.antv.antgroup.com/)
-  
+Edit `.env.development`:
 
-![规则引擎](images/rule_chain_20240305160850.png)
+```env
+# Proxy: [path prefix, target, keep host header]
+VITE_PROXY = [["/api","http://127.0.0.1:8080/api",false]]
+VITE_GLOB_API_URL = /api
+```
 
-## 预览图片
-![登录页](images/login_page.png)
-![租户仪表盘](images/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240219165338.png)
-![租户仪表盘](images/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240219164906.png)
-![租户仪表盘](images/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240219164934.png)
-![租户仪表盘](images/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240219165036.png)
-![租户仪表盘](images/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240219165220.png)
-![租户仪表盘](images/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240219165220.png)
-![租户仪表盘](images/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240219165300.png)
-![租户仪表盘](images/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20240219165313.png)
+Replace `http://127.0.0.1:8080` with your ThingsBoard backend address.
 
-## 🙋‍♂️联系我们
+**4. Start dev server**
 
-<left class ='img'>
-<img title="扫码沟通" src="./images/weixin.jpg" width=40%" />
-</left>
+```bash
+npm run dev
+```
+
+Open http://localhost:5173 in your browser.
+
+**5. Build for production**
+
+```bash
+npm run build
+```
+
+Output is in the `dist/` directory. Deploy it behind Nginx or any static file server, proxying `/api` to your ThingsBoard backend.
+
+## Nginx Example
+
+```nginx
+server {
+    listen       80;
+    server_name  localhost;
+
+    access_log  /var/log/nginx/thingsboard.access.log  main;
+
+    # Vue frontend (deployed under /vue path)
+    location /vue {
+        alias  /opt/thingsboard/vue;
+        index  index.html;
+        try_files $uri $uri/vue /vue/index.html;
+    }
+
+    # ThingsBoard backend
+    location / {
+        proxy_set_header  X-Real-IP $remote_addr;
+        proxy_set_header  Host  $http_host;
+        proxy_pass  http://127.0.0.1:18080;
+        proxy_max_temp_file_size 0;
+    }
+
+    # REST API
+    location /api {
+        proxy_set_header  X-Real-IP $remote_addr;
+        proxy_set_header  Host  $http_host;
+        proxy_pass  http://127.0.0.1:18080/api;
+        proxy_max_temp_file_size 0;
+    }
+
+    # WebSocket
+    location /api/ws {
+        proxy_pass http://127.0.0.1:18080;
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection "upgrade";
+    }
+}
+```
+
+## Scripts
+
+| Command | Description |
+|---|---|
+| `npm run dev` | Start development server |
+| `npm run build` | Production build |
+| `npm run preview` | Preview production build locally |
+| `npm run type:check` | TypeScript type checking |
+| `npm run lint:all` | ESLint + Prettier + Stylelint |
+
+> All `npm run` commands above can also be run with `pnpm run`.
+
+## Project Structure
+
+```
+src/
+├── api/            # Axios API clients (mirrors ThingsBoard REST API)
+├── assets/         # Static assets (icons, images, SVGs)
+├── components/     # Shared reusable components
+├── enums/          # TypeScript enums
+├── hooks/          # Vue composables
+├── layouts/        # App shell layouts
+├── locales/        # i18n translation files
+│   └── lang/
+│       ├── en/     # English translations
+│       └── zh-CN/  # Chinese translations
+├── router/         # Route definitions
+├── store/          # Pinia stores
+├── utils/          # Utility functions
+└── views/
+    └── tb/         # ThingsBoard feature pages
+        ├── alarm/
+        ├── asset/
+        ├── customer/
+        ├── dashboard/
+        ├── device/
+        ├── notification/
+        ├── ruleChain/
+        └── ...
+```
+
+## Screenshots
+
+![Rule Engine](images/rule_chain_20240305160850.png)
+![Login](images/login_page.png)
+
+## Contact
+
+WeChat: **17621315188** — feel free to reach out for questions or collaboration.
+
+Email: 1069035666@qq.com
+
+<img title="WeChat QR" src="./images/weixin.jpg" width="200" />
+
+## License
+
+Apache License 2.0

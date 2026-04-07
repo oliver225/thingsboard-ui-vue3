@@ -43,4 +43,7 @@ export default {
     auditLog: 'AuditLogs',
   },
   gateways: 'Gateways',
+  customerDevice: 'Customer Devices',
+  customerAsset: 'Customer Assets',
+  customerDashboard: 'Customer Dashboards',
 };

@@ -270,7 +270,7 @@ const tb: AppRouteModule = {
           meta: {
             icon: 'ant-design:database-outlined',
             tabIcon: 'ant-design:database-outlined',
-            title: t('客户设备'),
+            title: t('routes.tb.customerDevice'),
             authority: [Authority.TENANT_ADMIN],
           },
         },
@@ -281,7 +281,7 @@ const tb: AppRouteModule = {
           meta: {
             icon: 'ant-design:desktop-outlined',
             tabIcon: 'ant-design:desktop-outlined',
-            title: t('客户资产'),
+            title: t('routes.tb.customerAsset'),
             authority: [Authority.TENANT_ADMIN],
           },
         },
@@ -292,7 +292,7 @@ const tb: AppRouteModule = {
           meta: {
             icon: 'i-ant-design:layout-outlined',
             tabIcon: 'i-ant-design:layout-outlined',
-            title: t('客户仪表板'),
+            title: t('routes.tb.customerDashboard'),
             authority: [Authority.TENANT_ADMIN],
           },
         },
