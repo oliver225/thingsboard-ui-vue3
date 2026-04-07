@@ -1,6 +1,6 @@
 # ThingsBoard UI Vue
 
-A Vue 3 frontend for [ThingsBoard](https://thingsboard.io/) (v4.2.0), built with Vite, TypeScript, and Ant Design Vue. Based on [vue-vben-admin](https://github.com/vbenjs/vue-vben-admin).
+A Vue 3 frontend for [ThingsBoard](https://thingsboard.io/) (v4.3.0), built with Vite, TypeScript, and Ant Design Vue. Based on [vue-vben-admin](https://github.com/vbenjs/vue-vben-admin).
 
 [中文文档](./README.zh-CN.md)
 
@@ -12,7 +12,7 @@ A Vue 3 frontend for [ThingsBoard](https://thingsboard.io/) (v4.2.0), built with
 - **Username:** 1069035666@qq.com
 - **Password:** 17621315188
 
-> The demo is connected to a real ThingsBoard v4.2.0 instance.
+> The demo is connected to a real ThingsBoard v4.3.0 instance.
 
 ## Features
 
@@ -52,7 +52,7 @@ A Vue 3 frontend for [ThingsBoard](https://thingsboard.io/) (v4.2.0), built with
 
 | UI Version | ThingsBoard Version |
 |---|---|
-| v4.x (this branch) | v4.2.0 |
+| v4.x (this branch) | v4.3.0 |
 | v3.x | v3.x (see other branches) |
 
 ## Prerequisites

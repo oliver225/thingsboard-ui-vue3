@@ -1,6 +1,6 @@
 # ThingsBoard UI Vue
 
-基于 Vue 3 的 [ThingsBoard](https://thingsboard.io/)（v4.2.0）前端适配项目，使用 Vite、TypeScript 和 Ant Design Vue 构建。基于 [vue-vben-admin](https://github.com/vbenjs/vue-vben-admin)。
+基于 Vue 3 的 [ThingsBoard](https://thingsboard.io/)（v4.3.0）前端适配项目，使用 Vite、TypeScript 和 Ant Design Vue 构建。基于 [vue-vben-admin](https://github.com/vbenjs/vue-vben-admin)。
 
 [English](./README.md)
 
@@ -12,7 +12,7 @@
 - **用户名：** 1069035666@qq.com
 - **密码：** 17621315188
 
-> 演示环境连接的是真实的 ThingsBoard v4.2.0 实例。
+> 演示环境连接的是真实的 ThingsBoard v4.3.0 实例。
 
 ## 功能特性
 
@@ -52,7 +52,7 @@
 
 | UI 版本 | ThingsBoard 版本 |
 |---|---|
-| v4.x（当前分支） | v4.2.0 |
+| v4.x（当前分支） | v4.3.0 |
 | v3.x | v3.x（见其他分支） |
 
 ## 环境要求
