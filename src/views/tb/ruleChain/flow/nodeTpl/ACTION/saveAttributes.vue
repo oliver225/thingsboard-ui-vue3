@@ -1,14 +1,32 @@
 <template>
   <Form ref="formRef" :model="formState" layout="vertical">
     <!-- Processing settings -->
-    <div class="mb-4">
+    <div class="border border-solid border-neutral-300 rounded-md py-2 px-3 mb-4">
       <div class="flex items-center justify-between mb-3">
         <span class="font-medium">{{ t('tb.ruleChain.nodeAction.processingSettings') }}</span>
-        <div class="flex gap-2">
+        <!-- <div class="flex gap-2">
           <Button :type="processingMode === 'basic' ? 'primary' : 'default'" @click="processingMode = 'basic'">
             {{ t('tb.ruleChain.nodeAction.modeBasic') }}
           </Button>
           <Button :type="processingMode === 'advanced' ? 'primary' : 'default'" @click="processingMode = 'advanced'">
+            {{ t('tb.ruleChain.nodeAction.modeAdvanced') }}
+          </Button>
+        </div> -->
+        <div class="inline-flex items-center bg-gray-100 rounded-full p-0.5 gap-0.5">
+          <Button
+            :type="processingMode === 'basic' ? 'primary' : 'text'"
+            class="!rounded-full !border-none !shadow-none !px-4 !font-medium !text-sm"
+            :class="processingMode !== 'basic' && '!text-gray-400 hover:!text-gray-600 !bg-transparent'"
+            @click="processingMode = 'basic'"
+          >
+            {{ t('tb.ruleChain.nodeAction.modeBasic') }}
+          </Button>
+          <Button
+            :type="processingMode === 'advanced' ? 'primary' : 'text'"
+            class="!rounded-full !border-none !shadow-none !px-4 !font-medium !text-sm"
+            :class="processingMode !== 'advanced' && '!text-gray-400 hover:!text-gray-600 !bg-transparent'"
+            @click="processingMode = 'advanced'"
+          >
             {{ t('tb.ruleChain.nodeAction.modeAdvanced') }}
           </Button>
         </div>

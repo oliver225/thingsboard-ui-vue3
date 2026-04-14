@@ -2,7 +2,9 @@ node_modules
 Thumbs.db
 .DS_Store
 .cache
+.claude
 dist
+CLAUDE.md
 
 # Test files
 tests/server/static

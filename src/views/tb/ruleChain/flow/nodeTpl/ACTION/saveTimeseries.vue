@@ -1,14 +1,24 @@
 <template>
   <Form ref="formRef" :model="formState" layout="vertical">
     <!-- Processing settings -->
-    <div class="mb-4">
+    <div class="border border-solid border-neutral-300 rounded-md py-2 px-3 mb-4">
       <div class="flex items-center justify-between mb-3">
         <span class="font-medium">{{ t('tb.ruleChain.nodeAction.processingSettings') }}</span>
-        <div class="flex gap-2">
-          <Button :type="processingMode === 'basic' ? 'primary' : 'default'" @click="processingMode = 'basic'">
+        <div class="inline-flex items-center bg-gray-100 rounded-full p-0.5 gap-0.5">
+          <Button
+            :type="processingMode === 'basic' ? 'primary' : 'text'"
+            class="!rounded-full !border-none !shadow-none !px-4 !font-medium !text-sm"
+            :class="processingMode !== 'basic' && '!text-gray-400 hover:!text-gray-600 !bg-transparent'"
+            @click="processingMode = 'basic'"
+          >
             {{ t('tb.ruleChain.nodeAction.modeBasic') }}
           </Button>
-          <Button :type="processingMode === 'advanced' ? 'primary' : 'default'" @click="processingMode = 'advanced'">
+          <Button
+            :type="processingMode === 'advanced' ? 'primary' : 'text'"
+            class="!rounded-full !border-none !shadow-none !px-4 !font-medium !text-sm"
+            :class="processingMode !== 'advanced' && '!text-gray-400 hover:!text-gray-600 !bg-transparent'"
+            @click="processingMode = 'advanced'"
+          >
             {{ t('tb.ruleChain.nodeAction.modeAdvanced') }}
           </Button>
         </div>
@@ -192,7 +202,7 @@
     </div>
 
     <!-- Advanced settings -->
-    <div class="mb-4">
+    <div class="border border-solid border-neutral-300 rounded-md py-2 px-3 mb-4">
       <div class="font-medium mb-3">Advanced settings</div>
 
       <!-- Use server timestamp -->
@@ -220,12 +230,12 @@
         </Form.Item>
       </div>
 
-      <!-- Skip latest persistence -->
+      <!-- Skip latest persistence
       <Form.Item name="skipLatestPersistence">
         <Checkbox v-model:checked="formState.skipLatestPersistence">
           {{ t('tb.ruleChain.nodeAction.skipLatestPersistence') }}
         </Checkbox>
-      </Form.Item>
+      </Form.Item> -->
     </div>
   </Form>
 </template>
@@ -235,8 +245,8 @@
   });
 </script>
 <script lang="ts" setup>
-  import { ref, watch, defineComponent, reactive, computed } from 'vue';
-  import { Form, InputNumber, Checkbox, Select, Switch, Button } from 'ant-design-vue';
+  import { ref, watch, defineComponent, reactive } from 'vue';
+  import { Form, InputNumber, Select, Switch, Button } from 'ant-design-vue';
   import { FormInstance } from 'ant-design-vue/lib/form';
   import { useI18n } from '/@/hooks/web/useI18n';
   import { basicStrategyOptions, advancedStrategyOptions, ttlUnitOptions } from '/@/enums/ruleChains';
@@ -251,7 +261,7 @@
 
   interface Configuration {
     defaultTTL: number;
-    skipLatestPersistence: boolean;
+    // skipLatestPersistence: boolean;
     useServerTs: boolean;
     processingSettings?: ProcessingSettings;
   }
@@ -272,7 +282,7 @@
   const formState = reactive<any>({
     defaultTTL: 0,
     ttlUnit: 'SECONDS',
-    skipLatestPersistence: false,
+    // skipLatestPersistence: false,
     useServerTs: false,
     basicStrategy: 'ON_EVERY_MESSAGE',
     timeseriesStrategy: 'ON_EVERY_MESSAGE',
@@ -352,7 +362,7 @@
         }
       }
 
-      formState.skipLatestPersistence = config.skipLatestPersistence || false;
+      // formState.skipLatestPersistence = config.skipLatestPersistence || false;
       formState.useServerTs = config.useServerTs || false;
 
       // 解析 processingSettings
@@ -449,7 +459,6 @@
 
         const result: any = {
           defaultTTL: ttlInSeconds,
-          skipLatestPersistence: data.skipLatestPersistence,
           useServerTs: data.useServerTs,
         };
 
