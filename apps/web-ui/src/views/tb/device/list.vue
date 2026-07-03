@@ -256,8 +256,10 @@ function onEdit(row: DeviceInfo) {
   formModalApi.setData({ deviceId: row.id?.id }).open();
 }
 
-function onAssign(row: DeviceInfo) {
-  assignModalApi.setData({ ...row }).open();
+function onAssign(row?: DeviceInfo) {
+  assignModalApi
+    .setData(row ? { devices: [row] } : { devices: selectedItems.value })
+    .open();
 }
 
 function onImport() {
@@ -427,6 +429,7 @@ function renderDeleteContent(name: string) {
 }
 
 function onFormSuccess() {
+  clearSelectedItems();
   gridApi.query();
 }
 </script>
@@ -457,6 +460,12 @@ function onFormSuccess() {
           v-if="hasAccessByRoles([Authority.TENANT_ADMIN])"
           class="flex items-center gap-2"
         >
+          <Button v-if="selectedItems.length > 0" @click="onAssign()">
+            <template #icon>
+              <IconifyIcon icon="lucide:user-plus" />
+            </template>
+            {{ $t('tb.device.actions.batchAssign') }}
+          </Button>
           <Button
             v-if="selectedItems.length > 0"
             danger

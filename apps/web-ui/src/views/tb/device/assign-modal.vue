@@ -14,8 +14,12 @@ import { $t } from '#/locales';
 
 const emit = defineEmits<{ success: [] }>();
 
-const deviceInfo = ref<DeviceInfo>();
+const deviceInfos = ref<DeviceInfo[]>([]);
 const deviceName = ref('');
+
+function getAssignDevices() {
+  return deviceInfos.value;
+}
 
 async function loadCustomerOptions() {
   const pageData = await getCustomers({
@@ -54,11 +58,16 @@ const [Modal, modalApi] = useVbenModal({
     const { valid } = await formApi.validate();
     if (!valid) return;
     const { customerId } = await formApi.getValues();
-    if (!deviceInfo.value?.id?.id || !customerId) return;
+    const devices = getAssignDevices().filter((item) => item.id?.id);
+    if (devices.length === 0 || !customerId) return;
 
     modalApi.lock();
     try {
-      await assignDeviceToCustomer(customerId, deviceInfo.value.id.id);
+      await Promise.all(
+        devices.map((item) =>
+          assignDeviceToCustomer(customerId, item.id?.id || ''),
+        ),
+      );
       message.success($t('tb.device.assign.success'));
       modalApi.close();
       emit('success');
@@ -70,13 +79,18 @@ const [Modal, modalApi] = useVbenModal({
     if (!isOpen) {
       return;
     }
-    const data = modalApi.getData<DeviceInfo>() ?? {};
-    deviceInfo.value = data;
-    deviceName.value = data.name ?? '';
+    const data =
+      modalApi.getData<DeviceInfo & { devices?: DeviceInfo[] }>() ?? {};
+    deviceInfos.value = data.devices ?? (data.id?.id ? [data] : []);
+    deviceName.value =
+      deviceInfos.value.length === 1 ? (deviceInfos.value[0]?.name ?? '') : '';
     formApi.resetForm();
     modalApi.setState({
       confirmText: $t('tb.device.assign.confirm'),
-      title: $t('tb.device.assign.title'),
+      title:
+        deviceInfos.value.length > 1
+          ? $t('tb.device.assign.batchTitle')
+          : $t('tb.device.assign.title'),
     });
   },
 });
@@ -89,6 +103,12 @@ const [Modal, modalApi] = useVbenModal({
     :close-on-click-modal="false"
     :fullscreen-button="false"
   >
+    <div
+      v-if="deviceInfos.length > 1"
+      class="mb-4 text-sm leading-6 text-muted-foreground"
+    >
+      {{ $t('tb.device.assign.batchCount', { count: deviceInfos.length }) }}
+    </div>
     <div v-if="deviceName" class="mb-4 flex min-w-0 gap-1.5 text-sm leading-6">
       <span class="shrink-0 text-muted-foreground">
         {{ $t('tb.device.fields.name') }}：

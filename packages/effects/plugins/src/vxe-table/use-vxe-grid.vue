@@ -305,6 +305,21 @@ function onSearchBtnClick() {
 
 function onSelectionColumnToggle() {
   showSelectionColumn.value = !showSelectionColumn.value;
+  gridApi.grid.clearCheckboxRow?.()?.then(() => {
+    // 获取触发的事件
+    const checkboxChange = gridEvents.value?.checkboxChange as
+      | undefined
+      | VxeGridListeners['checkboxChange'];
+    // 所需传递的参数
+    const params = {
+      records: () => gridApi.grid.getCheckboxRecords?.() ?? [],
+      reserves: () => gridApi.grid.getCheckboxReserveRecords?.() ?? [],
+      indeterminates: () =>
+        gridApi.grid.getCheckboxIndeterminateRecords?.() ?? [],
+      checked: false,
+    };
+    checkboxChange?.(params as any);
+  });
 }
 
 const events = computed(() => {

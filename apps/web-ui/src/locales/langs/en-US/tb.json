@@ -666,6 +666,7 @@
       "unassign": "Unassign from customer",
       "unassignSuccess": "Unassigned",
       "makePrivate": "Make private",
+      "batchAssign": "Batch assign",
       "batchDelete": "Batch delete"
     },
     "delete": {
@@ -689,6 +690,8 @@
     },
     "assign": {
       "title": "Assign to customer",
+      "batchTitle": "Batch assign to customer",
+      "batchCount": "{count} devices selected",
       "customer": "Select the customer to assign the device to",
       "confirm": "Assign",
       "success": "Assigned to customer"

@@ -666,6 +666,7 @@
       "unassign": "取消分配",
       "unassignSuccess": "已取消分配",
       "makePrivate": "设为私有",
+      "batchAssign": "批量分配",
       "batchDelete": "批量删除"
     },
     "delete": {
@@ -689,6 +690,8 @@
     },
     "assign": {
       "title": "分配给客户",
+      "batchTitle": "批量分配给客户",
+      "batchCount": "已选择 {count} 个设备",
       "customer": "请选择要分配设备的客户",
       "confirm": "分配",
       "success": "已分配给客户"
