@@ -1,204 +1,79 @@
-# ThingsBoard UI Vue
+<div align="center">
+  <h1>ThingsBoard UI</h1>
+  <p>A modern ThingsBoard front-end built on top of Vue 3 + Vite, rebuilt from the <a href="https://github.com/vbenjs/vue-vben-admin">Vue Vben Admin</a> <code>web-antdv-next</code> application.</p>
 
-A Vue 3 frontend for [ThingsBoard](https://thingsboard.io/) (v4.3.0), built with Vite, TypeScript, and Ant Design Vue. Based on [vue-vben-admin](https://github.com/vbenjs/vue-vben-admin).
+[![license](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 
-[中文文档](./README.zh-CN.md)
+**English** | [中文](./README.zh-CN.md)
 
-> ⭐ If this project helps you, please give it a star — watch / star / fork appreciated!
+</div>
 
-## Live Demo
+## Introduction
 
-- **URL:** http://thingsboard.yantsing.com/vue/
-- **Username:** 1069035666@qq.com
-- **Password:** 17621315188
+`ThingsBoard UI` is a brand-new front-end for [ThingsBoard](https://thingsboard.io/), the open-source IoT platform. It is the successor of [thingsboard-ui-vue3](https://github.com/oliver225/thingsboard-ui-vue3), rebuilt on the latest **Vue 3 + Vite + TypeScript** stack using the **Ant Design Vue (next)** variant of [Vue Vben Admin](https://github.com/vbenjs/vue-vben-admin) as the foundation.
 
-> The demo is connected to a real ThingsBoard v4.3.0 instance.
+The repository is a pnpm + Turborepo monorepo: the application itself lives in `apps/web-ui`, while reusable framework code (layouts, stores, access control, request, icons, locales, etc.) lives under `packages/` and shared tooling under `internal/`.
 
 ## Features
 
-- **Device Management** — list, create, edit, delete devices; import in bulk
-- **Asset Management** — asset list, profiles, bulk import
-- **Customer Management** — manage customers with their own devices, assets, and dashboards
-- **Dashboard** — data visualization dashboards with widget support
-- **Rule Engine** — visual rule chain editor powered by AntV X6
-- **Entity Views** — custom views over device/asset telemetry
-- **OTA Updates** — manage firmware/software packages for devices
-- **Alarms** — alarm list, filtering, and acknowledgement
-- **Audit Logs** — full audit trail of system operations
-- **Notification Center** — notification rules, templates, recipients, and sent records
-- **Resource Library** — widget bundles, image library, SCADA symbols, JavaScript library
-- **Admin Settings** — system-level configuration (SYS_ADMIN)
-- **Multi-language** — English and Chinese (Simplified), switchable at runtime
-- **Dark Mode** — full dark theme support
-- **Responsive Layout** — adapts to different screen sizes
+- **Latest stack** — Vue 3, Vite, TypeScript, Pinia, Vue Router
+- **Ant Design Vue (next)** — modern, full-featured component library
+- **Monorepo** — pnpm workspace orchestrated by Turborepo
+- **Theming** — multiple theme colors with dark mode
+- **Internationalization** — built-in i18n (Chinese / English)
+- **Access control** — dynamic, route-based permission system
+- **Ready for ThingsBoard** — wired to proxy `/api` to a ThingsBoard backend
 
-## Tech Stack
+## Requirements
 
-| Category | Library / Version |
-|---|---|
-| Framework | Vue 3.5 + TypeScript 5 |
-| Build Tool | Vite 6 |
-| UI Library | Ant Design Vue 4 |
-| State Management | Pinia 2 |
-| Router | Vue Router 4 |
-| Rule Engine Graph | AntV X6 2 |
-| Charts | ECharts 5 |
-| Code Editor | Monaco Editor |
-| i18n | Vue I18n 11 |
-| HTTP | Axios |
-| CSS | UnoCSS + Less |
-
-## ThingsBoard Compatibility
-
-| UI Version | ThingsBoard Version |
-|---|---|
-| v4.x (this branch) | v4.3.0 |
-| v3.x | v3.x (see other branches) |
-
-## Prerequisites
-
-- Node.js >= 18
-- pnpm >= 8
+- Node.js `^22.18.0 || ^24.0.0`
+- pnpm `>=11`
 
 ## Getting Started
 
-**1. Clone the repository**
-
 ```bash
-git clone https://github.com/oliver225/thingsboard-ui-vue.git
-cd thingsboard-ui-vue
-```
-
-**2. Install dependencies**
-
-```bash
+# install dependencies (pnpm only)
 pnpm install
+
+# start the dev server (http://localhost:3000)
+pnpm dev
+
+# build for production
+pnpm build
 ```
 
-**3. Configure environment**
+> The dev server proxies `/api` to a ThingsBoard backend. Adjust the `target` in [apps/web-ui/vite.config.ts](apps/web-ui/vite.config.ts) (default `http://localhost:8080`) to point at your instance.
 
-Edit `.env.development`:
+## Connecting to a ThingsBoard backend
 
-```env
-# Proxy: [path prefix, target, keep host header]
-VITE_PROXY = [["/api","http://127.0.0.1:8080/api",false]]
-VITE_GLOB_API_URL = /api
-```
+The Vben Nitro mock server has been removed. The app talks to a real backend:
 
-Replace `http://127.0.0.1:8080` with your ThingsBoard backend address.
-
-**4. Start dev server**
-
-```bash
-npm run dev
-```
-
-Open http://localhost:5173 in your browser.
-
-**5. Build for production**
-
-```bash
-npm run build
-```
-
-Output is in the `dist/` directory. Deploy it behind Nginx or any static file server, proxying `/api` to your ThingsBoard backend.
-
-## Nginx Example
-
-```nginx
-server {
-    listen       80;
-    server_name  localhost;
-
-    access_log  /var/log/nginx/thingsboard.access.log  main;
-
-    # Vue frontend (deployed under /vue path)
-    location /vue {
-        alias  /opt/thingsboard/vue;
-        index  index.html;
-        try_files $uri $uri/vue /vue/index.html;
-    }
-
-    # ThingsBoard backend
-    location / {
-        proxy_set_header  X-Real-IP $remote_addr;
-        proxy_set_header  Host  $http_host;
-        proxy_pass  http://127.0.0.1:18080;
-        proxy_max_temp_file_size 0;
-    }
-
-    # REST API
-    location /api {
-        proxy_set_header  X-Real-IP $remote_addr;
-        proxy_set_header  Host  $http_host;
-        proxy_pass  http://127.0.0.1:18080/api;
-        proxy_max_temp_file_size 0;
-    }
-
-    # WebSocket
-    location /api/ws {
-        proxy_pass http://127.0.0.1:18080;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
-    }
-}
-```
-
-## Scripts
-
-| Command | Description |
-|---|---|
-| `npm run dev` | Start development server |
-| `npm run build` | Production build |
-| `npm run preview` | Preview production build locally |
-| `npm run type:check` | TypeScript type checking |
-| `npm run lint:all` | ESLint + Prettier + Stylelint |
-
-> All `npm run` commands above can also be run with `pnpm run`.
+1. `VITE_NITRO_MOCK=false` in [apps/web-ui/.env.development](apps/web-ui/.env.development).
+2. The dev proxy forwards requests from `/api` to your ThingsBoard server — set the `target` in [apps/web-ui/vite.config.ts](apps/web-ui/vite.config.ts).
+3. For production, set `VITE_GLOB_API_URL` in [apps/web-ui/.env.production](apps/web-ui/.env.production) or handle the `/api` route at your gateway / reverse proxy.
 
 ## Project Structure
 
 ```
-src/
-├── api/            # Axios API clients (mirrors ThingsBoard REST API)
-├── assets/         # Static assets (icons, images, SVGs)
-├── components/     # Shared reusable components
-├── enums/          # TypeScript enums
-├── hooks/          # Vue composables
-├── layouts/        # App shell layouts
-├── locales/        # i18n translation files
-│   └── lang/
-│       ├── en/     # English translations
-│       └── zh-CN/  # Chinese translations
-├── router/         # Route definitions
-├── store/          # Pinia stores
-├── utils/          # Utility functions
-└── views/
-    └── tb/         # ThingsBoard feature pages
-        ├── alarm/
-        ├── asset/
-        ├── customer/
-        ├── dashboard/
-        ├── device/
-        ├── notification/
-        ├── ruleChain/
-        └── ...
+.
+├── apps
+│   └── web-ui              # the main application
+├── docs                    # framework documentation (VitePress)
+├── internal                # shared build / lint / tsconfig tooling
+├── packages                # reusable framework packages (@core, effects, ...)
+└── scripts                 # workspace scripts (turbo-run, vsh, deploy)
 ```
 
-## Screenshots
+## Docker
 
-![Rule Engine](images/rule_chain_20240305160850.png)
-![Login](images/login_page.png)
+```bash
+pnpm build:docker
+```
 
-## Contact
-
-WeChat: **17621315188** — feel free to reach out for questions or collaboration.
-
-Email: 1069035666@qq.com
-
-<img title="WeChat QR" src="./images/weixin.jpg" width="200" />
+Builds a local Nginx image serving `apps/web-ui/dist`. See [scripts/deploy/](scripts/deploy/) for the Dockerfile and Nginx config.
 
 ## License
 
-Apache License 2.0
+[Apache-2.0](LICENSE) © oliver225. See [NOTICE](NOTICE) for attribution details.
+
+This project is derived from [Vue Vben Admin](https://github.com/vbenjs/vue-vben-admin) (MIT). The reusable packages under `packages/` and `internal/` retain their original MIT license and copyright — see [LICENSE-MIT](LICENSE-MIT) for the original license text. Many thanks to the Vben team for their work.

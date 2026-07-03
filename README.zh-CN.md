@@ -1,202 +1,79 @@
-# ThingsBoard UI Vue
+<div align="center">
+  <h1>ThingsBoard UI</h1>
+  <p>基于 Vue 3 + Vite 构建的全新 ThingsBoard 前端，脱胎于 <a href="https://github.com/vbenjs/vue-vben-admin">Vue Vben Admin</a> 的 <code>web-antdv-next</code> 应用。</p>
 
-基于 Vue 3 的 [ThingsBoard](https://thingsboard.io/)（v4.3.0）前端适配项目，使用 Vite、TypeScript 和 Ant Design Vue 构建。基于 [vue-vben-admin](https://github.com/vbenjs/vue-vben-admin)。
+[![license](https://img.shields.io/badge/license-Apache--2.0-blue.svg)](LICENSE)
 
-[English](./README.md)
+[English](./README.md) | **中文**
 
-> ⭐ 如果本项目对你有帮助，欢迎 watch、star、fork 一键三连！
+</div>
 
-## 在线演示
+## 简介
 
-- **地址：** http://thingsboard.yantsing.com/vue/
-- **用户名：** 1069035666@qq.com
-- **密码：** 17621315188
+`ThingsBoard UI` 是开源物联网平台 [ThingsBoard](https://thingsboard.io/) 的全新前端，是 [thingsboard-ui-vue3](https://github.com/oliver225/thingsboard-ui-vue3) 的继任版本。它以 [Vue Vben Admin](https://github.com/vbenjs/vue-vben-admin) 的 **Ant Design Vue（next）** 版应用为基座，使用最新的 **Vue 3 + Vite + TypeScript** 技术栈重构。
 
-> 演示环境连接的是真实的 ThingsBoard v4.3.0 实例。
+仓库采用 pnpm + Turborepo 的 monorepo 结构：业务应用位于 `apps/web-ui`，可复用的框架代码（布局、状态、权限、请求、图标、国际化等）位于 `packages/`，共享工具链位于 `internal/`。
 
-## 功能特性
+## 特性
 
-- **设备管理** — 设备列表、新增、编辑、删除、批量导入
-- **资产管理** — 资产列表、配置、批量导入
-- **客户管理** — 管理客户及其设备、资产、仪表板
-- **仪表板** — 数据可视化仪表板，支持多种部件
-- **规则引擎** — 基于 AntV X6 的可视化规则链编辑器
-- **实体视图** — 对设备/资产遥测数据的自定义视图
-- **OTA 升级** — 管理设备固件/软件升级包
-- **告警管理** — 告警列表、筛选与确认
-- **审计日志** — 完整的系统操作审计记录
-- **通知中心** — 通知规则、模板、接收人及发送记录
-- **资源库** — 部件包、图像库、组态库、JavaScript 库
-- **系统设置** — 系统级配置（SYS_ADMIN）
-- **多语言** — 中文/英文，运行时切换
-- **深色模式** — 完整深色主题支持
-- **响应式布局** — 适配不同屏幕尺寸
-
-## 技术栈
-
-| 类别 | 库 / 版本 |
-|---|---|
-| 框架 | Vue 3.5 + TypeScript 5 |
-| 构建工具 | Vite 6 |
-| UI 组件库 | Ant Design Vue 4 |
-| 状态管理 | Pinia 2 |
-| 路由 | Vue Router 4 |
-| 规则引擎图形 | AntV X6 2 |
-| 图表 | ECharts 5 |
-| 代码编辑器 | Monaco Editor |
-| 国际化 | Vue I18n 11 |
-| HTTP | Axios |
-| CSS | UnoCSS + Less |
-
-## ThingsBoard 版本兼容
-
-| UI 版本 | ThingsBoard 版本 |
-|---|---|
-| v4.x（当前分支） | v4.3.0 |
-| v3.x | v3.x（见其他分支） |
+- **最新技术栈** —— Vue 3、Vite、TypeScript、Pinia、Vue Router
+- **Ant Design Vue（next）** —— 现代化、功能完备的组件库
+- **Monorepo** —— pnpm workspace + Turborepo 编排
+- **主题** —— 多主题色，支持暗黑模式
+- **国际化** —— 内置 i18n（中文 / 英文）
+- **权限控制** —— 基于路由的动态权限方案
+- **对接 ThingsBoard** —— 已预置将 `/api` 代理到 ThingsBoard 后端
 
 ## 环境要求
 
-- Node.js >= 18
-- pnpm >= 8
+- Node.js `^22.18.0 || ^24.0.0`
+- pnpm `>=11`
 
 ## 快速开始
 
-**1. 克隆仓库**
-
 ```bash
-git clone https://github.com/oliver225/thingsboard-ui-vue.git
-cd thingsboard-ui-vue
-```
-
-**2. 安装依赖**
-
-```bash
+# 安装依赖（仅支持 pnpm）
 pnpm install
-```
 
-**3. 配置环境**
-
-编辑 `.env.development`：
-
-```env
-# 代理配置：[访问路径前缀, 目标地址, 是否保持Host头]
-VITE_PROXY = [["/api","http://127.0.0.1:8080/api",false]]
-VITE_GLOB_API_URL = /api
-```
-
-将 `http://127.0.0.1:8080` 替换为你的 ThingsBoard 后端地址。
-
-**4. 启动开发服务器**
-
-```bash
+# 启动开发服务（http://localhost:3000）
 pnpm dev
-```
 
-浏览器访问 http://localhost:5173
-
-**5. 生产构建**
-
-```bash
+# 生产构建
 pnpm build
 ```
 
-产物输出到 `dist/` 目录，部署到 Nginx 等静态服务器，并将 `/api` 反向代理到 ThingsBoard 后端。
+> 开发服务会把 `/api` 代理到 ThingsBoard 后端。请按实际环境修改 [apps/web-ui/vite.config.ts](apps/web-ui/vite.config.ts) 中的 `target`（默认 `http://localhost:8080`）。
 
-## Nginx 配置示例
+## 对接 ThingsBoard 后端
 
-```nginx
-server {
-    listen       80;
-    server_name  localhost;
+已移除 Vben 自带的 Nitro Mock 服务，应用直接对接真实后端：
 
-    access_log  /var/log/nginx/thingsboard.access.log  main;
+1. [apps/web-ui/.env.development](apps/web-ui/.env.development) 中 `VITE_NITRO_MOCK=false`。
+2. 开发代理会把 `/api` 转发到你的 ThingsBoard 服务，请在 [apps/web-ui/vite.config.ts](apps/web-ui/vite.config.ts) 设置 `target`。
+3. 生产环境请在 [apps/web-ui/.env.production](apps/web-ui/.env.production) 设置 `VITE_GLOB_API_URL`，或交由网关 / 反向代理处理 `/api`。
 
-    # Vue 前端（部署在 /vue 路径下）
-    location /vue {
-        alias  /opt/thingsboard/vue;
-        index  index.html;
-        try_files $uri $uri/vue /vue/index.html;
-    }
-
-    # ThingsBoard 后端
-    location / {
-        proxy_set_header  X-Real-IP $remote_addr;
-        proxy_set_header  Host  $http_host;
-        proxy_pass  http://127.0.0.1:18080;
-        proxy_max_temp_file_size 0;
-    }
-
-    # REST API
-    location /api {
-        proxy_set_header  X-Real-IP $remote_addr;
-        proxy_set_header  Host  $http_host;
-        proxy_pass  http://127.0.0.1:18080/api;
-        proxy_max_temp_file_size 0;
-    }
-
-    # WebSocket
-    location /api/ws {
-        proxy_pass http://127.0.0.1:18080;
-        proxy_http_version 1.1;
-        proxy_set_header Upgrade $http_upgrade;
-        proxy_set_header Connection "upgrade";
-    }
-}
-```
-
-## 脚本命令
-
-| 命令 | 说明 |
-|---|---|
-| `pnpm dev` | 启动开发服务器 |
-| `pnpm build` | 生产环境打包 |
-| `pnpm preview` | 本地预览生产构建 |
-| `pnpm type:check` | TypeScript 类型检查 |
-| `pnpm lint:all` | ESLint + Prettier + Stylelint |
-
-## 项目结构
+## 目录结构
 
 ```
-src/
-├── api/            # Axios 接口（对应 ThingsBoard REST API）
-├── assets/         # 静态资源（图标、图片、SVG）
-├── components/     # 公共复用组件
-├── enums/          # TypeScript 枚举
-├── hooks/          # Vue 组合式函数
-├── layouts/        # 应用布局
-├── locales/        # 国际化翻译文件
-│   └── lang/
-│       ├── en/     # 英文翻译
-│       └── zh-CN/  # 中文翻译
-├── router/         # 路由定义
-├── store/          # Pinia 状态
-├── utils/          # 工具函数
-└── views/
-    └── tb/         # ThingsBoard 功能页面
-        ├── alarm/
-        ├── asset/
-        ├── customer/
-        ├── dashboard/
-        ├── device/
-        ├── notification/
-        ├── ruleChain/
-        └── ...
+.
+├── apps
+│   └── web-ui              # 主应用
+├── docs                    # 框架文档（VitePress）
+├── internal                # 共享构建 / lint / tsconfig 工具链
+├── packages                # 可复用框架包（@core、effects ...）
+└── scripts                 # 工作区脚本（turbo-run、vsh、deploy）
 ```
 
-## 预览截图
+## Docker
 
-![规则引擎](images/rule_chain_20240305160850.png)
-![登录页](images/login_page.png)
+```bash
+pnpm build:docker
+```
 
-## 联系我们
-
-微信：**17621315188**，欢迎交流讨论。
-
-邮箱：1069035666@qq.com
-
-<img title="扫码沟通" src="./images/weixin.jpg" width="200" />
+构建一个本地 Nginx 镜像，托管 `apps/web-ui/dist`。Dockerfile 与 Nginx 配置见 [scripts/deploy/](scripts/deploy/)。
 
 ## 开源协议
 
-Apache License 2.0
+[Apache-2.0](LICENSE) © oliver225。版权归属详见 [NOTICE](NOTICE)。
+
+本项目衍生自 [Vue Vben Admin](https://github.com/vbenjs/vue-vben-admin)（MIT）。 `packages/` 与 `internal/` 下的可复用框架包仍保留其原有的 MIT 协议与版权署名，MIT 协议原文见 [LICENSE-MIT](LICENSE-MIT)。在此特别感谢 Vben 团队的开源贡献。

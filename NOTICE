@@ -1,0 +1,14 @@
+ThingsBoard UI
+Copyright 2024-present oliver225
+
+This product is licensed under the Apache License, Version 2.0 (see LICENSE).
+
+This product is derived from Vue Vben Admin
+(https://github.com/vbenjs/vue-vben-admin),
+Copyright (c) 2024-present, Vben, licensed under the MIT License.
+The reusable framework packages under packages/ and internal/ retain
+their original MIT license. See LICENSE-MIT for the full license text.
+
+ThingsBoard is a trademark of ThingsBoard, Inc. This project is an
+independent community front-end for the ThingsBoard IoT platform and is
+not affiliated with or endorsed by ThingsBoard, Inc.

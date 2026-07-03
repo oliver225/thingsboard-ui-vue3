@@ -1,0 +1,55 @@
+{
+  "name": "thingsboard-ui",
+  "version": "4.3.1.2",
+  "homepage": "https://github.com/oliver225/thingsboard-ui",
+  "bugs": "https://github.com/oliver225/thingsboard-ui/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oliver225/thingsboard-ui.git",
+    "directory": "apps/web-ui"
+  },
+  "license": "Apache-2.0",
+  "author": {
+    "name": "oliver225",
+    "email": "oliverfoo225@gmail.com",
+    "url": "https://github.com/oliver225"
+  },
+  "type": "module",
+  "scripts": {
+    "build": "pnpm vite build --mode production",
+    "build:analyze": "pnpm vite build --mode analyze",
+    "dev": "pnpm vite --mode development",
+    "preview": "vite preview",
+    "typecheck": "vue-tsc --noEmit --skipLibCheck"
+  },
+  "imports": {
+    "#/*": "./src/*"
+  },
+  "dependencies": {
+    "@vant/area-data": "catalog:",
+    "@vben/access": "workspace:*",
+    "@vben/common-ui": "workspace:*",
+    "@vben/constants": "workspace:*",
+    "@vben/hooks": "workspace:*",
+    "@vben/icons": "workspace:*",
+    "@vben/layouts": "workspace:*",
+    "@vben/locales": "workspace:*",
+    "@vben/plugins": "workspace:*",
+    "@vben/preferences": "workspace:*",
+    "@vben/request": "workspace:*",
+    "@vben/stores": "workspace:*",
+    "@vben/styles": "workspace:*",
+    "@vben/types": "workspace:*",
+    "@vben/utils": "workspace:*",
+    "@vueuse/core": "catalog:",
+    "antdv-next": "catalog:",
+    "dayjs": "catalog:",
+    "pinia": "catalog:",
+    "vue": "catalog:",
+    "vue-router": "catalog:",
+    "xlsx": "catalog:"
+  },
+  "devDependencies": {
+    "vite": "catalog:"
+  }
+}

@@ -1,0 +1,202 @@
+<script lang="ts" setup>
+import type { ActionItem } from '@vben/common-ui';
+
+import type { VxeTableGridOptions } from '#/adapter/vxe-table';
+import type { TbUserInfo } from '#/api/core/user';
+import type { EntityViewInfo } from '#/api/tb/entity-view';
+
+import { reactive } from 'vue';
+
+import { useAccess } from '@vben/access';
+import { confirm, Page, useVbenModal } from '@vben/common-ui';
+import { IconifyIcon } from '@vben/icons';
+import { useUserStore } from '@vben/stores';
+import { formatDateTime } from '@vben/utils';
+
+import { Button, Input, message } from 'antdv-next';
+
+import { useVbenVxeGrid } from '#/adapter/vxe-table';
+import {
+  deleteEntityView,
+  getCustomerEntityViewInfos,
+  getTenantEntityViewInfos,
+} from '#/api/tb/entity-view';
+import { DEFAULT_SORT_FIELD } from '#/constants';
+import { Authority } from '#/enums';
+import { $t } from '#/locales';
+
+import EntityViewForm from './form.vue';
+
+defineOptions({ name: 'EntityViewList' });
+
+const { hasAccessByRoles } = useAccess();
+const userStore = useUserStore();
+
+const customerId =
+  (userStore.userInfo as null | TbUserInfo)?.tbUser?.customerId?.id ?? '';
+
+const [FormModal, formModalApi] = useVbenModal({
+  connectedComponent: EntityViewForm,
+  destroyOnClose: true,
+});
+
+const queryParams = reactive({
+  textSearch: '',
+});
+
+async function fetch({ page, sort }: any) {
+  const pageLink = {
+    page: page.currentPage - 1,
+    pageSize: page.pageSize,
+    sortOrder: (sort?.order === 'desc' ? 'DESC' : 'ASC') as 'ASC' | 'DESC',
+    sortProperty: sort?.field ?? DEFAULT_SORT_FIELD,
+    ...queryParams,
+  };
+  return hasAccessByRoles([Authority.TENANT_ADMIN])
+    ? getTenantEntityViewInfos(pageLink)
+    : getCustomerEntityViewInfos(customerId, pageLink);
+}
+
+const [Grid, gridApi] = useVbenVxeGrid<EntityViewInfo>({
+  gridOptions: {
+    columns: [
+      { title: $t('tb.common.seq'), type: 'seq', width: 60 },
+      {
+        field: 'name',
+        minWidth: 160,
+        sortable: true,
+        title: $t('tb.entityView.fields.name'),
+      },
+      {
+        field: 'type',
+        minWidth: 130,
+        sortable: true,
+        title: $t('tb.entityView.fields.type'),
+      },
+      {
+        field: 'customerTitle',
+        minWidth: 130,
+        title: $t('tb.entityView.fields.customer'),
+      },
+      {
+        field: 'createdTime',
+        formatter: ({ cellValue }) => formatDateTime(cellValue),
+        sortable: true,
+        title: $t('tb.common.createdTime'),
+        width: 170,
+      },
+      {
+        field: 'actions',
+        fixed: 'right',
+        align: 'center',
+        title: $t('tb.common.actions'),
+        width: 100,
+        cellRender: { name: 'CellAction', props: { actions: getActionItems } },
+      },
+    ],
+    proxyConfig: {
+      ajax: {
+        query: fetch,
+      },
+    },
+  } as VxeTableGridOptions<EntityViewInfo>,
+});
+
+function onSearch() {
+  gridApi.query({ page: { currentPage: 1 } });
+}
+
+function getActionItems(row: EntityViewInfo): ActionItem[] {
+  return [
+    {
+      icon: 'lucide:square-pen',
+      onClick: () => onEdit(row),
+      ifShow: hasAccessByRoles([Authority.TENANT_ADMIN]),
+      tooltip: $t('tb.common.edit'),
+    },
+    {
+      danger: true,
+      icon: 'lucide:trash-2',
+      onClick: () => confirmDelete(row),
+      ifShow: hasAccessByRoles([Authority.TENANT_ADMIN]),
+      tooltip: $t('tb.common.delete'),
+    },
+  ];
+}
+
+function onCreate() {
+  formModalApi.setData({}).open();
+}
+
+function onEdit(row: EntityViewInfo) {
+  formModalApi.setData({ entityViewId: row.id?.id }).open();
+}
+
+async function deleteEntityViewByRow(row: EntityViewInfo) {
+  if (!row.id?.id) {
+    return false;
+  }
+
+  try {
+    await deleteEntityView(row.id.id);
+    message.success($t('tb.common.deleteSuccess'));
+    gridApi.query();
+  } catch {
+    return false;
+  }
+}
+
+function confirmDelete(row: EntityViewInfo) {
+  confirm({
+    async beforeClose({ isConfirm }) {
+      if (!isConfirm) {
+        return;
+      }
+      return deleteEntityViewByRow(row);
+    },
+    confirmButtonProps: { danger: true, variant: 'destructive' },
+    content: $t('tb.entityView.delete.content'),
+    contentMasking: true,
+    icon: 'error',
+    title: $t('tb.entityView.delete.title', { name: row.name }),
+  }).catch(() => {});
+}
+
+function onFormSuccess() {
+  gridApi.query();
+}
+</script>
+
+<template>
+  <Page auto-content-height>
+    <FormModal @success="onFormSuccess" />
+    <Grid :table-title="$t('tb.menu.entityView')">
+      <template #toolbar-actions>
+        <div class="w-72">
+          <Input
+            v-model:value="queryParams.textSearch"
+            allow-clear
+            :placeholder="$t('tb.common.searchPlaceholder')"
+            @change="onSearch"
+          >
+            <template #suffix>
+              <IconifyIcon icon="lucide:search" />
+            </template>
+          </Input>
+        </div>
+      </template>
+      <template #toolbar-tools>
+        <Button
+          v-if="hasAccessByRoles([Authority.TENANT_ADMIN])"
+          type="primary"
+          @click="onCreate"
+        >
+          <template #icon>
+            <IconifyIcon icon="lucide:plus" />
+          </template>
+          {{ $t('tb.entityView.actions.create') }}
+        </Button>
+      </template>
+    </Grid>
+  </Page>
+</template>

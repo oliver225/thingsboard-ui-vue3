@@ -1,0 +1,1493 @@
+{
+  "app": {
+    "pageTitle": "ThingsBoard IoT Platform",
+    "pageDesc": "ThingsBoard front-end application based on Vue3 (ThingsBoard {version})",
+    "techSupport": "Tech Support",
+    "wechatQr": "Scan to add WeChat"
+  },
+  "auth": {
+    "resetEmailSent": "Email sent",
+    "resetEmailSentDesc": "If the email is registered, a password reset link has been sent. Please check your inbox and follow the instructions to reset your password.",
+    "registerSubTitle": "ThingsBoard accounts are created by administrators",
+    "registerNotSupported": "Self-registration is not available",
+    "registerNotSupportedDesc": "ThingsBoard Community Edition does not provide public sign-up. Please ask a system or tenant administrator to create an account for you; you will then receive an activation email to set your password.",
+    "createPassword": "Create Password",
+    "createPasswordSubtitle": "Set a login password for your account. You will be signed in automatically once done.",
+    "createPasswordSuccess": "Signed in",
+    "createPasswordSuccessDesc": "Your account is activated, welcome",
+    "passwordMinTip": "Password must be at least 6 characters",
+    "linkInvalid": "Invalid link",
+    "activateLinkInvalid": "The activation link is invalid or expired. Please request a new activation email.",
+    "alreadyHaveAccount": "Already have an account?",
+    "goToLogin": "Go to login",
+    "resetPassword": "Reset Password",
+    "resetPasswordSubtitle": "Enter a new password. Please sign in with the new password once done.",
+    "resetPasswordSuccess": "Password reset",
+    "resetPasswordSuccessDesc": "Please sign in with your new password",
+    "resetLinkInvalid": "The reset link is invalid or expired. Please request password recovery again."
+  },
+  "authority": {
+    "SYS_ADMIN": "System Admin",
+    "TENANT_ADMIN": "Tenant Admin",
+    "CUSTOMER_USER": "Customer"
+  },
+  "menu": {
+    "dashboard": "Dashboards",
+    "entities": "Entities",
+    "device": "Devices",
+    "asset": "Assets",
+    "entityView": "Entity Views",
+    "profiles": "Profiles",
+    "deviceProfile": "Device Profiles",
+    "assetProfile": "Asset Profiles",
+    "customer": "Customers",
+    "customerUser": "Customer Users",
+    "calculatedField": "Calculated Fields",
+    "ruleChain": "Rule Chains",
+    "otaUpdate": "OTA Updates",
+    "alarm": "Alarms",
+    "alarmList": "Alarm List",
+    "alarmRule": "Alarm Rules",
+    "tenant": "Tenants",
+    "tenantProfile": "Tenant Profiles",
+    "tenantAdmin": "Tenant Administrators",
+    "resources": "Resources",
+    "widgetsLibrary": "Widgets Library",
+    "widgetTypes": "Widgets",
+    "widgetsBundle": "Widget Bundles",
+    "images": "Image Library",
+    "scadaSymbols": "SCADA Symbols",
+    "javascriptLibrary": "JavaScript Library",
+    "resourceLibrary": "Resource Library",
+    "notification": "Notification Center",
+    "auditLogs": "Audit Logs",
+    "settings": "Settings",
+    "securitySettings": "Security Settings"
+  },
+  "settings": {
+    "general": "General",
+    "outgoingMail": "Outgoing Mail",
+    "notifications": "Notifications",
+    "queues": "Queues",
+    "home": "Home Settings",
+    "aiModels": "AI Models",
+    "emptyTip": "{title} page is under construction",
+    "homeSettings": {
+      "title": "Home Settings",
+      "homeDashboard": "Home dashboard",
+      "homeDashboardPlaceholder": "Select the default home dashboard for the tenant",
+      "hideToolbar": "Hide home dashboard toolbar",
+      "hint": "Set the default home dashboard shown to all users of this tenant."
+    },
+    "generalSettings": {
+      "title": "General Settings",
+      "baseUrl": "Base URL",
+      "baseUrlPlaceholder": "Enter base URL",
+      "baseUrlRequired": "Base URL is required.",
+      "prohibitDifferentUrl": "Prohibit to use hostname from the client request headers",
+      "prohibitDifferentUrlHint": "This setting should be enabled for production environments. May cause security issues when disabled."
+    },
+    "deviceConnectivity": {
+      "title": "Device connectivity",
+      "hint": "If host or port fields are empty, default protocol value will be used.",
+      "host": "Host",
+      "port": "Port",
+      "hostPlaceholder": "Enter host",
+      "portPlaceholder": "Enter port",
+      "portPattern": "Port must be a positive integer.",
+      "portRange": "Port should be in a range from 1 to 65535.",
+      "httpS": "HTTP(s)",
+      "mqttS": "MQTT(s)",
+      "coapS": "COAP(s)",
+      "http": "HTTP",
+      "https": "HTTPs",
+      "mqtt": "MQTT",
+      "mqtts": "MQTTs",
+      "coap": "COAP",
+      "coaps": "COAPs"
+    },
+    "mail": {
+      "title": "Mail Server Settings",
+      "mailFrom": "Mail From",
+      "mailFromPlaceholder": "Enter mail from address",
+      "mailFromRequired": "Mail From is required.",
+      "connection": "Connection Settings",
+      "authentication": "Authentication",
+      "smtpProtocol": "SMTP protocol",
+      "smtpHost": "SMTP host",
+      "smtpHostRequired": "SMTP host is required.",
+      "smtpPort": "SMTP port",
+      "smtpPortRequired": "SMTP port is required.",
+      "timeout": "Timeout (msec)",
+      "timeoutRequired": "Timeout is required.",
+      "enableTls": "Enable TLS",
+      "tlsVersion": "TLS version",
+      "tlsVersionRequired": "Please select a TLS version.",
+      "enableProxy": "Enable proxy",
+      "proxyHost": "Proxy host",
+      "proxyHostRequired": "Proxy host is required.",
+      "proxyPort": "Proxy port",
+      "proxyPortRequired": "Proxy port is required.",
+      "proxyUser": "Proxy user",
+      "proxyPassword": "Proxy password",
+      "username": "Username",
+      "password": "Password",
+      "changePassword": "Change password",
+      "sendTestMail": "Send test mail",
+      "testMailSuccess": "Test mail was successfully sent!"
+    },
+    "slack": {
+      "title": "Slack Settings",
+      "apiToken": "Slack API token",
+      "apiTokenPlaceholder": "Enter Slack API token"
+    },
+    "sms": {
+      "title": "SMS Provider",
+      "provider": "Provider",
+      "providerAwsSns": "Amazon SNS",
+      "providerTwilio": "Twilio",
+      "providerSmpp": "SMPP",
+      "requiredField": "This field is required.",
+      "accessKeyId": "Access Key ID",
+      "secretAccessKey": "Secret Access Key",
+      "region": "Region",
+      "accountSid": "Account SID",
+      "accountToken": "Account Token",
+      "numberFrom": "Number from",
+      "protocolVersion": "Protocol version",
+      "bindType": "Bind type",
+      "host": "Host",
+      "port": "Port",
+      "systemId": "System ID",
+      "password": "Password",
+      "systemType": "System Type",
+      "serviceType": "Service Type",
+      "sourceAddress": "Source address",
+      "addressRange": "Address range",
+      "sourceTon": "Source TON",
+      "sourceNpi": "Source NPI",
+      "destinationTon": "Destination TON",
+      "destinationNpi": "Destination NPI",
+      "codingScheme": "Coding scheme",
+      "sendTestSms": "Send test SMS",
+      "testSmsSuccess": "Test SMS was successfully sent!",
+      "phoneNumber": "Phone number",
+      "message": "Message"
+    }
+  },
+  "securitySettings": {
+    "requiredField": "This field is required.",
+    "general": {
+      "title": "Security Settings",
+      "generalPolicy": "General policy",
+      "passwordPolicy": "Password policy",
+      "maxFailedLoginAttempts": "Maximum number of failed login attempts",
+      "userLockoutNotificationEmail": "User lockout notification email",
+      "emailInvalid": "Invalid email format",
+      "userActivationTokenTtl": "User activation link TTL (hours)",
+      "passwordResetTokenTtl": "Password reset link TTL (hours)",
+      "mobileSecretKeyLength": "Mobile secret key length",
+      "minimumLength": "Minimum length",
+      "maximumLength": "Maximum length",
+      "minimumUppercaseLetters": "Minimum uppercase letters",
+      "minimumLowercaseLetters": "Minimum lowercase letters",
+      "minimumDigits": "Minimum digits",
+      "minimumSpecialCharacters": "Minimum special characters",
+      "passwordExpirationPeriodDays": "Password expiration period (days)",
+      "passwordReuseFrequencyDays": "Password reuse frequency (days)",
+      "allowWhitespaces": "Allow whitespaces",
+      "forceResetPassword": "Force user to reset password on login if it does not meet the policy"
+    },
+    "jwt": {
+      "title": "JWT Security Settings",
+      "tokenIssuer": "Token issuer",
+      "tokenSigningKey": "Token signing key",
+      "generateKey": "Generate",
+      "tokenExpirationTime": "Token expiration time (sec)",
+      "refreshTokenExpTime": "Refresh token expiration time (sec)",
+      "refreshLessToken": "Refresh token time must be greater than token expiration time",
+      "changeWarningTitle": "Change JWT settings?",
+      "changeWarning": "Changing the issuer or signing key will invalidate all issued tokens. All users (including other sessions) will need to sign in again."
+    },
+    "twoFa": {
+      "title": "Two-factor authentication",
+      "verificationSettings": "Verification limitations",
+      "availableProviders": "Available providers",
+      "providersRequired": "Enable at least one provider when enforcing 2FA",
+      "enforce": {
+        "title": "Enforce two-factor authentication",
+        "toggle": "Force two-factor authentication",
+        "enforceFor": "Enforce for",
+        "byTenant": "Tenants",
+        "byTenantProfile": "Tenant profiles",
+        "tenants": "Select tenants",
+        "tenantProfiles": "Select tenant profiles"
+      },
+      "issuerName": "Issuer name",
+      "issuerRequired": "Issuer name is required",
+      "backupCodeHint": "Enable at least one other provider before enabling backup codes.",
+      "smsTemplate": "SMS verification message template",
+      "smsTemplateInvalid": "SMS template must contain the verification code placeholder",
+      "verificationCodeLifetime": "Verification code lifetime (sec)",
+      "codesQuantity": "Backup codes quantity",
+      "minVerificationCodeSendPeriod": "Minimum verification code send period (sec)",
+      "maxVerificationFailuresBeforeLockout": "Max verification failures before user lockout",
+      "totalAllowedTimeForVerification": "Total allowed time for verification (sec)",
+      "rateLimit": "Limit verification code checks",
+      "rateLimitTimesPer": "times per",
+      "rateLimitSeconds": "seconds",
+      "provider": {
+        "TOTP": "Authenticator app (TOTP)",
+        "SMS": "SMS",
+        "EMAIL": "Email",
+        "BACKUP_CODE": "Backup codes"
+      },
+      "providerDesc": {
+        "TOTP": "Use an app such as Google Authenticator to generate one-time codes.",
+        "SMS": "Send a one-time code via SMS (requires an SMS provider to be configured).",
+        "EMAIL": "Send a one-time code via email (requires the mail server to be configured).",
+        "BACKUP_CODE": "A set of single-use backup codes to sign in when other methods are unavailable."
+      }
+    }
+  },
+  "queue": {
+    "fields": {
+      "name": "Queue name",
+      "topic": "Topic",
+      "partitions": "Partitions",
+      "submitStrategy": "Submit strategy",
+      "processingStrategy": "Processing strategy",
+      "description": "Description"
+    },
+    "submitStrategy": {
+      "BURST": "Burst",
+      "BATCH": "Batch",
+      "SEQUENTIAL": "Sequential",
+      "SEQUENTIAL_BY_TENANT": "Sequential by tenant",
+      "SEQUENTIAL_BY_ORIGINATOR": "Sequential by originator"
+    },
+    "processingStrategy": {
+      "RETRY_ALL": "Retry all",
+      "RETRY_FAILED": "Retry failed",
+      "RETRY_TIMED_OUT": "Retry timed out",
+      "RETRY_FAILED_AND_TIMED_OUT": "Retry failed and timed out",
+      "SKIP_ALL_FAILURES": "Skip all failures",
+      "SKIP_ALL_FAILURES_AND_TIMED_OUT": "Skip all failures and timed out"
+    },
+    "delete": {
+      "title": "Delete queue \"{name}\"?",
+      "content": "The queue cannot be recovered after deletion."
+    }
+  },
+  "actionType": {
+    "ADDED": "Added",
+    "DELETED": "Deleted",
+    "UPDATED": "Updated",
+    "ATTRIBUTES_UPDATED": "Attributes updated",
+    "ATTRIBUTES_DELETED": "Attributes deleted",
+    "TIMESERIES_UPDATED": "Timeseries updated",
+    "TIMESERIES_DELETED": "Timeseries deleted",
+    "RPC_CALL": "RPC call",
+    "CREDENTIALS_UPDATED": "Credentials updated",
+    "ASSIGNED_TO_CUSTOMER": "Assigned to customer",
+    "UNASSIGNED_FROM_CUSTOMER": "Unassigned from customer",
+    "ACTIVATED": "Activated",
+    "SUSPENDED": "Suspended",
+    "CREDENTIALS_READ": "Credentials read",
+    "ATTRIBUTES_READ": "Attributes read",
+    "RELATION_ADD_OR_UPDATE": "Relation add or update",
+    "RELATION_DELETED": "Relation deleted",
+    "RELATIONS_DELETED": "Relations deleted",
+    "REST_API_RULE_ENGINE_CALL": "Rule engine REST API call",
+    "ALARM_ACK": "Alarm acknowledged",
+    "ALARM_CLEAR": "Alarm cleared",
+    "ALARM_DELETE": "Alarm deleted",
+    "ALARM_ASSIGNED": "Alarm assigned",
+    "ALARM_UNASSIGNED": "Alarm unassigned",
+    "LOGIN": "Login",
+    "LOGOUT": "Logout",
+    "LOCKOUT": "Lockout",
+    "ASSIGNED_FROM_TENANT": "Assigned from tenant",
+    "ASSIGNED_TO_TENANT": "Assigned to tenant",
+    "PROVISION_SUCCESS": "Provision success",
+    "PROVISION_FAILURE": "Provision failure",
+    "ASSIGNED_TO_EDGE": "Assigned to edge",
+    "UNASSIGNED_FROM_EDGE": "Unassigned from edge",
+    "ADDED_COMMENT": "Comment added",
+    "UPDATED_COMMENT": "Comment updated",
+    "DELETED_COMMENT": "Comment deleted",
+    "SMS_SENT": "SMS sent"
+  },
+  "actionStatus": {
+    "SUCCESS": "Success",
+    "FAILURE": "Failure"
+  },
+  "entityType": {
+    "ADMIN_SETTINGS": "Admin settings",
+    "AI_MODEL": "AI model",
+    "ALARM": "Alarm",
+    "API_KEY": "API key",
+    "API_USAGE_STATE": "API usage state",
+    "ASSET": "Asset",
+    "ASSET_PROFILE": "Asset profile",
+    "CALCULATED_FIELD": "Calculated field",
+    "CUSTOMER": "Customer",
+    "DASHBOARD": "Dashboard",
+    "DEVICE": "Device",
+    "DEVICE_PROFILE": "Device profile",
+    "DOMAIN": "Domain",
+    "EDGE": "Edge",
+    "ENTITY_VIEW": "Entity view",
+    "JOB": "Job",
+    "MOBILE_APP": "Mobile application",
+    "MOBILE_APP_BUNDLE": "Mobile bundle",
+    "NOTIFICATION": "Notification",
+    "NOTIFICATION_REQUEST": "Notification request",
+    "NOTIFICATION_RULE": "Notification rule",
+    "NOTIFICATION_TARGET": "Notification target",
+    "NOTIFICATION_TEMPLATE": "Notification template",
+    "OAUTH2_CLIENT": "OAuth 2.0 client",
+    "OTA_PACKAGE": "OTA package",
+    "QUEUE": "Queue",
+    "QUEUE_STATS": "Queue statistics",
+    "RPC": "RPC",
+    "RULE_CHAIN": "Rule chain",
+    "RULE_NODE": "Rule node",
+    "TB_RESOURCE": "Resource",
+    "TENANT": "Tenant",
+    "TENANT_PROFILE": "Tenant profile",
+    "USER": "User",
+    "WIDGET_TYPE": "Widget",
+    "WIDGETS_BUNDLE": "Widget bundle"
+  },
+  "common": {
+    "seq": "No.",
+    "actions": "Actions",
+    "createdTime": "Created Time",
+    "create": "Create",
+    "edit": "Edit",
+    "delete": "Delete",
+    "detail": "Detail",
+    "search": "Search",
+    "save": "Save",
+    "undo": "Undo",
+    "close": "Close",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "ok": "OK",
+    "yes": "Yes",
+    "no": "No",
+    "searchPlaceholder": "Enter search query",
+    "deleteConfirm": "Are you sure to delete? This cannot be undone.",
+    "deleteSuccess": "Deleted successfully",
+    "saveSuccess": "Saved successfully",
+    "systemTip": "System Notice"
+  },
+  "account": {
+    "title": "Account",
+    "userInfo": "Profile",
+    "security": "Security Info",
+    "notification": "Notification settings",
+    "lastLogin": "Last login",
+    "email": "Email",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "phone": "Phone",
+    "phoneFormatTip": "Enter a phone number in E.164 format, for example +8613123456789",
+    "language": "Language",
+    "unitSystem": "Unit system",
+    "homeDashboard": "Home dashboard",
+    "hideHomeDashboardToolbar": "Hide home dashboard toolbar",
+    "langAuto": "Auto",
+    "unitAuto": "Auto",
+    "unitMetric": "Metric",
+    "unitImperial": "Imperial",
+    "unitHybrid": "Hybrid",
+    "jwtToken": "JWT Token",
+    "jwtTokenExpiration": "Token expires at",
+    "copyJwtToken": "Copy JWT Token",
+    "copied": "Copied",
+    "copyFailed": "Copy failed",
+    "changePassword": "Change Password",
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "confirmNewPassword": "Confirm password",
+    "currentPasswordTip": "Please enter current password",
+    "changePasswordSuccess": "Password changed successfully",
+    "passwordRequirements": "Password requirements",
+    "atLeast": "At least",
+    "atMost": "At most",
+    "pwdMinLength": "{n} characters",
+    "pwdMaxLength": "{n} characters",
+    "pwdMinUpper": "{n} uppercase letter(s)",
+    "pwdMinLower": "{n} lowercase letter(s)",
+    "pwdMinDigits": "{n} digit(s)",
+    "pwdMinSpecial": "{n} special character(s)",
+    "pwdNoWhitespace": "No whitespace allowed",
+    "passwordPolicyNotMet": "Password does not meet the requirements",
+    "newPasswordSameAsCurrent": "New password must differ from the current password",
+    "discardChanges": "Discard changes"
+  },
+  "apiKey": {
+    "title": "API Keys",
+    "create": "Create key",
+    "edit": "Edit key",
+    "inheritTip": "Note: API keys inherit the permissions of the user who creates them.",
+    "description": "Description",
+    "descriptionTip": "Please enter a description",
+    "expiration": "Expiration",
+    "never": "Never",
+    "enabled": "Enabled",
+    "enableLabel": "Enable API key",
+    "enableSuccess": "Enabled successfully",
+    "disableSuccess": "Disabled successfully",
+    "days": "days",
+    "tokenTitle": "API key created",
+    "tokenOnce": "Copy and store it now. This key is shown only once and cannot be retrieved after closing.",
+    "copyToken": "Copy key",
+    "delete": {
+      "content": "Requests using this key will stop working immediately and cannot be recovered.",
+      "title": "Delete this API key?"
+    }
+  },
+  "notification": {
+    "settingTitle": "Notification Settings",
+    "resetAll": "Reset all settings",
+    "colType": "Type",
+    "type": {
+      "GENERAL": "General",
+      "ALARM": "Alarm",
+      "DEVICE_ACTIVITY": "Device activity",
+      "ENTITY_ACTION": "Entity action",
+      "ALARM_COMMENT": "Alarm comment",
+      "RULE_ENGINE_COMPONENT_LIFECYCLE_EVENT": "Rule engine lifecycle event",
+      "ALARM_ASSIGNMENT": "Alarm assignment",
+      "NEW_PLATFORM_VERSION": "New platform version",
+      "ENTITIES_LIMIT": "Entities limit",
+      "ENTITIES_LIMIT_INCREASE_REQUEST": "Entity limit increase request",
+      "API_USAGE_LIMIT": "API usage limit",
+      "RULE_NODE": "Rule node",
+      "RATE_LIMITS": "Rate limits",
+      "EDGE_CONNECTION": "Edge connection",
+      "EDGE_COMMUNICATION_FAILURE": "Edge communication failure",
+      "TASK_PROCESSING_FAILURE": "Task processing failure",
+      "RESOURCES_SHORTAGE": "Resources shortage"
+    },
+    "inbox": "Inbox",
+    "sent": "Sent",
+    "recipients": "Recipients",
+    "templates": "Templates",
+    "rules": "Rules",
+    "send": "Send Notification",
+    "emptyList": "{title} list is not implemented yet",
+    "fields": {
+      "type": "Type",
+      "subject": "Subject",
+      "text": "Text",
+      "status": "Status"
+    },
+    "status": {
+      "SENT": "Unread",
+      "READ": "Read"
+    },
+    "filter": {
+      "unread": "Unread",
+      "all": "All"
+    },
+    "actions": {
+      "markRead": "Mark as read",
+      "markAllRead": "Mark all as read",
+      "markReadSuccess": "Marked as read",
+      "markAllReadSuccess": "All notifications marked as read"
+    },
+    "delete": {
+      "title": "Delete notification \"{subject}\"?",
+      "content": "This action cannot be undone."
+    },
+    "request": {
+      "fields": {
+        "template": "Template",
+        "deliveryMethods": "Delivery methods",
+        "status": "Status",
+        "result": "Result"
+      },
+      "status": {
+        "SCHEDULED": "Scheduled",
+        "PROCESSING": "Processing",
+        "SENT": "Sent"
+      },
+      "result": {
+        "success": "{count} sent",
+        "failed": "{count} failed",
+        "error": "Error",
+        "none": "--"
+      },
+      "errorTitle": "Failed deliveries",
+      "delete": {
+        "title": "Delete notification request \"{template}\"?",
+        "content": "If the request has been sent, its delivered notifications will also be deleted; if scheduled, it will be cancelled."
+      }
+    },
+    "recipient": {
+      "fields": {
+        "name": "Recipient group",
+        "type": "Type",
+        "filterType": "Users filter",
+        "description": "Description"
+      },
+      "targetType": {
+        "PLATFORM_USERS": "Platform users",
+        "SLACK": "Slack",
+        "MICROSOFT_TEAMS": "Microsoft Teams"
+      },
+      "filterType": {
+        "ALL_USERS": "All users",
+        "TENANT_ADMINISTRATORS": "Tenant administrators",
+        "AFFECTED_TENANT_ADMINISTRATORS": "Affected tenant administrators",
+        "SYSTEM_ADMINISTRATORS": "System administrators",
+        "CUSTOMER_USERS": "Customer users",
+        "USER_LIST": "User list",
+        "ORIGINATOR_ENTITY_OWNER_USERS": "Entity owner users",
+        "AFFECTED_USER": "Affected user"
+      },
+      "form": {
+        "name": "Recipient group name",
+        "type": "Type",
+        "filterUsers": "Users filter",
+        "filterBy": "Filter by",
+        "byTenants": "By tenants",
+        "byTenantProfiles": "By tenant profiles",
+        "tenants": "Tenants",
+        "tenantProfiles": "Tenant profiles",
+        "customer": "Customer",
+        "users": "Users",
+        "webhookUrl": "Webhook URL",
+        "channelName": "Channel name",
+        "description": "Description"
+      },
+      "actions": {
+        "create": "Add recipient group",
+        "edit": "Edit recipient group"
+      },
+      "delete": {
+        "title": "Delete recipient group \"{name}\"?",
+        "content": "This action cannot be undone."
+      }
+    },
+    "template": {
+      "fields": {
+        "name": "Name",
+        "notificationType": "Notification type",
+        "deliveryMethods": "Delivery methods"
+      },
+      "delete": {
+        "title": "Delete notification template \"{name}\"?",
+        "content": "The template cannot be deleted if it is referenced by notification rules or scheduled requests."
+      }
+    },
+    "rule": {
+      "fields": {
+        "name": "Name",
+        "template": "Template",
+        "triggerType": "Trigger type",
+        "deliveryMethods": "Delivery methods",
+        "enabled": "Status"
+      },
+      "status": {
+        "enabled": "Enabled",
+        "disabled": "Disabled"
+      },
+      "delete": {
+        "title": "Delete notification rule \"{name}\"?",
+        "content": "Related scheduled requests (e.g. escalation) will also be cancelled."
+      }
+    }
+  },
+  "auditLog": {
+    "fields": {
+      "createdTime": "Action time",
+      "userName": "Action user",
+      "entityType": "Entity type",
+      "entityName": "Entity name",
+      "actionType": "Action type",
+      "actionStatus": "Status",
+      "failureDetails": "Failure details"
+    },
+    "filter": {
+      "actionTypes": "Action types"
+    },
+    "range": {
+      "today": "Today",
+      "last1Hour": "Last 1 hour",
+      "last6Hours": "Last 6 hours",
+      "last1Day": "Last 1 day",
+      "last3Days": "Last 3 days",
+      "last7Days": "Last 7 days"
+    },
+    "detail": {
+      "title": "Audit log details"
+    }
+  },
+  "dashboard": {
+    "fields": {
+      "title": "Title",
+      "assignedCustomers": "Assigned customers"
+    },
+    "actions": {
+      "create": "Create dashboard",
+      "edit": "Edit dashboard"
+    },
+    "delete": {
+      "content": "The dashboard and related data will be unrecoverable once deleted.",
+      "title": "Are you sure you want to delete dashboard '{title}'?"
+    },
+    "validation": {
+      "titleRequired": "Dashboard title is required"
+    }
+  },
+  "device": {
+    "fields": {
+      "name": "Name",
+      "label": "Label",
+      "deviceProfile": "Device profile",
+      "customer": "Customer",
+      "active": "State",
+      "activeTrue": "Active",
+      "activeFalse": "Inactive",
+      "isGateway": "Is gateway",
+      "description": "Description"
+    },
+    "actions": {
+      "create": "Create device",
+      "edit": "Edit device",
+      "makePublic": "Make public",
+      "makePublicSuccess": "Made public",
+      "assign": "Assign to customer",
+      "unassign": "Unassign from customer",
+      "unassignSuccess": "Unassigned",
+      "makePrivate": "Make private",
+      "batchDelete": "Batch delete"
+    },
+    "delete": {
+      "batchContent": "{count} devices selected.\nThe selected devices and all related data will be unrecoverable once deleted.",
+      "batchTitle": "Delete selected devices?",
+      "content": "The device and all related data will be unrecoverable once deleted.",
+      "deviceName": "Device name",
+      "title": "Are you sure you want to delete this device?"
+    },
+    "makePublic": {
+      "title": "Make public",
+      "content": "Make device '{name}' public? Anyone will be able to view its data on public dashboards."
+    },
+    "unassign": {
+      "title": "Unassign from customer",
+      "content": "Unassign device '{name}' from customer '{customer}'?"
+    },
+    "makePrivate": {
+      "title": "Make private",
+      "content": "Make device '{name}' private? It will be unassigned from the public customer."
+    },
+    "assign": {
+      "title": "Assign to customer",
+      "customer": "Select the customer to assign the device to",
+      "confirm": "Assign",
+      "success": "Assigned to customer"
+    },
+    "credentials": {
+      "action": "Device credentials",
+      "title": "Device credentials",
+      "typeLabel": "Credentials type",
+      "accessToken": "Access token",
+      "x509": "X.509 certificate (PEM)",
+      "clientId": "Client ID",
+      "userName": "User name",
+      "password": "Password",
+      "copy": "Copy",
+      "copied": "Copied to clipboard",
+      "generate": "Regenerate",
+      "type": {
+        "ACCESS_TOKEN": "Access token",
+        "X509_CERTIFICATE": "X.509 certificate",
+        "MQTT_BASIC": "MQTT basic",
+        "LWM2M_CREDENTIALS": "LwM2M credentials"
+      }
+    },
+    "import": {
+      "action": "Import devices",
+      "title": "Import devices",
+      "step1": "Select file",
+      "step2": "Import config",
+      "step3": "Column types",
+      "uploadHint": "Click or drag a CSV / Excel file here to upload",
+      "noFileSelected": "No file selected",
+      "noFile": "Please select a CSV or Excel file first",
+      "readError": "Failed to read file",
+      "emptyFile": "The file is empty",
+      "delimiter": "CSV delimiter",
+      "delimiterComma": "Comma",
+      "delimiterSemicolon": "Semicolon",
+      "delimiterPipe": "Pipe",
+      "headerCheckbox": "First row contains column names",
+      "updateCheckbox": "Update attributes/telemetry of existing devices",
+      "sample": "Sample",
+      "columnTypeLabel": "Column type",
+      "columnKey": "Attribute/telemetry key",
+      "keyPlaceholder": "Enter attribute/telemetry key",
+      "keyNotNeeded": "Not required for this type",
+      "keyRequired": "Please enter the key for column {index}",
+      "prev": "Previous",
+      "next": "Next",
+      "submit": "Submit",
+      "result": "Import done: created {created}, updated {updated}, errors {errors}",
+      "fileName": "File name",
+      "fileType": "File type",
+      "fileStats": "Data summary",
+      "csvFile": "CSV",
+      "rowsColumns": "{rows} rows / {columns} columns",
+      "parseConfig": "Parse config",
+      "excelAutoParsed": "The Excel file has been parsed automatically. CSV delimiter settings are not required.",
+      "importOptions": "Import options",
+      "dataRows": "Data rows",
+      "columns": "Columns",
+      "sourceColumn": "Source column",
+      "mappingSummary": "Column mapping",
+      "mappingSummaryDesc": "{columns} columns total, {keys} columns require an attribute or telemetry key.",
+      "completeTitle": "Import complete",
+      "createdCount": "Created devices",
+      "updatedCount": "Updated devices",
+      "errorCount": "Errors",
+      "errorDetails": "Error details",
+      "columnType": {
+        "NAME": "Name",
+        "TYPE": "Type",
+        "LABEL": "Label",
+        "DESCRIPTION": "Description",
+        "SHARED_ATTRIBUTE": "Shared attribute",
+        "SERVER_ATTRIBUTE": "Server attribute",
+        "TIME_SERIES": "Time series",
+        "ACCESS_TOKEN": "Access token",
+        "MQTT_CLIENT_ID": "MQTT client ID",
+        "MQTT_USER_NAME": "MQTT user name",
+        "MQTT_PASSWORD": "MQTT password",
+        "IS_GATEWAY": "Is gateway"
+      }
+    },
+    "validation": {
+      "nameRequired": "Device name is required",
+      "profileRequired": "Device profile is required"
+    }
+  },
+  "asset": {
+    "fields": {
+      "name": "Name",
+      "label": "Label",
+      "assetProfile": "Asset profile",
+      "customer": "Customer",
+      "description": "Description"
+    },
+    "actions": {
+      "create": "Create asset",
+      "edit": "Edit asset"
+    },
+    "delete": {
+      "content": "The asset and all related data will be unrecoverable once deleted.",
+      "title": "Are you sure you want to delete asset '{name}'?"
+    },
+    "validation": {
+      "nameRequired": "Asset name is required",
+      "profileRequired": "Asset profile is required"
+    }
+  },
+  "entityView": {
+    "fields": {
+      "name": "Name",
+      "type": "Type",
+      "entityType": "Entity type",
+      "entity": "Target entity",
+      "customer": "Customer",
+      "description": "Description"
+    },
+    "actions": {
+      "create": "Create entity view",
+      "edit": "Edit entity view"
+    },
+    "delete": {
+      "content": "The entity view and all related data will be unrecoverable once deleted.",
+      "title": "Are you sure you want to delete entity view '{name}'?"
+    },
+    "validation": {
+      "nameRequired": "Entity view name is required",
+      "typeRequired": "Type is required",
+      "entityRequired": "Target entity is required"
+    }
+  },
+  "deviceProfile": {
+    "fields": {
+      "name": "Name",
+      "transportType": "Transport type",
+      "description": "Description",
+      "default": "Default"
+    },
+    "actions": {
+      "create": "Create device profile",
+      "edit": "Edit device profile",
+      "setDefault": "Set as default",
+      "export": "Export device profile",
+      "import": "Import device profile"
+    },
+    "import": {
+      "success": "Imported successfully",
+      "invalidFile": "Invalid device profile file",
+      "parseError": "Failed to parse file, please choose a valid JSON file"
+    },
+    "delete": {
+      "content": "The device profile and related data will be unrecoverable once deleted.",
+      "title": "Are you sure you want to delete device profile '{name}'?"
+    },
+    "setDefault": {
+      "content": "This profile will be used by default when creating new devices.",
+      "title": "Set '{name}' as the default device profile?",
+      "success": "Set as default device profile"
+    },
+    "validation": {
+      "nameRequired": "Profile name is required"
+    }
+  },
+  "assetProfile": {
+    "fields": {
+      "name": "Name",
+      "description": "Description",
+      "default": "Default"
+    },
+    "actions": {
+      "create": "Create asset profile",
+      "edit": "Edit asset profile",
+      "setDefault": "Set as default",
+      "export": "Export asset profile",
+      "import": "Import asset profile"
+    },
+    "import": {
+      "success": "Imported successfully",
+      "invalidFile": "Invalid asset profile file",
+      "parseError": "Failed to parse file, please choose a valid JSON file"
+    },
+    "delete": {
+      "content": "The asset profile and related data will be unrecoverable once deleted.",
+      "title": "Are you sure you want to delete asset profile '{name}'?"
+    },
+    "setDefault": {
+      "content": "This profile will be used by default when creating new assets.",
+      "title": "Set '{name}' as the default asset profile?",
+      "success": "Set as default asset profile"
+    },
+    "validation": {
+      "nameRequired": "Profile name is required"
+    }
+  },
+  "customer": {
+    "fields": {
+      "title": "Title",
+      "email": "Email",
+      "phone": "Phone",
+      "country": "Country",
+      "state": "State / Province",
+      "city": "City",
+      "region": "Region",
+      "address": "Address",
+      "address2": "Address 2",
+      "zip": "Zip / Postal code",
+      "description": "Description"
+    },
+    "actions": {
+      "create": "Create customer",
+      "edit": "Edit customer"
+    },
+    "delete": {
+      "content": "The customer and all related data will be unrecoverable once deleted.",
+      "title": "Are you sure you want to delete customer '{title}'?"
+    },
+    "validation": {
+      "titleRequired": "Customer title is required",
+      "emailInvalid": "Invalid email format",
+      "phoneFormatTip": "Please enter an E.164 phone number, e.g. +8613123456789"
+    }
+  },
+  "aiModel": {
+    "fields": {
+      "name": "Name",
+      "provider": "Provider",
+      "modelId": "Model ID"
+    },
+    "delete": {
+      "content": "The AI model and its configuration will be unrecoverable once deleted.",
+      "title": "Are you sure you want to delete AI model '{name}'?"
+    }
+  },
+  "alarm": {
+    "fields": {
+      "createdTime": "Created time",
+      "type": "Type",
+      "originator": "Originator",
+      "severity": "Severity",
+      "status": "Status",
+      "startTime": "Start time",
+      "assignee": "Assignee"
+    },
+    "severity": {
+      "CRITICAL": "Critical",
+      "MAJOR": "Major",
+      "MINOR": "Minor",
+      "WARNING": "Warning",
+      "INDETERMINATE": "Indeterminate"
+    },
+    "status": {
+      "ACTIVE_UNACK": "Active unacknowledged",
+      "ACTIVE_ACK": "Active acknowledged",
+      "CLEARED_UNACK": "Cleared unacknowledged",
+      "CLEARED_ACK": "Cleared acknowledged"
+    },
+    "searchStatus": {
+      "ANY": "All",
+      "ACTIVE": "Active",
+      "CLEARED": "Cleared",
+      "ACK": "Acknowledged",
+      "UNACK": "Unacknowledged"
+    },
+    "actions": {
+      "ack": "Acknowledge",
+      "clear": "Clear",
+      "ackSuccess": "Alarm acknowledged",
+      "clearSuccess": "Alarm cleared"
+    },
+    "delete": {
+      "content": "The alarm and related data will be unrecoverable once deleted.",
+      "title": "Are you sure you want to delete alarm '{type}'?"
+    }
+  },
+  "alarmRule": {
+    "fields": {
+      "name": "Name",
+      "entityType": "Entity type",
+      "entityName": "Entity"
+    },
+    "delete": {
+      "content": "The alarm rule and its configuration will be unrecoverable once deleted.",
+      "title": "Are you sure you want to delete alarm rule '{name}'?"
+    }
+  },
+  "calculatedField": {
+    "fields": {
+      "name": "Name",
+      "type": "Type",
+      "entityType": "Entity type",
+      "entityName": "Entity"
+    },
+    "type": {
+      "SIMPLE": "Simple",
+      "SCRIPT": "Script",
+      "GEOFENCING": "Geofencing",
+      "ALARM": "Alarm",
+      "PROPAGATION": "Propagation",
+      "RELATED_ENTITIES_AGGREGATION": "Related entities aggregation",
+      "ENTITY_AGGREGATION": "Entity aggregation"
+    },
+    "delete": {
+      "content": "The calculated field and related data will be unrecoverable once deleted.",
+      "title": "Are you sure you want to delete calculated field '{name}'?"
+    }
+  },
+  "ruleChain": {
+    "fields": {
+      "name": "Name",
+      "root": "Root",
+      "debugMode": "Debug mode",
+      "description": "Description"
+    },
+    "actions": {
+      "create": "Create rule chain",
+      "edit": "Edit rule chain",
+      "setRoot": "Set as root"
+    },
+    "delete": {
+      "content": "The rule chain and related data will be unrecoverable once deleted.",
+      "title": "Are you sure you want to delete rule chain '{name}'?"
+    },
+    "setRoot": {
+      "content": "Once set as root, messages from all devices and entities will be processed by it by default.",
+      "title": "Set '{name}' as the root rule chain?",
+      "success": "Set as root rule chain"
+    },
+    "validation": {
+      "nameRequired": "Rule chain name is required"
+    }
+  },
+  "otaPackage": {
+    "fields": {
+      "title": "Title",
+      "version": "Version",
+      "type": "Type",
+      "deviceProfile": "Device profile",
+      "fileName": "File name",
+      "dataSize": "Size",
+      "url": "Direct URL",
+      "checksum": "Checksum",
+      "description": "Description"
+    },
+    "type": {
+      "FIRMWARE": "Firmware",
+      "SOFTWARE": "Software"
+    },
+    "source": {
+      "label": "Data source",
+      "url": "External URL",
+      "file": "Upload file"
+    },
+    "actions": {
+      "create": "Create OTA package",
+      "download": "Download"
+    },
+    "delete": {
+      "content": "The OTA package and related data will be unrecoverable once deleted.",
+      "title": "Are you sure you want to delete OTA package '{title}'?"
+    },
+    "validation": {
+      "titleRequired": "Title is required",
+      "versionRequired": "Version is required",
+      "deviceProfileRequired": "Device profile is required",
+      "urlRequired": "Direct URL is required"
+    },
+    "fileUploadHint": "Binary file upload is not implemented yet; currently only creating via external URL is supported."
+  },
+  "tenant": {
+    "fields": {
+      "title": "Title",
+      "tenantProfile": "Tenant profile",
+      "email": "Email",
+      "phone": "Phone",
+      "country": "Country",
+      "state": "State",
+      "city": "City",
+      "region": "Region",
+      "address": "Address",
+      "address2": "Address 2",
+      "zip": "Zip",
+      "description": "Description"
+    },
+    "actions": {
+      "create": "Create tenant",
+      "edit": "Edit tenant"
+    },
+    "delete": {
+      "content": "After confirmation, the tenant and all related data cannot be recovered.",
+      "title": "Are you sure you want to delete tenant \"{title}\"?"
+    },
+    "validation": {
+      "titleRequired": "Title is required",
+      "tenantProfileRequired": "Please select tenant profile",
+      "emailInvalid": "Invalid email format",
+      "phoneFormatTip": "Enter a phone number in E.164 format, for example +8613123456789"
+    }
+  },
+  "tenantProfile": {
+    "fields": {
+      "name": "Name",
+      "description": "Description",
+      "isolatedTbRuleEngine": "Isolated rule engine",
+      "default": "Default"
+    },
+    "actions": {
+      "create": "Create tenant profile",
+      "edit": "Edit tenant profile",
+      "setDefault": "Set as default",
+      "export": "Export tenant profile",
+      "import": "Import tenant profile"
+    },
+    "import": {
+      "success": "Imported successfully",
+      "invalidFile": "Invalid tenant profile file",
+      "parseError": "Failed to parse file, please select a valid JSON file"
+    },
+    "delete": {
+      "content": "After confirmation, the tenant profile and related data cannot be recovered.",
+      "title": "Are you sure you want to delete tenant profile \"{name}\"?"
+    },
+    "setDefault": {
+      "content": "New tenants will use this profile by default.",
+      "title": "Set \"{name}\" as the default tenant profile?",
+      "success": "Set as default tenant profile"
+    },
+    "validation": {
+      "nameRequired": "Name is required"
+    }
+  },
+  "tenantAdmin": {
+    "fields": {
+      "email": "Email",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "phone": "Phone",
+      "description": "Description"
+    },
+    "actions": {
+      "manage": "Manage tenant admins",
+      "create": "Create admin",
+      "edit": "Edit admin",
+      "back": "Back to tenants",
+      "loginAs": "Login as this admin"
+    },
+    "delete": {
+      "content": "After confirmation, the administrator account cannot be recovered.",
+      "title": "Are you sure you want to delete admin \"{name}\"?"
+    },
+    "loginAs": {
+      "content": "You will switch to this administrator's session. Your current session will be replaced.",
+      "title": "Log in as administrator \"{name}\"?"
+    },
+    "activation": {
+      "method": "Activation method",
+      "showLink": "Display activation link",
+      "sendMail": "Send activation mail",
+      "linkTitle": "User activation link",
+      "descBefore": "To activate the user, please use the following ",
+      "linkWord": "activation link",
+      "expireTip": " (expires in {duration}):",
+      "duration": "{h}h {m}m {s}s",
+      "copyLink": "Copy link",
+      "copied": "Link copied"
+    },
+    "validation": {
+      "emailRequired": "Email is required",
+      "emailInvalid": "Invalid email format",
+      "firstNameRequired": "First name is required",
+      "phoneFormatTip": "Enter a phone number in E.164 format, for example +8613123456789"
+    }
+  },
+  "customerUser": {
+    "fields": {
+      "email": "Email",
+      "firstName": "First name",
+      "lastName": "Last name",
+      "phone": "Phone",
+      "description": "Description"
+    },
+    "actions": {
+      "manage": "Manage customer users",
+      "create": "Create user",
+      "edit": "Edit user",
+      "loginAs": "Login as this user"
+    },
+    "delete": {
+      "content": "After confirmation, the user account cannot be recovered.",
+      "title": "Are you sure you want to delete user \"{name}\"?"
+    },
+    "loginAs": {
+      "content": "You will switch to this user's session. Your current session will be replaced.",
+      "title": "Log in as user \"{name}\"?"
+    },
+    "activation": {
+      "method": "Activation method",
+      "showLink": "Display activation link",
+      "sendMail": "Send activation mail",
+      "linkTitle": "User activation link",
+      "descBefore": "To activate the user, please use the following ",
+      "linkWord": "activation link",
+      "expireTip": " (expires in {duration}):",
+      "duration": "{h}h {m}m {s}s",
+      "copyLink": "Copy link",
+      "copied": "Link copied"
+    },
+    "validation": {
+      "emailRequired": "Email is required",
+      "emailInvalid": "Invalid email format",
+      "firstNameRequired": "First name is required",
+      "phoneFormatTip": "Enter a phone number in E.164 format, for example +8613123456789"
+    }
+  },
+  "widgetsBundle": {
+    "fields": {
+      "title": "Title",
+      "description": "Description",
+      "scope": "Scope"
+    },
+    "scope": {
+      "system": "System",
+      "tenant": "Tenant"
+    },
+    "actions": {
+      "create": "Create widget bundle",
+      "edit": "Edit widget bundle",
+      "export": "Export widget bundle",
+      "import": "Import widget bundle"
+    },
+    "import": {
+      "success": "Imported successfully",
+      "invalidFile": "Invalid widget bundle file",
+      "parseError": "Failed to parse file, please select a valid JSON file"
+    },
+    "delete": {
+      "content": "After confirmation, the widget bundle and related data cannot be recovered.",
+      "title": "Are you sure you want to delete widget bundle \"{title}\"?"
+    },
+    "validation": {
+      "titleRequired": "Title is required"
+    }
+  },
+  "widgetType": {
+    "fields": {
+      "name": "Name",
+      "bundles": "Bundles",
+      "widgetType": "Type",
+      "deprecated": "Deprecated",
+      "scope": "Scope"
+    },
+    "types": {
+      "timeseries": "Time series",
+      "latest": "Latest values",
+      "rpc": "Control widget",
+      "alarm": "Alarm widget",
+      "static": "Static widget"
+    },
+    "scope": {
+      "system": "System",
+      "tenant": "Tenant"
+    },
+    "actions": {
+      "create": "Create widget",
+      "edit": "Edit widget",
+      "export": "Export widget",
+      "import": "Import widget"
+    },
+    "import": {
+      "success": "Imported successfully",
+      "invalidFile": "Invalid widget file",
+      "parseError": "Failed to parse file, please select a valid JSON file"
+    },
+    "delete": {
+      "content": "After confirmation, the widget and related data cannot be recovered.",
+      "title": "Are you sure you want to delete widget \"{name}\"?"
+    },
+    "validation": {
+      "nameRequired": "Name is required"
+    }
+  },
+  "images": {
+    "fields": {
+      "name": "Name",
+      "resolution": "Resolution",
+      "size": "Size",
+      "scope": "Scope",
+      "public": "Public"
+    },
+    "scope": {
+      "system": "System",
+      "tenant": "Tenant"
+    },
+    "filter": {
+      "includeSystemImages": "Include system images"
+    },
+    "actions": {
+      "upload": "Upload image",
+      "edit": "Edit image",
+      "download": "Download image",
+      "embed": "Embed image",
+      "export": "Export image",
+      "import": "Import image",
+      "replace": "Replace image"
+    },
+    "upload": {
+      "file": "Image file",
+      "title": "Title",
+      "dragTip": "Click or drag a file here to upload",
+      "replaceTip": "Drag a new file to replace the current image",
+      "submit": "Upload"
+    },
+    "embed": {
+      "title": "Embed image",
+      "public": "Public access",
+      "publicDesc": "When enabled, the image can be accessed anonymously via the public link below, without login.",
+      "publicLink": "Public link",
+      "embedHtml": "HTML code",
+      "link": "Resource link",
+      "copy": "Copy",
+      "copied": "Copied to clipboard",
+      "copyFailed": "Copy failed",
+      "makePublicFirst": "Enable public access first to get a public link.",
+      "publicEnabled": "Public access enabled",
+      "publicDisabled": "Public access disabled"
+    },
+    "delete": {
+      "content": "After confirmation, the image cannot be recovered.",
+      "title": "Are you sure you want to delete image \"{title}\"?"
+    },
+    "forceDelete": {
+      "title": "Image is used by other entities",
+      "content": "Image “{title}” was not deleted because it is used by the following entities:",
+      "footer": "If you still want to delete the image, click the Delete anyway button.",
+      "button": "Delete anyway"
+    },
+    "import": {
+      "success": "Imported successfully",
+      "invalidFile": "Invalid image file",
+      "parseError": "Failed to parse file, please select a valid JSON file"
+    },
+    "uploadSuccess": "Uploaded successfully",
+    "updateSuccess": "Updated successfully",
+    "validation": {
+      "fileRequired": "Please select an image file",
+      "titleRequired": "Title is required"
+    }
+  },
+  "scadaSymbol": {
+    "fields": {
+      "name": "Name",
+      "resolution": "Resolution",
+      "size": "Size",
+      "scope": "Scope",
+      "public": "Public"
+    },
+    "scope": {
+      "system": "System",
+      "tenant": "Tenant"
+    },
+    "filter": {
+      "includeSystemSymbols": "Include system symbols"
+    },
+    "actions": {
+      "upload": "Upload symbol",
+      "edit": "Edit symbol",
+      "download": "Download symbol",
+      "embed": "Embed symbol",
+      "export": "Export symbol",
+      "import": "Import symbol",
+      "replace": "Replace symbol"
+    },
+    "upload": {
+      "file": "Symbol file",
+      "title": "Title",
+      "dragTip": "Click or drag an SVG file here to upload",
+      "replaceTip": "Drag a new SVG file to replace the current symbol",
+      "submit": "Upload"
+    },
+    "delete": {
+      "content": "After confirmation, the symbol cannot be recovered.",
+      "title": "Are you sure you want to delete symbol \"{title}\"?"
+    },
+    "forceDelete": {
+      "title": "Symbol is used by other entities",
+      "content": "Symbol “{title}” was not deleted because it is used by the following entities:",
+      "footer": "If you still want to delete the symbol, click the Delete anyway button.",
+      "button": "Delete anyway"
+    },
+    "import": {
+      "success": "Imported successfully",
+      "invalidFile": "Invalid symbol file",
+      "parseError": "Failed to parse file, please select a valid JSON file"
+    },
+    "uploadSuccess": "Uploaded successfully",
+    "updateSuccess": "Updated successfully",
+    "validation": {
+      "fileRequired": "Please select an SVG symbol file",
+      "titleRequired": "Title is required",
+      "svgOnly": "Only SVG format symbol files are supported"
+    }
+  },
+  "resourceLibrary": {
+    "fields": {
+      "title": "Title",
+      "resourceKey": "Resource key",
+      "resourceType": "Resource type",
+      "scope": "Scope",
+      "file": "Resource file",
+      "fileName": "File name"
+    },
+    "types": {
+      "lwm2mModel": "LwM2M Model",
+      "pkcs12": "PKCS #12",
+      "jks": "JKS",
+      "general": "General"
+    },
+    "scope": {
+      "system": "System",
+      "tenant": "Tenant"
+    },
+    "filter": {
+      "allTypes": "All types"
+    },
+    "actions": {
+      "add": "Add resource",
+      "download": "Download",
+      "edit": "Edit",
+      "delete": "Delete"
+    },
+    "upload": {
+      "dragTip": "Click or drag a file here to upload",
+      "replaceTip": "Drag a new file to replace the current resource",
+      "titlePlaceholder": "Leave empty to use the file name"
+    },
+    "delete": {
+      "content": "After confirmation, the resource cannot be recovered.",
+      "title": "Are you sure you want to delete resource \"{title}\"?"
+    },
+    "forceDelete": {
+      "title": "Resource is used by other entities",
+      "content": "Resource “{title}” was not deleted because it is used by the following entities:",
+      "footer": "If you still want to delete the resource, click the Delete anyway button.",
+      "button": "Delete anyway"
+    },
+    "uploadSuccess": "Uploaded successfully",
+    "updateSuccess": "Updated successfully",
+    "validation": {
+      "fileRequired": "Please select a resource file",
+      "titleRequired": "Title is required"
+    }
+  },
+  "javascriptLibrary": {
+    "fields": {
+      "title": "Title",
+      "subType": "JavaScript type",
+      "scope": "Scope",
+      "file": "JavaScript file",
+      "content": "Content"
+    },
+    "subTypes": {
+      "extension": "Extension",
+      "module": "Module"
+    },
+    "scope": {
+      "system": "System",
+      "tenant": "Tenant"
+    },
+    "filter": {
+      "allSubTypes": "All types"
+    },
+    "actions": {
+      "add": "Add JavaScript",
+      "edit": "Edit JavaScript",
+      "download": "Download"
+    },
+    "upload": {
+      "dragTip": "Click or drag a .js file here to upload",
+      "replaceTip": "Drag a new .js file to replace the current file",
+      "importFromFile": "Import from file",
+      "contentPlaceholder": "Write your JavaScript module code here"
+    },
+    "delete": {
+      "content": "After confirmation, the JavaScript resource cannot be recovered.",
+      "title": "Are you sure you want to delete \"{title}\"?"
+    },
+    "forceDelete": {
+      "title": "JavaScript resource is used by other entities",
+      "content": "JavaScript resource “{title}” was not deleted because it is used by the following entities:",
+      "footer": "If you still want to delete the resource, click the Delete anyway button.",
+      "button": "Delete anyway"
+    },
+    "uploadSuccess": "Uploaded successfully",
+    "updateSuccess": "Updated successfully",
+    "validation": {
+      "titleRequired": "Title is required",
+      "fileRequired": "Please select a JavaScript file",
+      "contentRequired": "Content is required",
+      "readFileError": "Failed to read file"
+    }
+  }
+}

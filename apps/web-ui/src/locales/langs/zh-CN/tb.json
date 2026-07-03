@@ -1,0 +1,1493 @@
+{
+  "app": {
+    "pageTitle": "ThingsBoard 物联网平台",
+    "pageDesc": "基于 Vue3 的 ThingsBoard 前端应用（ThingsBoard {version}）",
+    "techSupport": "技术支持",
+    "wechatQr": "扫码加微信"
+  },
+  "auth": {
+    "resetEmailSent": "邮件已发送",
+    "resetEmailSentDesc": "如果该邮箱已注册，重置密码的链接已发送至您的邮箱，请前往查收并按提示重置密码。",
+    "registerSubTitle": "ThingsBoard 账号由管理员创建",
+    "registerNotSupported": "暂不支持自助注册",
+    "registerNotSupportedDesc": "ThingsBoard 社区版未开放公开注册。请联系系统或租户管理员为您创建账号，创建后您将收到激活邮件以设置密码。",
+    "createPassword": "创建密码",
+    "createPasswordSubtitle": "请为您的账号设置登录密码，设置成功后将自动登录。",
+    "createPasswordSuccess": "登录成功",
+    "createPasswordSuccessDesc": "账号已激活，欢迎您",
+    "passwordMinTip": "密码至少 6 位",
+    "linkInvalid": "链接无效",
+    "activateLinkInvalid": "激活链接无效或已失效，请重新获取激活邮件。",
+    "alreadyHaveAccount": "已有账号？",
+    "goToLogin": "前往登录",
+    "resetPassword": "重置密码",
+    "resetPasswordSubtitle": "请输入新密码，设置成功后请使用新密码登录。",
+    "resetPasswordSuccess": "密码已重置",
+    "resetPasswordSuccessDesc": "请使用新密码登录",
+    "resetLinkInvalid": "重置链接无效或已失效，请重新申请找回密码。"
+  },
+  "authority": {
+    "SYS_ADMIN": "系统管理员",
+    "TENANT_ADMIN": "租户管理员",
+    "CUSTOMER_USER": "客户"
+  },
+  "menu": {
+    "dashboard": "仪表板",
+    "entities": "实体",
+    "device": "设备",
+    "asset": "资产",
+    "entityView": "实体视图",
+    "profiles": "配置",
+    "deviceProfile": "设备配置",
+    "assetProfile": "资产配置",
+    "customer": "客户管理",
+    "customerUser": "客户用户",
+    "calculatedField": "计算字段",
+    "ruleChain": "规则链",
+    "otaUpdate": "OTA 更新",
+    "alarm": "告警",
+    "alarmList": "告警列表",
+    "alarmRule": "告警规则",
+    "tenant": "租户管理",
+    "tenantProfile": "租户配置",
+    "tenantAdmin": "租户管理员",
+    "resources": "资源",
+    "widgetsLibrary": "部件库",
+    "widgetTypes": "部件",
+    "widgetsBundle": "部件包",
+    "images": "图片库",
+    "scadaSymbols": "SCADA 库",
+    "javascriptLibrary": "JavaScript 库",
+    "resourceLibrary": "资源库",
+    "notification": "通知中心",
+    "auditLogs": "审计日志",
+    "settings": "系统设置",
+    "securitySettings": "安全设置"
+  },
+  "settings": {
+    "general": "通用",
+    "outgoingMail": "邮件服务器",
+    "notifications": "通知",
+    "queues": "队列",
+    "home": "首页设置",
+    "aiModels": "AI 模型",
+    "emptyTip": "{title}页面建设中",
+    "homeSettings": {
+      "title": "首页设置",
+      "homeDashboard": "首页仪表板",
+      "homeDashboardPlaceholder": "选择租户的默认首页仪表板",
+      "hideToolbar": "隐藏首页仪表板工具栏",
+      "hint": "为本租户下所有用户设置默认打开的首页仪表板。"
+    },
+    "generalSettings": {
+      "title": "常规设置",
+      "baseUrl": "基础 URL",
+      "baseUrlPlaceholder": "请输入基础 URL",
+      "baseUrlRequired": "基础 URL 为必填项",
+      "prohibitDifferentUrl": "禁止使用来自客户端请求头的主机名",
+      "prohibitDifferentUrlHint": "此设置应在生产环境中启用。禁用时可能导致安全问题。"
+    },
+    "deviceConnectivity": {
+      "title": "设备连接",
+      "hint": "如果主机或端口字段为空，将使用默认协议值。",
+      "host": "主机",
+      "port": "端口",
+      "hostPlaceholder": "请输入主机",
+      "portPlaceholder": "请输入端口",
+      "portPattern": "端口必须为正整数。",
+      "portRange": "端口应在 1 到 65535 的范围内。",
+      "httpS": "HTTP(s)",
+      "mqttS": "MQTT(s)",
+      "coapS": "COAP(s)",
+      "http": "HTTP",
+      "https": "HTTPs",
+      "mqtt": "MQTT",
+      "mqtts": "MQTTs",
+      "coap": "COAP",
+      "coaps": "COAPs"
+    },
+    "mail": {
+      "title": "邮件服务器设置",
+      "mailFrom": "发件人",
+      "mailFromPlaceholder": "请输入发件人邮箱",
+      "mailFromRequired": "发件人为必填项",
+      "connection": "连接设置",
+      "authentication": "身份验证",
+      "smtpProtocol": "SMTP 协议",
+      "smtpHost": "SMTP 主机",
+      "smtpHostRequired": "SMTP 主机为必填项",
+      "smtpPort": "SMTP 端口",
+      "smtpPortRequired": "SMTP 端口为必填项",
+      "timeout": "超时（毫秒）",
+      "timeoutRequired": "超时为必填项",
+      "enableTls": "启用 TLS",
+      "tlsVersion": "TLS 版本",
+      "tlsVersionRequired": "请选择 TLS 版本",
+      "enableProxy": "启用代理",
+      "proxyHost": "代理主机",
+      "proxyHostRequired": "代理主机为必填项",
+      "proxyPort": "代理端口",
+      "proxyPortRequired": "代理端口为必填项",
+      "proxyUser": "代理用户名",
+      "proxyPassword": "代理密码",
+      "username": "用户名",
+      "password": "密码",
+      "changePassword": "更改密码",
+      "sendTestMail": "发送测试邮件",
+      "testMailSuccess": "测试邮件发送成功"
+    },
+    "slack": {
+      "title": "Slack 设置",
+      "apiToken": "Slack API 令牌",
+      "apiTokenPlaceholder": "请输入 Slack API 令牌"
+    },
+    "sms": {
+      "title": "短信供应商",
+      "provider": "供应商",
+      "providerAwsSns": "Amazon SNS",
+      "providerTwilio": "Twilio",
+      "providerSmpp": "SMPP",
+      "requiredField": "此项为必填项",
+      "accessKeyId": "Access Key ID",
+      "secretAccessKey": "Secret Access Key",
+      "region": "区域",
+      "accountSid": "Account SID",
+      "accountToken": "Account Token",
+      "numberFrom": "发送号码",
+      "protocolVersion": "协议版本",
+      "bindType": "绑定类型",
+      "host": "主机",
+      "port": "端口",
+      "systemId": "System ID",
+      "password": "密码",
+      "systemType": "System Type",
+      "serviceType": "Service Type",
+      "sourceAddress": "源地址",
+      "addressRange": "地址范围",
+      "sourceTon": "Source TON",
+      "sourceNpi": "Source NPI",
+      "destinationTon": "Destination TON",
+      "destinationNpi": "Destination NPI",
+      "codingScheme": "编码方案",
+      "sendTestSms": "发送测试短信",
+      "testSmsSuccess": "测试短信发送成功",
+      "phoneNumber": "收信号码",
+      "message": "短信内容"
+    }
+  },
+  "securitySettings": {
+    "requiredField": "此项为必填项",
+    "general": {
+      "title": "安全设置",
+      "generalPolicy": "通用策略",
+      "passwordPolicy": "密码策略",
+      "maxFailedLoginAttempts": "允许的最大登录失败次数",
+      "userLockoutNotificationEmail": "账户锁定通知邮箱",
+      "emailInvalid": "邮箱格式不正确",
+      "userActivationTokenTtl": "激活链接有效期(小时)",
+      "passwordResetTokenTtl": "密码重置链接有效期(小时)",
+      "mobileSecretKeyLength": "移动端密钥长度",
+      "minimumLength": "最小长度",
+      "maximumLength": "最大长度",
+      "minimumUppercaseLetters": "最少大写字母数",
+      "minimumLowercaseLetters": "最少小写字母数",
+      "minimumDigits": "最少数字数",
+      "minimumSpecialCharacters": "最少特殊字符数",
+      "passwordExpirationPeriodDays": "密码过期周期(天)",
+      "passwordReuseFrequencyDays": "密码重用间隔(天)",
+      "allowWhitespaces": "允许空格",
+      "forceResetPassword": "登录时若密码不符合策略则强制重置"
+    },
+    "jwt": {
+      "title": "JWT 安全设置",
+      "tokenIssuer": "令牌签发者",
+      "tokenSigningKey": "令牌签名密钥",
+      "generateKey": "生成",
+      "tokenExpirationTime": "令牌有效期(秒)",
+      "refreshTokenExpTime": "刷新令牌有效期(秒)",
+      "refreshLessToken": "刷新令牌有效期必须大于令牌有效期",
+      "changeWarningTitle": "确认修改 JWT 设置?",
+      "changeWarning": "修改签发者或签名密钥会使所有已签发的令牌失效，所有用户（含其它会话）需要重新登录。"
+    },
+    "twoFa": {
+      "title": "双因素认证",
+      "verificationSettings": "验证限制",
+      "availableProviders": "可用供应商",
+      "providersRequired": "强制启用时请至少启用一个供应商",
+      "enforce": {
+        "title": "强制双因素认证",
+        "toggle": "强制启用双因素认证",
+        "enforceFor": "强制对象",
+        "byTenant": "租户",
+        "byTenantProfile": "租户配置",
+        "tenants": "选择租户",
+        "tenantProfiles": "选择租户配置"
+      },
+      "issuerName": "签发者名称",
+      "issuerRequired": "请填写签发者名称",
+      "backupCodeHint": "需先启用至少一个其它供应商,才能启用备用码。",
+      "smsTemplate": "短信验证码模板",
+      "smsTemplateInvalid": "短信模板必须包含验证码占位符",
+      "verificationCodeLifetime": "验证码有效期(秒)",
+      "codesQuantity": "备用码数量",
+      "minVerificationCodeSendPeriod": "验证码发送最小间隔(秒)",
+      "maxVerificationFailuresBeforeLockout": "锁定前允许的最大验证失败次数",
+      "totalAllowedTimeForVerification": "验证总时长(秒)",
+      "rateLimit": "限制验证码校验频率",
+      "rateLimitTimesPer": "次 / 每",
+      "rateLimitSeconds": "秒",
+      "provider": {
+        "TOTP": "身份验证器应用(TOTP)",
+        "SMS": "短信",
+        "EMAIL": "邮件",
+        "BACKUP_CODE": "备用码"
+      },
+      "providerDesc": {
+        "TOTP": "使用 Google Authenticator 等应用生成动态验证码。",
+        "SMS": "通过短信发送一次性验证码（需先配置短信供应商）。",
+        "EMAIL": "通过邮件发送一次性验证码（需先配置邮件服务器）。",
+        "BACKUP_CODE": "一组一次性备用码，用于无法使用其它方式时登录。"
+      }
+    }
+  },
+  "queue": {
+    "fields": {
+      "name": "队列名称",
+      "topic": "主题",
+      "partitions": "分区",
+      "submitStrategy": "提交策略",
+      "processingStrategy": "处理策略",
+      "description": "描述"
+    },
+    "submitStrategy": {
+      "BURST": "突发",
+      "BATCH": "批量",
+      "SEQUENTIAL": "顺序",
+      "SEQUENTIAL_BY_TENANT": "按租户顺序",
+      "SEQUENTIAL_BY_ORIGINATOR": "按发起者顺序"
+    },
+    "processingStrategy": {
+      "RETRY_ALL": "重试全部",
+      "RETRY_FAILED": "重试失败",
+      "RETRY_TIMED_OUT": "重试超时",
+      "RETRY_FAILED_AND_TIMED_OUT": "重试失败和超时",
+      "SKIP_ALL_FAILURES": "跳过所有失败",
+      "SKIP_ALL_FAILURES_AND_TIMED_OUT": "跳过所有失败和超时"
+    },
+    "delete": {
+      "title": "确定要删除队列“{name}”吗？",
+      "content": "删除后该队列将无法恢复，请谨慎操作。"
+    }
+  },
+  "actionType": {
+    "ADDED": "新增",
+    "DELETED": "删除",
+    "UPDATED": "更新",
+    "ATTRIBUTES_UPDATED": "属性更新",
+    "ATTRIBUTES_DELETED": "属性删除",
+    "TIMESERIES_UPDATED": "遥测更新",
+    "TIMESERIES_DELETED": "遥测删除",
+    "RPC_CALL": "RPC 调用",
+    "CREDENTIALS_UPDATED": "凭据更新",
+    "ASSIGNED_TO_CUSTOMER": "分配给客户",
+    "UNASSIGNED_FROM_CUSTOMER": "从客户取消分配",
+    "ACTIVATED": "激活",
+    "SUSPENDED": "暂停",
+    "CREDENTIALS_READ": "凭据读取",
+    "ATTRIBUTES_READ": "属性读取",
+    "RELATION_ADD_OR_UPDATE": "关系新增或更新",
+    "RELATION_DELETED": "关系删除",
+    "RELATIONS_DELETED": "关系全部删除",
+    "REST_API_RULE_ENGINE_CALL": "规则引擎 REST API 调用",
+    "ALARM_ACK": "确认告警",
+    "ALARM_CLEAR": "清除告警",
+    "ALARM_DELETE": "删除告警",
+    "ALARM_ASSIGNED": "分配告警",
+    "ALARM_UNASSIGNED": "取消分配告警",
+    "LOGIN": "登录",
+    "LOGOUT": "登出",
+    "LOCKOUT": "锁定",
+    "ASSIGNED_FROM_TENANT": "从租户分配",
+    "ASSIGNED_TO_TENANT": "分配给租户",
+    "PROVISION_SUCCESS": "设备预配置成功",
+    "PROVISION_FAILURE": "设备预配置失败",
+    "ASSIGNED_TO_EDGE": "分配给边缘",
+    "UNASSIGNED_FROM_EDGE": "从边缘取消分配",
+    "ADDED_COMMENT": "新增评论",
+    "UPDATED_COMMENT": "更新评论",
+    "DELETED_COMMENT": "删除评论",
+    "SMS_SENT": "短信发送"
+  },
+  "actionStatus": {
+    "SUCCESS": "成功",
+    "FAILURE": "失败"
+  },
+  "entityType": {
+    "ADMIN_SETTINGS": "系统设置",
+    "AI_MODEL": "AI 模型",
+    "ALARM": "告警",
+    "API_KEY": "API 密钥",
+    "API_USAGE_STATE": "API 使用状态",
+    "ASSET": "资产",
+    "ASSET_PROFILE": "资产配置",
+    "CALCULATED_FIELD": "计算字段",
+    "CUSTOMER": "客户",
+    "DASHBOARD": "仪表板",
+    "DEVICE": "设备",
+    "DEVICE_PROFILE": "设备配置",
+    "DOMAIN": "域名",
+    "EDGE": "边缘",
+    "ENTITY_VIEW": "实体视图",
+    "JOB": "任务",
+    "MOBILE_APP": "移动应用",
+    "MOBILE_APP_BUNDLE": "移动应用包",
+    "NOTIFICATION": "通知",
+    "NOTIFICATION_REQUEST": "通知请求",
+    "NOTIFICATION_RULE": "通知规则",
+    "NOTIFICATION_TARGET": "通知接收组",
+    "NOTIFICATION_TEMPLATE": "通知模板",
+    "OAUTH2_CLIENT": "OAuth 2.0 客户端",
+    "OTA_PACKAGE": "OTA 升级包",
+    "QUEUE": "队列",
+    "QUEUE_STATS": "队列统计",
+    "RPC": "RPC",
+    "RULE_CHAIN": "规则链",
+    "RULE_NODE": "规则节点",
+    "TB_RESOURCE": "资源",
+    "TENANT": "租户",
+    "TENANT_PROFILE": "租户配置",
+    "USER": "用户",
+    "WIDGET_TYPE": "部件",
+    "WIDGETS_BUNDLE": "部件包"
+  },
+  "common": {
+    "seq": "序号",
+    "actions": "操作",
+    "createdTime": "创建时间",
+    "create": "新建",
+    "edit": "编辑",
+    "delete": "删除",
+    "detail": "详情",
+    "search": "搜索",
+    "save": "保存",
+    "undo": "撤销",
+    "close": "关闭",
+    "cancel": "取消",
+    "confirm": "确认",
+    "ok": "确定",
+    "yes": "是",
+    "no": "否",
+    "searchPlaceholder": "输入搜索内容",
+    "deleteConfirm": "确定要删除吗?该操作不可恢复。",
+    "deleteSuccess": "删除成功",
+    "saveSuccess": "保存成功",
+    "systemTip": "系统提示"
+  },
+  "account": {
+    "title": "个人中心",
+    "userInfo": "个人资料",
+    "security": "安全配置",
+    "notification": "通知设置",
+    "lastLogin": "上次登录",
+    "email": "邮箱",
+    "firstName": "名字",
+    "lastName": "职务",
+    "phone": "电话",
+    "phoneFormatTip": "请输入 E.164 格式的电话号码，例如 +8613123456789",
+    "language": "语言",
+    "unitSystem": "单位制",
+    "homeDashboard": "主页仪表板",
+    "hideHomeDashboardToolbar": "隐藏主页仪表板工具栏",
+    "langAuto": "自动",
+    "unitAuto": "自动",
+    "unitMetric": "公制",
+    "unitImperial": "英制",
+    "unitHybrid": "混合",
+    "jwtToken": "JWT Token",
+    "jwtTokenExpiration": "Token 有效期至",
+    "copyJwtToken": "复制 JWT Token",
+    "copied": "已复制",
+    "copyFailed": "复制失败",
+    "changePassword": "修改密码",
+    "currentPassword": "当前密码",
+    "newPassword": "新密码",
+    "confirmNewPassword": "确认密码",
+    "currentPasswordTip": "请输入当前密码",
+    "changePasswordSuccess": "密码修改成功",
+    "passwordRequirements": "密码要求",
+    "atLeast": "至少",
+    "atMost": "最多",
+    "pwdMinLength": "{n} 个字符",
+    "pwdMaxLength": "{n} 个字符",
+    "pwdMinUpper": "{n} 个大写字母",
+    "pwdMinLower": "{n} 个小写字母",
+    "pwdMinDigits": "{n} 个数字",
+    "pwdMinSpecial": "{n} 个特殊字符",
+    "pwdNoWhitespace": "不能包含空格",
+    "passwordPolicyNotMet": "密码不符合要求",
+    "newPasswordSameAsCurrent": "新密码不能与当前密码相同",
+    "discardChanges": "放弃更改"
+  },
+  "apiKey": {
+    "title": "API 密钥",
+    "create": "创建密钥",
+    "edit": "编辑密钥",
+    "inheritTip": "注意：API 密钥继承创建它的用户的权限。",
+    "description": "秘钥描述",
+    "descriptionTip": "请输入描述",
+    "expiration": "过期时间",
+    "never": "永不过期",
+    "enabled": "启用",
+    "enableLabel": "启用 API 密钥",
+    "enableSuccess": "启用成功",
+    "disableSuccess": "禁用成功",
+    "days": "天",
+    "tokenTitle": "API 密钥已创建",
+    "tokenOnce": "请立即复制并妥善保存，此密钥仅显示一次，关闭后无法再次查看。",
+    "copyToken": "复制密钥",
+    "delete": {
+      "content": "删除后使用该密钥的请求将立即失效，且无法恢复。",
+      "title": "确定要删除该 API 密钥吗？"
+    }
+  },
+  "notification": {
+    "settingTitle": "通知设置",
+    "resetAll": "重置所有设置",
+    "colType": "类型",
+    "type": {
+      "GENERAL": "通用",
+      "ALARM": "告警",
+      "DEVICE_ACTIVITY": "设备活跃",
+      "ENTITY_ACTION": "实体操作",
+      "ALARM_COMMENT": "告警评论",
+      "RULE_ENGINE_COMPONENT_LIFECYCLE_EVENT": "规则引擎生命周期事件",
+      "ALARM_ASSIGNMENT": "告警分配",
+      "NEW_PLATFORM_VERSION": "新平台版本",
+      "ENTITIES_LIMIT": "实体限制",
+      "ENTITIES_LIMIT_INCREASE_REQUEST": "实体限制提升请求",
+      "API_USAGE_LIMIT": "API 使用限制",
+      "RULE_NODE": "规则节点",
+      "RATE_LIMITS": "速率限制",
+      "EDGE_CONNECTION": "边缘连接",
+      "EDGE_COMMUNICATION_FAILURE": "边缘通信失败",
+      "TASK_PROCESSING_FAILURE": "任务处理失败",
+      "RESOURCES_SHORTAGE": "资源不足"
+    },
+    "inbox": "收件箱",
+    "sent": "发送记录",
+    "recipients": "收件人",
+    "templates": "通知模板",
+    "rules": "通知规则",
+    "send": "发送通知",
+    "emptyList": "{title}列表暂未实现",
+    "fields": {
+      "type": "类型",
+      "subject": "主题",
+      "text": "内容",
+      "status": "状态"
+    },
+    "status": {
+      "SENT": "未读",
+      "READ": "已读"
+    },
+    "filter": {
+      "unread": "未读",
+      "all": "全部"
+    },
+    "actions": {
+      "markRead": "标记为已读",
+      "markAllRead": "全部标为已读",
+      "markReadSuccess": "已标记为已读",
+      "markAllReadSuccess": "已全部标记为已读"
+    },
+    "delete": {
+      "title": "确定要删除通知「{subject}」吗?",
+      "content": "删除后不可恢复，请谨慎操作。"
+    },
+    "request": {
+      "fields": {
+        "template": "通知模板",
+        "deliveryMethods": "投递方式",
+        "status": "状态",
+        "result": "发送结果"
+      },
+      "status": {
+        "SCHEDULED": "已排期",
+        "PROCESSING": "处理中",
+        "SENT": "已发送"
+      },
+      "result": {
+        "success": "成功 {count}",
+        "failed": "失败 {count}",
+        "error": "错误",
+        "none": "--"
+      },
+      "errorTitle": "发送失败详情",
+      "delete": {
+        "title": "确定要删除发送记录「{template}」吗?",
+        "content": "若该请求处于已发送状态，相关已送达的通知也会被删除;若为排期状态,则取消该请求。"
+      }
+    },
+    "recipient": {
+      "fields": {
+        "name": "收件人组",
+        "type": "类型",
+        "filterType": "用户过滤",
+        "description": "描述"
+      },
+      "targetType": {
+        "PLATFORM_USERS": "平台用户",
+        "SLACK": "Slack",
+        "MICROSOFT_TEAMS": "Microsoft Teams"
+      },
+      "filterType": {
+        "ALL_USERS": "所有用户",
+        "TENANT_ADMINISTRATORS": "租户管理员",
+        "AFFECTED_TENANT_ADMINISTRATORS": "受影响的租户管理员",
+        "SYSTEM_ADMINISTRATORS": "系统管理员",
+        "CUSTOMER_USERS": "客户用户",
+        "USER_LIST": "指定用户",
+        "ORIGINATOR_ENTITY_OWNER_USERS": "实体所有者用户",
+        "AFFECTED_USER": "受影响的用户"
+      },
+      "form": {
+        "name": "收件人组名称",
+        "type": "类型",
+        "filterUsers": "用户过滤",
+        "filterBy": "过滤方式",
+        "byTenants": "按租户",
+        "byTenantProfiles": "按租户配置",
+        "tenants": "租户",
+        "tenantProfiles": "租户配置",
+        "customer": "客户",
+        "users": "用户",
+        "webhookUrl": "Webhook 地址",
+        "channelName": "频道名称",
+        "description": "描述"
+      },
+      "actions": {
+        "create": "新建收件人组",
+        "edit": "编辑收件人组"
+      },
+      "delete": {
+        "title": "确定要删除收件人组「{name}」吗?",
+        "content": "删除后不可恢复，请谨慎操作。"
+      }
+    },
+    "template": {
+      "fields": {
+        "name": "模板名称",
+        "notificationType": "通知类型",
+        "deliveryMethods": "投递方式"
+      },
+      "delete": {
+        "title": "确定要删除通知模板「{name}」吗?",
+        "content": "若该模板被通知规则或排期发送请求引用，则无法删除。"
+      }
+    },
+    "rule": {
+      "fields": {
+        "name": "规则名称",
+        "template": "通知模板",
+        "triggerType": "触发器类型",
+        "deliveryMethods": "投递方式",
+        "enabled": "状态"
+      },
+      "status": {
+        "enabled": "启用",
+        "disabled": "停用"
+      },
+      "delete": {
+        "title": "确定要删除通知规则「{name}」吗?",
+        "content": "将同时取消该规则相关的排期发送请求(如升级链)。"
+      }
+    }
+  },
+  "auditLog": {
+    "fields": {
+      "createdTime": "操作时间",
+      "userName": "操作用户",
+      "entityType": "实体类型",
+      "entityName": "实体名称",
+      "actionType": "操作类型",
+      "actionStatus": "状态",
+      "failureDetails": "失败详情"
+    },
+    "filter": {
+      "actionTypes": "操作类型"
+    },
+    "range": {
+      "today": "今天",
+      "last1Hour": "最近1小时",
+      "last6Hours": "最近6小时",
+      "last1Day": "最近1天",
+      "last3Days": "最近3天",
+      "last7Days": "最近7天"
+    },
+    "detail": {
+      "title": "审计日志详情"
+    }
+  },
+  "dashboard": {
+    "fields": {
+      "title": "标题",
+      "assignedCustomers": "已分配客户"
+    },
+    "actions": {
+      "create": "新建仪表板",
+      "edit": "编辑仪表板"
+    },
+    "delete": {
+      "content": "确认后该仪表板及相关数据将无法恢复。",
+      "title": "确定要删除仪表板“{title}”吗？"
+    },
+    "validation": {
+      "titleRequired": "请输入仪表板标题"
+    }
+  },
+  "device": {
+    "fields": {
+      "name": "设备名称",
+      "label": "标签",
+      "deviceProfile": "设备配置",
+      "customer": "所属客户",
+      "active": "状态",
+      "activeTrue": "在线",
+      "activeFalse": "离线",
+      "isGateway": "是否网关",
+      "description": "描述"
+    },
+    "actions": {
+      "create": "新建设备",
+      "edit": "编辑设备",
+      "makePublic": "设为公开",
+      "makePublicSuccess": "已设为公开",
+      "assign": "分配给客户",
+      "unassign": "取消分配",
+      "unassignSuccess": "已取消分配",
+      "makePrivate": "设为私有",
+      "batchDelete": "批量删除"
+    },
+    "delete": {
+      "batchContent": "已选择 {count} 个设备。\n确认后这些设备及所有相关数据将无法恢复。",
+      "batchTitle": "确定要删除选中的设备吗？",
+      "content": "确认后设备及所有相关数据将无法恢复。",
+      "deviceName": "设备名称",
+      "title": "确定要删除设备吗？"
+    },
+    "makePublic": {
+      "title": "设为公开",
+      "content": "确定将设备“{name}”设为公开吗？公开后任何人都可在公共仪表板查看其数据。"
+    },
+    "unassign": {
+      "title": "取消分配",
+      "content": "确定将设备“{name}”从客户“{customer}”取消分配吗？"
+    },
+    "makePrivate": {
+      "title": "设为私有",
+      "content": "确定将设备“{name}”设为私有吗?设为私有后将从公共客户取消分配。"
+    },
+    "assign": {
+      "title": "分配给客户",
+      "customer": "请选择要分配设备的客户",
+      "confirm": "分配",
+      "success": "已分配给客户"
+    },
+    "credentials": {
+      "action": "设备凭证",
+      "title": "设备凭证",
+      "typeLabel": "凭证类型",
+      "accessToken": "访问令牌",
+      "x509": "X.509 证书(PEM)",
+      "clientId": "客户端 ID",
+      "userName": "用户名",
+      "password": "密码",
+      "copy": "复制",
+      "copied": "已复制到剪贴板",
+      "generate": "重新生成",
+      "type": {
+        "ACCESS_TOKEN": "访问令牌",
+        "X509_CERTIFICATE": "X.509 证书",
+        "MQTT_BASIC": "MQTT 基础认证",
+        "LWM2M_CREDENTIALS": "LwM2M 凭证"
+      }
+    },
+    "import": {
+      "action": "导入设备",
+      "title": "批量导入设备",
+      "step1": "选择文件",
+      "step2": "导入配置",
+      "step3": "选择列类型",
+      "uploadHint": "点击或拖拽 CSV / Excel 文件到此处上传",
+      "noFileSelected": "尚未选择文件",
+      "noFile": "请先选择一个 CSV 或 Excel 文件",
+      "readError": "文件读取失败",
+      "emptyFile": "文件内容为空",
+      "delimiter": "CSV 分隔符",
+      "delimiterComma": "逗号",
+      "delimiterSemicolon": "分号",
+      "delimiterPipe": "竖线",
+      "headerCheckbox": "第一行包含列名",
+      "updateCheckbox": "更新已存在设备的属性/遥测",
+      "sample": "示例数据",
+      "columnTypeLabel": "列类型",
+      "columnKey": "属性/遥测键",
+      "keyPlaceholder": "请输入属性/遥测键",
+      "keyNotNeeded": "当前类型无需填写",
+      "keyRequired": "第 {index} 列请填写属性/遥测键",
+      "prev": "上一步",
+      "next": "下一步",
+      "submit": "提交",
+      "result": "导入完成:新增 {created},更新 {updated},失败 {errors}",
+      "fileName": "文件名称",
+      "fileType": "文件类型",
+      "fileStats": "数据摘要",
+      "csvFile": "CSV",
+      "rowsColumns": "{rows} 行 / {columns} 列",
+      "parseConfig": "解析配置",
+      "excelAutoParsed": "Excel 文件已自动解析为导入数据，无需设置 CSV 分隔符。",
+      "importOptions": "导入选项",
+      "dataRows": "数据行",
+      "columns": "列数",
+      "sourceColumn": "源列",
+      "mappingSummary": "列映射",
+      "mappingSummaryDesc": "共 {columns} 列，其中 {keys} 列需要填写属性或遥测键。",
+      "completeTitle": "导入完成",
+      "createdCount": "创建设备",
+      "updatedCount": "更新设备",
+      "errorCount": "错误数量",
+      "errorDetails": "错误详情",
+      "columnType": {
+        "NAME": "名称",
+        "TYPE": "类型",
+        "LABEL": "标签",
+        "DESCRIPTION": "描述",
+        "SHARED_ATTRIBUTE": "共享属性",
+        "SERVER_ATTRIBUTE": "服务端属性",
+        "TIME_SERIES": "遥测数据",
+        "ACCESS_TOKEN": "访问令牌",
+        "MQTT_CLIENT_ID": "MQTT 客户端 ID",
+        "MQTT_USER_NAME": "MQTT 用户名",
+        "MQTT_PASSWORD": "MQTT 密码",
+        "IS_GATEWAY": "是否网关"
+      }
+    },
+    "validation": {
+      "nameRequired": "请输入设备名称",
+      "profileRequired": "请选择设备配置"
+    }
+  },
+  "asset": {
+    "fields": {
+      "name": "资产名称",
+      "label": "标签",
+      "assetProfile": "资产配置",
+      "customer": "所属客户",
+      "description": "描述"
+    },
+    "actions": {
+      "create": "新建资产",
+      "edit": "编辑资产"
+    },
+    "delete": {
+      "content": "确认后资产及所有相关数据将无法恢复。",
+      "title": "确定要删除资产“{name}”吗？"
+    },
+    "validation": {
+      "nameRequired": "请输入资产名称",
+      "profileRequired": "请选择资产配置"
+    }
+  },
+  "entityView": {
+    "fields": {
+      "name": "名称",
+      "type": "类型",
+      "entityType": "实体类型",
+      "entity": "目标实体",
+      "customer": "所属客户",
+      "description": "描述"
+    },
+    "actions": {
+      "create": "新建实体视图",
+      "edit": "编辑实体视图"
+    },
+    "delete": {
+      "content": "确认后实体视图及所有相关数据将无法恢复。",
+      "title": "确定要删除实体视图“{name}”吗？"
+    },
+    "validation": {
+      "nameRequired": "请输入实体视图名称",
+      "typeRequired": "请输入类型",
+      "entityRequired": "请选择目标实体"
+    }
+  },
+  "deviceProfile": {
+    "fields": {
+      "name": "配置名称",
+      "transportType": "传输类型",
+      "description": "描述",
+      "default": "默认配置"
+    },
+    "actions": {
+      "create": "新建设备配置",
+      "edit": "编辑设备配置",
+      "setDefault": "设为默认",
+      "export": "导出设备配置",
+      "import": "导入设备配置"
+    },
+    "import": {
+      "success": "导入成功",
+      "invalidFile": "无效的设备配置文件",
+      "parseError": "文件解析失败,请选择合法的 JSON 文件"
+    },
+    "delete": {
+      "content": "确认后该设备配置及相关数据将无法恢复。",
+      "title": "确定要删除设备配置“{name}”吗？"
+    },
+    "setDefault": {
+      "content": "新建设备时将默认使用此配置。",
+      "title": "确定将“{name}”设为默认设备配置吗？",
+      "success": "已设为默认设备配置"
+    },
+    "validation": {
+      "nameRequired": "请输入配置名称"
+    }
+  },
+  "assetProfile": {
+    "fields": {
+      "name": "配置名称",
+      "description": "描述",
+      "default": "默认配置"
+    },
+    "actions": {
+      "create": "新建资产配置",
+      "edit": "编辑资产配置",
+      "setDefault": "设为默认",
+      "export": "导出资产配置",
+      "import": "导入资产配置"
+    },
+    "import": {
+      "success": "导入成功",
+      "invalidFile": "无效的资产配置文件",
+      "parseError": "文件解析失败,请选择合法的 JSON 文件"
+    },
+    "delete": {
+      "content": "确认后该资产配置及相关数据将无法恢复。",
+      "title": "确定要删除资产配置“{name}”吗？"
+    },
+    "setDefault": {
+      "content": "新建资产时将默认使用此配置。",
+      "title": "确定将“{name}”设为默认资产配置吗？",
+      "success": "已设为默认资产配置"
+    },
+    "validation": {
+      "nameRequired": "请输入配置名称"
+    }
+  },
+  "customer": {
+    "fields": {
+      "title": "客户名称",
+      "email": "电子邮箱",
+      "phone": "手机电话",
+      "country": "国家",
+      "state": "省/州",
+      "city": "城市",
+      "region": "行政区域",
+      "address": "详细地址",
+      "address2": "备用地址",
+      "zip": "邮政编码",
+      "description": "客户描述"
+    },
+    "actions": {
+      "create": "新建客户",
+      "edit": "编辑客户"
+    },
+    "delete": {
+      "content": "确认后客户及所有相关数据将无法恢复。",
+      "title": "确定要删除客户“{title}”吗？"
+    },
+    "validation": {
+      "titleRequired": "请输入客户名称",
+      "emailInvalid": "邮箱格式不正确",
+      "phoneFormatTip": "请输入 E.164 格式的电话号码，例如 +8613123456789"
+    }
+  },
+  "aiModel": {
+    "fields": {
+      "name": "名称",
+      "provider": "供应商",
+      "modelId": "模型 ID"
+    },
+    "delete": {
+      "content": "确认后该 AI 模型及相关配置将无法恢复。",
+      "title": "确定要删除 AI 模型“{name}”吗？"
+    }
+  },
+  "alarm": {
+    "fields": {
+      "createdTime": "创建时间",
+      "type": "类型",
+      "originator": "来源",
+      "severity": "严重程度",
+      "status": "状态",
+      "startTime": "开始时间",
+      "assignee": "受理人"
+    },
+    "severity": {
+      "CRITICAL": "紧急",
+      "MAJOR": "重要",
+      "MINOR": "次要",
+      "WARNING": "警告",
+      "INDETERMINATE": "未定"
+    },
+    "status": {
+      "ACTIVE_UNACK": "活动未确认",
+      "ACTIVE_ACK": "活动已确认",
+      "CLEARED_UNACK": "清除未确认",
+      "CLEARED_ACK": "清除已确认"
+    },
+    "searchStatus": {
+      "ANY": "全部",
+      "ACTIVE": "活动",
+      "CLEARED": "已清除",
+      "ACK": "已确认",
+      "UNACK": "未确认"
+    },
+    "actions": {
+      "ack": "确认",
+      "clear": "清除",
+      "ackSuccess": "已确认报警",
+      "clearSuccess": "已清除报警"
+    },
+    "delete": {
+      "content": "确认后该报警及相关数据将无法恢复。",
+      "title": "确定要删除报警“{type}”吗？"
+    }
+  },
+  "alarmRule": {
+    "fields": {
+      "name": "名称",
+      "entityType": "实体类型",
+      "entityName": "所属实体"
+    },
+    "delete": {
+      "content": "确认后该告警规则及相关配置将无法恢复。",
+      "title": "确定要删除告警规则“{name}”吗？"
+    }
+  },
+  "calculatedField": {
+    "fields": {
+      "name": "名称",
+      "type": "类型",
+      "entityType": "实体类型",
+      "entityName": "所属实体"
+    },
+    "type": {
+      "SIMPLE": "简单计算",
+      "SCRIPT": "脚本",
+      "GEOFENCING": "地理围栏",
+      "ALARM": "告警",
+      "PROPAGATION": "传播",
+      "RELATED_ENTITIES_AGGREGATION": "关联实体聚合",
+      "ENTITY_AGGREGATION": "实体聚合"
+    },
+    "delete": {
+      "content": "确认后该计算字段及相关数据将无法恢复。",
+      "title": "确定要删除计算字段“{name}”吗？"
+    }
+  },
+  "ruleChain": {
+    "fields": {
+      "name": "名称",
+      "root": "根规则链",
+      "debugMode": "调试模式",
+      "description": "描述"
+    },
+    "actions": {
+      "create": "新建规则链",
+      "edit": "编辑规则链",
+      "setRoot": "设为根规则链"
+    },
+    "delete": {
+      "content": "确认后该规则链及相关数据将无法恢复。",
+      "title": "确定要删除规则链“{name}”吗？"
+    },
+    "setRoot": {
+      "content": "设为根规则链后,所有设备与实体的消息将默认由它处理。",
+      "title": "确定将“{name}”设为根规则链吗？",
+      "success": "已设为根规则链"
+    },
+    "validation": {
+      "nameRequired": "请输入规则链名称"
+    }
+  },
+  "otaPackage": {
+    "fields": {
+      "title": "标题",
+      "version": "版本",
+      "type": "类型",
+      "deviceProfile": "设备配置",
+      "fileName": "文件名",
+      "dataSize": "大小",
+      "url": "直链 URL",
+      "checksum": "校验和",
+      "description": "描述"
+    },
+    "type": {
+      "FIRMWARE": "固件",
+      "SOFTWARE": "软件"
+    },
+    "source": {
+      "label": "数据来源",
+      "url": "外部 URL",
+      "file": "上传文件"
+    },
+    "actions": {
+      "create": "新建 OTA 包",
+      "download": "下载"
+    },
+    "delete": {
+      "content": "确认后该 OTA 包及相关数据将无法恢复。",
+      "title": "确定要删除 OTA 包“{title}”吗？"
+    },
+    "validation": {
+      "titleRequired": "请输入标题",
+      "versionRequired": "请输入版本",
+      "deviceProfileRequired": "请选择设备配置",
+      "urlRequired": "请输入直链 URL"
+    },
+    "fileUploadHint": "二进制文件上传暂未实现,当前仅支持通过外部 URL 创建。"
+  },
+  "tenant": {
+    "fields": {
+      "title": "租户名称",
+      "tenantProfile": "租户配置",
+      "email": "电子邮箱",
+      "phone": "手机电话",
+      "country": "国家",
+      "state": "省/州",
+      "city": "城市",
+      "region": "行政区域",
+      "address": "详细地址",
+      "address2": "备用地址",
+      "zip": "邮政编码",
+      "description": "租户描述"
+    },
+    "actions": {
+      "create": "新建租户",
+      "edit": "编辑租户"
+    },
+    "delete": {
+      "content": "确认后租户及所有相关数据将无法恢复。",
+      "title": "确定要删除租户“{title}”吗？"
+    },
+    "validation": {
+      "titleRequired": "请输入租户名称",
+      "tenantProfileRequired": "请选择租户配置",
+      "emailInvalid": "邮箱格式不正确",
+      "phoneFormatTip": "请输入 E.164 格式的电话号码，例如 +8613123456789"
+    }
+  },
+  "tenantProfile": {
+    "fields": {
+      "name": "配置名称",
+      "description": "描述",
+      "isolatedTbRuleEngine": "独立规则引擎",
+      "default": "默认配置"
+    },
+    "actions": {
+      "create": "新建租户配置",
+      "edit": "编辑租户配置",
+      "setDefault": "设为默认",
+      "export": "导出租户配置",
+      "import": "导入租户配置"
+    },
+    "import": {
+      "success": "导入成功",
+      "invalidFile": "无效的租户配置文件",
+      "parseError": "文件解析失败,请选择合法的 JSON 文件"
+    },
+    "delete": {
+      "content": "确认后该租户配置及相关数据将无法恢复。",
+      "title": "确定要删除租户配置“{name}”吗？"
+    },
+    "setDefault": {
+      "content": "新建租户时将默认使用此配置。",
+      "title": "确定将“{name}”设为默认租户配置吗？",
+      "success": "已设为默认租户配置"
+    },
+    "validation": {
+      "nameRequired": "请输入配置名称"
+    }
+  },
+  "tenantAdmin": {
+    "fields": {
+      "email": "邮箱",
+      "firstName": "名字",
+      "lastName": "职务",
+      "phone": "电话",
+      "description": "描述"
+    },
+    "actions": {
+      "manage": "管理租户管理员",
+      "create": "新建管理员",
+      "edit": "编辑管理员",
+      "back": "返回租户列表",
+      "loginAs": "以该管理员身份登录"
+    },
+    "delete": {
+      "content": "确认后该管理员账号将无法恢复。",
+      "title": "确定要删除管理员“{name}”吗？"
+    },
+    "loginAs": {
+      "content": "将切换为该管理员的登录会话,你当前的会话会被替换。",
+      "title": "确定以管理员“{name}”身份登录吗？"
+    },
+    "activation": {
+      "method": "激活方式",
+      "showLink": "显示激活链接",
+      "sendMail": "发送激活邮件",
+      "linkTitle": "用户激活链接",
+      "descBefore": "要激活用户，请使用以下",
+      "linkWord": "激活链接",
+      "expireTip": "（{duration} 后过期）：",
+      "duration": "{h} 小时 {m} 分钟 {s} 秒",
+      "copyLink": "复制链接",
+      "copied": "链接已复制"
+    },
+    "validation": {
+      "emailRequired": "请输入邮箱",
+      "emailInvalid": "邮箱格式不正确",
+      "firstNameRequired": "请输入名字",
+      "phoneFormatTip": "请输入 E.164 格式的电话号码，例如 +8613123456789"
+    }
+  },
+  "customerUser": {
+    "fields": {
+      "email": "邮箱",
+      "firstName": "名字",
+      "lastName": "职务",
+      "phone": "电话",
+      "description": "描述"
+    },
+    "actions": {
+      "manage": "管理客户用户",
+      "create": "新建用户",
+      "edit": "编辑用户",
+      "loginAs": "以该用户身份登录"
+    },
+    "delete": {
+      "content": "确认后该用户账号将无法恢复。",
+      "title": "确定要删除用户“{name}”吗？"
+    },
+    "loginAs": {
+      "content": "将切换为该用户的登录会话,你当前的会话会被替换。",
+      "title": "确定以用户“{name}”身份登录吗？"
+    },
+    "activation": {
+      "method": "激活方式",
+      "showLink": "显示激活链接",
+      "sendMail": "发送激活邮件",
+      "linkTitle": "用户激活链接",
+      "descBefore": "要激活用户，请使用以下",
+      "linkWord": "激活链接",
+      "expireTip": "（{duration} 后过期）：",
+      "duration": "{h} 小时 {m} 分钟 {s} 秒",
+      "copyLink": "复制链接",
+      "copied": "链接已复制"
+    },
+    "validation": {
+      "emailRequired": "请输入邮箱",
+      "emailInvalid": "邮箱格式不正确",
+      "firstNameRequired": "请输入名字",
+      "phoneFormatTip": "请输入 E.164 格式的电话号码，例如 +8613123456789"
+    }
+  },
+  "widgetsBundle": {
+    "fields": {
+      "title": "名称",
+      "description": "描述",
+      "scope": "作用域"
+    },
+    "scope": {
+      "system": "系统",
+      "tenant": "租户"
+    },
+    "actions": {
+      "create": "新建部件包",
+      "edit": "编辑部件包",
+      "export": "导出部件包",
+      "import": "导入部件包"
+    },
+    "import": {
+      "success": "导入成功",
+      "invalidFile": "无效的部件包文件",
+      "parseError": "文件解析失败,请选择合法的 JSON 文件"
+    },
+    "delete": {
+      "content": "确认后该部件包及相关数据将无法恢复。",
+      "title": "确定要删除部件包“{title}”吗？"
+    },
+    "validation": {
+      "titleRequired": "请输入名称"
+    }
+  },
+  "widgetType": {
+    "fields": {
+      "name": "名称",
+      "bundles": "部件包",
+      "widgetType": "类型",
+      "deprecated": "已弃用",
+      "scope": "作用域"
+    },
+    "types": {
+      "timeseries": "时间序列",
+      "latest": "最新值",
+      "rpc": "控制部件",
+      "alarm": "告警部件",
+      "static": "静态部件"
+    },
+    "scope": {
+      "system": "系统",
+      "tenant": "租户"
+    },
+    "actions": {
+      "create": "新建部件",
+      "edit": "编辑部件",
+      "export": "导出部件",
+      "import": "导入部件"
+    },
+    "import": {
+      "success": "导入成功",
+      "invalidFile": "无效的部件文件",
+      "parseError": "文件解析失败,请选择合法的 JSON 文件"
+    },
+    "delete": {
+      "content": "确认后该部件及相关数据将无法恢复。",
+      "title": "确定要删除部件“{name}”吗？"
+    },
+    "validation": {
+      "nameRequired": "请输入名称"
+    }
+  },
+  "images": {
+    "fields": {
+      "name": "名称",
+      "resolution": "分辨率",
+      "size": "大小",
+      "scope": "作用域",
+      "public": "公开"
+    },
+    "scope": {
+      "system": "系统",
+      "tenant": "租户"
+    },
+    "filter": {
+      "includeSystemImages": "包含系统图片"
+    },
+    "actions": {
+      "upload": "上传图片",
+      "edit": "编辑图片",
+      "download": "下载图片",
+      "embed": "嵌入图片",
+      "export": "导出图片",
+      "import": "导入图片",
+      "replace": "替换图片"
+    },
+    "upload": {
+      "file": "图片文件",
+      "title": "标题",
+      "dragTip": "点击或拖拽文件到此处上传",
+      "replaceTip": "拖拽新文件以替换当前图片",
+      "submit": "上传"
+    },
+    "embed": {
+      "title": "嵌入图片",
+      "public": "公开访问",
+      "publicDesc": "开启后可通过下方公共链接匿名访问该图片,无需登录。",
+      "publicLink": "公共链接",
+      "embedHtml": "HTML 代码",
+      "link": "资源链接",
+      "copy": "复制",
+      "copied": "已复制到剪贴板",
+      "copyFailed": "复制失败",
+      "makePublicFirst": "请先开启公开访问以获取公共链接。",
+      "publicEnabled": "已开启公开访问",
+      "publicDisabled": "已关闭公开访问"
+    },
+    "delete": {
+      "content": "确认后该图片将无法恢复。",
+      "title": "确定要删除图片“{title}”吗？"
+    },
+    "forceDelete": {
+      "title": "图片被其他实体使用",
+      "content": "图片 “{title}” 未被删除，因为它被以下实体使用：",
+      "footer": "如果仍要删除该图片，请点击 仍然删除 按钮。",
+      "button": "仍然删除"
+    },
+    "import": {
+      "success": "导入成功",
+      "invalidFile": "无效的图片文件",
+      "parseError": "文件解析失败,请选择合法的 JSON 文件"
+    },
+    "uploadSuccess": "上传成功",
+    "updateSuccess": "更新成功",
+    "validation": {
+      "fileRequired": "请选择图片文件",
+      "titleRequired": "请输入标题"
+    }
+  },
+  "scadaSymbol": {
+    "fields": {
+      "name": "名称",
+      "resolution": "分辨率",
+      "size": "大小",
+      "scope": "作用域",
+      "public": "公开"
+    },
+    "scope": {
+      "system": "系统",
+      "tenant": "租户"
+    },
+    "filter": {
+      "includeSystemSymbols": "包含系统符号"
+    },
+    "actions": {
+      "upload": "上传符号",
+      "edit": "编辑符号",
+      "download": "下载符号",
+      "embed": "嵌入符号",
+      "export": "导出符号",
+      "import": "导入符号",
+      "replace": "替换符号"
+    },
+    "upload": {
+      "file": "符号文件",
+      "title": "标题",
+      "dragTip": "点击或拖拽 SVG 文件到此处上传",
+      "replaceTip": "拖拽新 SVG 文件以替换当前符号",
+      "submit": "上传"
+    },
+    "delete": {
+      "content": "确认后该符号将无法恢复。",
+      "title": "确定要删除符号“{title}”吗？"
+    },
+    "forceDelete": {
+      "title": "符号被其他实体使用",
+      "content": "符号 “{title}” 未被删除，因为它被以下实体使用：",
+      "footer": "如果仍要删除该符号，请点击 仍然删除 按钮。",
+      "button": "仍然删除"
+    },
+    "import": {
+      "success": "导入成功",
+      "invalidFile": "无效的符号文件",
+      "parseError": "文件解析失败,请选择合法的 JSON 文件"
+    },
+    "uploadSuccess": "上传成功",
+    "updateSuccess": "更新成功",
+    "validation": {
+      "fileRequired": "请选择 SVG 符号文件",
+      "titleRequired": "请输入标题",
+      "svgOnly": "仅支持 SVG 格式的符号文件"
+    }
+  },
+  "resourceLibrary": {
+    "fields": {
+      "title": "标题",
+      "resourceKey": "资源键",
+      "resourceType": "资源类型",
+      "scope": "作用域",
+      "file": "资源文件",
+      "fileName": "文件名"
+    },
+    "types": {
+      "lwm2mModel": "LWM2M 模型",
+      "pkcs12": "PKCS #12",
+      "jks": "JKS",
+      "general": "通用"
+    },
+    "scope": {
+      "system": "系统",
+      "tenant": "租户"
+    },
+    "filter": {
+      "allTypes": "全部类型"
+    },
+    "actions": {
+      "add": "添加资源",
+      "download": "下载",
+      "edit": "编辑",
+      "delete": "删除"
+    },
+    "upload": {
+      "dragTip": "点击或拖拽文件到此处上传",
+      "replaceTip": "拖拽新文件以替换当前资源",
+      "titlePlaceholder": "留空则使用文件名"
+    },
+    "delete": {
+      "content": "确认后该资源将无法恢复。",
+      "title": "确定要删除资源“{title}”吗？"
+    },
+    "forceDelete": {
+      "title": "资源被其他实体使用",
+      "content": "资源 “{title}” 未被删除，因为它被以下实体使用：",
+      "footer": "如果仍要删除该资源，请点击 仍然删除 按钮。",
+      "button": "仍然删除"
+    },
+    "uploadSuccess": "上传成功",
+    "updateSuccess": "更新成功",
+    "validation": {
+      "fileRequired": "请选择资源文件",
+      "titleRequired": "请输入标题"
+    }
+  },
+  "javascriptLibrary": {
+    "fields": {
+      "title": "标题",
+      "subType": "JavaScript 类型",
+      "scope": "作用域",
+      "file": "JavaScript 文件",
+      "content": "代码内容"
+    },
+    "subTypes": {
+      "extension": "拓展",
+      "module": "模块"
+    },
+    "scope": {
+      "system": "系统",
+      "tenant": "租户"
+    },
+    "filter": {
+      "allSubTypes": "全部类型"
+    },
+    "actions": {
+      "add": "添加 JavaScript",
+      "edit": "编辑 JavaScript",
+      "download": "下载"
+    },
+    "upload": {
+      "dragTip": "点击或拖拽 .js 文件到此处上传",
+      "replaceTip": "拖拽新 .js 文件以替换当前文件",
+      "importFromFile": "从文件导入",
+      "contentPlaceholder": "在此编写 JavaScript 模块代码"
+    },
+    "delete": {
+      "content": "确认后该 JavaScript 资源将无法恢复。",
+      "title": "确定要删除“{title}”吗？"
+    },
+    "forceDelete": {
+      "title": "JavaScript 资源被其他实体使用",
+      "content": "JavaScript 资源 “{title}” 未被删除，因为它被以下实体使用：",
+      "footer": "如果仍要删除该资源，请点击 仍然删除 按钮。",
+      "button": "仍然删除"
+    },
+    "uploadSuccess": "上传成功",
+    "updateSuccess": "更新成功",
+    "validation": {
+      "titleRequired": "请输入标题",
+      "fileRequired": "请选择 JavaScript 文件",
+      "contentRequired": "请输入代码内容",
+      "readFileError": "文件读取失败"
+    }
+  }
+}
