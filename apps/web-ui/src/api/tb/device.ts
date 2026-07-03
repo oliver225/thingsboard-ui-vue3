@@ -104,6 +104,17 @@ export function saveDevice(device: Device) {
   return requestClient.post<Device>('/device', device);
 }
 
+/** 保存设备及凭证(POST /api/device-with-credentials) */
+export function saveDeviceWithCredentials(
+  device: Device,
+  credentials: DeviceCredentials,
+) {
+  return requestClient.post<Device>('/device-with-credentials', {
+    credentials,
+    device,
+  });
+}
+
 /** 删除设备(DELETE /api/device/{deviceId}) */
 export function deleteDevice(deviceId: string): Promise<void> {
   return requestClient.delete(`/device/${deviceId}`);

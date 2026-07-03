@@ -655,6 +655,7 @@
       "activeTrue": "Active",
       "activeFalse": "Inactive",
       "isGateway": "Is gateway",
+      "overwriteActivityTime": "Overwrite activity time",
       "description": "Description"
     },
     "actions": {
@@ -695,6 +696,16 @@
       "customer": "Select the customer to assign the device to",
       "confirm": "Assign",
       "success": "Assigned to customer"
+    },
+    "wizard": {
+      "deviceDetails": "Device details",
+      "back": "Back",
+      "nextCredentials": "Next: Credentials",
+      "add": "Add"
+    },
+    "connectivity": {
+      "checkConnectivity": "Check connectivity",
+      "createdCheckConnectivity": "Device created. Let's check connectivity!"
     },
     "credentials": {
       "action": "Device credentials",
@@ -777,7 +788,8 @@
     },
     "validation": {
       "nameRequired": "Device name is required",
-      "profileRequired": "Device profile is required"
+      "profileRequired": "Device profile is required",
+      "credentialsRequired": "Device credentials are required"
     }
   },
   "asset": {

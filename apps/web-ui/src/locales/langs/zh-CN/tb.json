@@ -655,6 +655,7 @@
       "activeTrue": "在线",
       "activeFalse": "离线",
       "isGateway": "是否网关",
+      "overwriteActivityTime": "覆盖活动时间",
       "description": "描述"
     },
     "actions": {
@@ -695,6 +696,16 @@
       "customer": "请选择要分配设备的客户",
       "confirm": "分配",
       "success": "已分配给客户"
+    },
+    "wizard": {
+      "deviceDetails": "设备详情",
+      "back": "上一步",
+      "nextCredentials": "下一步：凭证",
+      "add": "添加"
+    },
+    "connectivity": {
+      "checkConnectivity": "检查连接",
+      "createdCheckConnectivity": "设备已创建。让我们检查连接！"
     },
     "credentials": {
       "action": "设备凭证",
@@ -777,7 +788,8 @@
     },
     "validation": {
       "nameRequired": "请输入设备名称",
-      "profileRequired": "请选择设备配置"
+      "profileRequired": "请选择设备配置",
+      "credentialsRequired": "请输入设备凭证"
     }
   },
   "asset": {
