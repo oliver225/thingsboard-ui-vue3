@@ -13,7 +13,6 @@ const routes: RouteRecordRaw[] = [
     },
     name: 'Entities',
     path: '/entities',
-    // 实体目录,后续客户 / 用户 / 实体视图等作为子项追加
     children: [
       {
         meta: {
@@ -23,7 +22,33 @@ const routes: RouteRecordRaw[] = [
         },
         name: 'Device',
         path: 'devices',
-        component: () => import('#/views/tb/device/list.vue'),
+        children: [
+          {
+            meta: {
+              activePath: '/entities/devices',
+              authority: [Authority.TENANT_ADMIN, Authority.CUSTOMER_USER],
+              hideInBreadcrumb: true,
+              hideInMenu: true,
+              icon: 'lucide:server',
+              title: $t('tb.menu.device'),
+            },
+            name: 'DeviceList',
+            path: '',
+            component: () => import('#/views/tb/device/list.vue'),
+          },
+          {
+            meta: {
+              activePath: '/entities/devices',
+              authority: [Authority.TENANT_ADMIN, Authority.CUSTOMER_USER],
+              hideInMenu: true,
+              icon: 'lucide:server',
+              title: $t('tb.device.detail.title'),
+            },
+            name: 'DeviceDetail',
+            path: ':deviceId',
+            component: () => import('#/views/tb/device/detail/index.vue'),
+          },
+        ],
       },
       {
         meta: {

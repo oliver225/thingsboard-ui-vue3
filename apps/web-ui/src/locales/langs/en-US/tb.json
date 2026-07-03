@@ -689,6 +689,11 @@
       "title": "Make private",
       "content": "Make device '{name}' private? It will be unassigned from the public customer."
     },
+    "detail": {
+      "title": "Device details",
+      "building": "Device details page is under construction",
+      "notFound": "Device not found or no permission to view"
+    },
     "assign": {
       "title": "Assign to customer",
       "batchTitle": "Batch assign to customer",

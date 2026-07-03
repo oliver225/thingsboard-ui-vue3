@@ -4,10 +4,10 @@ import type { Device, DeviceCredentials } from '#/api/tb/device';
 
 import { computed, h, ref } from 'vue';
 
-import { useVbenModal } from '@vben/common-ui';
+import { alert, useVbenModal } from '@vben/common-ui';
 import { IconifyIcon } from '@vben/icons';
 
-import { Modal as AntModal, Button, message, Steps, Tooltip } from 'antdv-next';
+import { Button, message, Steps, Tooltip } from 'antdv-next';
 
 import { useVbenForm, z } from '#/adapter/form';
 import { getCustomers } from '#/api/tb/customer';
@@ -352,11 +352,12 @@ function validateCredentials(values: CredentialsFormValues): boolean {
 }
 
 function showCreatedDialog() {
-  AntModal.success({
+  alert({
+    confirmText: $t('tb.common.confirm'),
     content: $t('tb.device.connectivity.createdCheckConnectivity'),
-    okText: $t('tb.common.confirm'),
+    icon: 'success',
     title: $t('tb.device.connectivity.checkConnectivity'),
-  });
+  }).catch(() => {});
 }
 
 async function saveEditDevice() {

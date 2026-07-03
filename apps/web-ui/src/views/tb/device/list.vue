@@ -6,6 +6,7 @@ import type { TbUserInfo } from '#/api/core/user';
 import type { DeviceInfo } from '#/api/tb/device';
 
 import { h, nextTick, onMounted, reactive, ref } from 'vue';
+import { useRouter } from 'vue-router';
 
 import { useAccess } from '@vben/access';
 import { confirm, Page, useVbenModal } from '@vben/common-ui';
@@ -37,6 +38,7 @@ defineOptions({ name: 'DeviceList' });
 
 const { hasAccessByRoles } = useAccess();
 const userStore = useUserStore();
+const router = useRouter();
 
 const customerId =
   (userStore.userInfo as null | TbUserInfo)?.tbUser?.customerId?.id ?? '';
@@ -91,6 +93,7 @@ function buildColumns(): VxeTableGridOptions<DeviceInfo>['columns'] {
     {
       field: 'name',
       minWidth: 160,
+      cellRender: { name: 'CellLink', props: { onClick: onDetail } },
       sortable: true,
       align: 'left',
       title: $t('tb.device.fields.name'),
@@ -250,6 +253,13 @@ function onCredentials(row: DeviceInfo) {
 
 function onCreate() {
   formModalApi.setData({}).open();
+}
+
+function onDetail(row: DeviceInfo) {
+  if (!row.id?.id) {
+    return;
+  }
+  router.push({ name: 'DeviceDetail', params: { deviceId: row.id.id } });
 }
 
 function onEdit(row: DeviceInfo) {

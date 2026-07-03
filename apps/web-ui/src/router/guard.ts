@@ -9,6 +9,7 @@ import { accessRoutes, coreRouteNames } from '#/router/routes';
 import { useAuthStore } from '#/store';
 
 import { generateAccess } from './access';
+import { setupDynamicTitleGuard } from './dynamic-title';
 
 /**
  * 通用守卫配置
@@ -128,6 +129,8 @@ function createRouterGuard(router: Router) {
   setupCommonGuard(router);
   /** 权限访问 */
   setupAccessGuard(router);
+  /** 详情页动态标题(面包屑/标签页) */
+  setupDynamicTitleGuard(router);
 }
 
 export { createRouterGuard };

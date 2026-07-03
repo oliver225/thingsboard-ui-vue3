@@ -1,8 +1,4 @@
 <script lang="ts" setup>
-/**
- *
- * 步骤:① 选择文件 → ② 导入配置(分隔符/表头/更新) → ③ 选择列类型(映射表)
- */
 import type {
   DeviceBulkImportRequest,
   DeviceBulkImportResult,
@@ -10,11 +6,10 @@ import type {
 
 import { computed, h, reactive, ref } from 'vue';
 
-import { useVbenModal } from '@vben/common-ui';
+import { alert, useVbenModal } from '@vben/common-ui';
 import { IconifyIcon } from '@vben/icons';
 
 import {
-  Modal as AntModal,
   Button,
   Checkbox,
   Input,
@@ -215,41 +210,46 @@ function getPreviewText(value?: string) {
 
 function showImportResult(result: DeviceBulkImportResult) {
   const errorsList = result.errorsList ?? [];
-  AntModal.success({
-    content: h('div', { class: 'space-y-5 pt-1' }, [
-      h('div', { class: 'space-y-3 text-base leading-6' }, [
-        h(
-          'div',
-          `${$t('tb.device.import.createdCount')}: ${result.created ?? 0}`,
-        ),
-        h(
-          'div',
-          `${$t('tb.device.import.updatedCount')}: ${result.updated ?? 0}`,
-        ),
-        h('div', `${$t('tb.device.import.errorCount')}: ${result.errors ?? 0}`),
-      ]),
-      errorsList.length > 0
-        ? h('div', { class: 'space-y-3' }, [
-            h(
-              'div',
-              { class: 'text-base font-medium' },
-              $t('tb.device.import.errorDetails'),
-            ),
-            h(
-              'div',
-              {
-                class:
-                  'max-h-60 overflow-auto whitespace-pre-wrap rounded border border-border bg-muted/30 px-4 py-3 text-sm leading-6 text-foreground',
-              },
-              errorsList.join('\n'),
-            ),
-          ])
-        : null,
-    ]),
-    okText: $t('tb.common.confirm'),
+  alert({
+    containerClass: 'sm:min-w-[560px]',
+    confirmText: $t('tb.common.confirm'),
+    icon: 'success',
     title: $t('tb.device.import.completeTitle'),
-    width: 560,
-  });
+    content: () =>
+      h('div', { class: 'space-y-5 pt-1' }, [
+        h('div', { class: 'space-y-3 text-base leading-6' }, [
+          h(
+            'div',
+            `${$t('tb.device.import.createdCount')}: ${result.created ?? 0}`,
+          ),
+          h(
+            'div',
+            `${$t('tb.device.import.updatedCount')}: ${result.updated ?? 0}`,
+          ),
+          h(
+            'div',
+            `${$t('tb.device.import.errorCount')}: ${result.errors ?? 0}`,
+          ),
+        ]),
+        errorsList.length > 0
+          ? h('div', { class: 'space-y-3' }, [
+              h(
+                'div',
+                { class: 'text-base font-medium' },
+                $t('tb.device.import.errorDetails'),
+              ),
+              h(
+                'div',
+                {
+                  class:
+                    'max-h-60 overflow-auto whitespace-pre-wrap rounded border border-border bg-muted/30 px-4 py-3 text-sm leading-6 text-foreground',
+                },
+                errorsList.join('\n'),
+              ),
+            ])
+          : null,
+      ]),
+  }).catch(() => {});
 }
 
 function onPrev() {

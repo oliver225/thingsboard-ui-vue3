@@ -10,7 +10,7 @@ import {
   useVbenVxeGrid as useGrid,
 } from '@vben/plugins/vxe-table';
 
-import { Button, Image } from 'antdv-next';
+import { Image } from 'antdv-next';
 
 import { useVbenForm } from './form';
 
@@ -59,14 +59,20 @@ setupVbenVxeTable({
       },
     });
 
-    // 表格配置项可以用 cellRender: { name: 'CellLink' },
+    // 链接列:cellRender: { name: 'CellLink', props: { onClick: (row) => ... } }
+    // 文本默认取当前列字段值,也可用 props.text 指定;onClick 回调收到整行数据
     vxeUI.renderer.add('CellLink', {
-      renderTableDefault(renderOpts) {
-        const { props } = renderOpts;
+      renderTableDefault(renderOpts, params) {
+        const { props = {} } = renderOpts;
+        const { column, row } = params;
+        const { onClick, text } = props;
         return h(
-          Button,
-          { size: 'small', type: 'link' },
-          { default: () => props?.text },
+          'a',
+          {
+            class: 'text-primary cursor-pointer hover:underline',
+            onClick: () => onClick?.(row),
+          },
+          text ?? row[column.field],
         );
       },
     });
