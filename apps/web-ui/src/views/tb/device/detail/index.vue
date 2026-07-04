@@ -73,11 +73,6 @@ const pageTitle = computed(
   () => device.value?.name || $t('tb.device.detail.title'),
 );
 
-const accessToken = computed(() =>
-  credentials.value?.credentialsType === DeviceCredentialsType.ACCESS_TOKEN
-    ? (credentials.value.credentialsId ?? '')
-    : '',
-);
 const deviceDetailTabs = [
   { key: 'details', label: $t('tb.device.detail.tabs.details') },
   { key: 'attributes', label: $t('tb.device.detail.tabs.attributes') },
@@ -102,8 +97,10 @@ async function load() {
   loading.value = true;
   try {
     device.value = await getDeviceInfoById(deviceId);
-    await loadCredentials();
+    credentials.value = await getDeviceCredentials(deviceId);
   } catch {
+    device.value = null;
+    credentials.value = null;
     alert({
       content: $t('tb.device.detail.notFound'),
       icon: 'error',
@@ -112,14 +109,6 @@ async function load() {
   } finally {
     loading.value = false;
     await setTabsTitle();
-  }
-}
-
-async function loadCredentials() {
-  try {
-    credentials.value = await getDeviceCredentials(deviceId);
-  } catch {
-    credentials.value = null;
   }
 }
 
@@ -151,14 +140,18 @@ async function copyDeviceId() {
 }
 
 async function copyAccessToken() {
-  if (!accessToken.value) return;
+  const accessToken =
+    credentials.value?.credentialsType === DeviceCredentialsType.ACCESS_TOKEN
+      ? credentials.value.credentialsId
+      : credentials.value?.credentialsValue;
+
   await copyToClipboard(
-    accessToken.value,
+    accessToken || '',
     $t('tb.device.detail.copy.accessTokenCopied'),
   );
 }
 
-async function makePublicByCurrentDevice() {
+async function makePublicByDevice() {
   try {
     await makeDevicePublic(deviceId);
     message.success($t('tb.device.actions.makePublicSuccess'));
@@ -173,7 +166,7 @@ function confirmMakePublic() {
   confirm({
     async beforeClose({ isConfirm }) {
       if (!isConfirm) return;
-      return makePublicByCurrentDevice();
+      return makePublicByDevice();
     },
     content: $t('tb.device.makePublic.content', { name: device.value.name }),
     contentMasking: true,
@@ -258,7 +251,7 @@ onBeforeUnmount(() => {
 </script>
 
 <template>
-  <Page auto-content-height content-class="box-border min-h-0 overflow-hidden">
+  <Page auto-content-height content-class="box-border min-h-0 ">
     <FormModal @success="onModalSuccess" />
     <CredentialsModal @success="onModalSuccess" />
     <AssignModal @success="onModalSuccess" />
@@ -286,7 +279,6 @@ onBeforeUnmount(() => {
           <VbenButton
             variant="default"
             icon="lucide:key-round"
-            :class="{ invisible: !device }"
             :disabled="!device"
             @click="onCredentials"
           >
@@ -317,7 +309,6 @@ onBeforeUnmount(() => {
             "
             variant="default"
             icon="lucide:user-plus"
-            :class="{ invisible: !device }"
             :disabled="!device"
             @click="onAssign"
           >
@@ -353,7 +344,6 @@ onBeforeUnmount(() => {
             v-if="hasAccessByRoles([Authority.TENANT_ADMIN])"
             variant="default"
             icon="lucide:square-pen"
-            :class="{ invisible: !device }"
             :disabled="!device"
             @click="onEdit"
           >
@@ -363,7 +353,6 @@ onBeforeUnmount(() => {
             v-if="hasAccessByRoles([Authority.TENANT_ADMIN])"
             variant="destructive"
             icon="lucide:trash-2"
-            :class="{ invisible: !device }"
             :disabled="!device"
             @click="confirmDelete"
           >
@@ -372,7 +361,6 @@ onBeforeUnmount(() => {
           <VbenButton
             variant="outline"
             icon="lucide:copy"
-            :class="{ invisible: !device }"
             :disabled="!device"
             @click="copyDeviceId"
           >
@@ -381,8 +369,7 @@ onBeforeUnmount(() => {
           <VbenButton
             variant="outline"
             icon="lucide:copy"
-            :class="{ invisible: !device }"
-            :disabled="!device || !accessToken"
+            :disabled="!device"
             @click="copyAccessToken"
           >
             {{ $t('tb.device.detail.copy.accessToken') }}
