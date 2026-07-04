@@ -294,7 +294,6 @@ onBeforeUnmount(() => {
             "
             variant="default"
             icon="lucide:share-2"
-            :class="{ invisible: !device }"
             :disabled="!device"
             @click="confirmMakePublic"
           >
