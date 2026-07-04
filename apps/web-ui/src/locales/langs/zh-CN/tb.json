@@ -381,7 +381,43 @@
     "deleteConfirm": "确定要删除吗?该操作不可恢复。",
     "deleteSuccess": "删除成功",
     "saveSuccess": "保存成功",
-    "systemTip": "系统提示"
+    "systemTip": "系统提示",
+    "refresh": "刷新"
+  },
+  "attribute": {
+    "scope": {
+      "SERVER_SCOPE": "服务端属性",
+      "CLIENT_SCOPE": "客户端属性",
+      "SHARED_SCOPE": "共享属性"
+    },
+    "valueType": {
+      "STRING": "字符串",
+      "INTEGER": "整数",
+      "DOUBLE": "双精度",
+      "BOOLEAN": "布尔值",
+      "JSON": "JSON"
+    },
+    "fields": {
+      "lastUpdateTs": "最后更新时间",
+      "key": "键",
+      "value": "值",
+      "valueType": "值类型"
+    },
+    "actions": {
+      "add": "新增属性",
+      "edit": "编辑属性"
+    },
+    "copy": {
+      "keyCopied": "键已复制到剪贴板",
+      "valueCopied": "值已复制到剪贴板"
+    },
+    "delete": {
+      "title": "删除属性",
+      "content": "确定要删除选中的 {count} 个属性吗?该操作不可恢复。"
+    },
+    "validation": {
+      "invalidJson": "JSON 格式不正确"
+    }
   },
   "account": {
     "title": "个人中心",

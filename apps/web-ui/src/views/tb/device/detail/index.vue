@@ -16,14 +16,7 @@ import { useTabs } from '@vben/hooks';
 import { IconifyIcon } from '@vben/icons';
 import { formatDateTime } from '@vben/utils';
 
-import {
-  Descriptions,
-  DescriptionsItem,
-  message,
-  TabPane,
-  Tabs,
-  Tag,
-} from 'antdv-next';
+import { Descriptions, DescriptionsItem, message, Tabs, Tag } from 'antdv-next';
 
 import {
   deleteDevice,
@@ -33,10 +26,11 @@ import {
   unassignDeviceFromCustomer,
 } from '#/api/tb/device';
 import { NULL_UUID } from '#/constants';
-import { Authority, DeviceCredentialsType } from '#/enums';
+import { Authority, DeviceCredentialsType, EntityType } from '#/enums';
 import { $t } from '#/locales';
 import { setCurrentRouteTitle } from '#/router/dynamic-title';
 import { copyToClipboard } from '#/utils/common';
+import AttributeTable from '#/views/tb/attribute/list.vue';
 
 import DeviceAssignModal from '../assign-modal.vue';
 import DeviceCredentialsModal from '../credentials-modal.vue';
@@ -392,87 +386,103 @@ onBeforeUnmount(() => {
     <div
       v-else
       v-loading="loading"
-      class="bg-card h-full min-h-0 rounded-lg px-4"
+      class="bg-card flex h-full min-h-0 flex-col rounded-lg px-4"
     >
-      <Tabs v-model:active-key="activeTab">
-        <TabPane
-          v-for="tab in deviceDetailTabs"
-          :key="tab.key"
-          :tab="tab.label"
-        >
-          <div v-if="tab.key === 'details'" class="h-full overflow-auto">
-            <Descriptions
-              bordered
-              :column="{ lg: 2, md: 2, sm: 1, xl: 2, xs: 1, xxl: 2 }"
-            >
-              <DescriptionsItem :label="$t('tb.device.fields.name')" :col="2">
-                <span class="break-words">
-                  {{ device?.name || '-' }}
-                </span>
-              </DescriptionsItem>
-              <DescriptionsItem :label="$t('tb.device.fields.label')">
-                <span class="break-words">
-                  {{ device?.label || '-' }}
-                </span>
-              </DescriptionsItem>
-              <DescriptionsItem :label="$t('tb.device.fields.active')">
-                <Tag
-                  :class="{ invisible: !device }"
-                  :color="device?.active ? 'success' : 'error'"
-                >
-                  {{
-                    device?.active
-                      ? $t('tb.device.fields.activeTrue')
-                      : $t('tb.device.fields.activeFalse')
-                  }}
-                </Tag>
-              </DescriptionsItem>
-              <DescriptionsItem :label="$t('tb.device.fields.deviceProfile')">
-                <span class="break-words">
-                  {{ device?.deviceProfileName || '-' }}
-                </span>
-              </DescriptionsItem>
-              <DescriptionsItem :label="$t('tb.device.fields.customer')">
-                <span class="break-words">
-                  {{ device?.customerTitle || '-' }}
-                </span>
-              </DescriptionsItem>
-
-              <DescriptionsItem :label="$t('tb.common.createdTime')">
-                <span class="break-words">
-                  {{ formatDateTime(device?.createdTime) || '-' }}
-                </span>
-              </DescriptionsItem>
-              <DescriptionsItem :label="$t('tb.device.fields.isGateway')">
-                <span class="break-words">
-                  {{
-                    device?.additionalInfo?.gateway
-                      ? $t('tb.common.yes')
-                      : $t('tb.common.no')
-                  }}
-                </span>
-              </DescriptionsItem>
-              <DescriptionsItem
-                :label="$t('tb.device.fields.overwriteActivityTime')"
+      <Tabs
+        v-model:active-key="activeTab"
+        :items="deviceDetailTabs"
+        class="device-detail-tabs"
+      />
+      <div class="min-h-0 flex-1 overflow-hidden pb-4">
+        <div v-if="activeTab === 'details'" class="h-full overflow-auto">
+          <Descriptions
+            bordered
+            :column="{ lg: 2, md: 2, sm: 1, xl: 2, xs: 1, xxl: 2 }"
+          >
+            <DescriptionsItem :label="$t('tb.device.fields.name')" :col="2">
+              <span class="break-words">
+                {{ device?.name || '-' }}
+              </span>
+            </DescriptionsItem>
+            <DescriptionsItem :label="$t('tb.device.fields.label')">
+              <span class="break-words">
+                {{ device?.label || '-' }}
+              </span>
+            </DescriptionsItem>
+            <DescriptionsItem :label="$t('tb.device.fields.active')">
+              <Tag
+                :class="{ invisible: !device }"
+                :color="device?.active ? 'success' : 'error'"
               >
-                <span class="break-words">
-                  {{
-                    device?.additionalInfo?.overwriteActivityTime
-                      ? $t('tb.common.yes')
-                      : $t('tb.common.no')
-                  }}
-                </span>
-              </DescriptionsItem>
-              <DescriptionsItem :label="$t('tb.device.fields.description')">
-                <span class="break-words">
-                  {{ device?.additionalInfo?.description || '-' }}
-                </span>
-              </DescriptionsItem>
-            </Descriptions>
-          </div>
-          <div v-else class="h-full overflow-auto"></div>
-        </TabPane>
-      </Tabs>
+                {{
+                  device?.active
+                    ? $t('tb.device.fields.activeTrue')
+                    : $t('tb.device.fields.activeFalse')
+                }}
+              </Tag>
+            </DescriptionsItem>
+            <DescriptionsItem :label="$t('tb.device.fields.deviceProfile')">
+              <span class="break-words">
+                {{ device?.deviceProfileName || '-' }}
+              </span>
+            </DescriptionsItem>
+            <DescriptionsItem :label="$t('tb.device.fields.customer')">
+              <span class="break-words">
+                {{ device?.customerTitle || '-' }}
+              </span>
+            </DescriptionsItem>
+
+            <DescriptionsItem :label="$t('tb.common.createdTime')">
+              <span class="break-words">
+                {{ formatDateTime(device?.createdTime) || '-' }}
+              </span>
+            </DescriptionsItem>
+            <DescriptionsItem :label="$t('tb.device.fields.isGateway')">
+              <span class="break-words">
+                {{
+                  device?.additionalInfo?.gateway
+                    ? $t('tb.common.yes')
+                    : $t('tb.common.no')
+                }}
+              </span>
+            </DescriptionsItem>
+            <DescriptionsItem
+              :label="$t('tb.device.fields.overwriteActivityTime')"
+            >
+              <span class="break-words">
+                {{
+                  device?.additionalInfo?.overwriteActivityTime
+                    ? $t('tb.common.yes')
+                    : $t('tb.common.no')
+                }}
+              </span>
+            </DescriptionsItem>
+            <DescriptionsItem :label="$t('tb.device.fields.description')">
+              <span class="break-words">
+                {{ device?.additionalInfo?.description || '-' }}
+              </span>
+            </DescriptionsItem>
+          </Descriptions>
+        </div>
+        <AttributeTable
+          v-else-if="activeTab === 'attributes'"
+          :entity-id="deviceId"
+          :entity-type="EntityType.DEVICE"
+        />
+
+        <div v-else class="h-full overflow-auto"></div>
+      </div>
     </div>
   </Page>
 </template>
+
+<style scoped>
+/*
+ * Tabs 只当作顶部导航使用,内容渲染在下方独立的 flex-1 容器里(见 template),
+ * 这样内嵌的 vxe 表格(height:auto)父级高度是确定的,不会与内容互相驱动、抖动。
+ * 隐藏 Tabs 自带的空内容区。
+ */
+.device-detail-tabs :deep(.ant-tabs-content-holder) {
+  display: none;
+}
+</style>

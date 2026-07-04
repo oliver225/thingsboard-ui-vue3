@@ -17,4 +17,5 @@ export * from './notification-target';
 export * from './notification-template';
 export * from './ota-package';
 export * from './rule-chain';
+export * from './telemetry';
 export * from './user';

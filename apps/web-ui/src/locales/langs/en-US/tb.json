@@ -381,7 +381,43 @@
     "deleteConfirm": "Are you sure to delete? This cannot be undone.",
     "deleteSuccess": "Deleted successfully",
     "saveSuccess": "Saved successfully",
-    "systemTip": "System Notice"
+    "systemTip": "System Notice",
+    "refresh": "Refresh"
+  },
+  "attribute": {
+    "scope": {
+      "SERVER_SCOPE": "Server attributes",
+      "CLIENT_SCOPE": "Client attributes",
+      "SHARED_SCOPE": "Shared attributes"
+    },
+    "valueType": {
+      "STRING": "String",
+      "INTEGER": "Integer",
+      "DOUBLE": "Double",
+      "BOOLEAN": "Boolean",
+      "JSON": "JSON"
+    },
+    "fields": {
+      "lastUpdateTs": "Last update time",
+      "key": "Key",
+      "value": "Value",
+      "valueType": "Value type"
+    },
+    "actions": {
+      "add": "Add attribute",
+      "edit": "Edit attribute"
+    },
+    "copy": {
+      "keyCopied": "Key copied to clipboard",
+      "valueCopied": "Value copied to clipboard"
+    },
+    "delete": {
+      "title": "Delete attributes",
+      "content": "Are you sure you want to delete the {count} selected attribute(s)? This cannot be undone."
+    },
+    "validation": {
+      "invalidJson": "Invalid JSON format"
+    }
   },
   "account": {
     "title": "Account",

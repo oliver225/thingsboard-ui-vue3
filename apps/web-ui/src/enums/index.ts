@@ -1,6 +1,7 @@
 export * from './action-type';
 export * from './ai-provider';
 export * from './alarm';
+export * from './attribute';
 export * from './authority';
 export * from './bulk-import-column-type';
 export * from './calculated-field-type';
