@@ -201,12 +201,6 @@ function getActionItems(row: DeviceInfo): ActionItem[] {
       tooltip: $t('tb.device.credentials.action'),
     },
     {
-      icon: 'lucide:square-pen',
-      ifShow: hasAccessByRoles([Authority.TENANT_ADMIN]),
-      onClick: () => onEdit(row),
-      tooltip: $t('tb.common.edit'),
-    },
-    {
       icon: 'lucide:share-2',
       ifShow: hasAccessByRoles([Authority.TENANT_ADMIN]) && !assigned,
       onClick: () => confirmMakePublic(row),
@@ -231,6 +225,12 @@ function getActionItems(row: DeviceInfo): ActionItem[] {
         hasAccessByRoles([Authority.TENANT_ADMIN]) && assigned && isPublic,
       onClick: () => confirmMakePrivate(row),
       tooltip: $t('tb.device.actions.makePrivate'),
+    },
+    {
+      icon: 'lucide:square-pen',
+      ifShow: hasAccessByRoles([Authority.TENANT_ADMIN]),
+      onClick: () => onEdit(row),
+      tooltip: $t('tb.common.edit'),
     },
     {
       danger: true,

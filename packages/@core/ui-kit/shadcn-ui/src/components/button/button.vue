@@ -3,7 +3,7 @@ import type { VbenButtonProps } from './button';
 
 import { computed } from 'vue';
 
-import { LoaderCircle } from '@vben-core/icons';
+import { IconifyIcon, LoaderCircle } from '@vben-core/icons';
 import { cn } from '@vben-core/shared/utils';
 
 import { Primitive } from 'reka-ui';
@@ -16,6 +16,7 @@ const props = withDefaults(defineProps<Props>(), {
   as: 'button',
   class: '',
   disabled: false,
+  icon: '',
   loading: false,
   size: 'default',
   variant: 'default',
@@ -36,6 +37,11 @@ const isDisabled = computed(() => {
     <LoaderCircle
       v-if="loading"
       class="text-md mr-2 size-4 shrink-0 animate-spin"
+    />
+    <IconifyIcon
+      v-if="!!icon"
+      :icon="props.icon"
+      class="text-md mr-2 size-4 shrink-0"
     />
     <slot></slot>
   </Primitive>

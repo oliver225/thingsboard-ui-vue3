@@ -478,15 +478,20 @@ const [Modal, modalApi] = useVbenModal({
 </script>
 
 <template>
-  <Modal class="w-[680px] max-w-[90vw]">
+  <Modal
+    :centered="true"
+    :fullscreen-button="false"
+    class="w-[680px] max-w-[90vw]"
+  >
     <div v-if="!record?.id?.id" class="mb-6">
       <Steps :current="currentStep" :items="stepsItems" size="small" />
     </div>
 
-    <div v-show="!!record?.id?.id || currentStep === 0">
+    <div v-show="record?.id?.id || currentStep === 0">
       <DetailsForm />
     </div>
-    <div v-show="!!record?.id?.id && currentStep === 1">
+
+    <div v-show="!record?.id?.id && currentStep === 1">
       <CredentialsForm />
     </div>
 

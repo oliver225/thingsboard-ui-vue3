@@ -692,7 +692,26 @@
     "detail": {
       "title": "Device details",
       "building": "Device details page is under construction",
-      "notFound": "Device not found or no permission to view"
+      "notFound": "Device not found or no permission to view",
+      "copy": {
+        "deviceId": "Copy device ID",
+        "deviceIdCopied": "Device ID copied to clipboard",
+        "accessToken": "Copy access token",
+        "accessTokenCopied": "Access token copied to clipboard"
+      },
+      "tabs": {
+        "details": "Device details",
+        "attributes": "Attributes",
+        "telemetry": "Telemetry",
+        "connectionApi": "Connection API",
+        "rpc": "RPC",
+        "calculatedFields": "Calculated fields",
+        "alarmRules": "Alarm rules",
+        "alarms": "Alarms",
+        "events": "Events",
+        "relations": "Relations",
+        "auditLogs": "Audit logs"
+      }
     },
     "assign": {
       "title": "Assign to customer",

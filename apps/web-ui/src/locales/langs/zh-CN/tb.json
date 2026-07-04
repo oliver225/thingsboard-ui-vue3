@@ -692,7 +692,26 @@
     "detail": {
       "title": "设备详情",
       "building": "设备详情页面建设中",
-      "notFound": "设备不存在或者无权限查看"
+      "notFound": "设备不存在或者无权限查看",
+      "copy": {
+        "deviceId": "复制设备ID",
+        "deviceIdCopied": "设备ID已复制到剪贴板",
+        "accessToken": "复制访问令牌",
+        "accessTokenCopied": "访问令牌已复制到剪贴板"
+      },
+      "tabs": {
+        "details": "设备详情",
+        "attributes": "属性",
+        "telemetry": "遥测数据",
+        "connectionApi": "连接API",
+        "rpc": "RPC",
+        "calculatedFields": "计算字段",
+        "alarmRules": "告警规则",
+        "alarms": "告警",
+        "events": "事件",
+        "relations": "关联",
+        "auditLogs": "审计日志"
+      }
     },
     "assign": {
       "title": "分配给客户",

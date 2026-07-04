@@ -18,6 +18,7 @@ export interface VbenButtonProps {
   asChild?: boolean;
   class?: any;
   disabled?: boolean;
+  icon?: string;
   loading?: boolean;
   size?: ButtonVariants['size'];
   variant?: ButtonVariants['variant'];
