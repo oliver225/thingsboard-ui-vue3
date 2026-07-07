@@ -71,7 +71,7 @@ const pageTitle = computed(
   () => device.value?.name || $t('tb.device.detail.title'),
 );
 
-const deviceDetailTabs = [
+const allDeviceDetailTabs = [
   { key: 'details', label: $t('tb.device.detail.tabs.details') },
   { key: 'attributes', label: $t('tb.device.detail.tabs.attributes') },
   { key: 'telemetry', label: $t('tb.device.detail.tabs.telemetry') },
@@ -87,6 +87,26 @@ const deviceDetailTabs = [
   { key: 'relations', label: $t('tb.device.detail.tabs.relations') },
   { key: 'auditLogs', label: $t('tb.device.detail.tabs.auditLogs') },
 ];
+
+const customerUserTabKeys = new Set([
+  'alarms',
+  'attributes',
+  'details',
+  'events',
+  'relations',
+  'rpc',
+  'telemetry',
+]);
+
+const deviceDetailTabs = computed(() => {
+  if (!hasAccessByRoles([Authority.CUSTOMER_USER])) {
+    return allDeviceDetailTabs;
+  }
+  return allDeviceDetailTabs.filter((item) =>
+    customerUserTabKeys.has(item.key),
+  );
+});
+
 onMounted(async () => {
   await load();
 });
