@@ -32,9 +32,9 @@ import { setCurrentRouteTitle } from '#/router/dynamic-title';
 import { copyToClipboard } from '#/utils/common';
 import AttributeTable from '#/views/tb/attribute/list.vue';
 
-import DeviceAssignModal from '../assign-modal.vue';
-import DeviceCredentialsModal from '../credentials-modal.vue';
-import DeviceForm from '../form.vue';
+import DeviceAssignModal from './assign-modal.vue';
+import DeviceCredentialsModal from './credentials-modal.vue';
+import DeviceForm from './form.vue';
 
 defineOptions({ name: 'DeviceDetail' });
 

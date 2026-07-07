@@ -46,7 +46,7 @@ const routes: RouteRecordRaw[] = [
             },
             name: 'DeviceDetail',
             path: ':deviceId',
-            component: () => import('#/views/tb/device/detail/index.vue'),
+            component: () => import('#/views/tb/device/detail.vue'),
           },
         ],
       },
