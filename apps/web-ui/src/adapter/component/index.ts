@@ -154,6 +154,9 @@ const PhoneInput = defineAsyncComponent(
 const EntityListSelect = defineAsyncComponent(
   () => import('#/components/entity-list-select.vue'),
 );
+const ImageInput = defineAsyncComponent(
+  () => import('#/components/image-input.vue'),
+);
 
 const withDefaultPlaceholder = (
   component: Component,
@@ -636,6 +639,7 @@ export type ComponentType =
   | 'Divider'
   | 'EntityListSelect'
   | 'IconPicker'
+  | 'ImageInput'
   | 'Input'
   | 'InputNumber'
   | 'InputPassword'
@@ -687,6 +691,7 @@ export interface ComponentPropsMap {
   Space: SpaceProps;
   Switch: SwitchProps;
   EntityListSelect: Recordable<any>;
+  ImageInput: Recordable<any>;
   Textarea: TextAreaProps;
   TimePicker: TimePickerProps;
   TreeSelect: TreeSelectProps;
@@ -775,6 +780,7 @@ async function initComponentAdapter() {
     Space,
     Switch,
     EntityListSelect,
+    ImageInput,
     Textarea: withDefaultPlaceholder(Textarea, 'input'),
     TimePicker,
     TreeSelect: withDefaultPlaceholder(TreeSelect, 'select'),

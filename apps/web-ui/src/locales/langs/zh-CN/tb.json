@@ -381,6 +381,7 @@
     "deleteConfirm": "确定要删除吗?该操作不可恢复。",
     "deleteSuccess": "删除成功",
     "saveSuccess": "保存成功",
+    "copySuccess": "已复制",
     "systemTip": "系统提示",
     "refresh": "刷新",
     "range": {
@@ -900,6 +901,11 @@
     "fields": {
       "name": "配置名称",
       "transportType": "传输类型",
+      "image": "图片",
+      "defaultRuleChain": "默认规则链",
+      "defaultDashboard": "移动端仪表板",
+      "defaultQueue": "默认队列",
+      "defaultEdgeRuleChain": "默认边缘规则链",
       "description": "描述",
       "default": "默认配置"
     },
@@ -908,7 +914,78 @@
       "edit": "编辑设备配置",
       "setDefault": "设为默认",
       "export": "导出设备配置",
-      "import": "导入设备配置"
+      "import": "导入设备配置",
+      "batchDelete": "批量删除"
+    },
+    "wizard": {
+      "details": "设备配置详情",
+      "transport": "传输配置",
+      "provision": "设备预配置",
+      "prev": "上一步",
+      "next": "下一步",
+      "nextWithLabel": "下一步： {label}"
+    },
+    "type": {
+      "DEFAULT": "默认",
+      "SNMP": "SNMP"
+    },
+    "transport": {
+      "DEFAULT": "默认",
+      "MQTT": "MQTT",
+      "COAP": "CoAP",
+      "LWM2M": "LwM2M",
+      "SNMP": "SNMP",
+      "mqttTopicFilters": "MQTT 设备主题过滤器",
+      "telemetryTopic": "遥测上报主题过滤器",
+      "attributesTopic": "属性上报主题过滤器",
+      "attributesSubscribeTopic": "属性订阅主题过滤器",
+      "payloadType": "负载类型",
+      "telemetryProtoSchema": "遥测 Proto Schema",
+      "attributesProtoSchema": "属性 Proto Schema",
+      "rpcRequestProtoSchema": "RPC 请求 Proto Schema",
+      "rpcResponseProtoSchema": "RPC 响应 Proto Schema",
+      "enableJsonCompat": "启用与 JSON 负载格式的兼容",
+      "useJsonForDownlink": "默认下行主题使用 JSON 格式",
+      "sparkplug": "MQTT Sparkplug B Edge of Network (EoN) 节点",
+      "sparkplugHint": "允许 EoN 节点以 Sparkplug B 负载与主题格式接入。",
+      "sparkplugMetricNames": "作为属性存储的 Sparkplug 指标",
+      "sparkplugMetricNamesHint": "这些 Sparkplug 指标将作为设备属性存储,其余指标将作为设备遥测存储。",
+      "sendAckOnValidationException": "校验异常时回发 PUBACK",
+      "coapDeviceType": "CoAP 设备类型",
+      "powerSavingMode": "省电模式",
+      "powerMode": "省电模式类型",
+      "psmActivityTimer": "PSM 活动定时器(毫秒)",
+      "edrxCycle": "eDRX 周期(毫秒)",
+      "pagingTransmissionWindow": "寻呼传输窗口(毫秒)"
+    },
+    "transportInfo": {
+      "default": "默认传输无需额外配置。",
+      "unsupported": "该传输类型的高级配置暂不支持在此编辑,保存时将保留原有配置。"
+    },
+    "payload": {
+      "JSON": "JSON",
+      "PROTOBUF": "Protobuf"
+    },
+    "coapDeviceType": {
+      "DEFAULT": "默认",
+      "EFENTO": "Efento NB-IoT"
+    },
+    "powerMode": {
+      "DRX": "DRX",
+      "PSM": "PSM",
+      "E_DRX": "eDRX"
+    },
+    "provision": {
+      "DISABLED": "禁用",
+      "ALLOW_CREATE_NEW_DEVICES": "允许创建新设备",
+      "CHECK_PRE_PROVISIONED_DEVICES": "校验预置设备",
+      "X509_CERTIFICATE_CHAIN": "X.509 证书链",
+      "strategy": "预配置策略",
+      "deviceKey": "设备预配置密钥",
+      "deviceSecret": "设备预配置密文",
+      "allowCreateNewDevices": "允许创建新设备",
+      "certificateValue": "X.509 证书 / 证书链(PEM)",
+      "cnRegex": "从证书 CN 提取设备名的正则"
     },
     "import": {
       "success": "导入成功",
@@ -916,16 +993,21 @@
       "parseError": "文件解析失败,请选择合法的 JSON 文件"
     },
     "delete": {
+      "batchContent": "已选择 {count} 个设备配置。\n确认后这些设备配置及相关数据将无法恢复。",
+      "batchTitle": "确定要删除选中的设备配置吗？",
       "content": "确认后该设备配置及相关数据将无法恢复。",
-      "title": "确定要删除设备配置“{name}”吗？"
+      "profileName": "设备配置",
+      "title": "确定要删除该设备配置吗？"
     },
     "setDefault": {
       "content": "新建设备时将默认使用此配置。",
-      "title": "确定将“{name}”设为默认设备配置吗？",
+      "title": "确定设为默认设备配置吗？",
       "success": "已设为默认设备配置"
     },
     "validation": {
-      "nameRequired": "请输入配置名称"
+      "nameRequired": "请输入配置名称",
+      "topicRequired": "请输入主题过滤器",
+      "required": "此项必填"
     }
   },
   "assetProfile": {
@@ -1344,6 +1426,18 @@
     "validation": {
       "nameRequired": "请输入名称"
     }
+  },
+  "imageInput": {
+    "browseFromGallery": "从图片库浏览",
+    "clearImage": "清除图片",
+    "embeddedImage": "内嵌图片",
+    "galleryTitle": "图片库",
+    "imageLink": "图片链接",
+    "imageLinkPlaceholder": "请输入图片链接",
+    "includeSystemImages": "包含系统图片",
+    "noImages": "暂无图片",
+    "noImageSelected": "未选择图片",
+    "setLink": "设置链接"
   },
   "images": {
     "fields": {

@@ -4,10 +4,10 @@ import type { Device, DeviceCredentials } from '#/api/tb/device';
 
 import { computed, h, ref } from 'vue';
 
-import { alert, useVbenModal } from '@vben/common-ui';
+import { alert, useVbenModal, VbenButton } from '@vben/common-ui';
 import { IconifyIcon } from '@vben/icons';
 
-import { Button, message, Steps, Tooltip } from 'antdv-next';
+import { message, Steps, Tooltip } from 'antdv-next';
 
 import { useVbenForm, z } from '#/adapter/form';
 import { getCustomers } from '#/api/tb/customer';
@@ -483,7 +483,7 @@ const [Modal, modalApi] = useVbenModal({
     :fullscreen-button="false"
     class="w-[680px] max-w-[90vw]"
   >
-    <div v-if="!record?.id?.id" class="mb-6">
+    <div v-if="!record?.id?.id" class="mb-6 px-4">
       <Steps :current="currentStep" :items="stepsItems" size="small" />
     </div>
 
@@ -497,18 +497,22 @@ const [Modal, modalApi] = useVbenModal({
 
     <template #footer>
       <div class="flex w-full items-center justify-between">
-        <Button v-if="!record?.id?.id && currentStep > 0" @click="onPrev">
+        <VbenButton
+          variant="outline"
+          v-if="!record?.id?.id && currentStep > 0"
+          @click="onPrev"
+        >
           <template #icon>
             <IconifyIcon icon="lucide:chevron-left" />
           </template>
           {{ $t('tb.device.wizard.back') }}
-        </Button>
+        </VbenButton>
         <span v-else></span>
         <div class="flex items-center gap-2">
-          <Button @click="modalApi.close()">
+          <VbenButton variant="outline" @click="modalApi.close()">
             {{ $t('tb.common.cancel') }}
-          </Button>
-          <Button type="primary" :loading="loading" @click="onConfirm">
+          </VbenButton>
+          <VbenButton variant="default" :loading="loading" @click="onConfirm">
             {{
               !!record?.id?.id
                 ? $t('tb.common.save')
@@ -516,7 +520,7 @@ const [Modal, modalApi] = useVbenModal({
                   ? $t('tb.device.wizard.nextCredentials')
                   : $t('tb.device.wizard.add')
             }}
-          </Button>
+          </VbenButton>
         </div>
       </div>
     </template>

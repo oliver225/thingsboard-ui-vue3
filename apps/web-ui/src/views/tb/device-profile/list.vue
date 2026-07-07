@@ -4,7 +4,7 @@ import type { ActionItem } from '@vben/common-ui';
 import type { VxeTableGridOptions } from '#/adapter/vxe-table';
 import type { DeviceProfile } from '#/api/tb/device-profile';
 
-import { reactive } from 'vue';
+import { h, nextTick, reactive, ref } from 'vue';
 
 import { confirm, Page, useVbenModal } from '@vben/common-ui';
 import { IconifyIcon } from '@vben/icons';
@@ -41,6 +41,7 @@ const [FormModal, formModalApi] = useVbenModal({
 const queryParams = reactive({
   textSearch: '',
 });
+const selectedItems = ref<DeviceProfile[]>([]);
 
 async function fetch({ page, sort }: any) {
   return getDeviceProfiles({
@@ -53,12 +54,17 @@ async function fetch({ page, sort }: any) {
 }
 
 const [Grid, gridApi] = useVbenVxeGrid<DeviceProfile>({
+  gridEvents: {
+    checkboxAll: onSelectedChange,
+    checkboxChange: onSelectedChange,
+  },
   gridOptions: {
     columns: [
       { title: $t('tb.common.seq'), type: 'seq', width: 60 },
       {
         field: 'name',
-        minWidth: 200,
+        align: 'left',
+        minWidth: 180,
         sortable: true,
         title: $t('tb.deviceProfile.fields.name'),
       },
@@ -103,7 +109,18 @@ const [Grid, gridApi] = useVbenVxeGrid<DeviceProfile>({
 });
 
 function onSearch() {
+  clearSelectedItems();
   gridApi.query({ page: { currentPage: 1 } });
+}
+
+async function onSelectedChange() {
+  await nextTick();
+  selectedItems.value = gridApi.grid.getCheckboxRecords?.() ?? [];
+}
+
+function clearSelectedItems() {
+  selectedItems.value = [];
+  gridApi.grid.clearCheckboxRow?.();
 }
 
 function getActionItems(row: DeviceProfile): ActionItem[] {
@@ -190,6 +207,27 @@ async function deleteByRow(row: DeviceProfile) {
   try {
     await deleteDeviceProfile(row.id.id);
     message.success($t('tb.common.deleteSuccess'));
+    clearSelectedItems();
+    gridApi.query();
+  } catch {
+    return false;
+  }
+}
+
+async function deleteSelectedItems() {
+  const rows = selectedItems.value.filter(
+    (item) => item.id?.id && !item.default,
+  );
+  if (rows.length === 0) {
+    return false;
+  }
+
+  try {
+    await Promise.all(
+      rows.map((item) => deleteDeviceProfile(item.id?.id ?? '')),
+    );
+    message.success($t('tb.common.deleteSuccess'));
+    clearSelectedItems();
     gridApi.query();
   } catch {
     return false;
@@ -205,10 +243,29 @@ function confirmDelete(row: DeviceProfile) {
       return deleteByRow(row);
     },
     confirmButtonProps: { danger: true, variant: 'destructive' },
-    content: $t('tb.deviceProfile.delete.content'),
+    content: renderDeleteContent(row.name),
     contentMasking: true,
     icon: 'error',
-    title: $t('tb.deviceProfile.delete.title', { name: row.name }),
+    title: $t('tb.deviceProfile.delete.title'),
+  }).catch(() => {});
+}
+
+function confirmBatchDelete() {
+  const rows = selectedItems.value.filter((item) => !item.default);
+  confirm({
+    async beforeClose({ isConfirm }) {
+      if (!isConfirm) {
+        return;
+      }
+      return deleteSelectedItems();
+    },
+    confirmButtonProps: { danger: true, variant: 'destructive' },
+    content: $t('tb.deviceProfile.delete.batchContent', {
+      count: rows.length,
+    }),
+    contentMasking: true,
+    icon: 'error',
+    title: $t('tb.deviceProfile.delete.batchTitle'),
   }).catch(() => {});
 }
 
@@ -234,14 +291,67 @@ function confirmSetDefault(row: DeviceProfile) {
       }
       return setDefaultByRow(row);
     },
-    content: $t('tb.deviceProfile.setDefault.content'),
+    content: renderSetDefaultContent(row.name),
     contentMasking: true,
     icon: 'warning',
-    title: $t('tb.deviceProfile.setDefault.title', { name: row.name }),
+    title: $t('tb.deviceProfile.setDefault.title'),
   }).catch(() => {});
 }
 
+function renderDeleteContent(name: string) {
+  return () =>
+    h('div', { class: 'space-y-2 text-sm leading-6' }, [
+      h('div', { class: 'flex gap-1.5' }, [
+        h(
+          'span',
+          { class: 'shrink-0 text-muted-foreground' },
+          `${$t('tb.deviceProfile.delete.profileName')}:`,
+        ),
+        h(
+          'span',
+          {
+            class: 'min-w-0 flex-1 truncate font-medium text-foreground',
+            title: name,
+          },
+          name || '-',
+        ),
+      ]),
+      h(
+        'div',
+        { class: 'text-muted-foreground' },
+        $t('tb.deviceProfile.delete.content'),
+      ),
+    ]);
+}
+
+function renderSetDefaultContent(name: string) {
+  return () =>
+    h('div', { class: 'space-y-2 text-sm leading-6' }, [
+      h('div', { class: 'flex gap-1.5' }, [
+        h(
+          'span',
+          { class: 'shrink-0 text-muted-foreground' },
+          `${$t('tb.deviceProfile.delete.profileName')}:`,
+        ),
+        h(
+          'span',
+          {
+            class: 'min-w-0 flex-1 truncate font-medium text-foreground',
+            title: name,
+          },
+          name || '-',
+        ),
+      ]),
+      h(
+        'div',
+        { class: 'text-muted-foreground' },
+        $t('tb.deviceProfile.setDefault.content'),
+      ),
+    ]);
+}
+
 function onFormSuccess() {
+  clearSelectedItems();
   gridApi.query();
 }
 </script>
@@ -266,6 +376,16 @@ function onFormSuccess() {
       </template>
       <template #toolbar-tools>
         <div class="flex items-center gap-2">
+          <Button
+            v-if="selectedItems.some((item) => !item.default)"
+            danger
+            @click="confirmBatchDelete"
+          >
+            <template #icon>
+              <IconifyIcon icon="lucide:trash-2" />
+            </template>
+            {{ $t('tb.deviceProfile.actions.batchDelete') }}
+          </Button>
           <Button type="primary" @click="onCreate">
             <template #icon>
               <IconifyIcon icon="lucide:plus" />

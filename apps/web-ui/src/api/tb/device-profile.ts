@@ -12,6 +12,7 @@ import { requestClient } from '#/api/request';
 export interface DeviceProfile extends BaseData<EntityType.DEVICE_PROFILE> {
   default?: boolean;
   defaultDashboardId?: EntityId<EntityType.DASHBOARD>;
+  defaultEdgeRuleChainId?: EntityId<EntityType.RULE_CHAIN>;
   defaultQueueName?: string;
   defaultRuleChainId?: EntityId<EntityType.RULE_CHAIN>;
   description?: string;

@@ -381,6 +381,7 @@
     "deleteConfirm": "Are you sure to delete? This cannot be undone.",
     "deleteSuccess": "Deleted successfully",
     "saveSuccess": "Saved successfully",
+    "copySuccess": "Copied",
     "systemTip": "System Notice",
     "refresh": "Refresh",
     "range": {
@@ -900,6 +901,11 @@
     "fields": {
       "name": "Name",
       "transportType": "Transport type",
+      "image": "Image",
+      "defaultRuleChain": "Default rule chain",
+      "defaultDashboard": "Mobile dashboard",
+      "defaultQueue": "Default queue",
+      "defaultEdgeRuleChain": "Default edge rule chain",
       "description": "Description",
       "default": "Default"
     },
@@ -908,7 +914,78 @@
       "edit": "Edit device profile",
       "setDefault": "Set as default",
       "export": "Export device profile",
-      "import": "Import device profile"
+      "import": "Import device profile",
+      "batchDelete": "Batch delete"
+    },
+    "wizard": {
+      "details": "Device profile details",
+      "transport": "Transport configuration",
+      "provision": "Device provisioning",
+      "prev": "Back",
+      "next": "Next",
+      "nextWithLabel": "Next: {label}"
+    },
+    "type": {
+      "DEFAULT": "Default",
+      "SNMP": "SNMP"
+    },
+    "transport": {
+      "DEFAULT": "Default",
+      "MQTT": "MQTT",
+      "COAP": "CoAP",
+      "LWM2M": "LwM2M",
+      "SNMP": "SNMP",
+      "mqttTopicFilters": "MQTT device topic filters",
+      "telemetryTopic": "Telemetry topic filter",
+      "attributesTopic": "Attributes topic filter",
+      "attributesSubscribeTopic": "Attributes subscribe topic filter",
+      "payloadType": "Payload type",
+      "telemetryProtoSchema": "Telemetry proto schema",
+      "attributesProtoSchema": "Attributes proto schema",
+      "rpcRequestProtoSchema": "RPC request proto schema",
+      "rpcResponseProtoSchema": "RPC response proto schema",
+      "enableJsonCompat": "Enable compatibility with JSON payload format",
+      "useJsonForDownlink": "Use JSON format for default downlink topics",
+      "sparkplug": "MQTT Sparkplug B Edge of Network (EoN) node",
+      "sparkplugHint": "Allow connections from EoN nodes with Sparkplug B payload and topic format.",
+      "sparkplugMetricNames": "SparkPlug metrics to store as attributes",
+      "sparkplugMetricNamesHint": "Names of SparkPlug metrics that will be stored as device attributes. All other metrics will be stored as device telemetry.",
+      "sendAckOnValidationException": "Send PUBACK on validation exception",
+      "coapDeviceType": "CoAP device type",
+      "powerSavingMode": "Power saving mode",
+      "powerMode": "Power saving mode type",
+      "psmActivityTimer": "PSM activity timer (ms)",
+      "edrxCycle": "eDRX cycle (ms)",
+      "pagingTransmissionWindow": "Paging transmission window (ms)"
+    },
+    "transportInfo": {
+      "default": "Default transport requires no additional configuration.",
+      "unsupported": "Advanced configuration for this transport type is not editable here; the existing configuration is preserved on save."
+    },
+    "payload": {
+      "JSON": "JSON",
+      "PROTOBUF": "Protobuf"
+    },
+    "coapDeviceType": {
+      "DEFAULT": "Default",
+      "EFENTO": "Efento NB-IoT"
+    },
+    "powerMode": {
+      "DRX": "DRX",
+      "PSM": "PSM",
+      "E_DRX": "eDRX"
+    },
+    "provision": {
+      "DISABLED": "Disabled",
+      "ALLOW_CREATE_NEW_DEVICES": "Allow creating new devices",
+      "CHECK_PRE_PROVISIONED_DEVICES": "Check pre-provisioned devices",
+      "X509_CERTIFICATE_CHAIN": "X.509 certificate chain",
+      "strategy": "Provision strategy",
+      "deviceKey": "Provision device key",
+      "deviceSecret": "Provision device secret",
+      "allowCreateNewDevices": "Allow creating new devices",
+      "certificateValue": "X.509 certificate / chain (PEM)",
+      "cnRegex": "RegEx to extract device name from certificate CN"
     },
     "import": {
       "success": "Imported successfully",
@@ -916,16 +993,21 @@
       "parseError": "Failed to parse file, please choose a valid JSON file"
     },
     "delete": {
+      "batchContent": "{count} device profiles selected.\nThe selected device profiles and related data will be unrecoverable once deleted.",
+      "batchTitle": "Delete selected device profiles?",
       "content": "The device profile and related data will be unrecoverable once deleted.",
-      "title": "Are you sure you want to delete device profile '{name}'?"
+      "profileName": "Device profile",
+      "title": "Are you sure you want to delete this device profile?"
     },
     "setDefault": {
       "content": "This profile will be used by default when creating new devices.",
-      "title": "Set '{name}' as the default device profile?",
+      "title": "Set as default device profile?",
       "success": "Set as default device profile"
     },
     "validation": {
-      "nameRequired": "Profile name is required"
+      "nameRequired": "Profile name is required",
+      "topicRequired": "Topic filter is required",
+      "required": "This field is required"
     }
   },
   "assetProfile": {
@@ -1344,6 +1426,18 @@
     "validation": {
       "nameRequired": "Name is required"
     }
+  },
+  "imageInput": {
+    "browseFromGallery": "Browse from gallery",
+    "clearImage": "Clear image",
+    "embeddedImage": "Embedded image",
+    "galleryTitle": "Image gallery",
+    "imageLink": "Image link",
+    "imageLinkPlaceholder": "Enter image link",
+    "includeSystemImages": "Include system images",
+    "noImages": "No images",
+    "noImageSelected": "No image selected",
+    "setLink": "Set link"
   },
   "images": {
     "fields": {

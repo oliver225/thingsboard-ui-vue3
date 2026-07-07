@@ -97,6 +97,12 @@ const availableEntityTypes = computed(() => {
   return uniqueTypes.filter((type) => props.allowedEntityTypes?.includes(type));
 });
 
+// 仅当可选实体类型多于一个时才展示类型下拉(对齐 ui-ngx displayEntityTypeSelect);
+// 单一类型时锁定为该类型,实体下拉独占整行。
+const displayEntityTypeSelect = computed(
+  () => availableEntityTypes.value.length > 1,
+);
+
 const entityTypeSelectOptions = computed(() =>
   entityTypeOptions().filter((item) =>
     availableEntityTypes.value.includes(item.value),
@@ -105,38 +111,42 @@ const entityTypeSelectOptions = computed(() =>
 
 const entitySelectValue = computed({
   get() {
-    if (props.multiple) {
-      return selectedEntityIds.value;
-    }
-    return selectedEntityIds.value[0] ?? undefined;
+    return props.multiple
+      ? selectedEntityIds.value
+      : (selectedEntityIds.value[0] ?? undefined);
   },
   set(value: string | string[] | undefined) {
     if (Array.isArray(value)) {
       selectedEntityIds.value = value;
-    } else if (value) {
-      selectedEntityIds.value = [value];
     } else {
-      selectedEntityIds.value = [];
+      selectedEntityIds.value = value ? [value] : [];
     }
     emitValue();
   },
 });
 
+// 外部 value 变化 → 同步内部状态;跳过由 emitValue 回写自身触发的“回声”(对齐 ui-ngx compareIds)。
 watch(
-  () => modelValue.value,
+  modelValue,
   (value) => {
     const entities = toEntityArray(value);
+    const incomingType = entities[0]?.entityType;
+    const incomingIds = entities.map((entity) => entity.id);
+    if (
+      incomingType === selectedEntityType.value &&
+      isSameIds(incomingIds, selectedEntityIds.value)
+    ) {
+      return;
+    }
     selectedEntityType.value =
-      entities[0]?.entityType ??
-      selectedEntityType.value ??
-      availableEntityTypes.value[0];
-    selectedEntityIds.value = entities
-      .filter((entity) => entity.entityType === selectedEntityType.value)
-      .map((entity) => entity.id);
+      incomingType ?? selectedEntityType.value ?? availableEntityTypes.value[0];
+    selectedEntityIds.value =
+      incomingType === selectedEntityType.value ? incomingIds : [];
   },
   { immediate: true },
 );
 
+// 可选类型集合变化时,保持已选类型有效,否则回落到首个类型。
 watch(
   availableEntityTypes,
   (types) => {
@@ -149,12 +159,14 @@ watch(
       !types.includes(selectedEntityType.value)
     ) {
       selectedEntityType.value = types[0];
-      clearEntityValue();
+      selectedEntityIds.value = [];
+      emitValue();
     }
   },
   { immediate: true },
 );
 
+// 类型变化即重新加载实体候选。
 watch(
   selectedEntityType,
   async (type) => {
@@ -174,6 +186,10 @@ function toEntityArray(value: EntityId | EntityId[] | undefined) {
   return Array.isArray(value) ? value : [value];
 }
 
+function isSameIds(a: string[], b: string[]) {
+  return a.length === b.length && a.every((id, index) => id === b[index]);
+}
+
 function toOptions<T extends { id?: EntityId; name?: string; title?: string }>(
   rows: T[],
 ) {
@@ -185,30 +201,25 @@ function toOptions<T extends { id?: EntityId; name?: string; title?: string }>(
     .filter((item) => item.value);
 }
 
-function clearEntityValue() {
-  selectedEntityIds.value = [];
-  emitValue();
-}
-
+// 无选中项时对外发 undefined(对齐 ui-ngx 返回 null),使 required 校验能正确触发。
 function emitValue() {
-  if (!selectedEntityType.value) {
-    modelValue.value = undefined;
-    emit('change', undefined);
-    return;
+  let nextValue: EntityId | EntityId[] | undefined;
+  if (selectedEntityType.value && selectedEntityIds.value.length > 0) {
+    const entities = selectedEntityIds.value.map((id) => ({
+      entityType: selectedEntityType.value as EntityType,
+      id,
+    }));
+    nextValue = props.multiple ? entities : entities[0];
   }
-
-  const entities = selectedEntityIds.value.map((id) => ({
-    entityType: selectedEntityType.value as EntityType,
-    id,
-  }));
-  const nextValue = props.multiple ? entities : entities[0];
   modelValue.value = nextValue;
   emit('change', nextValue);
 }
 
+// 用户切换类型:清空已选实体(对齐 ui-ngx reset)。
 function handleEntityTypeChange(value: EntityType) {
   selectedEntityType.value = value;
-  clearEntityValue();
+  selectedEntityIds.value = [];
+  emitValue();
 }
 
 async function loadEntityOptions(type: EntityType) {
@@ -323,6 +334,7 @@ async function loadEntityOptions(type: EntityType) {
 <template>
   <div :class="props.class" class="flex w-full items-center gap-2">
     <Select
+      v-if="displayEntityTypeSelect"
       :disabled="disabled"
       :options="entityTypeSelectOptions"
       :placeholder="
@@ -330,18 +342,21 @@ async function loadEntityOptions(type: EntityType) {
       "
       :value="selectedEntityType"
       class="w-30 shrink-0"
+      option-filter-prop="label"
       show-search
       @change="handleEntityTypeChange"
     />
     <Select
+      v-if="selectedEntityType"
       v-model:value="entitySelectValue"
-      :disabled="disabled || !selectedEntityType"
+      :disabled="disabled"
       :loading="loading"
       :mode="multiple ? 'multiple' : undefined"
       :options="entityOptions"
       :placeholder="
         entityPlaceholder ?? $t('tb.relation.fields.relatedEntityId')
       "
+      allow-clear
       class="min-w-0 flex-1"
       option-filter-prop="label"
       show-search

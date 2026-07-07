@@ -6,6 +6,7 @@ export * from './authority';
 export * from './bulk-import-column-type';
 export * from './calculated-field-type';
 export * from './device-credentials';
+export * from './device-profile';
 export * from './entity-type';
 export * from './notification';
 export * from './ota-package-type';
