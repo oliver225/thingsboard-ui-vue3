@@ -30,7 +30,11 @@ import { Authority, DeviceCredentialsType, EntityType } from '#/enums';
 import { $t } from '#/locales';
 import { setCurrentRouteTitle } from '#/router/dynamic-title';
 import { copyToClipboard } from '#/utils/common';
+import AlarmList from '#/views/tb/alarm/list.vue';
 import AttributeTable from '#/views/tb/attribute/list.vue';
+import AuditLogsList from '#/views/tb/audit-log/list.vue';
+import EventTable from '#/views/tb/event/list.vue';
+import RelationTable from '#/views/tb/relation/list.vue';
 
 import DeviceAssignModal from './assign-modal.vue';
 import DeviceCredentialsModal from './credentials-modal.vue';
@@ -466,6 +470,28 @@ onBeforeUnmount(() => {
         </div>
         <AttributeTable
           v-else-if="activeTab === 'attributes'"
+          :entity-id="deviceId"
+          :entity-type="EntityType.DEVICE"
+        />
+        <AlarmList
+          v-else-if="activeTab === 'alarms'"
+          embedded
+          :entity-id="deviceId"
+          :entity-type="EntityType.DEVICE"
+        />
+        <EventTable
+          v-else-if="activeTab === 'events'"
+          :entity-id="deviceId"
+          :entity-type="EntityType.DEVICE"
+        />
+        <RelationTable
+          v-else-if="activeTab === 'relations'"
+          :entity-id="deviceId"
+          :entity-type="EntityType.DEVICE"
+        />
+        <AuditLogsList
+          v-else-if="activeTab === 'auditLogs'"
+          embedded
           :entity-id="deviceId"
           :entity-type="EntityType.DEVICE"
         />

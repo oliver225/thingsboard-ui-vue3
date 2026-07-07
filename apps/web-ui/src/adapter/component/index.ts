@@ -151,6 +151,9 @@ const PreviewGroup = defineAsyncComponent(() =>
 const PhoneInput = defineAsyncComponent(
   () => import('#/components/phone-input.vue'),
 );
+const EntityListSelect = defineAsyncComponent(
+  () => import('#/components/entity-list-select.vue'),
+);
 
 const withDefaultPlaceholder = (
   component: Component,
@@ -631,6 +634,7 @@ export type ComponentType =
   | 'DatePicker'
   | 'DefaultButton'
   | 'Divider'
+  | 'EntityListSelect'
   | 'IconPicker'
   | 'Input'
   | 'InputNumber'
@@ -682,6 +686,7 @@ export interface ComponentPropsMap {
   Select: SelectProps;
   Space: SpaceProps;
   Switch: SwitchProps;
+  EntityListSelect: Recordable<any>;
   Textarea: TextAreaProps;
   TimePicker: TimePickerProps;
   TreeSelect: TreeSelectProps;
@@ -769,6 +774,7 @@ async function initComponentAdapter() {
     Select: withDefaultPlaceholder(Select, 'select'),
     Space,
     Switch,
+    EntityListSelect,
     Textarea: withDefaultPlaceholder(Textarea, 'input'),
     TimePicker,
     TreeSelect: withDefaultPlaceholder(TreeSelect, 'select'),

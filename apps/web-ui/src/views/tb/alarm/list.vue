@@ -1,10 +1,14 @@
 <script lang="ts" setup>
+import type { Dayjs } from 'dayjs';
+
 import type { ActionItem } from '@vben/common-ui';
 
 import type { VxeTableGridOptions } from '#/adapter/vxe-table';
 import type { AlarmInfo } from '#/api/tb/alarm';
+import type { EntityType } from '#/enums';
+import type { PageLink } from '#/types/tb';
 
-import { h, reactive } from 'vue';
+import { computed, h, reactive } from 'vue';
 import { useRouter } from 'vue-router';
 
 import { useAccess } from '@vben/access';
@@ -12,13 +16,15 @@ import { confirm, Page } from '@vben/common-ui';
 import { IconifyIcon } from '@vben/icons';
 import { formatDateTime } from '@vben/utils';
 
-import { Input, message, Segmented, Select, Tag } from 'antdv-next';
+import { DatePicker, Input, message, Segmented, Select, Tag } from 'antdv-next';
+import dayjs from 'dayjs';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
 import {
   ackAlarm,
   clearAlarm,
   deleteAlarm,
+  getAlarmsByEntity,
   getAllAlarms,
 } from '#/api/tb/alarm';
 import { DEFAULT_SORT_FIELD } from '#/constants';
@@ -34,25 +40,68 @@ import { $t } from '#/locales';
 
 defineOptions({ name: 'AlarmList' });
 
+const props = withDefaults(
+  defineProps<{
+    embedded?: boolean;
+    entityId?: string;
+    entityType?: EntityType | string;
+  }>(),
+  { embedded: false, entityId: undefined, entityType: undefined },
+);
+
 const router = useRouter();
 const { hasAccessByRoles } = useAccess();
+const RangePicker = DatePicker.RangePicker;
+
+type DateRange = [Dayjs, Dayjs];
 
 const queryParams = reactive({
   searchStatus: AlarmSearchStatus.ANY,
   textSearch: '',
+  timeRange: [dayjs().subtract(1, 'day'), dayjs()] as DateRange,
 });
 
+const rangePresets = computed(() => [
+  {
+    label: $t('tb.common.range.last1Hour'),
+    value: [dayjs().subtract(1, 'hour'), dayjs()] as DateRange,
+  },
+  {
+    label: $t('tb.common.range.last6Hours'),
+    value: [dayjs().subtract(6, 'hour'), dayjs()] as DateRange,
+  },
+  {
+    label: $t('tb.common.range.last1Day'),
+    value: [dayjs().subtract(1, 'day'), dayjs()] as DateRange,
+  },
+  {
+    label: $t('tb.common.range.last3Days'),
+    value: [dayjs().subtract(3, 'day'), dayjs()] as DateRange,
+  },
+  {
+    label: $t('tb.common.range.last7Days'),
+    value: [dayjs().subtract(7, 'day'), dayjs()] as DateRange,
+  },
+]);
+
 async function fetch({ page, sort }: any) {
-  return getAllAlarms(
-    {
-      page: page.currentPage - 1,
-      pageSize: page.pageSize,
-      sortOrder: sort?.order === 'asc' ? 'ASC' : 'DESC',
-      sortProperty: sort?.field ?? DEFAULT_SORT_FIELD,
-      textSearch: queryParams.textSearch,
-    },
-    { searchStatus: queryParams.searchStatus },
-  );
+  const [start, end] = queryParams.timeRange;
+  const pageLink: PageLink = {
+    page: page.currentPage - 1,
+    pageSize: page.pageSize,
+    sortOrder: sort?.order === 'asc' ? 'ASC' : 'DESC',
+    sortProperty: sort?.field ?? DEFAULT_SORT_FIELD,
+    textSearch: queryParams.textSearch,
+  };
+  const params = {
+    endTime: end?.valueOf() || 0,
+    fetchOriginator: true,
+    searchStatus: queryParams.searchStatus,
+    startTime: start?.valueOf() || 0,
+  };
+  return props.entityType && props.entityId
+    ? getAlarmsByEntity(props.entityType, props.entityId, pageLink, params)
+    : getAllAlarms(pageLink, params);
 }
 
 const [Grid, gridApi] = useVbenVxeGrid<AlarmInfo>({
@@ -198,7 +247,39 @@ function confirmDelete(row: AlarmInfo) {
 </script>
 
 <template>
-  <Page auto-content-height>
+  <Grid v-if="embedded">
+    <template #toolbar-actions>
+      <Select
+        v-model:value="queryParams.searchStatus"
+        :options="alarmSearchStatusOptions()"
+        style="width: 90px"
+        @change="onSearch"
+      />
+      <RangePicker
+        v-model:value="queryParams.timeRange"
+        class="w-[330px]"
+        :allow-clear="false"
+        format="YYYY-MM-DD HH:mm"
+        :presets="rangePresets"
+        show-time
+        @change="onSearch"
+      />
+      <div class="w-72">
+        <Input
+          v-model:value="queryParams.textSearch"
+          allow-clear
+          :placeholder="$t('tb.common.searchPlaceholder')"
+          @change="onSearch"
+        >
+          <template #suffix>
+            <IconifyIcon icon="lucide:search" />
+          </template>
+        </Input>
+      </div>
+    </template>
+  </Grid>
+
+  <Page v-else auto-content-height>
     <Grid>
       <template #table-title>
         <Segmented
@@ -223,7 +304,16 @@ function confirmDelete(row: AlarmInfo) {
         <Select
           v-model:value="queryParams.searchStatus"
           :options="alarmSearchStatusOptions()"
-          style="width: 140px"
+          style="width: 90px"
+          @change="onSearch"
+        />
+        <RangePicker
+          v-model:value="queryParams.timeRange"
+          class="w-[330px]"
+          :allow-clear="false"
+          format="YYYY-MM-DD HH:mm"
+          :presets="rangePresets"
+          show-time
           @change="onSearch"
         />
         <div class="w-72">

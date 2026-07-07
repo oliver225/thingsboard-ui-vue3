@@ -4,7 +4,8 @@ import type { Dayjs } from 'dayjs';
 import type { ActionItem } from '@vben/common-ui';
 
 import type { VxeTableGridOptions } from '#/adapter/vxe-table';
-import type { AuditLog } from '#/api/tb/audit-log';
+import type { AuditLog, AuditLogQuery } from '#/api/tb/audit-log';
+import type { EntityType } from '#/enums';
 
 import { computed, reactive, ref } from 'vue';
 
@@ -16,7 +17,7 @@ import { DatePicker, Input, Tag } from 'antdv-next';
 import dayjs from 'dayjs';
 
 import { useVbenVxeGrid } from '#/adapter/vxe-table';
-import { getAuditLogs } from '#/api/tb/audit-log';
+import { getAuditLogs, getAuditLogsByEntityId } from '#/api/tb/audit-log';
 import { DEFAULT_SORT_FIELD } from '#/constants';
 import {
   ActionStatus,
@@ -28,6 +29,15 @@ import {
 import { $t } from '#/locales';
 
 defineOptions({ name: 'AuditLogsList' });
+
+const props = withDefaults(
+  defineProps<{
+    embedded?: boolean;
+    entityId?: string;
+    entityType?: EntityType | string;
+  }>(),
+  { embedded: false, entityId: undefined, entityType: undefined },
+);
 
 const RangePicker = DatePicker.RangePicker;
 
@@ -45,27 +55,27 @@ const detailRecord = ref<AuditLog | null>(null);
 
 const rangePresets = computed(() => [
   {
-    label: $t('tb.auditLog.range.today'),
+    label: $t('tb.common.range.today'),
     value: [dayjs().startOf('day'), dayjs()] as DateRange,
   },
   {
-    label: $t('tb.auditLog.range.last1Hour'),
+    label: $t('tb.common.range.last1Hour'),
     value: [dayjs().subtract(1, 'hour'), dayjs()] as DateRange,
   },
   {
-    label: $t('tb.auditLog.range.last6Hours'),
+    label: $t('tb.common.range.last6Hours'),
     value: [dayjs().subtract(6, 'hour'), dayjs()] as DateRange,
   },
   {
-    label: $t('tb.auditLog.range.last1Day'),
+    label: $t('tb.common.range.last1Day'),
     value: [dayjs().subtract(1, 'day'), dayjs()] as DateRange,
   },
   {
-    label: $t('tb.auditLog.range.last3Days'),
+    label: $t('tb.common.range.last3Days'),
     value: [dayjs().subtract(3, 'day'), dayjs()] as DateRange,
   },
   {
-    label: $t('tb.auditLog.range.last7Days'),
+    label: $t('tb.common.range.last7Days'),
     value: [dayjs().subtract(7, 'day'), dayjs()] as DateRange,
   },
 ]);
@@ -74,7 +84,7 @@ async function fetch({ filters, page, sort }: any) {
   const [start, end] = queryParams.timeRange;
   const actionTypes =
     filters?.find((item: any) => item.field === 'actionType')?.values ?? [];
-  return getAuditLogs({
+  const params: AuditLogQuery = {
     page: page.currentPage - 1,
     pageSize: page.pageSize,
     sortOrder: sort?.order === 'asc' ? 'ASC' : 'DESC',
@@ -83,7 +93,10 @@ async function fetch({ filters, page, sort }: any) {
     endTime: end?.valueOf() || 0,
     startTime: start?.valueOf() || 0,
     textSearch: queryParams.textSearch,
-  });
+  };
+  return props.entityType && props.entityId
+    ? getAuditLogsByEntityId(props.entityType, props.entityId, params)
+    : getAuditLogs(params);
 }
 
 const [DetailModal, detailModalApi] = useVbenModal({
@@ -175,23 +188,57 @@ function getActionItems(row: AuditLog): ActionItem[] {
 </script>
 
 <template>
-  <Page auto-content-height>
-    <DetailModal
-      class="w-1/2"
-      :centered="true"
-      :cancel-text="$t('tb.common.close')"
-      :fullscreen-button="false"
-      :show-confirm-button="false"
-      :destroy-on-close="true"
-    >
-      <JsonViewer
-        boxed
-        copyable
-        expanded
-        :value="detailRecord?.actionData ?? {}"
-      />
-    </DetailModal>
+  <DetailModal
+    class="w-1/2"
+    :centered="true"
+    :cancel-text="$t('tb.common.close')"
+    :destroy-on-close="true"
+    :fullscreen-button="false"
+    :show-confirm-button="false"
+  >
+    <JsonViewer
+      boxed
+      copyable
+      expanded
+      :value="detailRecord?.actionData ?? {}"
+    />
+  </DetailModal>
 
+  <Grid v-if="embedded">
+    <template #toolbar-actions>
+      <RangePicker
+        v-model:value="queryParams.timeRange"
+        class="w-[330px]"
+        :allow-clear="false"
+        format="YYYY-MM-DD HH:mm"
+        :presets="rangePresets"
+        show-time
+        @change="onSearch"
+      />
+      <div class="w-72">
+        <Input
+          v-model:value="queryParams.textSearch"
+          allow-clear
+          :placeholder="$t('tb.common.searchPlaceholder')"
+          @change="onSearch"
+        >
+          <template #suffix>
+            <IconifyIcon icon="lucide:search" />
+          </template>
+        </Input>
+      </div>
+    </template>
+    <template #actionStatus="{ row }">
+      <Tag
+        v-if="row.actionStatus"
+        :color="row.actionStatus === ActionStatus.SUCCESS ? 'success' : 'error'"
+      >
+        {{ actionStatusLabel(row.actionStatus) }}
+      </Tag>
+    </template>
+  </Grid>
+
+  <Page v-else auto-content-height>
     <Grid :table-title="$t('tb.menu.auditLogs')">
       <template #toolbar-actions>
         <RangePicker

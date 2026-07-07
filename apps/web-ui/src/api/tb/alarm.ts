@@ -50,6 +50,21 @@ export function getAllAlarms(
   });
 }
 
+/** 指定实体报警分页(GET /api/alarm/{entityType}/{entityId}) */
+export function getAlarmsByEntity(
+  entityType: EntityType | string,
+  entityId: string,
+  pageLink: PageLink,
+  params?: { fetchOriginator?: boolean; searchStatus?: string },
+) {
+  return requestClient.get<PageData<AlarmInfo>>(
+    `/alarm/${entityType}/${entityId}`,
+    {
+      params: { ...pageLink, ...params },
+    },
+  );
+}
+
 /** 报警详情(GET /api/alarm/{alarmId}) */
 export function getAlarmById(alarmId: string) {
   return requestClient.get<Alarm>(`/alarm/${alarmId}`);

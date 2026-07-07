@@ -382,7 +382,15 @@
     "deleteSuccess": "Deleted successfully",
     "saveSuccess": "Saved successfully",
     "systemTip": "System Notice",
-    "refresh": "Refresh"
+    "refresh": "Refresh",
+    "range": {
+      "today": "Today",
+      "last1Hour": "Last 1 hour",
+      "last6Hours": "Last 6 hours",
+      "last1Day": "Last 1 day",
+      "last3Days": "Last 3 days",
+      "last7Days": "Last 7 days"
+    }
   },
   "attribute": {
     "scope": {
@@ -651,14 +659,6 @@
     },
     "filter": {
       "actionTypes": "Action types"
-    },
-    "range": {
-      "today": "Today",
-      "last1Hour": "Last 1 hour",
-      "last6Hours": "Last 6 hours",
-      "last1Day": "Last 1 day",
-      "last3Days": "Last 3 days",
-      "last7Days": "Last 7 days"
     },
     "detail": {
       "title": "Audit log details"
@@ -1563,6 +1563,61 @@
       "fileRequired": "Please select a JavaScript file",
       "contentRequired": "Content is required",
       "readFileError": "Failed to read file"
+    }
+  },
+  "relation": {
+    "direction": {
+      "FROM": "Outbound",
+      "TO": "Inbound"
+    },
+    "typeGroup": {
+      "COMMON": "Common",
+      "DASHBOARD": "Dashboard",
+      "RULE_CHAIN": "Rule chain",
+      "RULE_NODE": "Rule node",
+      "EDGE": "Edge",
+      "EDGE_AUTO_ASSIGN_RULE_CHAIN": "Edge auto-assign rule chain"
+    },
+    "fields": {
+      "direction": "Direction",
+      "type": "Relation type",
+      "typeGroup": "Type group",
+      "relatedEntityType": "Related entity type",
+      "relatedEntityName": "Related entity name",
+      "relatedEntityId": "Related entity",
+      "additionalInfo": "Additional info"
+    },
+    "actions": {
+      "add": "Add relation"
+    },
+    "copy": {
+      "entityIdCopied": "Entity ID copied to clipboard",
+      "typeCopied": "Relation type copied to clipboard"
+    },
+    "detail": {
+      "title": "Relation details"
+    },
+    "delete": {
+      "title": "Delete relation \"{type}\"?",
+      "content": "The entity relation cannot be recovered after deletion."
+    },
+    "validation": {
+      "invalidJson": "Additional info is not valid JSON."
+    }
+  },
+  "event": {
+    "type": {
+      "LC_EVENT": "Lifecycle",
+      "ERROR": "Error",
+      "STATS": "Statistics"
+    },
+    "fields": {
+      "createdTime": "Event time",
+      "type": "Event type",
+      "uid": "UID"
+    },
+    "detail": {
+      "title": "Event details"
     }
   }
 }

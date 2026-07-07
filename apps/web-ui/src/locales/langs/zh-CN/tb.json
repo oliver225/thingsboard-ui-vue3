@@ -382,7 +382,15 @@
     "deleteSuccess": "删除成功",
     "saveSuccess": "保存成功",
     "systemTip": "系统提示",
-    "refresh": "刷新"
+    "refresh": "刷新",
+    "range": {
+      "today": "今天",
+      "last1Hour": "最近 1 小时",
+      "last6Hours": "最近 6 小时",
+      "last1Day": "最近 1 天",
+      "last3Days": "最近 3 天",
+      "last7Days": "最近 7 天"
+    }
   },
   "attribute": {
     "scope": {
@@ -651,14 +659,6 @@
     },
     "filter": {
       "actionTypes": "操作类型"
-    },
-    "range": {
-      "today": "今天",
-      "last1Hour": "最近1小时",
-      "last6Hours": "最近6小时",
-      "last1Day": "最近1天",
-      "last3Days": "最近3天",
-      "last7Days": "最近7天"
     },
     "detail": {
       "title": "审计日志详情"
@@ -1563,6 +1563,61 @@
       "fileRequired": "请选择 JavaScript 文件",
       "contentRequired": "请输入代码内容",
       "readFileError": "文件读取失败"
+    }
+  },
+  "relation": {
+    "direction": {
+      "FROM": "向外",
+      "TO": "向内"
+    },
+    "typeGroup": {
+      "COMMON": "通用",
+      "DASHBOARD": "仪表板",
+      "RULE_CHAIN": "规则链",
+      "RULE_NODE": "规则节点",
+      "EDGE": "边缘",
+      "EDGE_AUTO_ASSIGN_RULE_CHAIN": "边缘自动分配规则链"
+    },
+    "fields": {
+      "direction": "方向",
+      "type": "关系类型",
+      "typeGroup": "类型组",
+      "relatedEntityType": "关联实体类型",
+      "relatedEntityName": "关联实体名称",
+      "relatedEntityId": "关联实体",
+      "additionalInfo": "附加信息"
+    },
+    "actions": {
+      "add": "新增关联"
+    },
+    "copy": {
+      "entityIdCopied": "实体 ID 已复制到剪贴板",
+      "typeCopied": "关系类型已复制到剪贴板"
+    },
+    "detail": {
+      "title": "关联详情"
+    },
+    "delete": {
+      "title": "确定要删除关系“{type}”吗？",
+      "content": "删除后该实体关系将无法恢复。"
+    },
+    "validation": {
+      "invalidJson": "附加信息不是有效的 JSON 格式"
+    }
+  },
+  "event": {
+    "type": {
+      "LC_EVENT": "生命周期",
+      "ERROR": "错误",
+      "STATS": "统计"
+    },
+    "fields": {
+      "createdTime": "事件时间",
+      "type": "事件类型",
+      "uid": "UID"
+    },
+    "detail": {
+      "title": "事件详情"
     }
   }
 }

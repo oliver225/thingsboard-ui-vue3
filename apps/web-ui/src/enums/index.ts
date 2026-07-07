@@ -10,6 +10,7 @@ export * from './entity-type';
 export * from './notification';
 export * from './ota-package-type';
 export * from './queue';
+export * from './relation';
 export * from './resource-type';
 export * from './two-fa-provider-type';
 export * from './widget-category';
