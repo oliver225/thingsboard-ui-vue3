@@ -1,0 +1,50 @@
+{
+  "menu": "Dashboards",
+  "fields": {
+    "title": "Dashboard title",
+    "description": "Description",
+    "image": "Dashboard image",
+    "assignedCustomers": "Assigned customers",
+    "mobileHide": "Hide in mobile app",
+    "mobileOrder": "Mobile order",
+    "public": "Public"
+  },
+  "actions": {
+    "create": "Create dashboard",
+    "edit": "Edit dashboard",
+    "details": "Dashboard details",
+    "delete": "Delete dashboard",
+    "export": "Export dashboard",
+    "makePublic": "Make public",
+    "makePrivate": "Make private"
+  },
+  "validation": {
+    "titleRequired": "Dashboard title is required",
+    "titleMaxLength": "Dashboard title cannot exceed 255 characters",
+    "mobileOrderInteger": "Mobile order must be an integer",
+    "customersRequired": "Select at least one customer"
+  },
+  "features": {
+    "form": {
+      "titlePlaceholder": "e.g. Campus energy overview",
+      "descriptionPlaceholder": "Describe the purpose or content of this dashboard (optional)",
+      "customersPlaceholder": "Select customers",
+      "mobileSettings": "Mobile app settings",
+      "mobileOrderPlaceholder": "Use default order",
+      "mobileOrderHint": "Lower numbers appear first. Negative integers are allowed; leave empty for the default order.",
+      "assignmentFailed": "The dashboard was saved, but customer assignment failed. Confirm again to retry without creating a duplicate dashboard."
+    },
+    "customers": {
+      "manage": "Manage assigned customers",
+      "assign": "Assign customers",
+      "unassign": "Unassign customers",
+      "success": "Customer assignments updated",
+      "partialFailure": "Updated {updated} dashboards; {failed} failed. Confirm again to retry only the failed dashboards."
+    },
+    "public": {
+      "makePublicConfirm": "Make dashboard \"{title}\" public? Anyone with its public link will be able to access it without signing in.",
+      "makePrivateConfirm": "Make dashboard \"{title}\" private? Its public link will no longer allow anonymous access.",
+      "success": "Dashboard visibility updated"
+    }
+  }
+}

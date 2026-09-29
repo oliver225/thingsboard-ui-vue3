@@ -1,0 +1,43 @@
+{
+  "menu": "Events",
+  "fields": {
+    "createdTime": "Event time",
+    "type": "Event type",
+    "uid": "UID",
+    "server": "Server",
+    "method": "Method",
+    "event": "Lifecycle event",
+    "status": "Status",
+    "messagesProcessed": "Messages processed",
+    "errorsOccurred": "Errors occurred",
+    "direction": "Message direction",
+    "entityId": "Entity ID",
+    "messageType": "Message type",
+    "message": "Message"
+  },
+  "actions": {
+    "clear": "Clear events"
+  },
+  "messages": {
+    "searchPlaceholder": "Search server",
+    "clearConfirm": "Clear events matching the selected event type, time range and server filter?",
+    "cleared": "Events cleared"
+  },
+  "options": {
+    "success": "Success",
+    "failure": "Failure",
+    "type": {
+      "LC_EVENT": "Lifecycle",
+      "ERROR": "Error",
+      "STATS": "Statistics",
+      "DEBUG_RULE_NODE": "Rule node debug",
+      "DEBUG_RULE_CHAIN": "Rule chain debug",
+      "DEBUG_CALCULATED_FIELD": "Calculated field debug"
+    }
+  },
+  "features": {
+    "detail": {
+      "title": "Event details"
+    }
+  }
+}

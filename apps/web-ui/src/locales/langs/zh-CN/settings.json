@@ -1,0 +1,389 @@
+{
+  "menu": "系统设置",
+  "sections": {
+    "navigation": {
+      "general": "常规设置",
+      "outgoingMail": "邮件配置",
+      "notifications": "通知配置",
+      "queues": "队列",
+      "home": "首页配置",
+      "aiModels": "AI 模型",
+      "security": "安全设置",
+      "twoFactor": "双因素认证"
+    }
+  },
+  "validation": {
+    "requiredField": "此项为必填项",
+    "connectivity": "端口应为 1–65535 的整数；留空时使用默认协议值。",
+    "jwtKey": "签名密钥必须是有效的 Base64，解码后至少 32 字节。",
+    "jwtTime": "令牌有效期至少 60 秒，刷新令牌至少 900 秒且大于令牌有效期。",
+    "passwordLength": "密码最小长度为 6–50，最大长度不能小于最小长度。",
+    "nonnegative": "请填写非负整数。",
+    "ttl": "令牌有效期应为 1–24 小时的整数。",
+    "twoFactor": "请检查验证时间、次数与验证码有效期，数值须在允许范围内。",
+    "mail": "请检查 SMTP 端口、超时和代理设置。"
+  },
+  "features": {
+    "general": {
+      "title": "常规设置",
+      "baseUrl": "基础 URL",
+      "baseUrlPlaceholder": "请输入基础 URL",
+      "baseUrlRequired": "请输入有效的 HTTP(S) 基础 URL。",
+      "prohibitDifferentUrl": "禁止使用来自客户端请求头的主机名",
+      "prohibitDifferentUrlHint": "此设置应在生产环境中启用。禁用时可能导致安全问题。"
+    },
+    "connectivity": {
+      "title": "设备连接",
+      "hint": "如果主机或端口字段为空，将使用默认协议值。",
+      "host": "主机",
+      "port": "端口",
+      "hostPlaceholder": "请输入主机",
+      "portPlaceholder": "请输入端口",
+      "httpS": "HTTP(s)",
+      "mqttS": "MQTT(s)",
+      "coapS": "COAP(s)",
+      "http": "HTTP",
+      "https": "HTTPs",
+      "mqtt": "MQTT",
+      "mqtts": "MQTTs",
+      "coap": "COAP",
+      "coaps": "COAPs"
+    },
+    "mail": {
+      "title": "邮件服务器设置",
+      "mailFrom": "发件人",
+      "mailFromPlaceholder": "请输入发件人邮箱",
+      "mailFromRequired": "发件人为必填项",
+      "connection": "连接设置",
+      "authentication": "身份验证",
+      "smtpProtocol": "SMTP 协议",
+      "smtpHost": "SMTP 主机",
+      "smtpHostRequired": "SMTP 主机为必填项",
+      "smtpPort": "SMTP 端口",
+      "smtpPortRequired": "SMTP 端口为必填项",
+      "timeout": "超时（毫秒）",
+      "timeoutRequired": "超时为必填项",
+      "enableTls": "启用 TLS",
+      "tlsVersion": "TLS 版本",
+      "tlsVersionRequired": "请选择 TLS 版本",
+      "enableProxy": "启用代理",
+      "proxyHost": "代理主机",
+      "proxyHostRequired": "代理主机为必填项",
+      "proxyPort": "代理端口",
+      "proxyPortRequired": "代理端口为必填项",
+      "proxyUser": "代理用户名",
+      "proxyPassword": "代理密码",
+      "username": "用户名",
+      "password": "密码",
+      "changePassword": "更改密码",
+      "sendTestMail": "发送测试邮件",
+      "testMailSuccess": "测试邮件发送成功",
+      "customProvider": "自定义",
+      "oauth": {
+        "enable": "启用 OAuth 2.0",
+        "provider": "邮件服务商",
+        "clientId": "Client ID",
+        "clientSecret": "Client Secret",
+        "providerTenantId": "服务商租户 ID",
+        "authUri": "授权地址",
+        "tokenUri": "令牌地址",
+        "redirectUri": "回调地址",
+        "scope": "授权范围",
+        "authorize": "保存并授权",
+        "authorized": "访问令牌已生成",
+        "notAuthorized": "尚未生成访问令牌"
+      }
+    },
+    "notifications": {
+      "sms": {
+        "title": "短信供应商",
+        "provider": "供应商",
+        "providerAwsSns": "Amazon SNS",
+        "providerTwilio": "Twilio",
+        "providerSmpp": "SMPP",
+        "accessKeyId": "Access Key ID",
+        "secretAccessKey": "Secret Access Key",
+        "region": "区域",
+        "accountSid": "Account SID",
+        "accountToken": "Account Token",
+        "numberFrom": "发送号码",
+        "protocolVersion": "协议版本",
+        "bindType": "绑定类型",
+        "host": "主机",
+        "port": "端口",
+        "systemId": "System ID",
+        "password": "密码",
+        "systemType": "System Type",
+        "serviceType": "Service Type",
+        "sourceAddress": "源地址",
+        "addressRange": "地址范围",
+        "sourceTon": "Source TON",
+        "sourceNpi": "Source NPI",
+        "destinationTon": "Destination TON",
+        "destinationNpi": "Destination NPI",
+        "codingScheme": "编码方案",
+        "sendTestSms": "发送测试短信",
+        "testSmsSuccess": "测试短信发送成功",
+        "phoneNumber": "收信号码",
+        "message": "短信内容",
+        "connection": "连接设置",
+        "authentication": "身份验证",
+        "addressing": "地址与消息编码"
+      },
+      "slack": {
+        "title": "Slack 设置",
+        "apiToken": "Slack API 令牌",
+        "name": "Slack"
+      },
+      "mobile": {
+        "title": "移动端设置",
+        "hint": "上传 Firebase 服务账号 JSON 文件，用于发送移动端推送通知。",
+        "file": "Firebase 服务账号文件",
+        "invalidFile": "请上传有效的服务账号 JSON，包含项目 ID、私钥和客户端邮箱。",
+        "filePlaceholder": "尚未上传文件"
+      }
+    },
+    "security": {
+      "passwordPolicy": {
+        "title": "安全设置",
+        "generalPolicy": "通用策略",
+        "generalPolicyDescription": "管理登录失败限制、账户通知及验证链接有效期。",
+        "passwordPolicyDescription": "设置密码复杂度、有效期及不符合策略时的处理方式。",
+        "passwordPolicy": "密码策略",
+        "maxFailedLoginAttempts": "允许的最大登录失败次数",
+        "userLockoutNotificationEmail": "账户锁定通知邮箱",
+        "emailInvalid": "邮箱格式不正确",
+        "userActivationTokenTtl": "激活链接有效期(小时)",
+        "passwordResetTokenTtl": "密码重置链接有效期(小时)",
+        "mobileSecretKeyLength": "移动端密钥长度",
+        "minimumLength": "最小长度",
+        "maximumLength": "最大长度",
+        "minimumUppercaseLetters": "最少大写字母数",
+        "minimumLowercaseLetters": "最少小写字母数",
+        "minimumDigits": "最少数字数",
+        "minimumSpecialCharacters": "最少特殊字符数",
+        "passwordExpirationPeriodDays": "密码过期周期(天)",
+        "passwordReuseFrequencyDays": "密码重用间隔(天)",
+        "allowWhitespaces": "允许空格",
+        "forceResetPassword": "登录时若密码不符合策略则强制重置"
+      },
+      "jwt": {
+        "title": "JWT 安全设置",
+        "tokenIssuer": "令牌签发者",
+        "tokenSigningKey": "令牌签名密钥",
+        "generateKey": "生成",
+        "tokenExpirationTime": "令牌有效期(秒)",
+        "refreshTokenExpTime": "刷新令牌有效期(秒)",
+        "refreshLessToken": "刷新令牌有效期必须大于令牌有效期",
+        "changeWarningTitle": "确认修改 JWT 设置?",
+        "changeWarning": "修改签发者或签名密钥会使所有已签发的令牌失效，所有用户（含其它会话）需要重新登录。"
+      }
+    },
+    "twoFactor": {
+      "title": "双因素认证",
+      "verificationSettings": "验证限制",
+      "availableProviders": "可用供应商",
+      "providersRequired": "强制启用时请至少启用一个供应商",
+      "enforce": {
+        "title": "强制双因素认证",
+        "toggle": "强制启用双因素认证",
+        "enforceFor": "强制对象",
+        "byTenant": "租户",
+        "byTenantProfile": "租户配置",
+        "tenants": "选择租户",
+        "tenantProfiles": "选择租户配置",
+        "types": {
+          "ALL_USERS": "所有用户",
+          "TENANT_ADMINISTRATORS": "租户管理员",
+          "SYSTEM_ADMINISTRATORS": "系统管理员"
+        }
+      },
+      "issuerName": "签发者名称",
+      "issuerRequired": "请填写签发者名称",
+      "backupCodeHint": "需先启用至少一个其它供应商,才能启用备用码。",
+      "smsTemplate": "短信验证码模板",
+      "smsTemplateInvalid": "短信模板必须包含验证码占位符",
+      "verificationCodeLifetime": "验证码有效期(秒)",
+      "codesQuantity": "备用码数量",
+      "minVerificationCodeSendPeriod": "验证码发送最小间隔(秒)",
+      "maxVerificationFailuresBeforeLockout": "锁定前允许的最大验证失败次数",
+      "totalAllowedTimeForVerification": "验证总时长(秒)",
+      "rateLimit": "限制验证码校验频率",
+      "rateLimitTimesPer": "次 / 每",
+      "rateLimitSeconds": "秒",
+      "provider": {
+        "TOTP": "身份验证器应用(TOTP)",
+        "SMS": "短信",
+        "EMAIL": "邮件",
+        "BACKUP_CODE": "备用码"
+      },
+      "providerDesc": {
+        "TOTP": "使用 Google Authenticator 等应用生成动态验证码。",
+        "SMS": "通过短信发送一次性验证码（需先配置短信供应商）。",
+        "EMAIL": "通过邮件发送一次性验证码（需先配置邮件服务器）。",
+        "BACKUP_CODE": "一组一次性备用码，用于无法使用其它方式时登录。"
+      }
+    },
+    "home": {
+      "title": "首页设置",
+      "homeDashboard": "首页仪表板",
+      "homeDashboardPlaceholder": "选择租户的默认首页仪表板",
+      "hideToolbar": "隐藏首页仪表板工具栏",
+      "hint": "为本租户下所有用户设置默认打开的首页仪表板。"
+    },
+    "ai": {
+      "fields": {
+        "name": "名称",
+        "provider": "供应商",
+        "modelId": "模型 ID",
+        "apiKey": "API Key",
+        "baseUrl": "基础 URL",
+        "endpoint": "服务端点",
+        "serviceVersion": "服务版本",
+        "projectId": "项目 ID",
+        "location": "位置",
+        "serviceAccountKey": "服务账号 JSON",
+        "region": "区域",
+        "accessKeyId": "Access Key ID",
+        "secretAccessKey": "Secret Access Key",
+        "personalAccessToken": "个人访问令牌",
+        "temperature": "温度",
+        "topP": "Top P",
+        "topK": "Top K",
+        "frequencyPenalty": "频率惩罚",
+        "presencePenalty": "存在惩罚",
+        "maxOutputTokens": "最大输出 Token 数",
+        "contextLength": "上下文长度",
+        "authentication": "认证方式",
+        "username": "用户名",
+        "password": "密码",
+        "token": "访问令牌"
+      },
+      "delete": {
+        "content": "确认后该 AI 模型及相关配置将无法恢复。"
+      },
+      "test": "测试连接",
+      "connected": "连接成功",
+      "failed": "连接失败",
+      "parameters": "模型参数（可选）",
+      "authType": {
+        "NONE": "无需认证",
+        "BASIC": "用户名和密码",
+        "TOKEN": "访问令牌"
+      },
+      "token": "访问令牌",
+      "actions": {
+        "create": "添加 AI 模型",
+        "edit": "编辑 AI 模型",
+        "delete": "删除 AI 模型",
+        "importServiceAccount": "导入 JSON 文件"
+      },
+      "groups": {
+        "general": "基本信息",
+        "connection": "连接配置"
+      },
+      "form": {
+        "namePlaceholder": "为此模型配置起一个易于识别的名称",
+        "modelIdPlaceholder": "选择或输入模型 ID",
+        "modelIdHelp": "支持输入自定义模型 ID；Azure OpenAI 请填写部署名称。",
+        "generalDescription": "选择供应商，并指定应用中使用的模型。",
+        "connectionDescription": "填写所选供应商的服务地址和访问凭据。",
+        "parametersDescription": "按需调整生成行为，留空时使用供应商默认值。",
+        "apiKeyHelp": "使用 OpenAI 官方地址时必填；自定义兼容服务可按需填写。",
+        "serviceAccountPlaceholder": "粘贴服务账号 JSON，或从下方导入文件",
+        "providerDefault": "供应商默认值",
+        "testDescription": "发送一条简短消息，验证当前配置是否可用。"
+      },
+      "validation": {
+        "required": "此项为必填项",
+        "nameLength": "名称不能超过 255 个字符",
+        "serviceAccount": "请输入有效的服务账号 JSON，且包含非空的 private_key 和 client_email。",
+        "fileRead": "无法读取文件，请重新选择 JSON 文件。",
+        "number": "请输入有效的数字",
+        "integer": "请输入整数",
+        "min": "不能小于 {min}",
+        "max": "不能大于 {max}"
+      },
+      "testing": "正在测试连接…",
+      "connectionSuccessDescription": "当前配置已通过连接测试。",
+      "connectionFailureDescription": "未能建立连接，请检查配置后重试。"
+    },
+    "queues": {
+      "fields": {
+        "name": "队列名称",
+        "topic": "主题",
+        "partitions": "分区",
+        "submitStrategy": "提交策略",
+        "processingStrategy": "处理策略",
+        "description": "描述",
+        "batchSize": "批处理大小",
+        "pollInterval": "轮询间隔（毫秒）",
+        "packProcessingTimeout": "批次处理超时（毫秒）",
+        "retries": "重试次数",
+        "failurePercentage": "失败比例（%）",
+        "pauseBetweenRetries": "重试间隔（秒）",
+        "maxPauseBetweenRetries": "最大重试间隔（秒）",
+        "consumerPerPartition": "每个分区独立消费者",
+        "duplicateMsgToAllPartitions": "将消息复制到所有分区",
+        "customProperties": "自定义属性",
+        "retriesUnlimited": "重试次数（0 — 无限）"
+      },
+      "submitStrategy": {
+        "BURST": "突发",
+        "BATCH": "批量",
+        "SEQUENTIAL": "顺序",
+        "SEQUENTIAL_BY_TENANT": "按租户顺序",
+        "SEQUENTIAL_BY_ORIGINATOR": "按发起者顺序"
+      },
+      "processingStrategy": {
+        "RETRY_ALL": "重试全部",
+        "RETRY_FAILED": "重试失败",
+        "RETRY_TIMED_OUT": "重试超时",
+        "RETRY_FAILED_AND_TIMED_OUT": "重试失败和超时",
+        "SKIP_ALL_FAILURES": "跳过所有失败",
+        "SKIP_ALL_FAILURES_AND_TIMED_OUT": "跳过所有失败和超时"
+      },
+      "actions": {
+        "create": "新建队列",
+        "edit": "编辑队列",
+        "delete": "删除队列"
+      },
+      "validation": {
+        "name": "仅支持字母、数字、点、下划线和短横线",
+        "positiveInteger": "请输入正整数",
+        "numberRange": "请输入 {min} 到 {max} 之间的整数",
+        "integerMin": "请输入不小于 {min} 的整数",
+        "maxPause": "最大重试间隔不能小于重试间隔",
+        "uniqueName": "队列名称不能重复",
+        "nameRequired": "请输入队列名称",
+        "strategyRequired": "请选择策略"
+      },
+      "form": {
+        "namePlaceholder": "字母、数字、点、下划线或短横线",
+        "descriptionPlaceholder": "简要介绍队列用途（选填）",
+        "customPropertiesPlaceholder": "例如 retention.ms:604800000;retention.bytes:1048576000",
+        "strategyHelp": "{strategy}说明"
+      },
+      "groups": {
+        "submit": "提交设置",
+        "processing": "重试处理设置",
+        "polling": "轮询设置"
+      },
+      "submitStrategyHelp": {
+        "SEQUENTIAL_BY_ORIGINATOR": "例如设备 A 的新消息在设备 A 的上一条消息被确认前不会提交",
+        "SEQUENTIAL_BY_TENANT": "例如租户 A 的新消息在租户 A 的上一条消息被确认前不会提交",
+        "SEQUENTIAL": "新消息在上一条消息被确认前不会提交",
+        "BURST": "所有消息按到达顺序提交到规则链",
+        "BATCH": "新批次在上一批次被确认前不会提交"
+      },
+      "processingStrategyHelp": {
+        "RETRY_FAILED_AND_TIMED_OUT": "重试处理包中所有失败和超时的消息",
+        "SKIP_ALL_FAILURES": "忽略所有失败",
+        "SKIP_ALL_FAILURES_AND_TIMED_OUT": "忽略所有失败和超时",
+        "RETRY_ALL": "重试处理包中的所有消息",
+        "RETRY_FAILED": "重试处理包中所有失败的消息",
+        "RETRY_TIMED_OUT": "重试处理包中所有超时的消息"
+      }
+    }
+  }
+}

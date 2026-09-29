@@ -11,7 +11,6 @@ packages:
   - apps/*
   - scripts/*
   - docs
-  - playground
 
 publicHoistPattern:
   - lefthook
@@ -37,6 +36,9 @@ overrides:
   vue: 'catalog:'
 
 catalog:
+  '@antdv-next/icons': 1.0.8
+  '@antv/x6': 3.1.8
+  '@antv/x6-vue-shape': 3.0.2
   '@ast-grep/napi': ^0.45.2
   '@changesets/changelog-github': ^1.0.0
   '@changesets/cli': ^2.31.1
@@ -57,7 +59,6 @@ catalog:
   '@lucide/vue': ^1.34.0
   '@manypkg/get-packages': ^3.1.0
   '@nolebase/vitepress-plugin-git-changelog': ^2.18.2
-  '@playwright/test': ^1.61.1
   '@pnpm/workspace.read-manifest': ^1000.3.1
   '@stylistic/stylelint-plugin': ^5.2.1
   '@tailwindcss/typography': ^0.5.20
@@ -90,14 +91,15 @@ catalog:
   '@types/qs': ^6.15.1
   '@types/sortablejs': ^1.15.9
   '@typescript-eslint/parser': ^8.68.0
+  '@vant/area-data': ^2.1.0
   '@vite-pwa/vitepress': ^1.1.0
   '@vitejs/plugin-vue': ^6.0.8
   '@vitejs/plugin-vue-jsx': ^5.1.6
   '@vue/shared': ^3.5.40
-  '@vue/test-utils': ^2.4.11
   '@vueuse/core': ^14.4.0
   '@vueuse/integrations': ^14.3.0
   '@vueuse/motion': ^3.0.3
+  '@wasm-fmt/clang-format': 23.1.0
   ant-design-vue: ^4.2.6
   antdv-next: ^1.4.5
   archiver: ^8.0.0
@@ -136,15 +138,16 @@ catalog:
   get-port: ^7.2.0
   globals: ^17.7.0
   h3: ^1.15.11
-  happy-dom: ^20.11.6
   html-minifier-terser: ^7.2.0
   is-ci: ^4.1.0
+  js-beautify: 1.15.4
   json-bigint: ^1.0.0
   jsonwebtoken: ^9.0.3
   knip: ^6.29.0
   lefthook: ^2.1.10
   lodash.clonedeep: ^4.5.0
   medium-zoom: ^1.1.0
+  monaco-editor: 0.56.0
   naive-ui: ^2.44.1
   nitropack: ^2.13.4
   nprogress: ^0.2.0
@@ -155,10 +158,10 @@ catalog:
   pinia: ^4.0.2
   pinia-plugin-persistedstate: ^4.7.1
   pkg-types: ^2.3.1
-  playwright: ^1.62.1
   postcss: ^8.5.22
   postcss-html: ^1.8.1
   postcss-scss: ^4.0.9
+  protobufjs: 8.8.0
   publint: ^0.3.22
   qrcode: ^1.5.4
   qs: ^6.15.3
@@ -197,7 +200,6 @@ catalog:
   vite-plugin-vue-devtools: ^8.1.5
   vitepress: ^2.0.0-alpha.18
   vitepress-plugin-group-icons: ^1.7.5
-  vitest: ^4.1.11
   vue: ^3.5.40
   vue-eslint-parser: ^10.4.1
   vue-i18n: ^11.4.10
@@ -208,6 +210,7 @@ catalog:
   vxe-pc-ui: ^4.17.18
   vxe-table: ^4.21.2
   watermark-js-plus: ^1.6.6
+  xlsx: 0.18.5
   yaml-eslint-parser: ^2.1.0
   zod: ^4.4.3
   zod-defaults: ^0.2.3

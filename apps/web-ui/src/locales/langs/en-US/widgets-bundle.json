@@ -1,0 +1,43 @@
+{
+  "menu": "Widget Bundles",
+  "fields": {
+    "title": "Title",
+    "image": "Preview image",
+    "description": "Description",
+    "scada": "SCADA",
+    "order": "Order",
+    "scope": "Scope"
+  },
+  "actions": {
+    "create": "Create widget bundle",
+    "edit": "Edit widget bundle",
+    "export": "Export widget bundle",
+    "import": "Import widget bundle",
+    "delete": "Delete widget bundle"
+  },
+  "validation": {
+    "titleRequired": "Title is required",
+    "titleMaxLength": "Title must not exceed 255 characters",
+    "descriptionMaxLength": "Description must not exceed 1024 characters",
+    "orderInteger": "Order must be an integer"
+  },
+  "options": {
+    "scope": {
+      "system": "System",
+      "tenant": "Tenant"
+    }
+  },
+  "features": {
+    "form": {
+      "titlePlaceholder": "Enter a widget bundle title",
+      "descriptionPlaceholder": "Describe the widgets in this bundle",
+      "scadaDescription": "This bundle contains SCADA symbol widgets.",
+      "orderPlaceholder": "Optional, enter an integer"
+    },
+    "import": {
+      "success": "Imported successfully",
+      "invalidFile": "Invalid widget bundle file",
+      "parseError": "Failed to parse file, please select a valid JSON file"
+    }
+  }
+}

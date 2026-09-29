@@ -1,0 +1,455 @@
+{
+  "app": {
+    "pageTitle": "ThingsBoard 物联网平台",
+    "pageDesc": "基于 Vue3 的 ThingsBoard 前端应用（ThingsBoard {version}）",
+    "techSupport": "技术支持",
+    "wechatQr": "扫码加微信"
+  },
+  "authority": {
+    "SYS_ADMIN": "系统管理员",
+    "TENANT_ADMIN": "租户管理员",
+    "CUSTOMER_USER": "客户"
+  },
+  "menu": {
+    "dashboard": "仪表板",
+    "entities": "实体",
+    "device": "设备",
+    "asset": "资产",
+    "entityView": "实体视图",
+    "profiles": "配置",
+    "deviceProfile": "设备配置",
+    "assetProfile": "资产配置",
+    "customer": "客户管理",
+    "customerUser": "客户用户",
+    "calculatedField": "计算字段",
+    "ruleChain": "规则链",
+    "otaUpdate": "OTA 更新",
+    "alarm": "告警",
+    "alarmList": "告警列表",
+    "alarmRule": "告警规则",
+    "tenant": "租户管理",
+    "tenantProfile": "租户配置",
+    "tenantAdmin": "租户管理员",
+    "resources": "资源",
+    "widgetsLibrary": "部件库",
+    "widgetTypes": "部件",
+    "widgetsBundle": "部件包",
+    "images": "图片库",
+    "scadaSymbols": "SCADA 库",
+    "javascriptLibrary": "JavaScript 库",
+    "resourceLibrary": "资源库",
+    "notification": "通知中心",
+    "auditLogs": "审计日志",
+    "settings": "系统设置",
+    "securitySettings": "安全设置",
+    "apiUsage": "API 使用量"
+  },
+  "actionType": {
+    "ADDED": "新增",
+    "DELETED": "删除",
+    "UPDATED": "更新",
+    "ATTRIBUTES_UPDATED": "属性更新",
+    "ATTRIBUTES_DELETED": "属性删除",
+    "TIMESERIES_UPDATED": "遥测更新",
+    "TIMESERIES_DELETED": "遥测删除",
+    "RPC_CALL": "RPC 调用",
+    "CREDENTIALS_UPDATED": "凭据更新",
+    "ASSIGNED_TO_CUSTOMER": "分配给客户",
+    "UNASSIGNED_FROM_CUSTOMER": "从客户取消分配",
+    "ACTIVATED": "激活",
+    "SUSPENDED": "暂停",
+    "CREDENTIALS_READ": "凭据读取",
+    "ATTRIBUTES_READ": "属性读取",
+    "RELATION_ADD_OR_UPDATE": "关系新增或更新",
+    "RELATION_DELETED": "关系删除",
+    "RELATIONS_DELETED": "关系全部删除",
+    "REST_API_RULE_ENGINE_CALL": "规则引擎 REST API 调用",
+    "ALARM_ACK": "确认告警",
+    "ALARM_CLEAR": "清除告警",
+    "ALARM_DELETE": "删除告警",
+    "ALARM_ASSIGNED": "分配告警",
+    "ALARM_UNASSIGNED": "取消分配告警",
+    "LOGIN": "登录",
+    "LOGOUT": "登出",
+    "LOCKOUT": "锁定",
+    "ASSIGNED_FROM_TENANT": "从租户分配",
+    "ASSIGNED_TO_TENANT": "分配给租户",
+    "PROVISION_SUCCESS": "设备预配置成功",
+    "PROVISION_FAILURE": "设备预配置失败",
+    "ASSIGNED_TO_EDGE": "分配给边缘",
+    "UNASSIGNED_FROM_EDGE": "从边缘取消分配",
+    "ADDED_COMMENT": "新增评论",
+    "UPDATED_COMMENT": "更新评论",
+    "DELETED_COMMENT": "删除评论",
+    "SMS_SENT": "短信发送"
+  },
+  "entityType": {
+    "ADMIN_SETTINGS": "系统设置",
+    "AI_MODEL": "AI 模型",
+    "ALARM": "告警",
+    "API_KEY": "API 密钥",
+    "API_USAGE_STATE": "API 使用状态",
+    "ASSET": "资产",
+    "ASSET_PROFILE": "资产配置",
+    "CALCULATED_FIELD": "计算字段",
+    "CUSTOMER": "客户",
+    "DASHBOARD": "仪表板",
+    "DEVICE": "设备",
+    "DEVICE_PROFILE": "设备配置",
+    "DOMAIN": "域名",
+    "EDGE": "边缘",
+    "ENTITY_VIEW": "实体视图",
+    "JOB": "任务",
+    "MOBILE_APP": "移动应用",
+    "MOBILE_APP_BUNDLE": "移动应用包",
+    "NOTIFICATION": "通知",
+    "NOTIFICATION_REQUEST": "通知请求",
+    "NOTIFICATION_RULE": "通知规则",
+    "NOTIFICATION_TARGET": "通知接收组",
+    "NOTIFICATION_TEMPLATE": "通知模板",
+    "OAUTH2_CLIENT": "OAuth 2.0 客户端",
+    "OTA_PACKAGE": "OTA 升级包",
+    "QUEUE": "队列",
+    "QUEUE_STATS": "队列统计",
+    "RPC": "RPC",
+    "RULE_CHAIN": "规则链",
+    "RULE_NODE": "规则节点",
+    "TB_RESOURCE": "资源",
+    "TENANT": "租户",
+    "TENANT_PROFILE": "租户配置",
+    "USER": "用户",
+    "WIDGET_TYPE": "部件",
+    "WIDGETS_BUNDLE": "部件包"
+  },
+  "common": {
+    "actionStatus": {
+      "SUCCESS": "成功",
+      "FAILURE": "失败"
+    },
+    "seq": "序号",
+    "actions": "操作",
+    "createdTime": "创建时间",
+    "create": "新建",
+    "edit": "编辑",
+    "delete": "删除",
+    "detail": "详情",
+    "search": "搜索",
+    "save": "保存",
+    "undo": "撤销",
+    "close": "关闭",
+    "cancel": "取消",
+    "confirm": "确认",
+    "ok": "确定",
+    "yes": "是",
+    "no": "否",
+    "searchPlaceholder": "输入搜索内容",
+    "saveSuccess": "保存成功",
+    "copySuccess": "已复制",
+    "copy": "复制",
+    "systemTip": "系统提示",
+    "refresh": "刷新",
+    "retry": "重试",
+    "loadFailed": "加载失败，表格数据已清空。",
+    "total": "共 {total} 条数据",
+    "range": {
+      "today": "今天",
+      "last1Hour": "最近 1 小时",
+      "last6Hours": "最近 6 小时",
+      "last1Day": "最近 1 天",
+      "last3Days": "最近 3 天",
+      "last7Days": "最近 7 天",
+      "last15Days": "最近 15 天",
+      "last1Month": "最近 1 个月"
+    },
+    "messages": {
+      "delete": {
+        "success": "删除成功",
+        "resourceReferenced": "资源正在被引用，无法删除。",
+        "title": "确定要删除{entity}“{name}”吗？此操作不可恢复。"
+      },
+      "batchDelete": {
+        "title": "批量删除",
+        "selected": "已选中 {count} 个",
+        "confirm": "确定要删除选中的 {count} 个{entity}吗？此操作不可恢复。",
+        "success": "已删除 {count} 个{entity}",
+        "partialFailure": "已删除 {deleted} 个{entity}，{failed} 个删除失败。再次确认将仅重试失败的{entity}。"
+      }
+    }
+  },
+  "table": {
+    "columnSetting": "列设置",
+    "columnShow": "列展示",
+    "density": "密度",
+    "densityLarge": "宽松",
+    "densityMiddle": "默认",
+    "densitySmall": "紧凑",
+    "empty": "暂无数据",
+    "exitFullscreen": "退出全屏",
+    "fixedLeft": "固定到左侧",
+    "fixedRight": "固定到右侧",
+    "fullscreen": "全屏",
+    "indexColumnShow": "序号列",
+    "more": "更多",
+    "noResult": "没有匹配的结果",
+    "reset": "恢复默认",
+    "selectionClear": "清空",
+    "selectColumnShow": "复选框",
+    "selected": "已选 {count} 项"
+  },
+  "components": {
+    "scriptTest": {
+      "menu": "测试脚本",
+      "sections": {
+        "testErrorTitle": "脚本测试错误",
+        "testDataTitle": "参数数据：{name}"
+      },
+      "fields": {
+        "testArguments": "参数",
+        "testOutput": "测试结果",
+        "testArgumentName": "名称",
+        "testArgumentType": "类型",
+        "testArgumentData": "数据",
+        "testTimestamp": "时间戳"
+      },
+      "actions": {
+        "run": "运行",
+        "resizePanels": "调整面板大小",
+        "applyScript": "应用脚本",
+        "testEditData": "编辑参数数据"
+      },
+      "messages": {
+        "testHint": "填写参数样本后测试脚本。保存时会先测试，通过后将脚本回填到表单。",
+        "testArgumentsHint": "名称和类型与表单保持一致，可在数据列填写测试样本。",
+        "testOnlyHint": "填写参数样本后运行脚本。测试仅执行脚本，不保存计算字段。",
+        "applyFailed": "应用脚本失败，请重试。",
+        "testFailed": "脚本测试失败，请重试。",
+        "testEmptyOutput": "脚本已执行，未返回内容。",
+        "testOutputHint": "点击“测试”查看脚本输出",
+        "testValuePlaceholders": {
+          "STRING": "字符串值",
+          "INTEGER": "整数值",
+          "DOUBLE": "双精度值",
+          "BOOLEAN": "布尔值",
+          "JSON": "JSON值"
+        }
+      },
+      "validation": {
+        "testArguments": "请填写有效的参数测试数据。",
+        "testScriptRequired": "请输入脚本后再测试。",
+        "testInvalidTimestamp": "请输入有效的时间戳。",
+        "testInvalidValue": "请输入所选类型的有效数据。",
+        "testInvalidRolling": "请填写有效的滚动数据：values 为时间戳和值的数组，timeWindow 为时间窗口对象。"
+      },
+      "options": {
+        "testTrue": "真",
+        "testFalse": "假"
+      }
+    },
+    "codeEditor": {
+      "menu": "代码编辑器",
+      "actions": {
+        "test": "测试",
+        "format": "格式化",
+        "fullscreen": "全屏编辑",
+        "exitFullscreen": "退出全屏",
+        "retry": "重试"
+      },
+      "messages": {
+        "formatError": "格式化失败，请检查语法；原始代码已保留。",
+        "loading": "正在加载编辑器…",
+        "loadError": "编辑器加载失败"
+      },
+      "validation": {
+        "json": {
+          "required": "请输入 JSON",
+          "invalidJson": "JSON 格式不正确，请检查括号、引号和逗号",
+          "invalidNumber": "JSON 数值超出可处理范围",
+          "objectRequired": "请输入 JSON 对象",
+          "arrayRequired": "请输入 JSON 数组"
+        }
+      }
+    },
+    "secondsInput": {
+      "fields": {
+        "amount": "时长",
+        "unit": "时间单位"
+      },
+      "options": {
+        "seconds": "秒",
+        "minutes": "分钟",
+        "hours": "小时",
+        "days": "天"
+      }
+    },
+    "rateLimit": {
+      "sections": {
+        "preview": "预览"
+      },
+      "fields": {
+        "count": "最大数量",
+        "seconds": "时间窗口（秒）"
+      },
+      "actions": {
+        "remove": "删除限流条件",
+        "add": "添加时间窗口",
+        "edit": "编辑{label}速率限制"
+      },
+      "messages": {
+        "notSet": "未设置",
+        "summary": "{count} 次 / {seconds} 秒"
+      },
+      "validation": {
+        "invalid": "数量和秒数须为正整数，时间窗口不能重复"
+      }
+    },
+    "debugSettings": {
+      "menu": "调试配置",
+      "fields": {
+        "entity": "实体"
+      },
+      "actions": {
+        "reset": "重置调试时长",
+        "cancel": "取消",
+        "apply": "应用"
+      },
+      "messages": {
+        "failureHint": "仅记录错误消息。",
+        "allHint": "记录所有调试消息。保存实体后开始计时。",
+        "limitHint": "每 {time} 将记录不超过 {count} 条{entity}调试消息。",
+        "saved": "调试配置已保存",
+        "saveFailed": "保存调试配置失败，请重试。"
+      },
+      "options": {
+        "failures": "失败",
+        "disabled": "关闭",
+        "onFailure": "仅失败（24/7）",
+        "allMessages": "所有消息（{time}）",
+        "remaining": "剩余 {time}",
+        "minutes": "{count} 分钟",
+        "seconds": "{count} 秒"
+      }
+    },
+    "fieldArguments": {
+      "menu": "参数设置",
+      "fields": {
+        "targetEntity": "目标实体",
+        "argumentName": "参数名称",
+        "source": "实体类型",
+        "sourceEntity": "来源实体",
+        "keyType": "参数类型",
+        "key": "键",
+        "scope": "属性范围",
+        "defaultValue": "默认值",
+        "timeWindow": "时间窗口",
+        "limit": "最大值数量"
+      },
+      "actions": {
+        "addArgument": "添加参数",
+        "editArgument": "编辑参数",
+        "remove": "删除",
+        "copyArgumentName": "复制参数名称：{name}"
+      },
+      "messages": {
+        "copyArgumentFailed": "复制失败，请手动复制参数名称。"
+      },
+      "validation": {
+        "required": "请填写必填项。",
+        "range": "请输入 {min} 至 {max} 之间的整数。",
+        "name": "名称须以英文字母或下划线开头，仅包含字母、数字、下划线，最长 255 个字符，且不可使用保留名称。",
+        "duplicate": "名称不可重复。",
+        "entity": "请选择来源实体。",
+        "maxItems": "最多允许 {count} 项。",
+        "arguments": "至少需要一个参数。",
+        "currentSource": "参数来源必须为当前实体。",
+        "latestOnly": "仅支持最新遥测参数。",
+        "rolling": "此模式不支持滚动时间序列参数。",
+        "relationSource": "参数不支持关联路径来源。"
+      },
+      "options": {
+        "milliseconds": "毫秒",
+        "CURRENT": "当前实体",
+        "CURRENT_OWNER": "当前所有者",
+        "RELATION_PATH_QUERY": "关联实体",
+        "TS_LATEST": "最新遥测",
+        "TS_ROLLING": "时间序列滚动",
+        "ATTRIBUTE": "属性",
+        "SERVER_SCOPE": "服务端属性",
+        "SHARED_SCOPE": "共享属性",
+        "CLIENT_SCOPE": "客户端属性"
+      }
+    },
+    "imageInput": {
+      "sections": {
+        "preview": "图片预览",
+        "libraryTitle": "选择图片",
+        "library": "图片库",
+        "galleryTitle": "图片库"
+      },
+      "fields": {
+        "search": "搜索图片名称",
+        "includeSystem": "包含系统图片",
+        "title": "图片标题",
+        "imageLink": "图片链接",
+        "includeSystemImages": "包含系统图片"
+      },
+      "actions": {
+        "choose": "从图片库选择",
+        "setLink": "使用图片链接",
+        "clear": "清除图片",
+        "upload": "上传图片",
+        "uploadAndUse": "上传并使用",
+        "useImage": "使用此图片",
+        "retry": "重试",
+        "previous": "上一页",
+        "next": "下一页",
+        "browseFromGallery": "从图片库浏览",
+        "clearImage": "清除图片",
+        "setImageLink": "设置链接"
+      },
+      "messages": {
+        "empty": "尚未配置图片",
+        "linkPlaceholder": "https://example.com/image.png",
+        "loading": "正在加载图片…",
+        "loadFailed": "图片加载失败，请重试。",
+        "noImages": "没有找到图片，可切换到上传图片。",
+        "pagination": "第 {page} / {pages} 页 · 共 {count} 张",
+        "titlePlaceholder": "输入图片标题",
+        "uploadHint": "上传后图片会保存到图片库，供其他表单重复使用。",
+        "imageLinkPlaceholder": "请输入图片链接",
+        "emptyGallery": "暂无图片",
+        "noImageSelected": "未选择图片"
+      },
+      "options": {
+        "embedded": "内嵌图片",
+        "tenant": "租户图片",
+        "system": "系统图片",
+        "embeddedImage": "内嵌图片"
+      }
+    },
+    "imageFileInput": {
+      "actions": {
+        "clearSelection": "清除所选文件",
+        "browse": "浏览"
+      },
+      "messages": {
+        "previewUnavailable": "此文件暂不支持本地预览",
+        "drop": "拖放",
+        "orBrowse": "或 {browse}"
+      }
+    },
+    "copyText": {
+      "copySuccess": "复制成功"
+    },
+    "copyBlock": {
+      "fields": {
+        "content": "待复制内容"
+      },
+      "actions": {
+        "copy": "复制连接"
+      },
+      "messages": {
+        "copyFailed": "复制失败，请手动复制内容"
+      }
+    }
+  }
+}

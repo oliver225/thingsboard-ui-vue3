@@ -1,0 +1,48 @@
+{
+  "menu": "ThingsBoard IoT Platform",
+  "actions": {
+    "createPassword": "Create Password",
+    "goToLogin": "Go to login",
+    "resetPassword": "Reset Password"
+  },
+  "messages": {
+    "pageDesc": "Connect devices and manage data and tenants",
+    "loginSubtitle": "Sign in with your ThingsBoard account",
+    "usernameTip": "Enter your email",
+    "resetEmailSent": "Email sent",
+    "resetEmailSentDesc": "If the email is registered, a password reset link has been sent. Please check your inbox and follow the instructions to reset your password.",
+    "registerSubTitle": "ThingsBoard accounts are created by administrators",
+    "registerNotSupported": "Self-registration is not available",
+    "registerNotSupportedDesc": "ThingsBoard Community Edition does not provide public sign-up. Please ask a system or tenant administrator to create an account for you; you will then receive an activation email to set your password.",
+    "createPasswordSubtitle": "Set a login password for your account. You will be signed in automatically once done.",
+    "createPasswordSuccess": "Signed in",
+    "createPasswordSuccessDesc": "Your account is activated, welcome",
+    "passwordMinTip": "Password must be at least 6 characters",
+    "alreadyHaveAccount": "Already have an account?",
+    "resetPasswordSubtitle": "Enter a new password. Please sign in with the new password once done.",
+    "resetPasswordSuccess": "Password reset",
+    "resetPasswordSuccessDesc": "Please sign in with your new password",
+    "forgetPasswordSubtitle": "Enter your email address and we will send you a password reset link.",
+    "passwordPolicyLoadFailed": "Could not load password requirements. Please try again.",
+    "passwordPolicyLoading": "Loading password requirements…"
+  },
+  "validation": {
+    "linkInvalid": "Invalid link",
+    "activateLinkInvalid": "The activation link is invalid or expired. Please request a new activation email.",
+    "resetLinkInvalid": "The reset link is invalid or expired. Please request password recovery again."
+  },
+  "features": {
+    "activation": {
+      "emailSent": "Activation email sent",
+      "method": "Activation method",
+      "showLink": "Display activation link",
+      "sendMail": "Send activation mail",
+      "linkTitle": "User activation link",
+      "linkWord": "activation link",
+      "duration": "{hours}h {minutes}m {seconds}s",
+      "description": "To activate the user, please use the following ",
+      "expiresIn": " (expires in {duration}):",
+      "expired": " (expired):"
+    }
+  }
+}

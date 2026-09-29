@@ -1,0 +1,81 @@
+{
+  "name": "thingsboard-ui",
+  "version": "4.3.1",
+  "private": true,
+  "description": "Vue 3 frontend for ThingsBoard, built with Vben Admin, Vite, TypeScript and antdv-next.",
+  "keywords": [
+    "thingsboard",
+    "iot",
+    "dashboard",
+    "vue3",
+    "typescript",
+    "vite",
+    "antdv-next",
+    "vben"
+  ],
+  "homepage": "https://github.com/oliver225/thingsboard-ui-vue3",
+  "bugs": {
+    "url": "https://github.com/oliver225/thingsboard-ui-vue3/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/oliver225/thingsboard-ui-vue3.git",
+    "directory": "apps/web-ui"
+  },
+  "license": "MIT",
+  "author": {
+    "name": "oliver225",
+    "url": "https://github.com/oliver225"
+  },
+  "contributors": [
+    {
+      "name": "vben",
+      "email": "ann.vben@gmail.com",
+      "url": "https://github.com/anncwb"
+    }
+  ],
+  "type": "module",
+  "scripts": {
+    "build": "pnpm vite build --mode production",
+    "build:analyze": "pnpm vite build --mode analyze",
+    "dev": "pnpm vite --mode development",
+    "preview": "vite preview",
+    "typecheck": "vue-tsc --noEmit --skipLibCheck"
+  },
+  "imports": {
+    "#/*": "./src/*"
+  },
+  "dependencies": {
+    "@antv/x6": "catalog:",
+    "@antv/x6-vue-shape": "catalog:",
+    "@vant/area-data": "catalog:",
+    "@vben-core/popup-ui": "workspace:*",
+    "@vben-core/shadcn-ui": "workspace:*",
+    "@vben/access": "workspace:*",
+    "@vben/common-ui": "workspace:*",
+    "@vben/constants": "workspace:*",
+    "@vben/hooks": "workspace:*",
+    "@vben/icons": "workspace:*",
+    "@vben/layouts": "workspace:*",
+    "@vben/locales": "workspace:*",
+    "@vben/plugins": "workspace:*",
+    "@vben/preferences": "workspace:*",
+    "@vben/request": "workspace:*",
+    "@vben/stores": "workspace:*",
+    "@vben/styles": "workspace:*",
+    "@vben/table": "workspace:*",
+    "@vben/types": "workspace:*",
+    "@vben/utils": "workspace:*",
+    "@vueuse/core": "catalog:",
+    "@wasm-fmt/clang-format": "catalog:",
+    "antdv-next": "catalog:",
+    "dayjs": "catalog:",
+    "js-beautify": "catalog:",
+    "monaco-editor": "catalog:",
+    "pinia": "catalog:",
+    "protobufjs": "catalog:",
+    "vue": "catalog:",
+    "vue-router": "catalog:",
+    "xlsx": "catalog:"
+  }
+}

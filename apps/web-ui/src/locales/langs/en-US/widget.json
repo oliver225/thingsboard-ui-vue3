@@ -1,0 +1,60 @@
+{
+  "timeFilter": {
+    "title": "Time filter",
+    "hint": "Applies to this chart only",
+    "mode": "Time mode",
+    "realtime": "Realtime",
+    "history": "History",
+    "range": "Time range",
+    "custom": "Custom range",
+    "start": "Start time",
+    "end": "End time",
+    "aggregation": "Aggregation",
+    "interval": "Interval",
+    "limit": "Maximum points",
+    "cancel": "Cancel",
+    "apply": "Apply",
+    "points": "Data points",
+    "noData": "No data in the selected range",
+    "realtimeDescription": "Realtime · {range} · refreshes every minute",
+    "limitReached": "Data limit reached. Showing the latest returned points.",
+    "intervalHint": "The interval increases automatically to respect the data limit.",
+    "durations": {
+      "3600000": "Last hour",
+      "21600000": "Last 6 hours",
+      "86400000": "Last day",
+      "604800000": "Last 7 days",
+      "2592000000": "Last 30 days",
+      "31536000000": "Last year"
+    },
+    "intervals": {
+      "60000": "1 minute",
+      "300000": "5 minutes",
+      "3600000": "1 hour",
+      "86400000": "1 day"
+    },
+    "aggregations": {
+      "NONE": "None",
+      "AVG": "Average",
+      "SUM": "Sum",
+      "MIN": "Minimum",
+      "MAX": "Maximum",
+      "COUNT": "Count"
+    },
+    "errors": {
+      "limit": "Enter an integer from {min} to {max}",
+      "range": "Enter a valid range with the end after the start",
+      "interval": "Select a valid interval"
+    },
+    "customInterval": "Custom",
+    "intervalValue": "Interval value",
+    "intervalUnit": "Time unit",
+    "units": {
+      "millisecond": "Milliseconds",
+      "second": "Seconds",
+      "minute": "Minutes",
+      "hour": "Hours",
+      "day": "Days"
+    }
+  }
+}

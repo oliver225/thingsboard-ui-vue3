@@ -319,22 +319,6 @@ const [Form, formApi] = useVbenForm({
 
 `schema.valueFormat`, `fieldMappingTime`, and `arrayToStringFields` remain runtime-compatible but are deprecated. When a codec is configured it takes precedence and deprecated transforms are ignored.
 
-## Performance Benchmarks
-
-The form benchmarks cover component initialization, single-field and batch updates, reset, Zod validation, dynamic schemas, dependencies, codec encoding and snapshots, plus array editing, row mutations, and child-schema updates. Run the complete benchmark suite with:
-
-```bash
-pnpm test:benchmark
-```
-
-To run only the form benchmarks, pass both files explicitly:
-
-```bash
-pnpm exec vitest bench --run packages/@core/ui-kit/form-ui/__tests__/form-component-performance.benchmark.ts packages/@core/ui-kit/form-ui/__tests__/form-performance.benchmark.ts
-```
-
-Use benchmark results to compare relative changes on the same machine and runtime; do not treat one run's absolute timings as portable thresholds. Stop CPU-intensive development servers first and keep the Node.js version consistent. Benchmark files are not included in the regular `test:unit` command.
-
 ::: warning Mounted form context
 
 `formApi.form` is the `FormContextApi` injected after `<Form />` mounts. Do not destructure or cache `form` from the second `useVbenForm` return value during setup, because that captures the pre-mount empty reference. Prefer mount-aware public methods such as `getRawValues()`, `setFieldError()`, `setFieldValue()`, and `validate()` for business actions. Access fine-grained subscription methods on `formApi.form` only from an already-mounted form context.

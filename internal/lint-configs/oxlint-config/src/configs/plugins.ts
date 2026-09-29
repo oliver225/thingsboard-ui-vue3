@@ -9,16 +9,7 @@ const plugins: OxlintConfig = {
    *
    * Default: eslint,typescript,unicorn,oxc
    */
-  plugins: [
-    'eslint',
-    'import',
-    'node',
-    'oxc',
-    'typescript',
-    'unicorn',
-    'vitest',
-    'vue',
-  ],
+  plugins: ['eslint', 'import', 'node', 'oxc', 'typescript', 'unicorn', 'vue'],
 };
 
 export { plugins };

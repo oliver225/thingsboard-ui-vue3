@@ -62,7 +62,7 @@
     "editor.defaultFormatter": "oxc.oxc-vscode"
   },
   "[typescript]": {
-    "editor.defaultFormatter": "oxc.oxc-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[json]": {
     "editor.defaultFormatter": "oxc.oxc-vscode"
@@ -74,7 +74,7 @@
     "editor.defaultFormatter": "oxc.oxc-vscode"
   },
   "[vue]": {
-    "editor.defaultFormatter": "oxc.oxc-vscode"
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
 
   // extensions
@@ -214,7 +214,6 @@
 
   "i18n-ally.localesPaths": [
     "packages/locales/src/langs",
-    "playground/src/locales/langs",
     "apps/*/src/locales/langs"
   ],
   "i18n-ally.pathMatcher": "{locale}/{namespace}.{ext}",
@@ -239,5 +238,14 @@
   },
   "commentTranslate.hover.enabled": false,
   "commentTranslate.multiLineMerge": true,
-  "vue.server.hybridMode": true
+  "vue.server.hybridMode": true,
+  "i18n-mage.i18nFeatures.framework": "none",
+  "i18n-mage.workspace.languagePath": "apps/web-ui/src/locales/langs",
+  "i18n-mage.i18nFeatures.namespaceStrategy": "full",
+  "i18n-mage.writeRules.keyStyle": "camelCase",
+  "i18n-mage.writeRules.indentType": "space",
+  "i18n-mage.writeRules.indentSize": 2,
+  "i18n-mage.writeRules.quoteStyleForKey": "double",
+  "i18n-mage.writeRules.quoteStyleForValue": "double",
+  "i18n-mage.writeRules.languageStructure": "nested"
 }

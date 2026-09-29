@@ -1,0 +1,60 @@
+{
+  "timeFilter": {
+    "title": "时间筛选",
+    "hint": "仅应用于当前图表",
+    "mode": "时间模式",
+    "realtime": "实时",
+    "history": "历史",
+    "range": "时间范围",
+    "custom": "自定义时间",
+    "start": "开始时间",
+    "end": "结束时间",
+    "aggregation": "聚合方式",
+    "interval": "聚合间隔",
+    "limit": "最大数据量",
+    "cancel": "取消",
+    "apply": "应用",
+    "points": "数据点数",
+    "noData": "所选时间范围暂无数据",
+    "realtimeDescription": "实时 · {range} · 每分钟刷新",
+    "limitReached": "已达到最大数据量，仅显示返回的最近数据。",
+    "intervalHint": "数据点数超出上限时，将自动增大聚合间隔。",
+    "durations": {
+      "3600000": "最近 1 小时",
+      "21600000": "最近 6 小时",
+      "86400000": "最近 1 天",
+      "604800000": "最近 7 天",
+      "2592000000": "最近 30 天",
+      "31536000000": "最近 1 年"
+    },
+    "intervals": {
+      "60000": "1 分钟",
+      "300000": "5 分钟",
+      "3600000": "1 小时",
+      "86400000": "1 天"
+    },
+    "aggregations": {
+      "NONE": "不聚合",
+      "AVG": "平均值",
+      "SUM": "求和",
+      "MIN": "最小值",
+      "MAX": "最大值",
+      "COUNT": "计数"
+    },
+    "errors": {
+      "limit": "最大数据量应为 {min}–{max} 的整数",
+      "range": "请选择有效时间，结束时间必须晚于开始时间",
+      "interval": "请选择有效的聚合间隔"
+    },
+    "customInterval": "自定义",
+    "intervalValue": "间隔数值",
+    "intervalUnit": "时间单位",
+    "units": {
+      "millisecond": "毫秒",
+      "second": "秒",
+      "minute": "分钟",
+      "hour": "小时",
+      "day": "天"
+    }
+  }
+}

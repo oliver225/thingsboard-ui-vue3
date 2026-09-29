@@ -89,6 +89,8 @@ interface Props {
    * 文本
    */
   text?: string;
+  /** 在顶部直接展示姓名、角色和邮箱 */
+  showUserInfo?: boolean;
   /** 触发方式 */
   trigger?: 'both' | 'click' | 'hover';
   /** hover触发时，延迟响应的时间 */
@@ -107,6 +109,7 @@ const props = withDefaults(defineProps<Props>(), {
   menus: () => [],
   tagText: '',
   text: '',
+  showUserInfo: false,
   trigger: 'click',
   hoverDelay: 500,
 });
@@ -211,19 +214,6 @@ const showRefreshInDropdown = computed(
     preferences.widget.refreshButtonPosition === 'user-dropdown',
 );
 
-const hasAnyInDropdown = computed(
-  () =>
-    showLockInDropdown.value ||
-    showLogoutInDropdown.value ||
-    showGlobalSearchInDropdown.value ||
-    showThemeToggleInDropdown.value ||
-    showLanguageToggleInDropdown.value ||
-    showTimezoneInDropdown.value ||
-    showFullscreenInDropdown.value ||
-    showNotificationInDropdown.value ||
-    showRefreshInDropdown.value,
-);
-
 const altView = computed(() => (isWindowsOs() ? 'Alt' : '⌥'));
 
 const enableLogoutShortcutKey = computed(() => {
@@ -235,6 +225,7 @@ const enableLockScreenShortcutKey = computed(() => {
 });
 
 function handleOpenLock() {
+  openPopover.value = false;
   lockModalApi.open();
 }
 
@@ -380,22 +371,68 @@ if (preferences.shortcutKeys.enable) {
   />
 
   <DropdownMenu v-model:open="openPopover" :modal="false">
-    <DropdownMenuTrigger ref="refTrigger" :disabled="props.trigger === 'hover'">
-      <div class="mr-2 ml-1 cursor-pointer rounded-full p-1.5 hover:bg-accent">
-        <div class="flex-center hover:text-accent-foreground">
+    <DropdownMenuTrigger
+      ref="refTrigger"
+      :aria-label="[text, tagText, description].filter(Boolean).join(' ')"
+      :class="
+        showUserInfo
+          ? 'group mr-2 ml-1 shrink-0 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-ring sm:w-60'
+          : undefined
+      "
+      :disabled="props.trigger === 'hover'"
+    >
+      <div
+        class="flex cursor-pointer items-center hover:bg-accent"
+        :class="
+          showUserInfo
+            ? 'w-full min-w-0 gap-2.5 rounded-md px-2.5 py-1.5 text-left transition-colors group-data-[state=open]:bg-accent'
+            : 'mr-2 ml-1 gap-3 rounded-full p-1.5'
+        "
+      >
+        <div class="flex-center shrink-0 hover:text-accent-foreground">
           <VbenAvatar
             :alt="text"
             :src="avatar"
-            class="size-8"
+            class="size-8 shrink-0"
             :dot="avatarDot"
             :dot-class="avatarDotClass"
           />
         </div>
+        <div v-if="showUserInfo" class="hidden min-w-0 flex-1 sm:block">
+          <div class="flex items-center gap-2">
+            <span
+              class="min-w-0 truncate text-sm font-medium leading-5"
+              :title="text"
+              >{{ text }}</span>
+            <span
+              v-if="tagText"
+              class="inline-flex h-5 shrink-0 items-center rounded bg-primary/10 px-1.5 text-xs font-normal leading-none text-primary"
+            >
+              {{ tagText }}
+            </span>
+          </div>
+          <div
+            class="mt-0.5 truncate text-xs leading-4 text-muted-foreground"
+            :title="description"
+          >
+            {{ description }}
+          </div>
+        </div>
+        <VbenIcon
+          v-if="showUserInfo"
+          icon="lucide:chevron-down"
+          class="hidden size-3.5 shrink-0 text-muted-foreground transition-transform duration-200 group-data-[state=open]:rotate-180 sm:block"
+          aria-hidden="true"
+        />
       </div>
     </DropdownMenuTrigger>
-    <DropdownMenuContent class="mr-2 min-w-60 p-0 pb-1">
+    <DropdownMenuContent
+      align="end"
+      class="p-1"
+      :class="showUserInfo ? 'w-60 min-w-60' : 'mr-2 min-w-60'"
+    >
       <div ref="refContent">
-        <DropdownMenuLabel class="flex items-center p-3">
+        <DropdownMenuLabel v-if="!showUserInfo" class="flex items-center p-3">
           <VbenAvatar
             :alt="text"
             :src="avatar"
@@ -413,7 +450,7 @@ if (preferences.shortcutKeys.enable) {
                 <Badge
                   v-if="tagText"
                   variant="secondary"
-                  class="ml-2 text-green-400"
+                  class="ml-2 text-primary"
                 >
                   {{ tagText }}
                 </Badge>
@@ -424,45 +461,27 @@ if (preferences.shortcutKeys.enable) {
             </div>
           </div>
         </DropdownMenuLabel>
-        <DropdownMenuSeparator v-if="menus?.length" />
+        <DropdownMenuSeparator v-if="menus?.length && !showUserInfo" />
         <DropdownMenuItem
           v-for="menu in menus"
           :key="menu.text"
           class="mx-1 flex cursor-pointer items-center rounded-sm py-1 leading-8"
-          @click="menu.handler"
+          @select="menu.handler"
         >
-          <VbenIconButton class="mr-2" @click="menu.handler">
-            <VbenIcon :icon="menu.icon" class="size-4" />
-          </VbenIconButton>
+          <VbenIcon :icon="menu.icon" class="mr-3 size-4" />
           {{ menu.text }}
         </DropdownMenuItem>
-        <template v-if="showLockInDropdown || showLogoutInDropdown">
-          <DropdownMenuSeparator v-if="showLockInDropdown" />
+        <template v-if="showLockInDropdown">
+          <DropdownMenuSeparator v-if="menus.length || !showUserInfo" />
           <DropdownMenuItem
             v-if="showLockInDropdown"
             class="mx-1 flex cursor-pointer items-center rounded-sm py-1 leading-8"
-            @click="handleOpenLock"
+            @select="handleOpenLock"
           >
-            <VbenIconButton class="mr-2" @click="handleOpenLock">
-              <LockKeyhole class="size-4" />
-            </VbenIconButton>
+            <LockKeyhole class="mr-3 size-4" />
             {{ $t('ui.widgets.lockScreen.title') }}
             <DropdownMenuShortcut v-if="enableLockScreenShortcutKey">
               {{ altView }} L
-            </DropdownMenuShortcut>
-          </DropdownMenuItem>
-          <DropdownMenuSeparator v-if="showLogoutInDropdown" />
-          <DropdownMenuItem
-            v-if="showLogoutInDropdown"
-            class="mx-1 flex cursor-pointer items-center rounded-sm py-1 leading-8"
-            @click="handleLogout"
-          >
-            <VbenIconButton class="mr-2" @click="handleLogout">
-              <LogOut class="size-4" />
-            </VbenIconButton>
-            {{ $t('common.logout') }}
-            <DropdownMenuShortcut v-if="enableLogoutShortcutKey">
-              {{ altView }} Q
             </DropdownMenuShortcut>
           </DropdownMenuItem>
         </template>
@@ -559,9 +578,7 @@ if (preferences.shortcutKeys.enable) {
             {{ $t('preferences.widget.refresh') }}
           </DropdownMenuItem>
         </template>
-        <DropdownMenuSeparator
-          v-if="hasAnyInDropdown || preferencesButtonPosition.userDropdown"
-        />
+        <DropdownMenuSeparator v-if="preferencesButtonPosition.userDropdown" />
         <DropdownMenuItem
           v-if="preferencesButtonPosition.userDropdown"
           class="mx-1 flex cursor-pointer items-center rounded-sm py-1 leading-8"
@@ -572,6 +589,19 @@ if (preferences.shortcutKeys.enable) {
           </VbenIconButton>
           {{ $t('preferences.title') }}
         </DropdownMenuItem>
+        <template v-if="showLogoutInDropdown">
+          <DropdownMenuItem
+            v-if="showLogoutInDropdown"
+            class="mx-1 flex cursor-pointer items-center rounded-sm py-1 leading-8"
+            @select="handleLogout"
+          >
+            <LogOut class="mr-3 size-4" />
+            {{ $t('common.logout') }}
+            <DropdownMenuShortcut v-if="enableLogoutShortcutKey">
+              {{ altView }} Q
+            </DropdownMenuShortcut>
+          </DropdownMenuItem>
+        </template>
       </div>
     </DropdownMenuContent>
   </DropdownMenu>

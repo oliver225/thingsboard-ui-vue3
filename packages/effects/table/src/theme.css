@@ -1,0 +1,113 @@
+.tb-basic-table {
+  font-family: var(--font-family);
+  font-size: var(--font-size-base);
+}
+
+.tb-basic-table .ant-table,
+.tb-basic-table .ant-table .ant-btn,
+.tb-basic-table .ant-table .ant-tag,
+.tb-basic-table .ant-pagination,
+.tb-basic-table .ant-pagination .ant-select {
+  font-size: var(--table-font-size);
+}
+
+.tb-basic-table-header__toolbar .ant-btn {
+  border-radius: var(--radius);
+}
+
+.tb-basic-table-action .ant-btn-dangerous {
+  color: hsl(var(--destructive));
+}
+
+.tb-basic-table-action .ant-btn-success {
+  color: hsl(var(--success));
+}
+
+.tb-basic-table-action .ant-btn-warning {
+  color: hsl(var(--warning));
+}
+
+.tb-basic-table .ant-table-thead > tr > th {
+  background: color-mix(in srgb, hsl(var(--muted)) 40%, hsl(var(--card)));
+}
+
+.tb-basic-table .ant-pagination-item-active {
+  background: hsl(var(--primary));
+  border-radius: var(--radius);
+}
+
+.tb-basic-table .ant-pagination-item-active a {
+  color: hsl(var(--primary-foreground));
+}
+
+.tb-basic-table .table-settings {
+  display: inline-flex;
+  gap: 0;
+  align-items: center;
+}
+
+.tb-basic-table .table-settings > * {
+  cursor: pointer;
+}
+
+.dark .table-settings {
+  color: hsl(var(--foreground));
+}
+
+.tb-basic-table .ant-table-wrapper .ant-table {
+  /* 复用系统全局滚动条样式，避免组件的 scrollbar-color 覆盖伪元素样式。 */
+  scrollbar-color: auto;
+}
+
+.tb-basic-table .ant-table-body,
+.tb-basic-table .ant-table-content {
+  /* 保留伪元素样式，并让表头按实际滚动条宽度测量占位。 */
+  scrollbar-width: auto;
+}
+
+.tb-basic-table :is(.ant-table-body, .ant-table-content)::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+.tb-basic-table
+  :is(.ant-table-body, .ant-table-content)::-webkit-scrollbar-thumb {
+  cursor: pointer;
+  background-color: hsl(var(--border));
+  border-radius: 999px;
+}
+
+.tb-basic-table
+  :is(.ant-table-body, .ant-table-content)::-webkit-scrollbar-thumb:hover,
+.tb-basic-table
+  :is(.ant-table-body, .ant-table-content)::-webkit-scrollbar-thumb:active {
+  background-color: color-mix(
+    in srgb,
+    hsl(var(--border)) 60%,
+    hsl(var(--foreground))
+  );
+}
+
+.tb-basic-table
+  :is(.ant-table-body, .ant-table-content)::-webkit-scrollbar-track {
+  cursor: pointer;
+  background-color: transparent;
+}
+
+.tb-basic-table
+  :is(.ant-table-body, .ant-table-content)::-webkit-scrollbar-corner {
+  background-color: transparent;
+}
+
+.tb-basic-table
+  .ant-table-bordered
+  .ant-table-cell-fix-end-shadow::after {
+  /* antdv-next uses fix-end-shadow instead of the legacy fix-right-first. */
+  border-inline-end: 1px solid var(--ant-table-border-color, hsl(var(--border)));
+}
+
+.tb-table-expand-icon {
+  display: inline-flex;
+  vertical-align: middle;
+  cursor: pointer;
+}

@@ -1,0 +1,51 @@
+{
+  "menu": "客户用户",
+  "fields": {
+    "email": "邮箱",
+    "firstName": "名字",
+    "lastName": "姓氏",
+    "phone": "电话",
+    "description": "描述"
+  },
+  "actions": {
+    "showActivationLink": "显示激活链接",
+    "resendActivation": "重新发送激活邮件",
+    "enableUser": "启用用户",
+    "disableUser": "停用用户",
+    "manage": "管理客户用户",
+    "create": "新建用户",
+    "edit": "编辑客户用户",
+    "loginAs": "以该用户身份登录",
+    "delete": "删除客户用户"
+  },
+  "validation": {
+    "emailRequired": "请输入邮箱",
+    "emailInvalid": "邮箱格式不正确",
+    "phoneFormatTip": "电话号码格式不正确"
+  },
+  "features": {
+    "account": {
+      "enabled": "用户已启用",
+      "disabled": "用户已停用"
+    },
+    "loginAs": {
+      "content": "将切换为该用户的登录会话,你当前的会话会被替换。",
+      "title": "确定以用户“{name}”身份登录吗？"
+    },
+    "form": {
+      "firstNamePlaceholder": "请输入名字",
+      "lastNamePlaceholder": "请输入姓氏",
+      "descriptionPlaceholder": "请输入客户用户描述"
+    }
+  },
+  "detail": {
+    "title": "客户用户详情",
+    "basic": "基本信息",
+    "copyId": "复制客户用户 ID",
+    "notFound": "客户用户不存在或暂时无法加载",
+    "noDescription": "暂无描述",
+    "preferences": "偏好设置",
+    "parent": "所属客户",
+    "nameUnavailable": "名称暂不可用"
+  }
+}

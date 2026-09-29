@@ -27,14 +27,17 @@ export {
   VbenDescriptions,
   VbenDescriptionsItem,
   VbenFullScreen,
+  VbenIcon,
   VbenIconButton,
   VbenInputPassword,
   VbenLoading,
   VbenLogo,
   VbenPinInput,
+  VbenSegmented,
   VbenSelect,
   VbenSpinner,
   VbenTableAction,
+  VbenTooltip,
 } from '@vben-core/shadcn-ui';
 
 export type {

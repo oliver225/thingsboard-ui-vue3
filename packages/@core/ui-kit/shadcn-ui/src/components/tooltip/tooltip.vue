@@ -16,26 +16,30 @@ interface Props {
   contentClass?: ClassType;
   contentStyle?: StyleValue;
   delayDuration?: number;
+  open?: boolean;
+  portalTarget?: HTMLElement | string;
   side?: TooltipContentProps['side'];
 }
 
 withDefaults(defineProps<Props>(), {
   delayDuration: 0,
+  open: undefined,
   side: 'right',
 });
 </script>
 
 <template>
   <TooltipProvider :delay-duration="delayDuration">
-    <Tooltip>
+    <Tooltip :open="open">
       <TooltipTrigger as-child tabindex="-1">
         <slot name="trigger"></slot>
       </TooltipTrigger>
       <TooltipContent
+        :portal-target="portalTarget"
         :class="contentClass"
         :side="side"
         :style="contentStyle"
-        class="bg-accent text-popover-foreground rounded-md"
+        class="text-popover-foreground rounded-md"
       >
         <slot></slot>
       </TooltipContent>

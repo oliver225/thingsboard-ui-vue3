@@ -1,0 +1,51 @@
+{
+  "menu": "Customer Users",
+  "fields": {
+    "email": "Email",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "phone": "Phone",
+    "description": "Description"
+  },
+  "actions": {
+    "showActivationLink": "Display activation link",
+    "resendActivation": "Resend activation email",
+    "enableUser": "Enable user",
+    "disableUser": "Disable user",
+    "manage": "Manage customer users",
+    "create": "Create user",
+    "edit": "Edit customer user",
+    "loginAs": "Login as this user",
+    "delete": "Delete customer user"
+  },
+  "validation": {
+    "emailRequired": "Email is required",
+    "emailInvalid": "Invalid email format",
+    "phoneFormatTip": "Invalid phone number format"
+  },
+  "features": {
+    "account": {
+      "enabled": "User enabled",
+      "disabled": "User disabled"
+    },
+    "loginAs": {
+      "content": "You will switch to this user's session. Your current session will be replaced.",
+      "title": "Log in as user \"{name}\"?"
+    },
+    "form": {
+      "firstNamePlaceholder": "Enter first name",
+      "lastNamePlaceholder": "Enter last name",
+      "descriptionPlaceholder": "Enter customer user description"
+    }
+  },
+  "detail": {
+    "title": "Customer user details",
+    "basic": "Basic information",
+    "copyId": "Copy customer user ID",
+    "notFound": "Customer user not found or temporarily unavailable",
+    "noDescription": "No description",
+    "preferences": "Preferences",
+    "parent": "Customer",
+    "nameUnavailable": "Name unavailable"
+  }
+}

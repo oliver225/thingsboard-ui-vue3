@@ -110,7 +110,6 @@ function sidebarGuide(): DefaultTheme.SidebarItem[] {
         { link: 'project/standard', text: 'Standards' },
         { link: 'project/cli', text: 'CLI' },
         { link: 'project/dir', text: 'Directory Explanation' },
-        { link: 'project/test', text: 'Unit Testing' },
         { link: 'project/tailwindcss', text: 'Tailwind CSS' },
         { link: 'project/changeset', text: 'Changeset' },
         { link: 'project/vite', text: 'Vite Config' },

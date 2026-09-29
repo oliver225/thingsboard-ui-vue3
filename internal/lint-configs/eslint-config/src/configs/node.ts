@@ -20,10 +20,7 @@ export async function node(): Promise<Linter.Config[]> {
               'tsdown',
               'unplugin-vue',
               '@vben/vite-config',
-              'vitest',
               'vite',
-              '@vue/test-utils',
-              '@playwright/test',
             ],
           },
         ],
@@ -42,28 +39,9 @@ export async function node(): Promise<Linter.Config[]> {
       },
     },
     {
-      files: [
-        '**/__tests__/**/*.?([cm])[jt]s?(x)',
-        '**/*.spec.?([cm])[jt]s?(x)',
-        '**/*.test.?([cm])[jt]s?(x)',
-        '**/*.bench.?([cm])[jt]s?(x)',
-        '**/*.benchmark.?([cm])[jt]s?(x)',
-      ],
-      rules: {
-        'n/prefer-global/process': 'off',
-      },
-    },
-    {
       files: ['apps/backend-mock/**/**', 'docs/**/**'],
       rules: {
         'n/no-extraneous-import': 'off',
-        'n/prefer-global/buffer': 'off',
-        'n/prefer-global/process': 'off',
-      },
-    },
-    {
-      files: ['**/**/playwright.config.ts'],
-      rules: {
         'n/prefer-global/buffer': 'off',
         'n/prefer-global/process': 'off',
       },

@@ -1,0 +1,142 @@
+{
+  "title": "Home",
+  "device": "Devices",
+  "alarm": "Alarms",
+  "assets": "Assets",
+  "users": "Users",
+  "customers": "Customers",
+  "tenants": "Tenants",
+  "tenantProfiles": "Tenant profiles",
+  "dashboards": "Dashboards",
+  "inactive": "Offline",
+  "active": "Online",
+  "total": "Total",
+  "critical": "Critical",
+  "assignedToMe": "Assigned to me",
+  "addDevice": "Add device",
+  "addDashboard": "Add dashboard",
+  "add": { "tenants": "Add tenant", "tenantProfiles": "Add tenant profile" },
+  "activity": "Activity",
+  "messages": "Transport messages",
+  "activeDevices": "Active devices",
+  "dataPoints": "Stored data points",
+  "units": {
+    "messages": "messages",
+    "dataPoints": "points",
+    "devices": "devices"
+  },
+  "last30Days": "History · Last 30 days",
+  "lastHour": "Realtime · Last hour",
+  "systemResources": "System resources",
+  "disk": "Disk",
+  "loading": "Loading…",
+  "loadFailed": "Unable to load data. Please retry.",
+  "retry": "Refresh and retry",
+  "noTelemetry": "No data in this time range",
+  "noDashboards": "No dashboards yet",
+  "name": "Name",
+  "createdTime": "Created",
+  "recentlyCreated": "Recently created",
+  "sort": "Sort dashboards",
+  "favorite": "Favorite dashboard",
+  "unfavorite": "Remove favorite",
+  "documentation": "Documentation",
+  "docs": {
+    "gettingStarted": "Getting started",
+    "tenantProfiles": "Tenant profiles",
+    "api": "API reference",
+    "widgets": "Widgets library"
+  },
+  "configuredFeatures": "Configured features",
+  "features": {
+    "email": "Email",
+    "sms": "SMS",
+    "slack": "Slack",
+    "oauth": "OAuth 2",
+    "twoFactor": "Two-factor authentication"
+  },
+  "unknown": "Unknown",
+  "configured": "Configured",
+  "notConfigured": "Not configured",
+  "quickLinks": "Quick links",
+  "map": {
+    "title": "Device map",
+    "demoNotice": "Demo mode · Fictional devices, not live data",
+    "demoDevice": "Demo device {index}",
+    "demoLabel": "Fictional device for map demonstration",
+    "fit": "Locate devices",
+    "located": "{count} devices located",
+    "empty": "No device location data",
+    "limited": "Showing valid locations among the latest 1,024 devices",
+    "loadFailed": "Map could not load. Check the network or map service configuration and retry.",
+    "label": "Label",
+    "status": "Status",
+    "lastActivity": "Last activity"
+  },
+  "editQuickLinks": "Edit quick links",
+  "chooseQuickLinks": "Use edit to choose quick links",
+  "usage": {
+    "title": "Usage",
+    "category": "Usage category",
+    "entities": "Entities",
+    "api": "API calls",
+    "jsExecutions": "JavaScript executions",
+    "emails": "Emails"
+  },
+  "deviceHint": "View device status and telemetry",
+  "alarmHint": "Track and manage active alarms",
+  "dashboardHint": "View dashboards assigned to you",
+  "assetHint": "View customer assets and relations",
+  "getStarted": "Get started",
+  "viewDocs": "View documentation",
+  "openPage": "Open management page",
+  "done": "Done",
+  "reopenGuide": "Show guide",
+  "guideCompleted": "You have completed the guide. You can reopen it at any time.",
+  "guide": {
+    "sms": {
+      "title": "Configure an SMS provider",
+      "description": "Configure an SMS provider for notifications and verification codes. Send a test message after saving to verify the configuration."
+    },
+    "tenant": {
+      "title": "Create tenants and tenant administrators",
+      "description": "A tenant is an individual or organization that owns or manages devices and assets. Create a tenant, then add administrators to manage its devices, assets, customers and dashboards."
+    },
+    "mail": {
+      "title": "Configure an outgoing mail server",
+      "description": "Configure outgoing mail for account activation, password resets and notifications. Send a test email from settings after saving the configuration."
+    },
+    "twoFactor": {
+      "title": "Configure two-factor authentication",
+      "description": "Configure authentication providers and verification policies to add an extra layer of protection for platform users."
+    },
+    "oauth": {
+      "title": "Configure OAuth 2",
+      "description": "Add an OAuth 2 client and associate it with a domain to allow users to sign in through an external identity provider."
+    },
+    "device": {
+      "title": "Create a device",
+      "description": "Add your first device, select its profile and enter a name. The platform will generate connection credentials for the device."
+    },
+    "connect": {
+      "title": "Connect a device",
+      "description": "Select a device in the device list and open its connectivity instructions. Use its credentials to publish telemetry over MQTT, HTTP or CoAP."
+    },
+    "dashboard": {
+      "title": "Create a dashboard",
+      "description": "Create dashboards to organize and display telemetry from devices and assets. Manage dashboards and customer assignments from the dashboard list."
+    },
+    "rule": {
+      "title": "Configure alarm rules",
+      "description": "Define trigger conditions, severity and clear conditions, for example to raise an alarm when a device temperature exceeds a threshold."
+    },
+    "alarm": {
+      "title": "Create an alarm",
+      "description": "Publish telemetry that meets an alarm rule's conditions. When the rule triggers, view, acknowledge or clear the alarm from the alarm list."
+    },
+    "customer": {
+      "title": "Create a customer and share dashboards",
+      "description": "Create a customer and assign devices and dashboards. Customer users can only access their assigned resources; other customers' data remains hidden."
+    }
+  }
+}

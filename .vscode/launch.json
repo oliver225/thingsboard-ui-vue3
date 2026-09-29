@@ -4,12 +4,12 @@
   "configurations": [
     {
       "type": "chrome",
-      "name": "vben admin playground dev",
+      "name": "ThingsBoard dev",
       "request": "launch",
-      "url": "http://localhost:5555",
+      "url": "http://localhost:3001",
       "env": { "NODE_ENV": "development" },
       "sourceMaps": true,
-      "webRoot": "${workspaceFolder}/playground"
+      "webRoot": "${workspaceFolder}/apps/web-ui"
     },
     {
       "type": "chrome",

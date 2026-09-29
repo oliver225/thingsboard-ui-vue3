@@ -1,0 +1,66 @@
+{
+  "menu": "个人中心",
+  "sections": {
+    "userInfo": "个人资料",
+    "security": "安全配置",
+    "notification": "通知设置",
+    "passwordRequirements": "密码要求"
+  },
+  "fields": {
+    "lastLogin": "上次登录",
+    "email": "邮箱",
+    "firstName": "名字",
+    "lastName": "姓氏",
+    "phone": "电话",
+    "language": "语言",
+    "unitSystem": "单位制",
+    "homeDashboard": "主页仪表板",
+    "hideHomeDashboardToolbar": "隐藏主页仪表板工具栏",
+    "jwtToken": "JWT Token",
+    "jwtTokenExpiration": "Token 有效期至",
+    "currentPassword": "当前密码",
+    "newPassword": "新密码",
+    "confirmNewPassword": "确认密码"
+  },
+  "actions": {
+    "changeAvatar": "更换头像",
+    "copyJwtToken": "复制 JWT Token",
+    "changePassword": "修改密码",
+    "discardChanges": "放弃更改",
+    "documentation": "在线文档",
+    "technicalSupport": "技术支持"
+  },
+  "messages": {
+    "avatarHint": "拖动或调整裁剪框，保存为正方形头像。支持 JPG、PNG、WebP，图片不超过 2MB。",
+    "avatarReadFailed": "图片读取失败，请重新选择有效图片。",
+    "copied": "已复制",
+    "copyFailed": "复制失败",
+    "currentPasswordTip": "请输入当前密码",
+    "changePasswordSuccess": "密码修改成功",
+    "loadFailed": "加载失败，请重试。"
+  },
+  "validation": {
+    "avatarFormat": "请选择 JPG、PNG 或 WebP 图片",
+    "avatarSize": "头像图片不能超过 2MB",
+    "avatarDataSize": "头像与用户扩展信息总大小超出限制，请缩小裁剪区域或更换图片后重试",
+    "phoneFormatTip": "电话号码格式不正确",
+    "atLeast": "至少",
+    "atMost": "最多",
+    "pwdMinLength": "{n} 个字符",
+    "pwdMaxLength": "{n} 个字符",
+    "pwdMinUpper": "{n} 个大写字母",
+    "pwdMinLower": "{n} 个小写字母",
+    "pwdMinDigits": "{n} 个数字",
+    "pwdMinSpecial": "{n} 个特殊字符",
+    "pwdNoWhitespace": "不能包含空格",
+    "passwordPolicyNotMet": "密码不符合要求",
+    "newPasswordSameAsCurrent": "新密码不能与当前密码相同"
+  },
+  "options": {
+    "langAuto": "自动",
+    "unitAuto": "自动",
+    "unitMetric": "公制",
+    "unitImperial": "英制",
+    "unitHybrid": "混合"
+  }
+}

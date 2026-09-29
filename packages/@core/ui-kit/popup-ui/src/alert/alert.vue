@@ -95,9 +95,9 @@ const getIconRender = computed(() => {
           break;
         }
       }
+    } else {
+      iconRender = props.icon;
     }
-  } else {
-    iconRender = props.icon ?? null;
   }
   return iconRender;
 });
@@ -207,6 +207,7 @@ async function handleOpenChange(val: boolean) {
           <AlertDialogAction as-child>
             <component
               :is="components.PrimaryButton || VbenButton"
+              v-bind="confirmButtonProps"
               :loading="loading"
               @click="handleConfirm"
             >

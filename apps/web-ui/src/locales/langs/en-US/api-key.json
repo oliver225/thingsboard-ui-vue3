@@ -1,0 +1,39 @@
+{
+  "menu": "API Keys",
+  "sections": {
+    "tokenTitle": "API key created"
+  },
+  "fields": {
+    "description": "Description",
+    "expiration": "Expiration",
+    "customExpiration": "Custom expiration",
+    "enabled": "Enabled",
+    "enableLabel": "Enable API key"
+  },
+  "actions": {
+    "create": "Create key",
+    "edit": "Edit key",
+    "enable": "Enable API key",
+    "disable": "Disable API key",
+    "copyToken": "Copy key"
+  },
+  "messages": {
+    "inheritTip": "Note: API keys inherit the permissions of the user who creates them.",
+    "descriptionTip": "Please enter a description",
+    "expirationRequired": "Select an expiration date and time",
+    "expirationFuture": "Expiration must be later than the current time",
+    "enableSuccess": "Enabled successfully",
+    "disableSuccess": "Disabled successfully",
+    "enableConfirm": "Enable this API key?",
+    "disableConfirm": "Disable this API key? Requests using it will no longer authenticate.",
+    "tokenOnce": "Copy and store it now. This key is shown only once and cannot be retrieved after closing.",
+    "delete": {
+      "content": "Requests using this key will stop working immediately and cannot be recovered."
+    }
+  },
+  "options": {
+    "never": "Never",
+    "custom": "Custom",
+    "days": "days"
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "menu": "Customers",
+  "fields": {
+    "title": "Title",
+    "email": "Email",
+    "phone": "Phone",
+    "country": "Country",
+    "state": "State / Province",
+    "city": "City",
+    "region": "Region",
+    "address": "Address",
+    "address2": "Address 2",
+    "zip": "Zip / Postal code",
+    "description": "Description"
+  },
+  "actions": {
+    "create": "Create customer",
+    "edit": "Edit customer",
+    "delete": "Delete customer"
+  },
+  "validation": {
+    "titleRequired": "Customer title is required",
+    "titleMaxLength": "Customer title cannot exceed 255 characters",
+    "emailInvalid": "Invalid email format",
+    "phoneFormatTip": "Invalid phone number format"
+  },
+  "features": {
+    "form": {
+      "titlePlaceholder": "e.g. East Coast Smart Campus",
+      "descriptionPlaceholder": "Describe the customer’s business or purpose (optional)",
+      "regionPlaceholder": "Select province / city / district",
+      "zipPlaceholder": "Enter postal code",
+      "addressPlaceholder": "Street and building number",
+      "address2Placeholder": "Suite, floor or other details (optional)"
+    }
+  },
+  "detail": {
+    "title": "Customer details",
+    "basic": "Basic information",
+    "copyId": "Copy customer ID",
+    "notFound": "Customer not found or temporarily unavailable",
+    "noDescription": "No description",
+    "contact": "Contact information"
+  }
+}

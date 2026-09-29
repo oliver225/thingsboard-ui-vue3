@@ -1,0 +1,455 @@
+{
+  "app": {
+    "pageTitle": "ThingsBoard IoT Platform",
+    "pageDesc": "ThingsBoard front-end application based on Vue3 (ThingsBoard {version})",
+    "techSupport": "Tech Support",
+    "wechatQr": "Scan to add WeChat"
+  },
+  "authority": {
+    "SYS_ADMIN": "System Admin",
+    "TENANT_ADMIN": "Tenant Admin",
+    "CUSTOMER_USER": "Customer"
+  },
+  "menu": {
+    "dashboard": "Dashboards",
+    "entities": "Entities",
+    "device": "Devices",
+    "asset": "Assets",
+    "entityView": "Entity Views",
+    "profiles": "Profiles",
+    "deviceProfile": "Device Profiles",
+    "assetProfile": "Asset Profiles",
+    "customer": "Customers",
+    "customerUser": "Customer Users",
+    "calculatedField": "Calculated Fields",
+    "ruleChain": "Rule Chains",
+    "otaUpdate": "OTA Updates",
+    "alarm": "Alarms",
+    "alarmList": "Alarm List",
+    "alarmRule": "Alarm Rules",
+    "tenant": "Tenants",
+    "tenantProfile": "Tenant Profiles",
+    "tenantAdmin": "Tenant Administrators",
+    "resources": "Resources",
+    "widgetsLibrary": "Widgets Library",
+    "widgetTypes": "Widgets",
+    "widgetsBundle": "Widget Bundles",
+    "images": "Image Library",
+    "scadaSymbols": "SCADA Symbols",
+    "javascriptLibrary": "JavaScript Library",
+    "resourceLibrary": "Resource Library",
+    "notification": "Notification Center",
+    "auditLogs": "Audit Logs",
+    "settings": "Settings",
+    "securitySettings": "Security Settings",
+    "apiUsage": "API usage"
+  },
+  "actionType": {
+    "ADDED": "Added",
+    "DELETED": "Deleted",
+    "UPDATED": "Updated",
+    "ATTRIBUTES_UPDATED": "Attributes updated",
+    "ATTRIBUTES_DELETED": "Attributes deleted",
+    "TIMESERIES_UPDATED": "Timeseries updated",
+    "TIMESERIES_DELETED": "Timeseries deleted",
+    "RPC_CALL": "RPC call",
+    "CREDENTIALS_UPDATED": "Credentials updated",
+    "ASSIGNED_TO_CUSTOMER": "Assigned to customer",
+    "UNASSIGNED_FROM_CUSTOMER": "Unassigned from customer",
+    "ACTIVATED": "Activated",
+    "SUSPENDED": "Suspended",
+    "CREDENTIALS_READ": "Credentials read",
+    "ATTRIBUTES_READ": "Attributes read",
+    "RELATION_ADD_OR_UPDATE": "Relation add or update",
+    "RELATION_DELETED": "Relation deleted",
+    "RELATIONS_DELETED": "Relations deleted",
+    "REST_API_RULE_ENGINE_CALL": "Rule engine REST API call",
+    "ALARM_ACK": "Alarm acknowledged",
+    "ALARM_CLEAR": "Alarm cleared",
+    "ALARM_DELETE": "Alarm deleted",
+    "ALARM_ASSIGNED": "Alarm assigned",
+    "ALARM_UNASSIGNED": "Alarm unassigned",
+    "LOGIN": "Login",
+    "LOGOUT": "Logout",
+    "LOCKOUT": "Lockout",
+    "ASSIGNED_FROM_TENANT": "Assigned from tenant",
+    "ASSIGNED_TO_TENANT": "Assigned to tenant",
+    "PROVISION_SUCCESS": "Provision success",
+    "PROVISION_FAILURE": "Provision failure",
+    "ASSIGNED_TO_EDGE": "Assigned to edge",
+    "UNASSIGNED_FROM_EDGE": "Unassigned from edge",
+    "ADDED_COMMENT": "Comment added",
+    "UPDATED_COMMENT": "Comment updated",
+    "DELETED_COMMENT": "Comment deleted",
+    "SMS_SENT": "SMS sent"
+  },
+  "entityType": {
+    "ADMIN_SETTINGS": "Admin settings",
+    "AI_MODEL": "AI model",
+    "ALARM": "Alarm",
+    "API_KEY": "API key",
+    "API_USAGE_STATE": "API usage state",
+    "ASSET": "Asset",
+    "ASSET_PROFILE": "Asset profile",
+    "CALCULATED_FIELD": "Calculated field",
+    "CUSTOMER": "Customer",
+    "DASHBOARD": "Dashboard",
+    "DEVICE": "Device",
+    "DEVICE_PROFILE": "Device profile",
+    "DOMAIN": "Domain",
+    "EDGE": "Edge",
+    "ENTITY_VIEW": "Entity view",
+    "JOB": "Job",
+    "MOBILE_APP": "Mobile application",
+    "MOBILE_APP_BUNDLE": "Mobile bundle",
+    "NOTIFICATION": "Notification",
+    "NOTIFICATION_REQUEST": "Notification request",
+    "NOTIFICATION_RULE": "Notification rule",
+    "NOTIFICATION_TARGET": "Notification target",
+    "NOTIFICATION_TEMPLATE": "Notification template",
+    "OAUTH2_CLIENT": "OAuth 2.0 client",
+    "OTA_PACKAGE": "OTA package",
+    "QUEUE": "Queue",
+    "QUEUE_STATS": "Queue statistics",
+    "RPC": "RPC",
+    "RULE_CHAIN": "Rule chain",
+    "RULE_NODE": "Rule node",
+    "TB_RESOURCE": "Resource",
+    "TENANT": "Tenant",
+    "TENANT_PROFILE": "Tenant profile",
+    "USER": "User",
+    "WIDGET_TYPE": "Widget",
+    "WIDGETS_BUNDLE": "Widget bundle"
+  },
+  "common": {
+    "actionStatus": {
+      "SUCCESS": "Success",
+      "FAILURE": "Failure"
+    },
+    "seq": "No.",
+    "actions": "Actions",
+    "createdTime": "Created Time",
+    "create": "Create",
+    "edit": "Edit",
+    "delete": "Delete",
+    "detail": "Detail",
+    "search": "Search",
+    "save": "Save",
+    "undo": "Undo",
+    "close": "Close",
+    "cancel": "Cancel",
+    "confirm": "Confirm",
+    "ok": "OK",
+    "yes": "Yes",
+    "no": "No",
+    "searchPlaceholder": "Enter search query",
+    "saveSuccess": "Saved successfully",
+    "copySuccess": "Copied",
+    "copy": "Copy",
+    "systemTip": "System Notice",
+    "refresh": "Refresh",
+    "retry": "Retry",
+    "loadFailed": "Loading failed. Table data was cleared.",
+    "total": "{total} in total",
+    "range": {
+      "today": "Today",
+      "last1Hour": "Last 1 hour",
+      "last6Hours": "Last 6 hours",
+      "last1Day": "Last 1 day",
+      "last3Days": "Last 3 days",
+      "last7Days": "Last 7 days",
+      "last15Days": "Last 15 days",
+      "last1Month": "Last 1 month"
+    },
+    "messages": {
+      "delete": {
+        "success": "Deleted successfully",
+        "resourceReferenced": "The resource is referenced and cannot be deleted.",
+        "title": "Delete {entity} “{name}”? This cannot be undone."
+      },
+      "batchDelete": {
+        "title": "Batch delete",
+        "selected": "Selected: {count}",
+        "confirm": "Delete the selected {entity} items ({count})? This cannot be undone.",
+        "success": "Deleted {entity} items: {count}.",
+        "partialFailure": "Deleted {entity} items: {deleted}; {failed} failed. Confirm again to retry only the failed items."
+      }
+    }
+  },
+  "table": {
+    "columnSetting": "Columns",
+    "columnShow": "Columns",
+    "density": "Density",
+    "densityLarge": "Default",
+    "densityMiddle": "Middle",
+    "densitySmall": "Compact",
+    "empty": "No data",
+    "exitFullscreen": "Exit full screen",
+    "fixedLeft": "Pin left",
+    "fixedRight": "Pin right",
+    "fullscreen": "Full screen",
+    "indexColumnShow": "Index",
+    "more": "More",
+    "noResult": "No matching results",
+    "reset": "Reset",
+    "selectionClear": "Clear",
+    "selectColumnShow": "Checkbox",
+    "selected": "{count} selected"
+  },
+  "components": {
+    "scriptTest": {
+      "menu": "Test script",
+      "sections": {
+        "testErrorTitle": "Script test error",
+        "testDataTitle": "Argument data: {name}"
+      },
+      "fields": {
+        "testArguments": "Arguments",
+        "testOutput": "Test result",
+        "testArgumentName": "Name",
+        "testArgumentType": "Type",
+        "testArgumentData": "Data",
+        "testTimestamp": "Timestamp"
+      },
+      "actions": {
+        "run": "Run",
+        "resizePanels": "Resize panels",
+        "applyScript": "Apply script",
+        "testEditData": "Edit argument data"
+      },
+      "messages": {
+        "testHint": "Provide sample arguments and test the script. Saving tests it first and updates the form only when it succeeds.",
+        "testArgumentsHint": "Names and types follow the form. Enter sample values in the data column.",
+        "testOnlyHint": "Provide sample arguments and run the script. Testing does not save the calculated field.",
+        "applyFailed": "The script could not be applied. Please try again.",
+        "testFailed": "The script test failed. Please try again.",
+        "testEmptyOutput": "The script completed without output.",
+        "testOutputHint": "Click Test to view the script output",
+        "testValuePlaceholders": {
+          "STRING": "String value",
+          "INTEGER": "Integer value",
+          "DOUBLE": "Double value",
+          "BOOLEAN": "Boolean value",
+          "JSON": "JSON value"
+        }
+      },
+      "validation": {
+        "testArguments": "Enter valid argument test data.",
+        "testScriptRequired": "Enter a script before testing.",
+        "testInvalidTimestamp": "Enter a valid timestamp.",
+        "testInvalidValue": "Enter a valid value for the selected type.",
+        "testInvalidRolling": "Enter valid rolling data: values must be an array of timestamps and values, and timeWindow must be a time window object."
+      },
+      "options": {
+        "testTrue": "True",
+        "testFalse": "False"
+      }
+    },
+    "codeEditor": {
+      "menu": "Code editor",
+      "actions": {
+        "test": "Test",
+        "format": "Format",
+        "fullscreen": "Edit fullscreen",
+        "exitFullscreen": "Exit fullscreen",
+        "retry": "Retry"
+      },
+      "messages": {
+        "formatError": "Unable to format. Check the syntax; your code has been kept.",
+        "loading": "Loading editor…",
+        "loadError": "Failed to load editor"
+      },
+      "validation": {
+        "json": {
+          "required": "Enter JSON",
+          "invalidJson": "Invalid JSON. Check brackets, quotes and commas",
+          "invalidNumber": "A JSON number is outside the supported range",
+          "objectRequired": "Enter a JSON object",
+          "arrayRequired": "Enter a JSON array"
+        }
+      }
+    },
+    "secondsInput": {
+      "fields": {
+        "amount": "Duration",
+        "unit": "Time unit"
+      },
+      "options": {
+        "seconds": "Seconds",
+        "minutes": "Minutes",
+        "hours": "Hours",
+        "days": "Days"
+      }
+    },
+    "rateLimit": {
+      "sections": {
+        "preview": "Preview"
+      },
+      "fields": {
+        "count": "Maximum count",
+        "seconds": "Window (seconds)"
+      },
+      "actions": {
+        "remove": "Remove rate limit",
+        "add": "Add time window",
+        "edit": "Edit rate limits: {label}"
+      },
+      "messages": {
+        "notSet": "Not set",
+        "summary": "{count} per {seconds} seconds"
+      },
+      "validation": {
+        "invalid": "Use positive integers for count and seconds, with distinct time windows"
+      }
+    },
+    "debugSettings": {
+      "menu": "Debug settings",
+      "fields": {
+        "entity": "entity"
+      },
+      "actions": {
+        "reset": "Reset debug duration",
+        "cancel": "Cancel",
+        "apply": "Apply"
+      },
+      "messages": {
+        "failureHint": "Record error messages only.",
+        "allHint": "Record all debug messages. The timer starts when the entity is saved.",
+        "limitHint": "Record up to {count} {entity} debug messages every {time}.",
+        "saved": "Debug settings saved",
+        "saveFailed": "Failed to save debug settings. Please try again."
+      },
+      "options": {
+        "failures": "Failures",
+        "disabled": "Disabled",
+        "onFailure": "Failures only (24/7)",
+        "allMessages": "All messages ({time})",
+        "remaining": "{time} left",
+        "minutes": "{count} min",
+        "seconds": "{count} sec"
+      }
+    },
+    "fieldArguments": {
+      "menu": "Argument settings",
+      "fields": {
+        "targetEntity": "Target entity",
+        "argumentName": "Argument name",
+        "source": "Entity type",
+        "sourceEntity": "Source entity",
+        "keyType": "Argument type",
+        "key": "Key",
+        "scope": "Attribute scope",
+        "defaultValue": "Default value",
+        "timeWindow": "Time window",
+        "limit": "Max values"
+      },
+      "actions": {
+        "addArgument": "Add argument",
+        "editArgument": "Edit argument",
+        "remove": "Remove",
+        "copyArgumentName": "Copy argument name: {name}"
+      },
+      "messages": {
+        "copyArgumentFailed": "Copy failed. Please copy the argument name manually."
+      },
+      "validation": {
+        "required": "Complete the required field.",
+        "range": "Enter an integer between {min} and {max}.",
+        "name": "Use a letter or underscore followed by letters, digits or underscores, up to 255 characters. Reserved names are not allowed.",
+        "duplicate": "Names must be unique.",
+        "entity": "Select a source entity.",
+        "maxItems": "A maximum of {count} items is allowed.",
+        "arguments": "At least one argument is required.",
+        "currentSource": "Arguments must use the current entity as their source.",
+        "latestOnly": "Only latest telemetry arguments are supported.",
+        "rolling": "Rolling time series is not supported in this mode.",
+        "relationSource": "Relation path sources are not supported for arguments."
+      },
+      "options": {
+        "milliseconds": "Milliseconds",
+        "CURRENT": "Current entity",
+        "CURRENT_OWNER": "Current owner",
+        "RELATION_PATH_QUERY": "Related entities",
+        "TS_LATEST": "Latest telemetry",
+        "TS_ROLLING": "Time series rolling",
+        "ATTRIBUTE": "Attribute",
+        "SERVER_SCOPE": "Server attributes",
+        "SHARED_SCOPE": "Shared attributes",
+        "CLIENT_SCOPE": "Client attributes"
+      }
+    },
+    "imageInput": {
+      "sections": {
+        "preview": "Image preview",
+        "libraryTitle": "Choose an image",
+        "library": "Image library",
+        "galleryTitle": "Image gallery"
+      },
+      "fields": {
+        "search": "Search image names",
+        "includeSystem": "Include system images",
+        "title": "Image title",
+        "imageLink": "Image link",
+        "includeSystemImages": "Include system images"
+      },
+      "actions": {
+        "choose": "Choose from library",
+        "setLink": "Use image URL",
+        "clear": "Clear image",
+        "upload": "Upload image",
+        "uploadAndUse": "Upload and use",
+        "useImage": "Use this image",
+        "retry": "Retry",
+        "previous": "Previous page",
+        "next": "Next page",
+        "browseFromGallery": "Browse from gallery",
+        "clearImage": "Clear image",
+        "setImageLink": "Set link"
+      },
+      "messages": {
+        "empty": "No image configured",
+        "linkPlaceholder": "https://example.com/image.png",
+        "loading": "Loading images…",
+        "loadFailed": "Unable to load images. Please try again.",
+        "noImages": "No images found. Switch to Upload image to add one.",
+        "pagination": "Page {page} / {pages} · {count} images",
+        "titlePlaceholder": "Enter an image title",
+        "uploadHint": "Uploaded images are saved in the library for reuse in other forms.",
+        "imageLinkPlaceholder": "Enter image link",
+        "emptyGallery": "No images",
+        "noImageSelected": "No image selected"
+      },
+      "options": {
+        "embedded": "Embedded image",
+        "tenant": "Tenant image",
+        "system": "System image",
+        "embeddedImage": "Embedded image"
+      }
+    },
+    "imageFileInput": {
+      "actions": {
+        "clearSelection": "Clear selected file",
+        "browse": "browse"
+      },
+      "messages": {
+        "previewUnavailable": "Local preview is unavailable for this file",
+        "drop": "Drop",
+        "orBrowse": "or {browse}"
+      }
+    },
+    "copyText": {
+      "copySuccess": "Copied successfully"
+    },
+    "copyBlock": {
+      "fields": {
+        "content": "Content to copy"
+      },
+      "actions": {
+        "copy": "Copy link"
+      },
+      "messages": {
+        "copyFailed": "Copy failed. Please copy the content manually."
+      }
+    }
+  }
+}

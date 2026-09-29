@@ -53,7 +53,6 @@
     "zod-defaults": "catalog:"
   },
   "devDependencies": {
-    "@vue/test-utils": "catalog:",
     "unplugin-vue": "catalog:"
   }
 }

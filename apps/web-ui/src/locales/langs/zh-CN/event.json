@@ -1,0 +1,43 @@
+{
+  "menu": "事件",
+  "fields": {
+    "createdTime": "事件时间",
+    "type": "事件类型",
+    "uid": "UID",
+    "server": "服务器",
+    "method": "方法",
+    "event": "生命周期事件",
+    "status": "状态",
+    "messagesProcessed": "已处理消息数",
+    "errorsOccurred": "错误数",
+    "direction": "消息方向",
+    "entityId": "实体 ID",
+    "messageType": "消息类型",
+    "message": "消息"
+  },
+  "actions": {
+    "clear": "清空事件"
+  },
+  "messages": {
+    "searchPlaceholder": "搜索服务器",
+    "clearConfirm": "确定清空当前事件类型、时间范围和服务器筛选条件下的事件吗？",
+    "cleared": "事件已清空"
+  },
+  "options": {
+    "success": "成功",
+    "failure": "失败",
+    "type": {
+      "LC_EVENT": "生命周期",
+      "ERROR": "错误",
+      "STATS": "统计",
+      "DEBUG_RULE_NODE": "规则节点调试",
+      "DEBUG_RULE_CHAIN": "规则链调试",
+      "DEBUG_CALCULATED_FIELD": "计算字段调试"
+    }
+  },
+  "features": {
+    "detail": {
+      "title": "事件详情"
+    }
+  }
+}

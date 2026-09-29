@@ -36,8 +36,18 @@ const modelValue = useVModel(props, 'modelValue', emits, {
 input {
   --ring: var(--primary);
 
+  &:not(:disabled):hover {
+    border-color: hsl(var(--ring));
+  }
+
   &:focus-visible {
     box-shadow: inset 0 0 0 1px hsl(var(--ring));
+  }
+
+  &[aria-invalid='true'] {
+    --ring: var(--destructive);
+
+    border-color: hsl(var(--destructive));
   }
 
   &::-ms-reveal,

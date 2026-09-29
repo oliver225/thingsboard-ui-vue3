@@ -26,6 +26,8 @@ export type AlertProps = {
   cancelText?: string;
   /** 是否居中显示 */
   centered?: boolean;
+  /** 确认按钮属性，透传至应用配置的 PrimaryButton 或 VbenButton */
+  confirmButtonProps?: Recordable<unknown>;
   /** 确认按钮的标题 */
   confirmText?: string;
   /** 弹窗容器的额外样式 */

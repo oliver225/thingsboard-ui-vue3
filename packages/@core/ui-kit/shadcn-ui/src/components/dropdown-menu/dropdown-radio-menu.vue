@@ -1,4 +1,6 @@
 <script lang="ts" setup>
+import type { HTMLAttributes } from 'vue';
+
 import type { DropdownMenuProps } from './interface';
 
 import {
@@ -9,7 +11,9 @@ import {
   DropdownMenuTrigger,
 } from '../../ui';
 
-interface Props extends DropdownMenuProps {}
+interface Props extends DropdownMenuProps {
+  contentClass?: HTMLAttributes['class'];
+}
 
 defineOptions({ name: 'DropdownRadioMenu' });
 withDefaults(defineProps<Props>(), {});
@@ -25,7 +29,7 @@ function handleItemClick(value: string) {
     <DropdownMenuTrigger as-child class="flex items-center gap-1">
       <slot></slot>
     </DropdownMenuTrigger>
-    <DropdownMenuContent align="start">
+    <DropdownMenuContent align="start" :class="contentClass">
       <DropdownMenuGroup>
         <template v-for="menu in menus" :key="menu.value">
           <DropdownMenuItem

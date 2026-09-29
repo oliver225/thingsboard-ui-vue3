@@ -1,0 +1,51 @@
+{
+  "menu": "Attributes",
+  "fields": {
+    "lastUpdateTs": "Last update time",
+    "key": "Key",
+    "value": "Value",
+    "valueType": "Value type",
+    "scope": "Attribute scope"
+  },
+  "actions": {
+    "add": "Add attribute",
+    "edit": "Edit attribute",
+    "copyKey": "Copy key",
+    "copyValue": "Copy value",
+    "viewValue": "View full value of {key}"
+  },
+  "validation": {
+    "invalidJson": "Invalid JSON format",
+    "keyRequired": "Enter an attribute key",
+    "keyMaxLength": "Attribute keys must be at most 255 characters",
+    "keyExists": "This key already exists. Edit the existing attribute instead.",
+    "invalidInteger": "Enter an integer within the safe numeric range",
+    "invalidNumber": "Enter a valid number"
+  },
+  "options": {
+    "scope": {
+      "SERVER_SCOPE": "Server attributes",
+      "CLIENT_SCOPE": "Client attributes",
+      "SHARED_SCOPE": "Shared attributes"
+    },
+    "valueType": {
+      "STRING": "String",
+      "INTEGER": "Integer",
+      "DOUBLE": "Double",
+      "BOOLEAN": "Boolean",
+      "JSON": "JSON"
+    }
+  },
+  "features": {
+    "copy": {
+      "copied": "Copied to clipboard",
+      "keyCopied": "Key copied to clipboard",
+      "valueCopied": "Value copied to clipboard"
+    }
+  },
+  "messages": {
+    "searchPlaceholder": "Search attribute keys or values",
+    "clientReadonly": "Client attributes are reported by the device and are read-only.",
+    "readonly": "These attributes are read-only"
+  }
+}

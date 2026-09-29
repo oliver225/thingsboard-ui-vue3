@@ -1,0 +1,83 @@
+{
+  "menu": "API 使用量",
+  "sections": {
+    "history": "用量趋势",
+    "queueStats": "队列统计",
+    "exceptions": "规则引擎异常",
+    "timeouts": "处理失败与超时"
+  },
+  "fields": {
+    "monthlyUsage": "本月用量 / 月度限额",
+    "metric": "用量指标",
+    "period": "统计周期",
+    "total": "总计",
+    "queue": "选择队列服务实例",
+    "ruleChain": "规则链",
+    "ruleNode": "规则节点",
+    "exceptionMessage": "异常内容",
+    "lastHour": "最近 1 小时",
+    "lastMonth": "最近 30 天"
+  },
+  "actions": {
+    "refresh": "刷新",
+    "defaultView": "前往默认视图",
+    "fullscreen": "全屏",
+    "closeFullscreen": "退出全屏",
+    "retry": "重试",
+    "queueStats": "规则引擎统计"
+  },
+  "messages": {
+    "description": "查看本月 API 用量、限额及历史活动",
+    "updatedAt": "更新于 {time}",
+    "loadError": "加载失败，请刷新后重试",
+    "noUsage": "暂无 API 使用量数据",
+    "truncated": "返回数据达到上限，当前趋势可能不完整，请缩短统计周期。",
+    "queueHint": "所选队列服务实例最近 1 小时的处理情况",
+    "exceptionsHint": "显示所选实例近 30 天最新的 1000 条异常，按时间倒序排列。",
+    "noQueues": "暂无队列服务实例",
+    "queueTruncated": "部分统计已达到返回上限，当前图表或异常列表可能不完整。",
+    "noQueueHistory": "最近 1 小时暂无数据"
+  },
+  "options": {
+    "unlimited": "无限制",
+    "metrics": {
+      "transportMsg": "传输消息",
+      "transportDataPoints": "传输数据点",
+      "ruleEngineExecution": "规则引擎执行次数",
+      "jsExecution": "JavaScript 函数执行次数",
+      "tbelExecution": "TBEL 函数执行次数",
+      "storageDataPoints": "数据点存储天数",
+      "createdAlarms": "已创建的告警",
+      "email": "Emails",
+      "sms": "SMS"
+    },
+    "status": {
+      "ENABLED": "已启用",
+      "WARNING": "接近限额",
+      "DISABLED": "已禁用",
+      "UNKNOWN": "暂无状态"
+    },
+    "periods": {
+      "hour": "最近 24 小时 · 按小时",
+      "day": "最近 30 天 · 按日",
+      "month": "最近 12 个月 · 按月"
+    },
+    "queueMetrics": {
+      "successfulMsgs": "处理成功",
+      "failedMsgs": "处理失败",
+      "tmpFailed": "临时失败",
+      "timeoutMsgs": "处理超时",
+      "tmpTimeout": "临时超时"
+    }
+  },
+  "chart": {
+    "hour": "{metric}每小时活动",
+    "day": "{metric}每日活动",
+    "month": "{metric}每月活动",
+    "range": {
+      "hour": "实时 - 最近 1 天",
+      "day": "历史 - 最近 30 天",
+      "month": "历史 - 最近 1 年"
+    }
+  }
+}

@@ -55,8 +55,11 @@ vite.config.ts.*
 # AI
 .agent
 .agents
-.claude
-.codex
+.claude/
+.codex/
+.local/
+/.docs/
+CLAUDE.local.md
 skills-lock.json
 .atomcode
 datalog

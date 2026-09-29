@@ -1,0 +1,106 @@
+{
+  "menu": "OAuth 2.0",
+  "sections": {
+    "clients": "Clients",
+    "domains": "Domains",
+    "groups": {
+      "advancedSettings": "Advanced settings",
+      "general": "General",
+      "mapper": "Mapper"
+    }
+  },
+  "fields": {
+    "title": "Title",
+    "provider": "Provider",
+    "clientId": "Client ID",
+    "clientSecret": "Client secret",
+    "platforms": "Platforms",
+    "scope": "Scopes",
+    "loginButtonLabel": "Provider label",
+    "loginButtonIcon": "Login button icon",
+    "authorizationUri": "Authorization URI",
+    "accessTokenUri": "Access token URI",
+    "userInfoUri": "User info URI",
+    "jwkSetUri": "JWK set URI",
+    "clientAuthenticationMethod": "Client authentication method",
+    "userNameAttributeName": "Username attribute",
+    "allowUserCreation": "Allow user creation",
+    "activateUser": "Activate users",
+    "mapperType": "Mapper type",
+    "emailAttributeKey": "Email attribute key",
+    "firstNameAttributeKey": "First name attribute key",
+    "lastNameAttributeKey": "Last name attribute key",
+    "tenantNameStrategy": "Tenant name strategy",
+    "tenantNamePattern": "Tenant name pattern",
+    "customerNamePattern": "Customer name pattern",
+    "defaultDashboardName": "Default dashboard name",
+    "alwaysFullScreen": "Always full screen",
+    "mapperUrl": "Custom mapper URL",
+    "username": "Username",
+    "password": "Password",
+    "sendToken": "Send token to mapper",
+    "domainName": "Domain name",
+    "redirectUrl": "Redirect URI template",
+    "enabled": "Enable OAuth 2.0",
+    "propagateToEdge": "Propagate to edge",
+    "clients": "Clients"
+  },
+  "actions": {
+    "addClient": "Add client",
+    "editClient": "Edit client",
+    "deleteClient": "Delete client",
+    "addDomain": "Add domain",
+    "editDomain": "Edit domain",
+    "deleteDomain": "Delete domain",
+    "copy": "Copy"
+  },
+  "messages": {
+    "delete": {
+      "clientConfirm": "Delete client “{name}”? Associated login entries will no longer be able to use it.",
+      "domainConfirm": "Delete domain “{name}”? OAuth 2.0 login for this domain will be removed."
+    }
+  },
+  "validation": {
+    "required": "Enter {field}",
+    "invalidUrl": "Enter a valid HTTP or HTTPS URL",
+    "invalidDomain": "Enter a hostname and optional port without a scheme or path",
+    "maxLength": "Must not exceed {max} characters",
+    "scopeRequired": "Add at least one scope",
+    "domainRequired": "Enter a domain name",
+    "authenticationMethodRequired": "Select a client authentication method",
+    "mapperTypeRequired": "Select a user mapper type",
+    "tenantNameStrategyRequired": "Select a tenant name strategy"
+  },
+  "options": {
+    "platform": {
+      "WEB": "Web",
+      "ANDROID": "Android",
+      "IOS": "iOS"
+    },
+    "customProvider": "Custom",
+    "authenticationNone": "None (NONE)",
+    "mapperBasic": "Basic (BASIC)",
+    "mapperCustom": "Custom (CUSTOM)",
+    "tenantDomain": "Domain (DOMAIN)",
+    "tenantEmail": "Email (EMAIL)",
+    "tenantCustom": "Custom (CUSTOM)"
+  },
+  "features": {
+    "form": {
+      "platformHint": "Leave empty for all available platforms. Tenant administrators can select mobile platforms only.",
+      "allPlatforms": "All platforms",
+      "scopeHint": "Press Enter to add a scope",
+      "domainHint": "For web login, associate the client with an OAuth 2.0 enabled domain. For mobile login, associate it in the mobile application settings.",
+      "domainNameHint": "Enter a hostname with an optional port, e.g. example.com:8080, without a scheme or path.",
+      "redirectHint": "Add http:// or https:// to match your deployment and register this callback URI with the provider.",
+      "selectClients": "Select clients",
+      "associationFailed": "The domain was saved, but updating client associations failed. Save again to retry.",
+      "copied": "Copied",
+      "copyFailed": "Copy failed. Select and copy the URI manually.",
+      "titlePlaceholder": "Enter client title",
+      "clientIdPlaceholder": "Enter the client ID from your provider",
+      "clientSecretPlaceholder": "Enter the client secret from your provider",
+      "loginButtonLabelPlaceholder": "For example: Sign in with Google"
+    }
+  }
+}

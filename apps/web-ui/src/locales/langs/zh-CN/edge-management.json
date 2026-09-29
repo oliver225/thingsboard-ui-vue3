@@ -1,0 +1,97 @@
+{
+  "menu": "Edge 管理",
+  "messages": {
+    "copied": "已复制到剪贴板"
+  },
+  "features": {
+    "instances": {
+      "title": "EDGE 实例",
+      "fields": {
+        "name": "名称",
+        "type": "类型",
+        "label": "标签",
+        "description": "描述",
+        "customer": "客户",
+        "public": "公开",
+        "routingKey": "Edge 路由密钥",
+        "secret": "Edge 密钥"
+      },
+      "actions": {
+        "create": "新增 Edge 实例",
+        "edit": "编辑 Edge 实例",
+        "delete": "删除 Edge 实例",
+        "sync": "同步 Edge",
+        "copyRoutingKey": "复制路由密钥",
+        "copySecret": "复制 Edge 密钥"
+      },
+      "form": {
+        "section": "基本信息",
+        "hint": "配置 Edge 实例的名称与类型，便于识别和管理边缘节点。",
+        "namePlaceholder": "请输入 Edge 实例名称",
+        "typePlaceholder": "选择或输入类型",
+        "labelPlaceholder": "请输入显示标签",
+        "descriptionPlaceholder": "描述此 Edge 实例的用途或部署位置",
+        "credentials": "连接凭据",
+        "credentialsHint": "创建时自动生成，用于连接 Edge 与云端。已有实例的凭据保持不变。"
+      },
+      "validation": {
+        "nameRequired": "请输入 Edge 实例名称",
+        "typeRequired": "请选择或输入类型",
+        "maxLength": "最多输入 255 个字符"
+      },
+      "sync": {
+        "confirm": "确定将云端数据同步到 Edge 实例“{name}”吗？",
+        "success": "已发起 Edge 同步"
+      },
+      "detail": {
+        "title": "Edge 实例详情",
+        "basic": "基本信息",
+        "copyId": "复制 Edge ID",
+        "notFound": "Edge 实例不存在或暂时无法加载",
+        "noDescription": "暂无描述",
+        "rootRuleChain": "根规则链",
+        "nameUnavailable": "名称暂不可用",
+        "unassigned": "未分配客户"
+      }
+    },
+    "ruleChains": {
+      "title": "Edge 规则链",
+      "fields": {
+        "name": "名称",
+        "description": "描述",
+        "debugMode": "调试模式",
+        "root": "根规则链模板",
+        "autoAssign": "自动分配"
+      },
+      "actions": {
+        "create": "新增 Edge 规则链",
+        "edit": "编辑 Edge 规则链",
+        "delete": "删除 Edge 规则链",
+        "setRoot": "设为根规则链模板",
+        "setAutoAssign": "启用自动分配",
+        "unsetAutoAssign": "取消自动分配"
+      },
+      "form": {
+        "section": "边缘规则链",
+        "hint": "此规则链运行在 Edge 上。可在列表中设置新建 Edge 使用的根规则链模板和自动分配规则。",
+        "namePlaceholder": "请输入 Edge 规则链名称",
+        "descriptionPlaceholder": "描述此规则链的处理逻辑和用途",
+        "debugHint": "启用后记录规则节点的调试事件，便于排查消息处理问题。"
+      },
+      "validation": {
+        "nameRequired": "请输入 Edge 规则链名称",
+        "nameMaxLength": "规则链名称最多 255 个字符",
+        "edgeOnly": "此页面仅支持编辑 EDGE 类型的规则链。"
+      },
+      "setRoot": {
+        "title": "将“{name}”设为根规则链模板？",
+        "content": "新建 Edge 将使用此规则链作为根规则链，已存在的 Edge 不受影响。",
+        "success": "已更新 Edge 根规则链模板"
+      },
+      "autoAssign": {
+        "setConfirm": "将“{name}”自动分配给新建的 Edge 实例？",
+        "unsetConfirm": "取消“{name}”对新建 Edge 实例的自动分配？已有分配保持不变。"
+      }
+    }
+  }
+}

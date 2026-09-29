@@ -1,0 +1,56 @@
+{
+  "menu": "Resource Library",
+  "fields": {
+    "title": "Title",
+    "resourceKey": "Resource key",
+    "resourceType": "Resource type",
+    "scope": "Scope",
+    "file": "Resource file",
+    "fileName": "File name"
+  },
+  "actions": {
+    "add": "Add resource",
+    "download": "Download",
+    "edit": "Edit resource",
+    "delete": "Delete resource"
+  },
+  "messages": {
+    "forceDelete": {
+      "title": "Resource is used by other entities",
+      "content": "Resource “{title}” was not deleted because it is used by the following entities:",
+      "footer": "If you still want to delete the resource, click the Delete anyway button.",
+      "button": "Delete anyway"
+    }
+  },
+  "validation": {
+    "fileRequired": "Please select a resource file",
+    "fileTypeInvalid": "Invalid file type. Select a file matching {accept}",
+    "titleRequired": "Title is required",
+    "resourceTypeRequired": "Select a resource type",
+    "titleTooLong": "Title must not exceed 255 characters"
+  },
+  "options": {
+    "types": {
+      "lwm2mModel": "LwM2M Model",
+      "pkcs12": "PKCS #12",
+      "jks": "JKS",
+      "general": "General"
+    },
+    "scope": {
+      "system": "System",
+      "tenant": "Tenant"
+    }
+  },
+  "features": {
+    "form": {
+      "titlePlaceholder": "Enter resource title",
+      "filePlaceholder": "Click or drag a file here to upload"
+    },
+    "filter": {
+      "allTypes": "All types"
+    },
+    "upload": {
+      "partialFailure": "Uploaded {uploaded} files. Submit again to retry the remaining {remaining} files."
+    }
+  }
+}

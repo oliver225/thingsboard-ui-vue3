@@ -21,12 +21,12 @@ withDefaults(defineProps<Props>(), {
 </script>
 
 <template>
-  <div class="text-md flex-center">
+  <div class="text-md flex-center flex-wrap gap-y-1">
     <!-- ICP Link -->
     <a
       v-if="icp"
       :href="icpLink || 'https://beian.miit.gov.cn/'"
-      class="mx-1 hover:text-primary-hover"
+      class="mx-1 text-primary hover:text-primary-hover"
       rel="noopener noreferrer"
       target="_blank"
     >
@@ -40,7 +40,7 @@ withDefaults(defineProps<Props>(), {
     <a
       v-if="companyName"
       :href="companySiteLink || 'javascript:void(0)'"
-      class="mx-1 hover:text-primary-hover"
+      class="mx-1 text-inherit hover:text-primary-hover"
       target="_blank"
     >
       {{ companyName }}

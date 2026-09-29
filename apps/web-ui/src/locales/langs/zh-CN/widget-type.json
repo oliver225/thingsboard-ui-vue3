@@ -1,0 +1,41 @@
+{
+  "menu": "部件",
+  "fields": {
+    "name": "名称",
+    "bundles": "部件包",
+    "widgetType": "类型",
+    "deprecated": "已弃用",
+    "scope": "作用域",
+    "description": "描述"
+  },
+  "actions": {
+    "create": "新建部件",
+    "edit": "编辑部件",
+    "export": "导出部件",
+    "import": "导入部件",
+    "delete": "删除部件"
+  },
+  "validation": {
+    "nameRequired": "请输入名称"
+  },
+  "options": {
+    "types": {
+      "timeseries": "时间序列",
+      "latest": "最新值",
+      "rpc": "控制部件",
+      "alarm": "告警部件",
+      "static": "静态部件"
+    },
+    "scope": {
+      "system": "系统",
+      "tenant": "租户"
+    }
+  },
+  "features": {
+    "import": {
+      "success": "导入成功",
+      "invalidFile": "无效的部件文件",
+      "parseError": "文件解析失败,请选择合法的 JSON 文件"
+    }
+  }
+}

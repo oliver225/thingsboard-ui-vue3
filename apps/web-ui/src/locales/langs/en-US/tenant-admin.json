@@ -1,0 +1,52 @@
+{
+  "menu": "Tenant Administrators",
+  "fields": {
+    "email": "Email",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "phone": "Phone",
+    "description": "Description"
+  },
+  "actions": {
+    "showActivationLink": "Display activation link",
+    "resendActivation": "Resend activation email",
+    "enableUser": "Enable user",
+    "disableUser": "Disable user",
+    "manage": "Manage tenant admins",
+    "create": "Create admin",
+    "edit": "Edit tenant administrator",
+    "back": "Back to tenants",
+    "loginAs": "Login as this admin",
+    "delete": "Delete tenant administrator"
+  },
+  "validation": {
+    "emailRequired": "Email is required",
+    "emailInvalid": "Invalid email format",
+    "phoneFormatTip": "Invalid phone number format"
+  },
+  "features": {
+    "account": {
+      "enabled": "User enabled",
+      "disabled": "User disabled"
+    },
+    "loginAs": {
+      "content": "You will switch to this administrator's session. Your current session will be replaced.",
+      "title": "Log in as administrator \"{name}\"?"
+    },
+    "form": {
+      "firstNamePlaceholder": "Enter first name",
+      "lastNamePlaceholder": "Enter last name",
+      "descriptionPlaceholder": "Enter administrator description"
+    }
+  },
+  "detail": {
+    "title": "Tenant administrator details",
+    "basic": "Basic information",
+    "copyId": "Copy tenant administrator ID",
+    "notFound": "Tenant administrator not found or temporarily unavailable",
+    "noDescription": "No description",
+    "preferences": "Preferences",
+    "parent": "Tenant",
+    "nameUnavailable": "Name unavailable"
+  }
+}

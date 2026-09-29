@@ -7,6 +7,7 @@ import { computed } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import { $t } from '@vben/locales';
+import { useBreadcrumbStore } from '@vben/stores';
 
 import { VbenBreadcrumbView } from '@vben-core/shadcn-ui';
 
@@ -25,6 +26,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const route = useRoute();
 const router = useRouter();
+const breadcrumbStore = useBreadcrumbStore();
 
 const breadcrumbs = computed((): IBreadcrumb[] => {
   const matched = route.matched;
@@ -42,7 +44,10 @@ const breadcrumbs = computed((): IBreadcrumb[] => {
     resultBreadcrumb.push({
       icon,
       path: path || route.path,
-      title: title ? $t((title || name) as string) : '',
+      title:
+        (match === matched.at(-1)
+          ? breadcrumbStore.titles.get(route.path)
+          : undefined) ?? (title ? $t((title || name) as string) : ''),
     });
   }
   if (props.showHome) {

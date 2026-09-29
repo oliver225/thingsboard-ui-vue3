@@ -1,0 +1,389 @@
+{
+  "menu": "Settings",
+  "sections": {
+    "navigation": {
+      "general": "General",
+      "outgoingMail": "Outgoing Mail",
+      "notifications": "Notifications",
+      "queues": "Queues",
+      "home": "Home Settings",
+      "aiModels": "AI Models",
+      "security": "Security settings",
+      "twoFactor": "Two-factor authentication"
+    }
+  },
+  "validation": {
+    "requiredField": "This field is required.",
+    "connectivity": "Ports must be integers from 1 to 65535; leave blank to use protocol defaults.",
+    "jwtKey": "Use a valid Base64 signing key containing at least 32 decoded bytes.",
+    "jwtTime": "Token lifetime must be at least 60 seconds; refresh lifetime must be at least 900 seconds and greater than token lifetime.",
+    "passwordLength": "Minimum password length must be 6–50; maximum cannot be smaller.",
+    "nonnegative": "Enter nonnegative integers.",
+    "ttl": "Token lifetime must be an integer from 1 to 24 hours.",
+    "twoFactor": "Check verification periods, limits, and code lifetimes.",
+    "mail": "Check the SMTP port, timeout and proxy settings."
+  },
+  "features": {
+    "general": {
+      "title": "General Settings",
+      "baseUrl": "Base URL",
+      "baseUrlPlaceholder": "Enter base URL",
+      "baseUrlRequired": "Enter a valid HTTP(S) base URL.",
+      "prohibitDifferentUrl": "Prohibit to use hostname from the client request headers",
+      "prohibitDifferentUrlHint": "This setting should be enabled for production environments. May cause security issues when disabled."
+    },
+    "connectivity": {
+      "title": "Device connectivity",
+      "hint": "If host or port fields are empty, default protocol value will be used.",
+      "host": "Host",
+      "port": "Port",
+      "hostPlaceholder": "Enter host",
+      "portPlaceholder": "Enter port",
+      "httpS": "HTTP(s)",
+      "mqttS": "MQTT(s)",
+      "coapS": "COAP(s)",
+      "http": "HTTP",
+      "https": "HTTPs",
+      "mqtt": "MQTT",
+      "mqtts": "MQTTs",
+      "coap": "COAP",
+      "coaps": "COAPs"
+    },
+    "mail": {
+      "title": "Mail Server Settings",
+      "mailFrom": "Mail From",
+      "mailFromPlaceholder": "Enter mail from address",
+      "mailFromRequired": "Mail From is required.",
+      "connection": "Connection Settings",
+      "authentication": "Authentication",
+      "smtpProtocol": "SMTP protocol",
+      "smtpHost": "SMTP host",
+      "smtpHostRequired": "SMTP host is required.",
+      "smtpPort": "SMTP port",
+      "smtpPortRequired": "SMTP port is required.",
+      "timeout": "Timeout (msec)",
+      "timeoutRequired": "Timeout is required.",
+      "enableTls": "Enable TLS",
+      "tlsVersion": "TLS version",
+      "tlsVersionRequired": "Please select a TLS version.",
+      "enableProxy": "Enable proxy",
+      "proxyHost": "Proxy host",
+      "proxyHostRequired": "Proxy host is required.",
+      "proxyPort": "Proxy port",
+      "proxyPortRequired": "Proxy port is required.",
+      "proxyUser": "Proxy user",
+      "proxyPassword": "Proxy password",
+      "username": "Username",
+      "password": "Password",
+      "changePassword": "Change password",
+      "sendTestMail": "Send test mail",
+      "testMailSuccess": "Test mail was successfully sent!",
+      "customProvider": "Custom",
+      "oauth": {
+        "enable": "Enable OAuth 2.0",
+        "provider": "Mail provider",
+        "clientId": "Client ID",
+        "clientSecret": "Client Secret",
+        "providerTenantId": "Provider tenant ID",
+        "authUri": "Authorization URL",
+        "tokenUri": "Token URL",
+        "redirectUri": "Redirect URL",
+        "scope": "Scopes",
+        "authorize": "Save and authorize",
+        "authorized": "Access token generated",
+        "notAuthorized": "Access token not generated"
+      }
+    },
+    "notifications": {
+      "sms": {
+        "title": "SMS Provider",
+        "provider": "Provider",
+        "providerAwsSns": "Amazon SNS",
+        "providerTwilio": "Twilio",
+        "providerSmpp": "SMPP",
+        "accessKeyId": "Access Key ID",
+        "secretAccessKey": "Secret Access Key",
+        "region": "Region",
+        "accountSid": "Account SID",
+        "accountToken": "Account Token",
+        "numberFrom": "Number from",
+        "protocolVersion": "Protocol version",
+        "bindType": "Bind type",
+        "host": "Host",
+        "port": "Port",
+        "systemId": "System ID",
+        "password": "Password",
+        "systemType": "System Type",
+        "serviceType": "Service Type",
+        "sourceAddress": "Source address",
+        "addressRange": "Address range",
+        "sourceTon": "Source TON",
+        "sourceNpi": "Source NPI",
+        "destinationTon": "Destination TON",
+        "destinationNpi": "Destination NPI",
+        "codingScheme": "Coding scheme",
+        "sendTestSms": "Send test SMS",
+        "testSmsSuccess": "Test SMS was successfully sent!",
+        "phoneNumber": "Phone number",
+        "message": "Message",
+        "connection": "Connection settings",
+        "authentication": "Authentication",
+        "addressing": "Addressing and message encoding"
+      },
+      "slack": {
+        "title": "Slack Settings",
+        "apiToken": "Slack API token",
+        "name": "Slack"
+      },
+      "mobile": {
+        "title": "Mobile settings",
+        "hint": "Upload a Firebase service account JSON file for mobile push notifications.",
+        "file": "Firebase service account file",
+        "invalidFile": "Provide valid service account JSON including project ID, private key and client email.",
+        "filePlaceholder": "No file uploaded"
+      }
+    },
+    "security": {
+      "passwordPolicy": {
+        "title": "Security Settings",
+        "generalPolicy": "General policy",
+        "generalPolicyDescription": "Manage failed login limits, account notifications, and verification link lifetimes.",
+        "passwordPolicyDescription": "Set password complexity, expiration, and handling of passwords that do not meet the policy.",
+        "passwordPolicy": "Password policy",
+        "maxFailedLoginAttempts": "Maximum number of failed login attempts",
+        "userLockoutNotificationEmail": "User lockout notification email",
+        "emailInvalid": "Invalid email format",
+        "userActivationTokenTtl": "User activation link TTL (hours)",
+        "passwordResetTokenTtl": "Password reset link TTL (hours)",
+        "mobileSecretKeyLength": "Mobile secret key length",
+        "minimumLength": "Minimum length",
+        "maximumLength": "Maximum length",
+        "minimumUppercaseLetters": "Minimum uppercase letters",
+        "minimumLowercaseLetters": "Minimum lowercase letters",
+        "minimumDigits": "Minimum digits",
+        "minimumSpecialCharacters": "Minimum special characters",
+        "passwordExpirationPeriodDays": "Password expiration period (days)",
+        "passwordReuseFrequencyDays": "Password reuse frequency (days)",
+        "allowWhitespaces": "Allow whitespaces",
+        "forceResetPassword": "Force user to reset password on login if it does not meet the policy"
+      },
+      "jwt": {
+        "title": "JWT Security Settings",
+        "tokenIssuer": "Token issuer",
+        "tokenSigningKey": "Token signing key",
+        "generateKey": "Generate",
+        "tokenExpirationTime": "Token expiration time (sec)",
+        "refreshTokenExpTime": "Refresh token expiration time (sec)",
+        "refreshLessToken": "Refresh token time must be greater than token expiration time",
+        "changeWarningTitle": "Change JWT settings?",
+        "changeWarning": "Changing the issuer or signing key will invalidate all issued tokens. All users (including other sessions) will need to sign in again."
+      }
+    },
+    "twoFactor": {
+      "title": "Two-factor authentication",
+      "verificationSettings": "Verification limitations",
+      "availableProviders": "Available providers",
+      "providersRequired": "Enable at least one provider when enforcing 2FA",
+      "enforce": {
+        "title": "Enforce two-factor authentication",
+        "toggle": "Force two-factor authentication",
+        "enforceFor": "Enforce for",
+        "byTenant": "Tenants",
+        "byTenantProfile": "Tenant profiles",
+        "tenants": "Select tenants",
+        "tenantProfiles": "Select tenant profiles",
+        "types": {
+          "ALL_USERS": "All users",
+          "TENANT_ADMINISTRATORS": "Tenant administrators",
+          "SYSTEM_ADMINISTRATORS": "System administrators"
+        }
+      },
+      "issuerName": "Issuer name",
+      "issuerRequired": "Issuer name is required",
+      "backupCodeHint": "Enable at least one other provider before enabling backup codes.",
+      "smsTemplate": "SMS verification message template",
+      "smsTemplateInvalid": "SMS template must contain the verification code placeholder",
+      "verificationCodeLifetime": "Verification code lifetime (sec)",
+      "codesQuantity": "Backup codes quantity",
+      "minVerificationCodeSendPeriod": "Minimum verification code send period (sec)",
+      "maxVerificationFailuresBeforeLockout": "Max verification failures before user lockout",
+      "totalAllowedTimeForVerification": "Total allowed time for verification (sec)",
+      "rateLimit": "Limit verification code checks",
+      "rateLimitTimesPer": "times per",
+      "rateLimitSeconds": "seconds",
+      "provider": {
+        "TOTP": "Authenticator app (TOTP)",
+        "SMS": "SMS",
+        "EMAIL": "Email",
+        "BACKUP_CODE": "Backup codes"
+      },
+      "providerDesc": {
+        "TOTP": "Use an app such as Google Authenticator to generate one-time codes.",
+        "SMS": "Send a one-time code via SMS (requires an SMS provider to be configured).",
+        "EMAIL": "Send a one-time code via email (requires the mail server to be configured).",
+        "BACKUP_CODE": "A set of single-use backup codes to sign in when other methods are unavailable."
+      }
+    },
+    "home": {
+      "title": "Home Settings",
+      "homeDashboard": "Home dashboard",
+      "homeDashboardPlaceholder": "Select the default home dashboard for the tenant",
+      "hideToolbar": "Hide home dashboard toolbar",
+      "hint": "Set the default home dashboard shown to all users of this tenant."
+    },
+    "ai": {
+      "fields": {
+        "name": "Name",
+        "provider": "Provider",
+        "modelId": "Model ID",
+        "apiKey": "API Key",
+        "baseUrl": "Base URL",
+        "endpoint": "Endpoint",
+        "serviceVersion": "Service version",
+        "projectId": "Project ID",
+        "location": "Location",
+        "serviceAccountKey": "Service account JSON",
+        "region": "Region",
+        "accessKeyId": "Access Key ID",
+        "secretAccessKey": "Secret Access Key",
+        "personalAccessToken": "Personal Access Token",
+        "temperature": "Temperature",
+        "topP": "Top P",
+        "topK": "Top K",
+        "frequencyPenalty": "Frequency penalty",
+        "presencePenalty": "Presence penalty",
+        "maxOutputTokens": "Maximum output tokens",
+        "contextLength": "Context length",
+        "authentication": "Authentication",
+        "username": "Username",
+        "password": "Password",
+        "token": "Access token"
+      },
+      "delete": {
+        "content": "The AI model and its configuration will be unrecoverable once deleted."
+      },
+      "test": "Test connection",
+      "connected": "Connection successful",
+      "failed": "Connection failed",
+      "parameters": "Model parameters (optional)",
+      "authType": {
+        "NONE": "No authentication",
+        "BASIC": "Username and password",
+        "TOKEN": "Access token"
+      },
+      "token": "Access token",
+      "actions": {
+        "create": "Add AI model",
+        "edit": "Edit AI model",
+        "delete": "Delete AI model",
+        "importServiceAccount": "Import JSON file"
+      },
+      "groups": {
+        "general": "General information",
+        "connection": "Connection settings"
+      },
+      "form": {
+        "namePlaceholder": "Give this model configuration a recognizable name",
+        "modelIdPlaceholder": "Select or enter a model ID",
+        "modelIdHelp": "Custom model IDs are supported. For Azure OpenAI, enter the deployment name.",
+        "generalDescription": "Choose a provider and the model to use in your application.",
+        "connectionDescription": "Enter the service address and credentials for your provider.",
+        "parametersDescription": "Adjust generation behavior as needed. Leave blank to use provider defaults.",
+        "apiKeyHelp": "Required for the official OpenAI URL; optional for custom compatible services.",
+        "serviceAccountPlaceholder": "Paste service account JSON or import a file below",
+        "providerDefault": "Provider default",
+        "testDescription": "Send a short message to check that the current configuration works."
+      },
+      "validation": {
+        "required": "This field is required.",
+        "nameLength": "The name must not exceed 255 characters.",
+        "serviceAccount": "Enter valid service account JSON with nonempty private_key and client_email fields.",
+        "fileRead": "Unable to read the file. Please select a JSON file again.",
+        "number": "Enter a valid number.",
+        "integer": "Enter an integer.",
+        "min": "Must be at least {min}.",
+        "max": "Must not exceed {max}."
+      },
+      "testing": "Testing connection…",
+      "connectionSuccessDescription": "The current configuration passed the connection test.",
+      "connectionFailureDescription": "Unable to connect. Check the configuration and try again."
+    },
+    "queues": {
+      "fields": {
+        "name": "Queue name",
+        "topic": "Topic",
+        "partitions": "Partitions",
+        "submitStrategy": "Submit strategy",
+        "processingStrategy": "Processing strategy",
+        "description": "Description",
+        "batchSize": "Batch size",
+        "pollInterval": "Poll interval (ms)",
+        "packProcessingTimeout": "Batch processing timeout (ms)",
+        "retries": "Retries",
+        "failurePercentage": "Failure percentage (%)",
+        "pauseBetweenRetries": "Pause between retries (seconds)",
+        "maxPauseBetweenRetries": "Maximum pause between retries (seconds)",
+        "consumerPerPartition": "Consumer per partition",
+        "duplicateMsgToAllPartitions": "Duplicate messages to all partitions",
+        "customProperties": "Custom properties",
+        "retriesUnlimited": "Retries (0 — unlimited)"
+      },
+      "submitStrategy": {
+        "BURST": "Burst",
+        "BATCH": "Batch",
+        "SEQUENTIAL": "Sequential",
+        "SEQUENTIAL_BY_TENANT": "Sequential by tenant",
+        "SEQUENTIAL_BY_ORIGINATOR": "Sequential by originator"
+      },
+      "processingStrategy": {
+        "RETRY_ALL": "Retry all",
+        "RETRY_FAILED": "Retry failed",
+        "RETRY_TIMED_OUT": "Retry timed out",
+        "RETRY_FAILED_AND_TIMED_OUT": "Retry failed and timed out",
+        "SKIP_ALL_FAILURES": "Skip all failures",
+        "SKIP_ALL_FAILURES_AND_TIMED_OUT": "Skip all failures and timed out"
+      },
+      "actions": {
+        "create": "Create queue",
+        "edit": "Edit queue",
+        "delete": "Delete queue"
+      },
+      "validation": {
+        "name": "Use letters, numbers, dots, underscores or hyphens",
+        "positiveInteger": "Enter a positive integer",
+        "numberRange": "Enter an integer between {min} and {max}",
+        "integerMin": "Enter an integer of at least {min}",
+        "maxPause": "Maximum pause must be at least the pause between retries",
+        "uniqueName": "Queue names must be unique",
+        "nameRequired": "Enter a queue name",
+        "strategyRequired": "Select a strategy"
+      },
+      "form": {
+        "namePlaceholder": "Letters, numbers, dots, underscores or hyphens",
+        "descriptionPlaceholder": "Describe the queue purpose (optional)",
+        "customPropertiesPlaceholder": "e.g. retention.ms:604800000;retention.bytes:1048576000",
+        "strategyHelp": "About {strategy}"
+      },
+      "groups": {
+        "submit": "Submit settings",
+        "processing": "Retry processing settings",
+        "polling": "Polling settings"
+      },
+      "submitStrategyHelp": {
+        "SEQUENTIAL_BY_ORIGINATOR": "New message for e.g. device A is not submitted until previous message for device A is acknowledged",
+        "SEQUENTIAL_BY_TENANT": "New message for e.g tenant A is not submitted until previous message for tenant A is acknowledged",
+        "SEQUENTIAL": "New message is not submitted until previous message is acknowledged",
+        "BURST": "All messages are submitted to the rule chains in the order they arrive",
+        "BATCH": "New batch is not submitted until previous batch is acknowledged"
+      },
+      "processingStrategyHelp": {
+        "RETRY_FAILED_AND_TIMED_OUT": "Retry all failed and timed-out messages from processing pack",
+        "SKIP_ALL_FAILURES": "Ignore all failures",
+        "SKIP_ALL_FAILURES_AND_TIMED_OUT": "Ignore all failures and timeouts",
+        "RETRY_ALL": "Retry all messages from processing pack",
+        "RETRY_FAILED": "Retry all failed messages from processing pack",
+        "RETRY_TIMED_OUT": "Retry all timed-out messages from processing pack"
+      }
+    }
+  }
+}

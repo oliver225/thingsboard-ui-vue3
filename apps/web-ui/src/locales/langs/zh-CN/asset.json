@@ -1,0 +1,135 @@
+{
+  "menu": "资产",
+  "fields": {
+    "name": "资产名称",
+    "label": "标签",
+    "assetProfile": "资产配置",
+    "customer": "所属客户",
+    "description": "描述"
+  },
+  "actions": {
+    "create": "新建资产",
+    "edit": "编辑资产",
+    "delete": "删除资产",
+    "assign": "分配给客户",
+    "unassign": "取消分配",
+    "unassignSuccess": "已取消分配",
+    "makePublic": "设为公开",
+    "makePublicSuccess": "已设为公开",
+    "makePrivate": "设为私有",
+    "makePrivateSuccess": "已设为私有",
+    "batchAssign": "批量分配"
+  },
+  "validation": {
+    "nameRequired": "请输入资产名称",
+    "profileRequired": "请选择资产配置",
+    "nameMaxLength": "资产名称不能超过 255 个字符",
+    "labelMaxLength": "标签不能超过 255 个字符"
+  },
+  "features": {
+    "assign": {
+      "title": "分配给客户",
+      "batchTitle": "批量分配给客户",
+      "batchCount": "已选择 {count} 个资产",
+      "customer": "请选择要分配资产的客户",
+      "confirm": "分配",
+      "success": "已分配给客户",
+      "partialFailure": "{count} 个资产分配失败，请重试。重试仅处理失败的资产。"
+    },
+    "makePublic": {
+      "title": "设为公开",
+      "content": "确定将资产“{name}”设为公开吗？公开后任何人都可在公共仪表板查看其数据。"
+    },
+    "makePrivate": {
+      "title": "设为私有",
+      "content": "确定将资产“{name}”设为私有吗?设为私有后将从公共客户取消分配。"
+    },
+    "unassign": {
+      "title": "取消分配",
+      "content": "确定将资产“{name}”从客户“{customer}”取消分配吗？"
+    },
+    "import": {
+      "title": "导入资产",
+      "description": "上传文件、设置列映射，批量创建或更新资产。",
+      "steps": {
+        "file": "选择文件",
+        "config": "导入配置",
+        "columns": "列映射",
+        "result": "导入结果"
+      },
+      "uploadTitle": "将文件拖到这里，或点击选择",
+      "uploadHint": "支持 CSV、XLSX、XLS，文件大小不超过 10 MB。",
+      "chooseFile": "选择文件",
+      "removeFile": "移除文件",
+      "templateHint": "首次导入？可以先下载示例模板。",
+      "downloadTemplate": "下载 CSV 模板",
+      "excelSheet": "将导入第一个工作表“{name}”，保留单元格显示格式。",
+      "delimiter": "CSV 分隔符",
+      "delimiters": {
+        "comma": "逗号（,）",
+        "semicolon": "分号（;）",
+        "pipe": "竖线（|）",
+        "tab": "制表符（Tab）"
+      },
+      "header": "第一行包含列名",
+      "headerHint": "使用 NAME、TYPE 等标准列名自动匹配；其他列默认作为服务端属性。",
+      "update": "更新已有资产的属性和遥测",
+      "updateHint": "同名资产会更新基本信息；勾选后还会写入其属性和遥测数据。",
+      "preview": "共 {rows} 行数据，{columns} 列",
+      "mappingHint": "必须指定资产名称和资产配置列。",
+      "sample": "列名 / 示例值",
+      "columnType": "列类型",
+      "attributeKey": "属性 / 遥测键",
+      "columnNumber": "第 {index} 列",
+      "columnTypeLabel": "第 {index} 列的类型",
+      "keyLabel": "第 {index} 列的属性或遥测键",
+      "previous": "上一步",
+      "next": "下一步",
+      "submit": "导入 {count} 个资产",
+      "done": "完成",
+      "types": {
+        "serverAttribute": "服务端属性",
+        "timeseries": "遥测数据"
+      },
+      "result": {
+        "withErrors": "导入结束，存在失败项",
+        "complete": "导入完成",
+        "created": "新建资产",
+        "updated": "更新资产",
+        "errors": "失败数量",
+        "details": "错误详情"
+      },
+      "validation": {
+        "empty": "文件中没有可导入的数据，请检查是否只有表头。",
+        "invalidFile": "请选择 CSV、XLSX 或 XLS 文件。",
+        "tooLarge": "文件大小不能超过 10 MB。",
+        "rowWidth": "第 {row} 行的列数与第一行不一致，请检查文件和分隔符。",
+        "format": "文件读取或解析失败，请检查文件格式、引号和分隔符。",
+        "oneFile": "每次请选择一个文件。",
+        "requiredColumns": "请分别指定一个资产名称列和一个资产配置列。",
+        "requiredKey": "请为所有属性和遥测列填写键名。",
+        "duplicateColumn": "列类型或同一范围内的属性 / 遥测键重复，请检查映射。",
+        "requiredValue": "第 {row} 行的资产名称或资产配置为空。",
+        "requestFailed": "导入请求失败，请检查错误信息后重试。"
+      }
+    },
+    "form": {
+      "namePlaceholder": "请输入资产名称",
+      "labelPlaceholder": "请输入标签（可选）",
+      "customerPlaceholder": "选择客户（可选）",
+      "descriptionPlaceholder": "请输入资产描述（可选）"
+    },
+    "detail": {
+      "title": "资产详情",
+      "basic": "基本信息",
+      "visibility": "可见性",
+      "public": "公开",
+      "private": "私有",
+      "unassigned": "未分配客户",
+      "copyId": "复制资产 ID",
+      "idCopied": "资产 ID 已复制",
+      "noDescription": "暂无描述",
+      "notFound": "资产不存在、已被删除，或当前账号无权访问。"
+    }
+  }
+}

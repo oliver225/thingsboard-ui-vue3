@@ -1,0 +1,56 @@
+/* Ant Design TextArea：保留 rows / autoSize 和尺寸，不影响 Vben 原生 Textarea。 */
+@layer components {
+  /* 基础外观：使用本组件独立的边框和聚焦颜色变量。 */
+  textarea.ant-input-outlined {
+    --textarea-border: hsl(var(--input));
+    --textarea-ring: hsl(var(--primary));
+
+    color: hsl(var(--foreground));
+    background: hsl(var(--background));
+    border-color: var(--textarea-border);
+    border-radius: calc(var(--radius) - 2px);
+    box-shadow: none;
+  }
+
+  /* 默认尺寸：高度由文本行数控制，只设置内边距、字号和行高。 */
+  textarea.ant-input-outlined:not(.ant-input-sm, .ant-input-lg) {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+  }
+
+  /* 占位文字。 */
+  textarea.ant-input-outlined::placeholder {
+    color: hsl(var(--muted-foreground) / 50%);
+    opacity: 1;
+  }
+
+  textarea.ant-input-outlined:not(:disabled):hover {
+    border-color: var(--textarea-ring);
+  }
+
+  /* 聚焦状态：使用内描边，避免叠加默认外阴影。 */
+  textarea.ant-input-outlined:focus-visible {
+    outline: none;
+    box-shadow: inset 0 0 0 1px var(--textarea-ring);
+  }
+
+  /* 禁用状态。 */
+  textarea.ant-input-outlined:disabled {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  /* 警告状态；后续校验错误优先。 */
+  textarea.ant-input-outlined.ant-input-status-warning {
+    --textarea-border: hsl(var(--warning));
+    --textarea-ring: hsl(var(--warning));
+  }
+
+  /* 错误状态：兼容组件 status 和 VbenForm 校验。 */
+  textarea.ant-input-outlined.ant-input-status-error,
+  .form-valid-error textarea.ant-input-outlined {
+    --textarea-border: hsl(var(--destructive));
+    --textarea-ring: hsl(var(--destructive));
+  }
+}

@@ -42,6 +42,61 @@ outline: deep
 
 <DemoPreview dir="demos/vben-table-action/permission" />
 
+## 在 BasicTable / useTable 中使用
+
+`@vben/table` 使用 `actionColumn` 配置操作列，外层包含 `align`、`width` 和必填的 `actionProps`。内部 `actionProps` 接收 `VbenTableAction` 原生参数，也支持 `(record, index) => TableActionProps`，用于按行生成按钮。
+
+```ts
+import type { ActionColumn } from '#/adapter/table';
+
+import { useTable } from '#/adapter/table';
+
+// 紧跟 tableColumns 定义，放在 useTable 之前。
+const actionColumn: ActionColumn<DeviceInfo> = {
+  align: 'center',
+  width: 180,
+  actionProps: (record, index) => ({
+    class: '[&_button>span]:sr-only',
+    actions: [
+      {
+        key: 'edit',
+        class: 'text-primary hover:text-primary',
+        text: $t('tb.device.actions.edit'),
+        icon: 'lucide:square-pen',
+        auth: Authority.TENANT_ADMIN,
+        disabled: !record.id?.id,
+        variant: 'ghost',
+        size: 'icon',
+        onClick: () => onEdit(record),
+      },
+    ],
+  }),
+};
+
+const [registerTable, tableApi] = useTable<DeviceInfo>({
+  columns: tableColumns,
+  actionColumn,
+});
+
+// 配置整体替换，单独调整宽度时保留其余参数。
+tableApi.setProps({ actionColumn: { ...actionColumn, width: 200 } });
+
+// 显式清除配置，移除自动生成的操作列。
+tableApi.setProps({ actionColumn: null });
+```
+
+- 提供 `actionColumn` 对象时，表格自动追加最后一列，标题为多语言“操作”，始终固定在右侧，不提供 `fixed`、`title`、`slot` 配置。
+- `width` 沿用 `BasicColumn['width']` 类型，默认 `240px`，不会按每行按钮数量自动变化。`align` 支持 `left / center / right`，默认 `center`。
+- 外层 `align` 控制表头和单元格，并分别映射为按钮容器的 `start / center / end`。内层显式指定 `actionProps.align` 时，优先控制按钮对齐，不影响表头。
+- 不传、传 `null` 或通过 `setProps({ actionColumn: undefined })` 清除时，不显示操作列。响应式配置和 `setProps` 都支持更新，反复隐藏、恢复不会重复追加列。
+- `actionColumn` 整体替换，不做深度合并。新配置必须包含 `actionProps`，旧列宽、对齐、按钮及权限参数不会残留。
+- 内层 `actions`、`dropdownActions`、`class`、`align`、`divider`、`moreText` 等参数直接传给 `VbenTableAction`。
+- 默认 `hasPermission` 使用表格现有的权限码/角色判断；显式传入函数时使用该函数。`ifShow` 决定单个按钮是否显示。按钮数组为空、某行按钮全部隐藏或无权限时，仍保留操作列；整列是否存在由外层 `actionColumn` 决定。
+- 操作列的点击和双击不会触发行事件。列设置中的 `ignoreAction` 仍能识别该自动生成的操作列。
+- 原生 `popConfirm` 会在确认时关闭气泡，不等待请求完成。需要错误提示、提交锁定和失败重试时，在 `onClick` 中调用项目的 `confirm()` 弹窗方法。
+
+应用列表统一使用上述 `actionColumn` 结构，`#/adapter/table` 直接导出 `useTable` 和 `ActionColumn` 类型。顶层 `actionProps` 和历史 `actionColumn.actions` 写法均不再支持。每个按钮独立配置 `key`、`text`、`tooltip`、权限和显示条件。编辑按钮使用 `text-primary hover:text-primary`，删除按钮使用 `danger: true`，图标按钮使用 `variant: 'ghost'` 和 `size: 'icon'`。确认操作在对应的 `onDelete`、`onSetDefault` 等业务方法中直接 `await confirm({...})`，确认后再执行请求。
+
 ## 在 vxe-table 中使用
 
 不改变 vxe-table 原有渲染方式，推荐在列配置中声明插槽，在页面通过插槽渲染。

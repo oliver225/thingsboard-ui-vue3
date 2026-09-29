@@ -1,0 +1,87 @@
+{
+  "menu": "告警",
+  "fields": {
+    "createdTime": "创建时间",
+    "type": "类型",
+    "originator": "来源",
+    "severity": "严重程度",
+    "status": "状态",
+    "startTime": "开始时间",
+    "assignee": "受理人"
+  },
+  "actions": {
+    "ack": "确认",
+    "clear": "清除",
+    "ackSuccess": "已确认报警",
+    "clearSuccess": "已清除报警",
+    "edit": "编辑告警",
+    "delete": "删除告警",
+    "detail": "详情"
+  },
+  "options": {
+    "allTime": "所有时间",
+    "severity": {
+      "CRITICAL": "紧急",
+      "MAJOR": "重要",
+      "MINOR": "次要",
+      "WARNING": "警告",
+      "INDETERMINATE": "未定"
+    },
+    "status": {
+      "ACTIVE_UNACK": "活动未确认",
+      "ACTIVE_ACK": "活动已确认",
+      "CLEARED_UNACK": "清除未确认",
+      "CLEARED_ACK": "清除已确认"
+    },
+    "searchStatus": {
+      "ANY": "全部",
+      "ACTIVE": "活动",
+      "CLEARED": "已清除",
+      "ACK": "已确认",
+      "UNACK": "未确认"
+    }
+  },
+  "detail": {
+    "title": "告警详情",
+    "duration": "持续时间",
+    "durationValue": "{days} 天 {hours} 小时 {minutes} 分钟 {seconds} 秒",
+    "showMore": "显示更多",
+    "showLess": "收起",
+    "additionalInfo": "附加信息",
+    "unassigned": "未分配",
+    "assignSuccess": "受理人已更新",
+    "loadFailed": "加载失败，请重试",
+    "retry": "重试",
+    "close": "关闭",
+    "activity": "活动",
+    "addComment": "添加评论…",
+    "send": "发送",
+    "edit": "编辑",
+    "delete": "删除",
+    "save": "保存",
+    "cancel": "取消",
+    "empty": "暂无活动记录",
+    "refresh": "刷新",
+    "export": "导出活动",
+    "newestFirst": "最新优先",
+    "oldestFirst": "最早优先",
+    "loadMore": "加载更多",
+    "deletedUser": "已删除用户",
+    "system": "系统",
+    "edited": "已编辑",
+    "deleteComment": "删除评论",
+    "deleteCommentConfirm": "确定删除这条评论吗？",
+    "author": "作者",
+    "time": "时间",
+    "text": "内容",
+    "systemComments": {
+      "ACKED_BY_USER": "由 {userName} 确认了告警",
+      "CLEARED_BY_USER": "由 {userName} 清除了告警",
+      "ASSIGNED_TO_USER": "由 {userName} 将告警分配给 {assigneeName}",
+      "UNASSIGNED_BY_USER": "由 {userName} 取消了告警分配",
+      "UNASSIGNED_FROM_DELETED_USER": "受理人已删除，告警已取消分配",
+      "COMMENT_DELETED": "由 {userName} 删除了评论",
+      "SEVERITY_CHANGED": "严重程度从 {oldSeverity} 更新为 {newSeverity}"
+    }
+  }
+}

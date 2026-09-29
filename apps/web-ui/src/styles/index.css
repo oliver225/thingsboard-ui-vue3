@@ -1,0 +1,19 @@
+/*
+ * web-ui 应用样式入口，在 bootstrap.ts 的公共样式之后加载。
+ * Ant Design 组件外观按组件维护；显式启用的表单布局集中在 form-layout.css。
+ * Vben 原生输入框的交互与校验样式由公共组件内部维护。
+ */
+
+/* 文本与数值输入。 */
+@import './form-controls/input-number.css';
+@import './form-controls/textarea.css';
+
+/* 选择器及其弹出面板。 */
+@import './form-controls/select.css';
+@import './form-controls/icon-picker.css';
+
+/* 上传。 */
+@import './form-controls/upload.css';
+
+/* 表单布局：仅对带有对应类名的表单生效。 */
+@import './form-layout.css';

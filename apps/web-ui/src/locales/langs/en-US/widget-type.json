@@ -1,0 +1,41 @@
+{
+  "menu": "Widgets",
+  "fields": {
+    "name": "Name",
+    "bundles": "Bundles",
+    "widgetType": "Type",
+    "deprecated": "Deprecated",
+    "scope": "Scope",
+    "description": "Description"
+  },
+  "actions": {
+    "create": "Create widget",
+    "edit": "Edit widget",
+    "export": "Export widget",
+    "import": "Import widget",
+    "delete": "Delete widget"
+  },
+  "validation": {
+    "nameRequired": "Name is required"
+  },
+  "options": {
+    "types": {
+      "timeseries": "Time series",
+      "latest": "Latest values",
+      "rpc": "Control widget",
+      "alarm": "Alarm widget",
+      "static": "Static widget"
+    },
+    "scope": {
+      "system": "System",
+      "tenant": "Tenant"
+    }
+  },
+  "features": {
+    "import": {
+      "success": "Imported successfully",
+      "invalidFile": "Invalid widget file",
+      "parseError": "Failed to parse file, please select a valid JSON file"
+    }
+  }
+}

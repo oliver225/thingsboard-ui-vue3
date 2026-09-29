@@ -1,0 +1,29 @@
+{
+  "actions": "Actions",
+  "more": "More actions",
+  "settingDens": "Density",
+  "settingDensDefault": "Default",
+  "settingDensMiddle": "Middle",
+  "settingDensSmall": "Compact",
+  "settingColumn": "Column settings",
+  "settingColumnShow": "Display",
+  "settingColumnCustom": "If there is a personalized modification, the red icon is displayed. Click the \"Reset\" button to restore the display.",
+  "settingIndexColumnShow": "Index",
+  "settingSelectColumnShow": "Checkbox",
+  "settingFixedLeft": "Fixed Left",
+  "settingFixedRight": "Fixed Right",
+  "settingFullScreen": "Full Screen",
+  "index": "Index",
+  "total": "total of {total}",
+  "selectionBarTips": "{count} records selected.",
+  "selectionBarClear": "Clear",
+  "selectionBarEmpty": "No records selected.",
+  "inputPlaceholder": "Please enter",
+  "selectPlaceholder": "Please choose",
+  "batchDelete": {
+    "title": "Batch delete",
+    "confirm": "Delete the selected {count} {entity}? This action cannot be undone.",
+    "success": "Deleted {count} {entity}",
+    "partialFailure": "Deleted {deleted} {entity}; {failed} failed. Confirm again to retry only the failed {entity}."
+  }
+}

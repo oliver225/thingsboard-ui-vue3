@@ -1,0 +1,20 @@
+{
+  "menu": "Audit Logs",
+  "fields": {
+    "createdTime": "Action time",
+    "userName": "Action user",
+    "entityType": "Entity type",
+    "entityName": "Entity name",
+    "actionType": "Action type",
+    "actionStatus": "Status",
+    "failureDetails": "Failure details"
+  },
+  "features": {
+    "filter": {
+      "actionTypes": "Action types"
+    },
+    "detail": {
+      "title": "Audit log details"
+    }
+  }
+}

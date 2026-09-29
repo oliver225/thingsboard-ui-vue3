@@ -1,0 +1,346 @@
+{
+  "menu": "设备",
+  "fields": {
+    "name": "设备名称",
+    "label": "标签",
+    "deviceProfile": "设备配置",
+    "customer": "所属客户",
+    "active": "状态",
+    "activeTrue": "在线",
+    "activeFalse": "离线",
+    "isGateway": "是否网关",
+    "overwriteActivityTime": "覆盖活动时间",
+    "description": "描述"
+  },
+  "actions": {
+    "create": "新建设备",
+    "edit": "编辑设备",
+    "makePublic": "设为公开",
+    "makePublicSuccess": "已设为公开",
+    "assign": "分配给客户",
+    "unassign": "取消分配",
+    "unassignSuccess": "已取消分配",
+    "makePrivate": "设为私有",
+    "makePrivateSuccess": "已设为私有",
+    "batchAssign": "批量分配",
+    "delete": "删除设备"
+  },
+  "messages": {
+    "listDescription": "管理租户下的设备、凭证与客户分配"
+  },
+  "validation": {
+    "nameRequired": "请输入设备名称",
+    "profileRequired": "请选择设备配置",
+    "credentialsRequired": "请输入设备凭证",
+    "nameMaxLength": "设备名称不能超过 255 个字符",
+    "labelMaxLength": "标签不能超过 255 个字符",
+    "accessTokenMaxLength": "访问令牌不能超过 32 个字符",
+    "mqttIdentityRequired": "请至少填写客户端 ID 或用户名",
+    "credentialsJson": "请输入有效的 JSON 对象",
+    "mqttUserNameRequired": "设置密码时必须填写用户名"
+  },
+  "features": {
+    "import": {
+      "title": "导入设备",
+      "description": "上传文件、设置列映射，批量创建或更新设备。",
+      "steps": {
+        "file": "选择文件",
+        "config": "导入配置",
+        "columns": "列映射",
+        "result": "导入结果"
+      },
+      "uploadTitle": "将文件拖到这里，或点击选择",
+      "uploadHint": "支持 CSV、XLSX、XLS，文件大小不超过 10 MB。",
+      "chooseFile": "选择文件",
+      "removeFile": "移除文件",
+      "templateHint": "首次导入？可以先下载示例模板。",
+      "downloadTemplate": "下载 CSV 模板",
+      "excelSheet": "将导入第一个工作表“{name}”，保留单元格显示格式。",
+      "delimiter": "CSV 分隔符",
+      "delimiters": {
+        "comma": "逗号（,）",
+        "semicolon": "分号（;）",
+        "pipe": "竖线（|）",
+        "tab": "制表符（Tab）"
+      },
+      "header": "第一行包含列名",
+      "headerHint": "使用 NAME、TYPE 等标准列名自动匹配；其他列默认作为服务端属性。",
+      "update": "更新已有设备的属性和遥测",
+      "updateHint": "同名设备会更新基本信息；勾选后还会写入其属性和遥测数据。",
+      "preview": "共 {rows} 行数据，{columns} 列",
+      "mappingHint": "必须指定设备名称和设备配置列。",
+      "sample": "列名 / 示例值",
+      "columnType": "列类型",
+      "attributeKey": "属性 / 遥测键",
+      "columnNumber": "第 {index} 列",
+      "columnTypeLabel": "第 {index} 列的类型",
+      "keyLabel": "第 {index} 列的属性或遥测键",
+      "previous": "上一步",
+      "next": "下一步",
+      "submit": "导入 {count} 个设备",
+      "done": "完成",
+      "types": {
+        "serverAttribute": "服务端属性",
+        "sharedAttribute": "共享属性",
+        "timeseries": "遥测数据",
+        "accessToken": "访问令牌",
+        "x509": "X.509 证书",
+        "mqttClientId": "MQTT 客户端 ID",
+        "mqttUserName": "MQTT 用户名",
+        "mqttPassword": "MQTT 密码"
+      },
+      "result": {
+        "withErrors": "导入结束，存在失败项",
+        "complete": "导入完成",
+        "created": "新建设备",
+        "updated": "更新设备",
+        "errors": "失败数量",
+        "details": "错误详情"
+      },
+      "validation": {
+        "empty": "文件中没有可导入的数据，请检查是否只有表头。",
+        "invalidFile": "请选择 CSV、XLSX 或 XLS 文件。",
+        "tooLarge": "文件大小不能超过 10 MB。",
+        "rowWidth": "第 {row} 行的列数与第一行不一致，请检查文件和分隔符。",
+        "format": "文件读取或解析失败，请检查文件格式、引号和分隔符。",
+        "oneFile": "每次请选择一个文件。",
+        "requiredColumns": "请分别指定一个设备名称列和一个设备配置列。",
+        "requiredKey": "请为所有属性和遥测列填写键名。",
+        "duplicateColumn": "列类型或同一范围内的属性 / 遥测键重复，请检查映射。",
+        "mixedCredentials": "访问令牌、X.509 和 MQTT 凭证不能混合导入，请只选择一种凭证类型。",
+        "requiredValue": "第 {row} 行的设备名称或设备配置为空。",
+        "requestFailed": "导入请求失败，请检查错误信息后重试。"
+      }
+    },
+    "form": {
+      "namePlaceholder": "请输入设备名称",
+      "labelPlaceholder": "请输入便于识别的标签",
+      "customerPlaceholder": "选择所属客户（可选）",
+      "descriptionPlaceholder": "补充设备用途、位置或其他说明",
+      "gatewayDescription": "允许此设备作为网关，连接和管理下级设备。",
+      "overwriteActivityTimeDescription": "使用网关的活动时间更新下级设备的活动时间。",
+      "credentialsDescription": "配置设备连接平台时使用的身份凭证。创建前可返回上一步核对设备详情。",
+      "accessTokenPlaceholder": "输入或生成访问令牌",
+      "accessTokenDescription": "已自动生成随机令牌，也可自行设置，最多 32 个字符。",
+      "certificatePlaceholder": "粘贴 PEM 格式的 X.509 证书",
+      "certificateDescription": "请包含完整的 BEGIN CERTIFICATE 和 END CERTIFICATE 标记。",
+      "clientIdPlaceholder": "输入或生成客户端 ID",
+      "mqttDescription": "客户端 ID 与用户名至少填写一项；设置密码时必须填写用户名。",
+      "userNamePlaceholder": "请输入 MQTT 用户名",
+      "passwordPlaceholder": "输入或生成 MQTT 密码"
+    },
+    "makePublic": {
+      "title": "设为公开",
+      "content": "确定将设备“{name}”设为公开吗？公开后任何人都可在公共仪表板查看其数据。"
+    },
+    "unassign": {
+      "title": "取消分配",
+      "content": "确定将设备“{name}”从客户“{customer}”取消分配吗？"
+    },
+    "makePrivate": {
+      "title": "设为私有",
+      "content": "确定将设备“{name}”设为私有吗?设为私有后将从公共客户取消分配。"
+    },
+    "detail": {
+      "title": "设备详情",
+      "building": "设备详情页面建设中",
+      "notFound": "设备不存在或者无权限查看",
+      "copy": {
+        "deviceId": "复制设备 ID",
+        "deviceIdCopied": "设备ID已复制到剪贴板",
+        "accessToken": "复制访问令牌",
+        "accessTokenCopied": "访问令牌已复制到剪贴板",
+        "credentials": "复制访问凭证",
+        "credentialsCopied": "访问凭证已复制到剪贴板",
+        "credentialsEmpty": "当前设备没有可复制的访问凭证",
+        "credentialsFailed": "复制访问凭证失败，请重试。"
+      },
+      "tabs": {
+        "details": "详情",
+        "attributes": "属性",
+        "telemetry": "遥测数据",
+        "connectionApi": "连接API",
+        "rpc": "RPC",
+        "calculatedFields": "计算字段",
+        "alarmRules": "告警规则",
+        "alarms": "告警",
+        "events": "事件",
+        "relations": "关联",
+        "auditLogs": "审计日志"
+      },
+      "sections": {
+        "basic": "基本信息",
+        "activity": "连接状态",
+        "gateway": "网关配置"
+      },
+      "fields": {
+        "deviceId": "设备 ID",
+        "visibility": "可见性",
+        "lastActivityTime": "最近活动时间",
+        "lastConnectTime": "最近连接时间",
+        "lastDisconnectTime": "最近断开时间"
+      },
+      "actions": {
+        "back": "返回设备列表"
+      },
+      "messages": {
+        "loading": "正在加载设备信息…",
+        "loadFailed": "无法加载设备详情",
+        "refreshFailed": "刷新失败，当前显示上次加载的信息。",
+        "activityFailed": "连接记录加载失败，请通过操作菜单重试刷新。",
+        "unassigned": "未分配客户",
+        "unknown": "未知",
+        "public": "公开",
+        "private": "私有",
+        "notReported": "暂无记录",
+        "noDescription": "暂无描述",
+        "comingSoon": "即将开放",
+        "directDevice": "当前设备独立接入，不作为网关管理下级设备。"
+      }
+    },
+    "connectionApi": {
+      "protocol": {
+        "mqttDevice": "MQTT 设备",
+        "mqttGateway": "MQTT 网关",
+        "http": "HTTP",
+        "coap": "CoAP"
+      },
+      "fields": {
+        "function": "功能",
+        "topic": "Topic",
+        "url": "URL",
+        "operate": "操作",
+        "description": "描述"
+      },
+      "operate": {
+        "publish": "发布",
+        "subscribe": "订阅",
+        "observe": "观察"
+      },
+      "groups": {
+        "telemetry": "遥测",
+        "attributes": "属性",
+        "rpc": "RPC",
+        "claim": "设备认领",
+        "provision": "设备置备",
+        "ota": "OTA 升级",
+        "subDeviceState": "子设备状态",
+        "subDeviceTelemetry": "子设备遥测",
+        "subDeviceAttributes": "子设备属性",
+        "subDeviceRpc": "子设备 RPC",
+        "subDeviceClaim": "子设备认领"
+      },
+      "desc": {
+        "telemetryPublish": "上报遥测数据到服务端",
+        "attributesPublish": "上报客户端属性到服务端",
+        "attributesSubscribe": "订阅服务端下发的共享属性更新",
+        "attributesRequest": "向服务端请求客户端属性与共享属性",
+        "attributesResponse": "接收服务端返回的属性请求结果",
+        "attributesGet": "查询客户端属性与共享属性(clientKeys / sharedKeys)",
+        "attributesUpdates": "长轮询订阅共享属性更新(timeout 毫秒)",
+        "serverRpcSubscribe": "订阅服务端下发的 RPC 请求",
+        "serverRpcReply": "响应服务端下发的 RPC 请求",
+        "clientRpcRequest": "向服务端发起客户端 RPC 请求",
+        "clientRpcResponse": "接收客户端 RPC 请求的响应",
+        "claim": "发起设备认领,把设备分配给客户",
+        "provisionRequest": "发起设备置备请求",
+        "provisionResponse": "接收设备置备结果(含访问令牌)",
+        "fwSubscribe": "订阅服务端下发的固件分片",
+        "fwRequest": "按分片请求固件内容",
+        "swSubscribe": "订阅服务端下发的软件分片",
+        "swRequest": "按分片请求软件内容",
+        "fwDownload": "下载固件包(title / version 取自共享属性)",
+        "swDownload": "下载软件包(title / version 取自共享属性)",
+        "gatewayConnect": "上报子设备已连接",
+        "gatewayDisconnect": "上报子设备已断开",
+        "gatewayTelemetry": "上报子设备的遥测数据",
+        "gatewayAttributesPublish": "上报子设备的客户端属性",
+        "gatewayAttributesSubscribe": "订阅子设备的共享属性更新",
+        "gatewayAttributesRequest": "请求子设备的客户端属性或共享属性",
+        "gatewayAttributesResponse": "接收子设备属性请求的响应",
+        "gatewayRpcSubscribe": "订阅服务端下发给子设备的 RPC 请求",
+        "gatewayRpcReply": "响应服务端下发给子设备的 RPC 请求",
+        "gatewayClaim": "发起子设备认领"
+      },
+      "example": {
+        "action": "示例",
+        "title": "示例报文",
+        "empty": "该接口没有请求/响应报文"
+      },
+      "copyTopic": "复制 Topic",
+      "copyUrl": "复制 URL",
+      "copied": "已复制到剪贴板",
+      "tokenTip": "地址中的访问令牌取自当前设备凭证;凭证类型不是「访问令牌」时显示为 $ACCESS_TOKEN。",
+      "commands": {
+        "action": "连接命令",
+        "title": "设备连接命令",
+        "loading": "正在获取连接命令…",
+        "empty": "当前设备配置的传输类型没有可执行的连接命令,请查阅官方文档。",
+        "useInstructions": "按照以下步骤完成一次上报,即可验证设备连接是否可用:",
+        "installTools": "安装客户端工具",
+        "executeCommand": "执行以下命令",
+        "installCurlWindows": "Windows 10 1803 及以上版本已内置 curl;更早的版本请从 curl 官网下载安装。",
+        "installCurlMacos": "macOS 已内置 curl;如需升级可执行 brew install curl。",
+        "installMqttWindows": "Windows 下 mosquitto 客户端的安装方式请查阅官方文档。",
+        "installCoapLinux": "coap-client 工具的安装方式请查阅官方文档。",
+        "checkDocumentation": "该场景的连接方式请查阅官方文档。",
+        "documentation": "查看文档",
+        "downloadCompose": "下载网关 docker-compose.yml",
+        "downloadComposeSuccess": "docker-compose.yml 已开始下载"
+      }
+    },
+    "assign": {
+      "title": "分配给客户",
+      "batchTitle": "批量分配给客户",
+      "batchCount": "已选择 {count} 个设备",
+      "customer": "请选择要分配设备的客户",
+      "confirm": "分配",
+      "success": "已分配给客户",
+      "partialFailure": "{count} 个设备分配失败，请重试。重试仅处理失败的设备。"
+    },
+    "wizard": {
+      "deviceDetails": "设备详情",
+      "back": "上一步",
+      "nextCredentials": "下一步：凭证",
+      "add": "添加"
+    },
+    "connectivity": {
+      "checkConnectivity": "检查连接",
+      "createdCheckConnectivity": "设备已创建。让我们检查连接！",
+      "protocol": "传输协议",
+      "security": "连接安全模式",
+      "copyCommand": "复制命令",
+      "loadFailed": "连接命令加载失败，请重试。",
+      "deviceState": "设备状态",
+      "waiting": "等待状态更新",
+      "telemetryFailed": "实时连接已中断，请重试以继续检查设备状态。",
+      "latestTelemetry": "最新遥测数据",
+      "time": "时间",
+      "key": "键",
+      "value": "值",
+      "noTelemetry": "等待设备上报新的遥测数据…"
+    },
+    "credentials": {
+      "action": "设备凭证",
+      "manage": "管理设备凭证",
+      "lwm2mJson": "LwM2M 凭证（JSON）",
+      "view": "查看设备凭证",
+      "title": "设备凭证",
+      "typeLabel": "凭证类型",
+      "accessToken": "访问令牌",
+      "x509": "X.509 证书(PEM)",
+      "clientId": "客户端 ID",
+      "userName": "用户名",
+      "password": "密码",
+      "copy": "复制",
+      "copied": "已复制到剪贴板",
+      "generate": "重新生成",
+      "type": {
+        "ACCESS_TOKEN": "访问令牌",
+        "X509_CERTIFICATE": "X.509 证书",
+        "MQTT_BASIC": "MQTT 基础认证",
+        "LWM2M_CREDENTIALS": "LwM2M 凭证"
+      }
+    }
+  }
+}

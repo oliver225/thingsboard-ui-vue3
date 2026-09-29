@@ -1,0 +1,48 @@
+{
+  "menu": "Relations",
+  "fields": {
+    "direction": "Direction",
+    "type": "Relation type",
+    "typeGroup": "Type group",
+    "relatedEntityType": "Related entity type",
+    "relatedEntityName": "Related entity name",
+    "relatedEntityId": "Related entity",
+    "additionalInfo": "Additional info"
+  },
+  "actions": {
+    "add": "Add relation",
+    "edit": "Edit relation"
+  },
+  "messages": {
+    "searchPlaceholder": "Search relation type or related entity name",
+    "delete": {
+      "content": "The entity relation cannot be recovered after deletion."
+    }
+  },
+  "validation": {
+    "invalidJson": "Additional info is not valid JSON."
+  },
+  "options": {
+    "direction": {
+      "FROM": "Outbound",
+      "TO": "Inbound"
+    },
+    "typeGroup": {
+      "COMMON": "Common",
+      "DASHBOARD": "Dashboard",
+      "RULE_CHAIN": "Rule chain",
+      "RULE_NODE": "Rule node",
+      "EDGE": "Edge",
+      "EDGE_AUTO_ASSIGN_RULE_CHAIN": "Edge auto-assign rule chain"
+    }
+  },
+  "features": {
+    "copy": {
+      "entityIdCopied": "Entity ID copied to clipboard",
+      "typeCopied": "Relation type copied to clipboard"
+    },
+    "detail": {
+      "title": "Relation details"
+    }
+  }
+}

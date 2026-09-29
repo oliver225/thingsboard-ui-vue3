@@ -1,0 +1,62 @@
+{
+  "menu": "SCADA Symbols",
+  "fields": {
+    "name": "Name",
+    "resolution": "Resolution",
+    "size": "Size",
+    "scope": "Scope",
+    "public": "Public"
+  },
+  "actions": {
+    "upload": "Upload symbol",
+    "edit": "Edit SCADA symbol",
+    "download": "Download symbol",
+    "embed": "Embed symbol",
+    "export": "Export symbol",
+    "import": "Import symbol",
+    "replace": "Replace symbol",
+    "delete": "Delete SCADA symbol"
+  },
+  "messages": {
+    "forceDelete": {
+      "title": "Symbol is used by other entities",
+      "content": "Symbol “{title}” was not deleted because it is used by the following entities:",
+      "footer": "If you still want to delete the symbol, click the Delete anyway button.",
+      "button": "Delete anyway"
+    },
+    "uploadSuccess": "Uploaded successfully",
+    "updateSuccess": "Updated successfully"
+  },
+  "validation": {
+    "fileRequired": "Please select an SVG symbol file",
+    "titleRequired": "Title is required",
+    "svgOnly": "Only SVG format symbol files are supported"
+  },
+  "options": {
+    "scope": {
+      "system": "System",
+      "tenant": "Tenant"
+    }
+  },
+  "features": {
+    "filter": {
+      "includeSystemSymbols": "Include system symbols"
+    },
+    "upload": {
+      "file": "Symbol file",
+      "title": "Title",
+      "dragTip": "Click or drag an SVG file here to upload",
+      "replaceTip": "Click or drag a new SVG file here to replace the symbol",
+      "submit": "Upload",
+      "preview": "Symbol preview"
+    },
+    "import": {
+      "success": "Imported successfully",
+      "invalidFile": "Invalid symbol file",
+      "parseError": "Failed to parse file, please select a valid JSON file"
+    },
+    "form": {
+      "titlePlaceholder": "Enter symbol title"
+    }
+  }
+}

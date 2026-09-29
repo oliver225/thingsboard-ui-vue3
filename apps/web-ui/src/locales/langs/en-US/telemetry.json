@@ -1,0 +1,19 @@
+{
+  "menu": "Telemetry",
+  "actions": { "add": "Add telemetry", "delete": "Delete telemetry" },
+  "messages": {
+    "searchPlaceholder": "Search telemetry keys or values",
+    "connectionFailed": "The telemetry connection failed. Please retry."
+  },
+  "delete": {
+    "strategy": "Delete mode",
+    "all": "Delete all data",
+    "exceptLatest": "Delete history, keep the latest value",
+    "latest": "Delete only the latest value",
+    "period": "Delete data within a time range",
+    "startTime": "Start time",
+    "endTime": "End time",
+    "rewriteLatest": "Update the latest value from remaining history",
+    "invalidPeriod": "End time must be after start time"
+  }
+}

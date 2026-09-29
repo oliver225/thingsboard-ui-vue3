@@ -1,0 +1,19 @@
+{
+  "details": "详情",
+  "loading": "正在加载…",
+  "loadFailed": "加载失败",
+  "retry": "重试",
+  "retryHint": "请重试加载详情。",
+  "tabs": {
+    "details": "详情",
+    "attributes": "属性",
+    "telemetry": "遥测数据",
+    "calculatedFields": "计算字段",
+    "alarmRules": "告警规则",
+    "alarms": "告警",
+    "events": "事件",
+    "relations": "关联",
+    "auditLogs": "审计日志",
+    "apiKeys": "API 密钥"
+  }
+}

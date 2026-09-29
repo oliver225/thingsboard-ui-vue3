@@ -156,7 +156,7 @@ function onContentInteractOutside(event: Event) {
           </TooltipTrigger>
           <TooltipContent
             :side="item.tooltipSide"
-            class="side-content bg-accent text-popover-foreground rounded-md"
+            class="side-content bg-popover text-popover-foreground rounded-md"
           >
             {{ item.tooltipContent }}
           </TooltipContent>

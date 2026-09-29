@@ -1,0 +1,83 @@
+{
+  "menu": "远程过程调用",
+  "fields": {
+    "method": "RPC 命令",
+    "params": "RPC 参数",
+    "timeout": "超时时间",
+    "persistent": "持久化 RPC",
+    "retries": "重试次数",
+    "additionalInfo": "附加信息",
+    "createdTime": "创建时间",
+    "expirationTime": "过期时间",
+    "status": "状态",
+    "type": "类型",
+    "request": "请求",
+    "response": "响应"
+  },
+  "actions": {
+    "send": "发送",
+    "clear": "清空结果",
+    "refresh": "刷新"
+  },
+  "messages": {
+    "modeHint": {
+      "oneway": "向设备发送单向远程过程调用(RPC)请求,不等待设备响应。",
+      "twoway": "向设备发送双向远程过程调用(RPC)请求,并等待设备响应。"
+    },
+    "help": {
+      "method": "用于区分不同 RPC 调用的方法名称,例如 setGpio。",
+      "params": "处理请求所需的参数,是一个 JSON 对象;无参数时填 {'{}'}。",
+      "timeout": "处理超时时间(毫秒),默认 10000,最小 5000。",
+      "persistent": "持久化 RPC 会先落库,设备上线后再下发,并可在下方列表中查看状态。",
+      "retries": "持久化 RPC 在网络或设备端失败时的重发次数。",
+      "additionalInfo": "持久化 RPC 的元数据,会写入 RPC 事件,是一个 JSON 对象。"
+    },
+    "delete": {
+      "content": "确定要删除该持久化 RPC 调用吗?该操作不可恢复。"
+    },
+    "sendSuccess": "RPC 请求已发送"
+  },
+  "validation": {
+    "methodRequired": "请输入 RPC 命令",
+    "methodPattern": "RPC 命令只能包含字母、数字、下划线",
+    "timeoutRequired": "请输入超时时间",
+    "paramsRequired": "请输入 RPC 参数",
+    "invalidParams": "RPC 参数不是合法的 JSON",
+    "invalidAdditionalInfo": "附加信息不是合法的 JSON"
+  },
+  "options": {
+    "type": {
+      "oneway": "单向",
+      "twoway": "双向"
+    },
+    "status": {
+      "QUEUED": "排队中",
+      "SENT": "已发送",
+      "DELIVERED": "已送达",
+      "SUCCESSFUL": "成功",
+      "TIMEOUT": "超时",
+      "EXPIRED": "已过期",
+      "FAILED": "失败",
+      "DELETED": "已删除"
+    }
+  },
+  "features": {
+    "mode": {
+      "oneway": "单向 RPC",
+      "twoway": "双向 RPC"
+    },
+    "result": {
+      "title": "响应结果",
+      "empty": "尚未发送 RPC 请求",
+      "accepted": "请求已下发,设备未返回内容",
+      "failed": "请求失败"
+    },
+    "persistent": {
+      "title": "持久化 RPC 调用",
+      "statusAll": "全部状态"
+    },
+    "detail": {
+      "title": "RPC 调用详情"
+    }
+  }
+}

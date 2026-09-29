@@ -11,7 +11,6 @@ import { node } from './node';
 import { overrides } from './overrides';
 import { plugins } from './plugins';
 import { tailwindcss } from './tailwindcss';
-import { test } from './test';
 import { typescript } from './typescript';
 import { unicorn } from './unicorn';
 import { vue } from './vue';
@@ -70,7 +69,6 @@ const oxlintConfig = defineOxlintConfig(
     node,
     overrides,
     tailwindcss,
-    test,
     typescript,
     unicorn,
     vue,
@@ -89,7 +87,6 @@ export {
   oxlintConfig,
   plugins,
   tailwindcss,
-  test,
   typescript,
   unicorn,
   vue,

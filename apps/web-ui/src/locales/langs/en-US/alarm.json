@@ -1,0 +1,87 @@
+{
+  "menu": "Alarms",
+  "fields": {
+    "createdTime": "Created time",
+    "type": "Type",
+    "originator": "Originator",
+    "severity": "Severity",
+    "status": "Status",
+    "startTime": "Start time",
+    "assignee": "Assignee"
+  },
+  "actions": {
+    "ack": "Acknowledge",
+    "clear": "Clear",
+    "ackSuccess": "Alarm acknowledged",
+    "clearSuccess": "Alarm cleared",
+    "edit": "Edit alarm",
+    "delete": "Delete alarm",
+    "detail": "Details"
+  },
+  "options": {
+    "allTime": "All time",
+    "severity": {
+      "CRITICAL": "Critical",
+      "MAJOR": "Major",
+      "MINOR": "Minor",
+      "WARNING": "Warning",
+      "INDETERMINATE": "Indeterminate"
+    },
+    "status": {
+      "ACTIVE_UNACK": "Active unacknowledged",
+      "ACTIVE_ACK": "Active acknowledged",
+      "CLEARED_UNACK": "Cleared unacknowledged",
+      "CLEARED_ACK": "Cleared acknowledged"
+    },
+    "searchStatus": {
+      "ANY": "All",
+      "ACTIVE": "Active",
+      "CLEARED": "Cleared",
+      "ACK": "Acknowledged",
+      "UNACK": "Unacknowledged"
+    }
+  },
+  "detail": {
+    "title": "Alarm details",
+    "duration": "Duration",
+    "durationValue": "{days}d {hours}h {minutes}m {seconds}s",
+    "showMore": "Show more",
+    "showLess": "Show less",
+    "additionalInfo": "Additional information",
+    "unassigned": "Unassigned",
+    "assignSuccess": "Assignee updated",
+    "loadFailed": "Failed to load. Please retry.",
+    "retry": "Retry",
+    "close": "Close",
+    "activity": "Activity",
+    "addComment": "Add a comment…",
+    "send": "Send",
+    "edit": "Edit",
+    "delete": "Delete",
+    "save": "Save",
+    "cancel": "Cancel",
+    "empty": "No activity yet",
+    "refresh": "Refresh",
+    "export": "Export activity",
+    "newestFirst": "Newest first",
+    "oldestFirst": "Oldest first",
+    "loadMore": "Load more",
+    "deletedUser": "Deleted user",
+    "system": "System",
+    "edited": "Edited",
+    "deleteComment": "Delete comment",
+    "deleteCommentConfirm": "Delete this comment?",
+    "author": "Author",
+    "time": "Time",
+    "text": "Text",
+    "systemComments": {
+      "ACKED_BY_USER": "Alarm acknowledged by {userName}",
+      "CLEARED_BY_USER": "Alarm cleared by {userName}",
+      "ASSIGNED_TO_USER": "Alarm assigned to {assigneeName} by {userName}",
+      "UNASSIGNED_BY_USER": "Alarm unassigned by {userName}",
+      "UNASSIGNED_FROM_DELETED_USER": "Alarm unassigned because the assignee was deleted",
+      "COMMENT_DELETED": "Comment deleted by {userName}",
+      "SEVERITY_CHANGED": "Severity changed from {oldSeverity} to {newSeverity}"
+    }
+  }
+}

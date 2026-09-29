@@ -1,0 +1,138 @@
+{
+  "title": "首页",
+  "device": "设备",
+  "alarm": "告警",
+  "assets": "资产",
+  "users": "用户",
+  "customers": "客户",
+  "tenants": "租户",
+  "tenantProfiles": "租户配置",
+  "dashboards": "仪表板",
+  "inactive": "离线",
+  "active": "在线",
+  "total": "总计",
+  "critical": "严重",
+  "assignedToMe": "分配给我",
+  "addDevice": "添加设备",
+  "addDashboard": "添加仪表板",
+  "add": { "tenants": "添加租户", "tenantProfiles": "添加租户配置" },
+  "activity": "活动",
+  "messages": "传输消息",
+  "activeDevices": "活跃设备",
+  "dataPoints": "存储数据点",
+  "units": { "messages": "条", "dataPoints": "个", "devices": "台" },
+  "last30Days": "历史 · 最近 30 天",
+  "lastHour": "实时 · 最近 1 小时",
+  "systemResources": "系统资源",
+  "disk": "磁盘",
+  "loading": "正在加载…",
+  "loadFailed": "数据加载失败，请重试",
+  "retry": "刷新重试",
+  "noTelemetry": "此时间范围内暂无数据",
+  "noDashboards": "暂无仪表板",
+  "name": "名称",
+  "createdTime": "创建时间",
+  "recentlyCreated": "最近创建",
+  "sort": "仪表板排序",
+  "favorite": "收藏仪表板",
+  "unfavorite": "取消收藏",
+  "documentation": "文档",
+  "docs": {
+    "gettingStarted": "快速入门",
+    "tenantProfiles": "租户配置",
+    "api": "API 文档",
+    "widgets": "部件库"
+  },
+  "configuredFeatures": "已配置功能",
+  "features": {
+    "email": "Email",
+    "sms": "短信",
+    "slack": "Slack",
+    "oauth": "OAuth 2",
+    "twoFactor": "双因素认证"
+  },
+  "unknown": "未知",
+  "configured": "已配置",
+  "notConfigured": "未配置",
+  "quickLinks": "快速链接",
+  "map": {
+    "title": "设备地图",
+    "demoNotice": "演示模式 · 虚构设备，非真实数据",
+    "demoDevice": "演示设备 {index}",
+    "demoLabel": "虚构设备，仅用于地图演示",
+    "fit": "定位设备",
+    "located": "已定位 {count} 台设备",
+    "empty": "暂无设备位置数据",
+    "limited": "当前展示最近 1024 台设备中的有效位置",
+    "loadFailed": "地图加载失败，请检查网络或地图服务配置后重试",
+    "label": "标签",
+    "status": "状态",
+    "lastActivity": "最后活动时间"
+  },
+  "editQuickLinks": "编辑快速链接",
+  "chooseQuickLinks": "点击编辑选择快速链接",
+  "usage": {
+    "title": "使用情况",
+    "category": "使用情况类型",
+    "entities": "实体",
+    "api": "API 调用",
+    "jsExecutions": "JavaScript 执行",
+    "emails": "邮件"
+  },
+  "deviceHint": "查看设备状态与遥测数据",
+  "alarmHint": "跟踪和处理当前告警",
+  "dashboardHint": "查看分配给您的仪表板",
+  "assetHint": "查看客户资产与关联信息",
+  "getStarted": "开始使用",
+  "viewDocs": "查看操作文档",
+  "openPage": "前往管理页面",
+  "done": "完成",
+  "reopenGuide": "重新查看",
+  "guideCompleted": "已完成入门引导，随时可以重新查看。",
+  "guide": {
+    "sms": {
+      "title": "配置功能：短信提供商",
+      "description": "配置短信提供商，用于发送短信通知与验证码。保存配置后，可通过测试短信验证服务是否可用。"
+    },
+    "tenant": {
+      "title": "创建租户和租户管理员",
+      "description": "租户是拥有或管理设备和资产的个人或组织。创建租户后，可在租户管理中添加管理员，由管理员管理该租户的设备、资产、客户和仪表板。"
+    },
+    "mail": {
+      "title": "配置功能：邮件服务器",
+      "description": "配置发件邮件服务器，用于发送账号激活、密码重置和通知邮件。保存配置后可在设置页面发送测试邮件。"
+    },
+    "twoFactor": {
+      "title": "配置功能：双因素认证",
+      "description": "配置双因素认证方式与验证策略，为平台用户提供额外的登录保护。"
+    },
+    "oauth": {
+      "title": "配置功能：OAuth 2",
+      "description": "添加 OAuth 2 客户端，并配置域名与客户端的关联，让用户通过外部身份提供商登录。"
+    },
+    "device": {
+      "title": "创建设备",
+      "description": "添加您的第一台设备，选择设备配置并设置设备名称。平台会为设备生成连接凭据。"
+    },
+    "connect": {
+      "title": "连接设备",
+      "description": "打开设备列表，选择设备并查看连接说明。使用设备凭据通过 MQTT、HTTP 或 CoAP 上报遥测数据。"
+    },
+    "dashboard": {
+      "title": "创建仪表板",
+      "description": "创建仪表板，用于组织和展示设备、资产的遥测数据。您可以在仪表板列表中管理并分配仪表板。"
+    },
+    "rule": {
+      "title": "配置告警规则",
+      "description": "设置告警条件、严重程度与清除条件，例如在设备温度超过阈值时产生告警。"
+    },
+    "alarm": {
+      "title": "创建告警",
+      "description": "向设备发送满足告警规则的遥测数据。规则触发后，可在告警列表中查看、确认或清除告警。"
+    },
+    "customer": {
+      "title": "创建客户并共享仪表板",
+      "description": "创建客户，将设备和仪表板分配给该客户。客户用户只能访问分配给自己的资源，其他客户的数据将被隐藏。"
+    }
+  }
+}

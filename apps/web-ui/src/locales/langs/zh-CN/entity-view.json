@@ -1,0 +1,93 @@
+{
+  "menu": "实体视图",
+  "sections": {
+    "groups": {
+      "attributes": "属性传播",
+      "timeseries": "时间序列数据"
+    }
+  },
+  "fields": {
+    "name": "名称",
+    "type": "类型",
+    "entityType": "实体类型",
+    "entity": "目标实体",
+    "customer": "所属客户",
+    "description": "描述",
+    "clientAttributes": "客户端属性",
+    "sharedAttributes": "共享属性",
+    "serverAttributes": "服务端属性",
+    "timeseries": "遥测数据",
+    "startTime": "开始时间",
+    "endTime": "结束时间"
+  },
+  "actions": {
+    "create": "新建实体视图",
+    "edit": "编辑实体视图",
+    "delete": "删除实体视图",
+    "assign": "分配给客户",
+    "unassign": "取消分配",
+    "unassignSuccess": "已取消分配",
+    "makePublic": "设为公开",
+    "makePublicSuccess": "已设为公开",
+    "makePrivate": "设为私有",
+    "makePrivateSuccess": "已设为私有",
+    "batchAssign": "批量分配"
+  },
+  "validation": {
+    "nameRequired": "请输入实体视图名称",
+    "typeRequired": "请输入类型",
+    "entityRequired": "请选择目标实体",
+    "nameMaxLength": "实体视图名称不能超过 255 个字符",
+    "typeMaxLength": "实体视图类型不能超过 255 个字符",
+    "timeRange": "结束时间不能早于开始时间"
+  },
+  "features": {
+    "assign": {
+      "title": "分配给客户",
+      "batchTitle": "批量分配给客户",
+      "batchCount": "已选择 {count} 个实体视图",
+      "customer": "请选择要分配实体视图的客户",
+      "confirm": "分配",
+      "success": "已分配给客户",
+      "partialFailure": "{count} 个实体视图分配失败，请重试。重试仅处理失败的实体视图。"
+    },
+    "makePublic": {
+      "title": "设为公开",
+      "content": "确定将实体视图“{name}”设为公开吗？公开后任何人都可在公共仪表板查看其数据。"
+    },
+    "makePrivate": {
+      "title": "设为私有",
+      "content": "确定将实体视图“{name}”设为私有吗?设为私有后将从公共客户取消分配。"
+    },
+    "unassign": {
+      "title": "取消分配",
+      "content": "确定将实体视图“{name}”从客户“{customer}”取消分配吗？"
+    },
+    "form": {
+      "namePlaceholder": "请输入实体视图名称",
+      "descriptionPlaceholder": "请输入实体视图描述（可选）",
+      "typePlaceholder": "选择或输入实体视图类型",
+      "keysPlaceholder": "选择已有键，或输入新键后按回车",
+      "attributesHint": "实体视图将在每次保存或更新此实体视图时自动从目标实体复制指定的属性。出于性能考虑，每次属性更改时不会自动将目标实体属性传播到实体视图。您可以通过在规则链中配置“copy to view”规则节点，并将“Post attributes”和“Attributes Updated”消息链接到该节点来启用自动传播。",
+      "timeseriesHint": "选择允许实体视图读取的遥测键，数据为只读。留空表示允许读取全部遥测键。",
+      "noTimeLimit": "不限制",
+      "timeHint": "限制可访问遥测数据的时间范围，留空表示不限制。"
+    },
+    "detail": {
+      "title": "实体视图详情",
+      "basic": "基本信息",
+      "visibility": "可见性",
+      "public": "公开",
+      "private": "私有",
+      "unassigned": "未分配客户",
+      "copyId": "复制实体视图 ID",
+      "idCopied": "实体视图 ID 已复制",
+      "noDescription": "暂无描述",
+      "notFound": "实体视图不存在、已被删除，或当前账号无权访问。",
+      "dataSettings": "数据配置",
+      "allTelemetry": "全部遥测键",
+      "noAttributes": "未配置属性传播",
+      "targetNameUnavailable": "无法读取目标实体名称"
+    }
+  }
+}

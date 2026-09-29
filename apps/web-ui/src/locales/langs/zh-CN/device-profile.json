@@ -1,0 +1,143 @@
+{
+  "menu": "设备配置",
+  "fields": {
+    "name": "配置名称",
+    "transportType": "传输类型",
+    "image": "设备图片",
+    "defaultRuleChain": "默认规则链",
+    "defaultDashboard": "移动端仪表板",
+    "defaultQueue": "默认队列",
+    "defaultEdgeRuleChain": "默认边缘规则链",
+    "description": "描述",
+    "default": "默认配置"
+  },
+  "actions": {
+    "create": "新建设备配置",
+    "edit": "编辑设备配置",
+    "setDefault": "设为默认",
+    "export": "导出设备配置",
+    "import": "导入设备配置",
+    "delete": "删除设备配置"
+  },
+  "messages": {
+    "transportInfo": {
+      "default": "默认传输无需额外配置。",
+      "unsupported": "该传输类型的高级配置暂不支持在此编辑,保存时将保留原有配置。"
+    }
+  },
+  "validation": {
+    "nameRequired": "请输入配置名称",
+    "topicRequired": "请输入主题过滤器",
+    "required": "此项必填",
+    "nameMaxLength": "配置名称不能超过 255 个字符",
+    "topicInvalid": "主题通配符 + 必须独占一个层级，# 必须位于最后一个层级",
+    "topicDuplicate": "属性上报主题不能与遥测上报主题相同",
+    "nonnegativeInteger": "请输入大于或等于 0 的整数"
+  },
+  "options": {
+    "type": {
+      "DEFAULT": "默认",
+      "SNMP": "SNMP"
+    },
+    "transport": {
+      "DEFAULT": "默认",
+      "MQTT": "MQTT",
+      "COAP": "CoAP",
+      "LWM2M": "LwM2M",
+      "SNMP": "SNMP",
+      "mqttTopicFilters": "MQTT 设备主题过滤器",
+      "telemetryTopic": "遥测上报主题过滤器",
+      "attributesTopic": "属性上报主题过滤器",
+      "attributesSubscribeTopic": "属性订阅主题过滤器",
+      "payloadType": "负载类型",
+      "telemetryProtoSchema": "遥测 Proto Schema",
+      "attributesProtoSchema": "属性 Proto Schema",
+      "rpcRequestProtoSchema": "RPC 请求 Proto Schema",
+      "rpcResponseProtoSchema": "RPC 响应 Proto Schema",
+      "enableJsonCompat": "启用与 JSON 负载格式的兼容",
+      "useJsonForDownlink": "默认下行主题使用 JSON 格式",
+      "sparkplug": "MQTT Sparkplug B Edge of Network (EoN) 节点",
+      "sparkplugHint": "允许 EoN 节点以 Sparkplug B 负载与主题格式接入。",
+      "sparkplugMetricNames": "作为属性存储的 Sparkplug 指标",
+      "sparkplugMetricNamesHint": "这些 Sparkplug 指标将作为设备属性存储,其余指标将作为设备遥测存储。",
+      "sendAckOnValidationException": "校验异常时回发 PUBACK",
+      "coapDeviceType": "CoAP 设备类型",
+      "powerSavingMode": "省电模式",
+      "powerMode": "省电模式类型",
+      "psmActivityTimer": "PSM 活动定时器(毫秒)",
+      "edrxCycle": "eDRX 周期(毫秒)",
+      "pagingTransmissionWindow": "寻呼传输窗口(毫秒)"
+    },
+    "payload": {
+      "JSON": "JSON",
+      "PROTOBUF": "Protobuf"
+    },
+    "coapDeviceType": {
+      "DEFAULT": "默认",
+      "EFENTO": "Efento NB-IoT"
+    },
+    "powerMode": {
+      "DRX": "DRX",
+      "PSM": "PSM",
+      "E_DRX": "eDRX"
+    },
+    "provision": {
+      "DISABLED": "禁用",
+      "ALLOW_CREATE_NEW_DEVICES": "允许创建新设备",
+      "CHECK_PRE_PROVISIONED_DEVICES": "校验预置设备",
+      "X509_CERTIFICATE_CHAIN": "X.509 证书链",
+      "strategy": "预配置策略",
+      "deviceKey": "设备预配置密钥",
+      "deviceSecret": "设备预配置密文",
+      "allowCreateNewDevices": "允许创建新设备",
+      "certificateValue": "X.509 证书 / 证书链(PEM)",
+      "cnRegex": "从证书 CN 提取设备名的正则",
+      "copy": "复制凭据",
+      "generate": "重新生成",
+      "copyFailed": "复制失败，请手动复制"
+    }
+  },
+  "features": {
+    "wizard": {
+      "details": "设备配置详情",
+      "transport": "传输配置",
+      "provision": "设备预配置",
+      "prev": "上一步",
+      "next": "下一步",
+      "nextWithLabel": "下一步： {label}",
+      "steps": "设备配置步骤"
+    },
+    "import": {
+      "success": "导入成功",
+      "invalidFile": "无效的设备配置文件",
+      "parseError": "文件解析失败,请选择合法的 JSON 文件"
+    },
+    "setDefault": {
+      "content": "新建设备时将默认使用此配置。",
+      "title": "确定将“{name}”设为默认设备配置吗？",
+      "success": "已设为默认设备配置"
+    },
+    "form": {
+      "namePlaceholder": "例如：园区楼宇",
+      "descriptionPlaceholder": "描述此配置的用途或适用设备（选填）",
+      "ruleChainPlaceholder": "使用根规则链",
+      "ruleChainHint": "处理使用此配置的设备消息；留空时使用根规则链。",
+      "dashboardPlaceholder": "选择移动端仪表板（选填）",
+      "dashboardHint": "在移动应用中打开设备时显示的仪表板。",
+      "queuePlaceholder": "使用默认队列",
+      "edgeRuleChainPlaceholder": "选择 Edge 规则链（选填）",
+      "edgeRuleChainHint": "设备分配到 Edge 时，此规则链会自动分配到对应的 Edge。"
+    },
+    "detail": {
+      "title": "设备配置详情",
+      "basic": "基本信息",
+      "default": "默认",
+      "copyId": "复制设备配置 ID",
+      "idCopied": "设备配置 ID 已复制",
+      "nameUnavailable": "无法读取实体名称",
+      "noDescription": "暂无描述",
+      "notFound": "设备配置不存在、已被删除，或当前账号无权访问。",
+      "advancedTransport": "高级传输配置"
+    }
+  }
+}

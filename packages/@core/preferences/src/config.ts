@@ -102,7 +102,7 @@ const defaultPreferences: Preferences = {
   },
   tabbar: {
     draggable: true,
-    enable: true,
+    enable: false,
     height: 38,
     keepAlive: true,
     maxCount: 0,
@@ -119,7 +119,7 @@ const defaultPreferences: Preferences = {
   theme: {
     builtinType: 'default',
     colorDestructive: 'hsl(348 100% 61%)',
-    colorPrimary: 'hsl(212 100% 45%)',
+    colorPrimary: '#00C07F',
     colorSuccess: 'hsl(144 57% 58%)',
     colorWarning: 'hsl(42 84% 61%)',
     mode: 'dark',

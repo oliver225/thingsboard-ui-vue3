@@ -1,0 +1,55 @@
+{
+  "menu": "JavaScript 库",
+  "fields": {
+    "title": "标题",
+    "subType": "JavaScript 类型",
+    "scope": "作用域",
+    "file": "JavaScript 文件",
+    "content": "模块脚本"
+  },
+  "actions": {
+    "add": "添加 JavaScript",
+    "edit": "编辑JavaScript 资源",
+    "download": "下载",
+    "delete": "删除JavaScript 资源",
+    "view": "查看 JavaScript 资源"
+  },
+  "messages": {
+    "forceDelete": {
+      "title": "JavaScript 资源被其他实体使用",
+      "content": "JavaScript 资源 “{title}” 未被删除，因为它被以下实体使用：",
+      "footer": "如果仍要删除该资源，请点击 仍然删除 按钮。",
+      "button": "仍然删除"
+    }
+  },
+  "validation": {
+    "titleRequired": "请输入标题",
+    "fileRequired": "请选择 JavaScript 文件",
+    "fileTypeInvalid": "请选择 .js 文件",
+    "contentRequired": "请输入模块脚本",
+    "readFileError": "文件读取失败",
+    "subTypeRequired": "请选择 JavaScript 类型",
+    "titleTooLong": "标题不能超过 255 个字符"
+  },
+  "options": {
+    "subTypes": {
+      "extension": "拓展",
+      "module": "模块"
+    },
+    "scope": {
+      "system": "系统",
+      "tenant": "租户"
+    }
+  },
+  "features": {
+    "form": {
+      "titlePlaceholder": "请输入 JavaScript 标题",
+      "filePlaceholder": "点击或拖拽 .js 文件到此处上传",
+      "contentPlaceholder": "在此编写 JavaScript 模块代码",
+      "importFromFile": "从文件导入"
+    },
+    "filter": {
+      "allSubTypes": "全部类型"
+    }
+  }
+}

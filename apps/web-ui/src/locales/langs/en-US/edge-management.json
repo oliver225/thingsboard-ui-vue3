@@ -1,0 +1,97 @@
+{
+  "menu": "Edge management",
+  "messages": {
+    "copied": "Copied to clipboard"
+  },
+  "features": {
+    "instances": {
+      "title": "EDGE instances",
+      "fields": {
+        "name": "Name",
+        "type": "Type",
+        "label": "Label",
+        "description": "Description",
+        "customer": "Customer",
+        "public": "Public",
+        "routingKey": "Edge routing key",
+        "secret": "Edge secret"
+      },
+      "actions": {
+        "create": "Add Edge instance",
+        "edit": "Edit Edge instance",
+        "delete": "Delete Edge instance",
+        "sync": "Synchronize Edge",
+        "copyRoutingKey": "Copy routing key",
+        "copySecret": "Copy Edge secret"
+      },
+      "form": {
+        "section": "Basic information",
+        "hint": "Name and categorize this Edge instance to identify and manage your edge nodes.",
+        "namePlaceholder": "Enter an Edge instance name",
+        "typePlaceholder": "Select or enter a type",
+        "labelPlaceholder": "Enter a display label",
+        "descriptionPlaceholder": "Describe the purpose or location of this Edge instance",
+        "credentials": "Connection credentials",
+        "credentialsHint": "Generated on creation to connect Edge to the cloud. Existing instance credentials are preserved."
+      },
+      "validation": {
+        "nameRequired": "Enter an Edge instance name",
+        "typeRequired": "Select or enter a type",
+        "maxLength": "Must be 255 characters or fewer"
+      },
+      "sync": {
+        "confirm": "Synchronize cloud data to Edge instance “{name}”?",
+        "success": "Edge synchronization requested"
+      },
+      "detail": {
+        "title": "Edge instance details",
+        "basic": "Basic information",
+        "copyId": "Copy Edge ID",
+        "notFound": "Edge instance not found or temporarily unavailable",
+        "noDescription": "No description",
+        "rootRuleChain": "Root rule chain",
+        "nameUnavailable": "Name unavailable",
+        "unassigned": "Unassigned"
+      }
+    },
+    "ruleChains": {
+      "title": "Edge rule chains",
+      "fields": {
+        "name": "Name",
+        "description": "Description",
+        "debugMode": "Debug mode",
+        "root": "Root rule chain template",
+        "autoAssign": "Auto-assign"
+      },
+      "actions": {
+        "create": "Add Edge rule chain",
+        "edit": "Edit Edge rule chain",
+        "delete": "Delete Edge rule chain",
+        "setRoot": "Set as root rule chain template",
+        "setAutoAssign": "Enable auto-assignment",
+        "unsetAutoAssign": "Disable auto-assignment"
+      },
+      "form": {
+        "section": "Edge rule chain",
+        "hint": "This rule chain runs on Edge. Use the list to configure the root rule chain template and automatic assignment for new Edge instances.",
+        "namePlaceholder": "Enter an Edge rule chain name",
+        "descriptionPlaceholder": "Describe the processing logic and purpose of this rule chain",
+        "debugHint": "Record rule node debug events to troubleshoot message processing."
+      },
+      "validation": {
+        "nameRequired": "Enter an Edge rule chain name",
+        "nameMaxLength": "Rule chain name must be 255 characters or fewer",
+        "edgeOnly": "Only EDGE rule chains can be edited here."
+      },
+      "setRoot": {
+        "title": "Use “{name}” as the root rule chain template?",
+        "content": "New Edge instances will use this rule chain as their root. Existing Edge instances are unaffected.",
+        "success": "Edge root rule chain template updated"
+      },
+      "autoAssign": {
+        "setConfirm": "Automatically assign “{name}” to new Edge instances?",
+        "unsetConfirm": "Stop automatically assigning “{name}” to new Edge instances? Existing assignments are preserved."
+      }
+    }
+  }
+}

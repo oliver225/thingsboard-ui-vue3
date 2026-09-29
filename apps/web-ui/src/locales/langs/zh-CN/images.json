@@ -1,0 +1,76 @@
+{
+  "menu": "图片库",
+  "fields": {
+    "name": "名称",
+    "resolution": "分辨率",
+    "size": "大小",
+    "scope": "作用域",
+    "public": "公开"
+  },
+  "actions": {
+    "upload": "上传图片",
+    "edit": "编辑图片",
+    "download": "下载图片",
+    "embed": "嵌入图片",
+    "export": "导出图片",
+    "import": "导入图片",
+    "replace": "替换图片",
+    "delete": "删除图片"
+  },
+  "messages": {
+    "forceDelete": {
+      "title": "图片被其他实体使用",
+      "content": "图片 “{title}” 未被删除，因为它被以下实体使用：",
+      "footer": "如果仍要删除该图片，请点击 仍然删除 按钮。",
+      "button": "仍然删除"
+    },
+    "uploadSuccess": "上传成功",
+    "updateSuccess": "更新成功"
+  },
+  "validation": {
+    "fileRequired": "请选择图片文件",
+    "titleRequired": "请输入标题",
+    "imageOnly": "请选择图片格式的文件"
+  },
+  "options": {
+    "scope": {
+      "system": "系统",
+      "tenant": "租户"
+    }
+  },
+  "features": {
+    "filter": {
+      "includeSystemImages": "包含系统图片"
+    },
+    "upload": {
+      "file": "图片文件",
+      "title": "标题",
+      "dragTip": "点击或拖拽文件到此处上传",
+      "replaceTip": "点击或拖拽新文件以替换当前图片",
+      "submit": "上传",
+      "preview": "图片预览"
+    },
+    "embed": {
+      "title": "嵌入图片",
+      "public": "公开访问",
+      "publicDesc": "开启后可通过下方公共链接匿名访问该图片,无需登录。",
+      "publicLink": "公共链接",
+      "embedHtml": "HTML 代码",
+      "link": "资源链接",
+      "copy": "复制",
+      "copied": "已复制到剪贴板",
+      "copyFailed": "复制失败",
+      "makePublicFirst": "请先开启公开访问以获取公共链接。",
+      "publicEnabled": "已开启公开访问",
+      "publicDisabled": "已关闭公开访问"
+    },
+    "import": {
+      "success": "导入成功",
+      "invalidFile": "无效的图片文件",
+      "parseError": "文件解析失败,请选择合法的 JSON 文件"
+    },
+    "form": {
+      "titlePlaceholder": "请输入图片标题"
+    }
+  }
+}

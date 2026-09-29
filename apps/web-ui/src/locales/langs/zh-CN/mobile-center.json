@@ -1,0 +1,136 @@
+{
+  "menu": "移动中心",
+  "sections": {
+    "applications": "移动应用",
+    "bundles": "应用包"
+  },
+  "options": {
+    "status": {
+      "DRAFT": "草稿",
+      "PUBLISHED": "已发布",
+      "DEPRECATED": "已弃用",
+      "SUSPENDED": "已暂停"
+    }
+  },
+  "features": {
+    "application": {
+      "actions": {
+        "create": "添加移动应用",
+        "edit": "编辑移动应用",
+        "generateSecret": "生成密钥",
+        "delete": "删除移动应用",
+        "suspend": "暂停移动应用"
+      },
+      "fields": {
+        "pkgName": "应用包名",
+        "secret": "应用密钥",
+        "platform": "平台",
+        "status": "状态",
+        "minVersion": "最低版本",
+        "latestVersion": "最新版本",
+        "minReleaseNotes": "最低版本发行说明",
+        "latestReleaseNotes": "最新版本发行说明",
+        "storeLink": "应用商店链接",
+        "fingerprints": "SHA-256 证书指纹",
+        "appId": "iOS 应用 ID",
+        "title": "名称"
+      },
+      "form": {
+        "titlePlaceholder": "请输入应用名称",
+        "secretPlaceholder": "请输入 Base64 编码的应用密钥",
+        "releaseNotesPlaceholder": "请输入版本发行说明"
+      },
+      "groups": {
+        "versionInfo": "版本信息",
+        "storeInfo": "商店信息"
+      },
+      "validation": {
+        "packageRequired": "请输入应用包名",
+        "packageInvalid": "请输入有效的应用包名，例如 org.example.app",
+        "secretInvalid": "密钥必须为 Base64 编码，解码后至少包含 64 个字节",
+        "versionInvalid": "请输入有效版本号，例如 1.0.0",
+        "storeRequired": "发布应用时必须填写应用商店链接",
+        "storeInvalid": "请输入所选平台的有效应用商店链接",
+        "fingerprintsRequired": "发布 Android 应用时必须填写证书指纹",
+        "fingerprintsInvalid": "请输入冒号分隔的 32 字节 SHA-256 指纹",
+        "appIdRequired": "发布 iOS 应用时必须填写应用 ID",
+        "appIdInvalid": "请输入团队 ID 和应用包名，例如 ABCDEFGHIJ.org.example.app",
+        "secretRequired": "请输入应用密钥",
+        "maxLength": "不能超过 {max} 个字符",
+        "platformRequired": "请选择应用平台",
+        "statusRequired": "请选择应用状态"
+      },
+      "search": {
+        "allPlatforms": "全部平台"
+      },
+      "delete": {
+        "publishedTitle": "“{title}”已发布。删除会影响正在使用此应用的用户，确定永久删除吗？"
+      },
+      "suspend": {
+        "title": "确定暂停移动应用“{title}”吗？"
+      }
+    },
+    "bundle": {
+      "actions": {
+        "create": "添加应用包",
+        "edit": "编辑应用包",
+        "configure": "应用配置",
+        "delete": "删除应用包",
+        "next": "下一步",
+        "previous": "上一步",
+        "createClient": "新增 OAuth 2.0 客户端"
+      },
+      "fields": {
+        "title": "标题",
+        "clients": "OAuth 客户端",
+        "android": "Android 应用",
+        "ios": "iOS 应用",
+        "oauth2Enabled": "启用 OAuth 2.0",
+        "description": "描述"
+      },
+      "delete": {
+        "disabled": "请先解除 Android 和 iOS 应用关联，再删除应用包"
+      },
+      "steps": {
+        "basic": "基本信息",
+        "layout": "布局"
+      },
+      "form": {
+        "titlePlaceholder": "请输入应用包标题",
+        "androidPlaceholder": "请选择 Android 应用",
+        "iosPlaceholder": "请选择 iOS 应用",
+        "descriptionPlaceholder": "请输入应用包描述",
+        "clientsPlaceholder": "请选择 OAuth 客户端",
+        "clientsSaveFailed": "应用包已保存，但 OAuth 客户端更新失败，请重试保存。"
+      },
+      "validation": {
+        "titleRequired": "请输入应用包标题",
+        "titleMaxLength": "标题不能超过 255 个字符"
+      },
+      "configuration": {
+        "description": "按以下步骤配置并运行 ThingsBoard 移动应用。",
+        "prepareTitle": "1. 准备开发环境",
+        "prepareDescription": "安装 Flutter SDK，并按官方文档完成开发环境配置。",
+        "documentation": "安装文档",
+        "sourceTitle": "2. 获取应用源码",
+        "sourceDescription": "在终端中运行以下命令，克隆 Flutter ThingsBoard 应用仓库。",
+        "copySource": "复制克隆命令",
+        "settingsTitle": "3. 下载应用配置",
+        "settingsDescription": "填写移动应用可访问的服务地址，将 configs.json 放到刚克隆的项目根目录中。",
+        "endpoint": "ThingsBoard 服务地址",
+        "endpointHint": "包含 http:// 或 https://，可带端口，不包含路径、查询参数或片段。",
+        "endpointRequired": "请输入 ThingsBoard 服务地址",
+        "endpointInvalid": "请输入有效的 HTTP 或 HTTPS 服务地址，例如 https://thingsboard.example.com",
+        "noApplications": "未关联移动应用，将仅导出服务器配置。",
+        "download": "下载 configs.json",
+        "runTitle": "4. 运行应用",
+        "runDescription": "连接设备或启动模拟器，在项目根目录中执行以下命令，也可通过 IDE 运行。",
+        "copyRun": "复制运行命令",
+        "copied": "命令已复制",
+        "copyFailed": "复制失败，请手动复制命令",
+        "moreInformation": "需要了解更多 Flutter 开发内容？",
+        "gettingStarted": "入门指南"
+      }
+    }
+  }
+}

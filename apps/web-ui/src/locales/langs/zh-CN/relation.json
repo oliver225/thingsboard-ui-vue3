@@ -1,0 +1,48 @@
+{
+  "menu": "关联",
+  "fields": {
+    "direction": "方向",
+    "type": "关系类型",
+    "typeGroup": "类型组",
+    "relatedEntityType": "关联实体类型",
+    "relatedEntityName": "关联实体名称",
+    "relatedEntityId": "关联实体",
+    "additionalInfo": "附加信息"
+  },
+  "actions": {
+    "add": "新增关联",
+    "edit": "编辑关联"
+  },
+  "messages": {
+    "searchPlaceholder": "搜索关系类型或关联实体名称",
+    "delete": {
+      "content": "删除后该实体关系将无法恢复。"
+    }
+  },
+  "validation": {
+    "invalidJson": "附加信息不是有效的 JSON 格式"
+  },
+  "options": {
+    "direction": {
+      "FROM": "向外",
+      "TO": "向内"
+    },
+    "typeGroup": {
+      "COMMON": "通用",
+      "DASHBOARD": "仪表板",
+      "RULE_CHAIN": "规则链",
+      "RULE_NODE": "规则节点",
+      "EDGE": "边缘",
+      "EDGE_AUTO_ASSIGN_RULE_CHAIN": "边缘自动分配规则链"
+    }
+  },
+  "features": {
+    "copy": {
+      "entityIdCopied": "实体 ID 已复制到剪贴板",
+      "typeCopied": "关系类型已复制到剪贴板"
+    },
+    "detail": {
+      "title": "关联详情"
+    }
+  }
+}

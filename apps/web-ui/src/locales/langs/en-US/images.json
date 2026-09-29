@@ -1,0 +1,76 @@
+{
+  "menu": "Image Library",
+  "fields": {
+    "name": "Name",
+    "resolution": "Resolution",
+    "size": "Size",
+    "scope": "Scope",
+    "public": "Public"
+  },
+  "actions": {
+    "upload": "Upload image",
+    "edit": "Edit image",
+    "download": "Download image",
+    "embed": "Embed image",
+    "export": "Export image",
+    "import": "Import image",
+    "replace": "Replace image",
+    "delete": "Delete image"
+  },
+  "messages": {
+    "forceDelete": {
+      "title": "Image is used by other entities",
+      "content": "Image “{title}” was not deleted because it is used by the following entities:",
+      "footer": "If you still want to delete the image, click the Delete anyway button.",
+      "button": "Delete anyway"
+    },
+    "uploadSuccess": "Uploaded successfully",
+    "updateSuccess": "Updated successfully"
+  },
+  "validation": {
+    "fileRequired": "Please select an image file",
+    "titleRequired": "Title is required",
+    "imageOnly": "Please select an image file"
+  },
+  "options": {
+    "scope": {
+      "system": "System",
+      "tenant": "Tenant"
+    }
+  },
+  "features": {
+    "filter": {
+      "includeSystemImages": "Include system images"
+    },
+    "upload": {
+      "file": "Image file",
+      "title": "Title",
+      "dragTip": "Click or drag a file here to upload",
+      "replaceTip": "Click or drag a new file here to replace the image",
+      "submit": "Upload",
+      "preview": "Image preview"
+    },
+    "embed": {
+      "title": "Embed image",
+      "public": "Public access",
+      "publicDesc": "When enabled, the image can be accessed anonymously via the public link below, without login.",
+      "publicLink": "Public link",
+      "embedHtml": "HTML code",
+      "link": "Resource link",
+      "copy": "Copy",
+      "copied": "Copied to clipboard",
+      "copyFailed": "Copy failed",
+      "makePublicFirst": "Enable public access first to get a public link.",
+      "publicEnabled": "Public access enabled",
+      "publicDisabled": "Public access disabled"
+    },
+    "import": {
+      "success": "Imported successfully",
+      "invalidFile": "Invalid image file",
+      "parseError": "Failed to parse file, please select a valid JSON file"
+    },
+    "form": {
+      "titlePlaceholder": "Enter image title"
+    }
+  }
+}

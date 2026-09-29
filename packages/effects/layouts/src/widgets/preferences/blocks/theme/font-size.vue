@@ -19,7 +19,7 @@ const modelValue = defineModel<number>({
   default: 16,
 });
 
-const min = 15;
+const min = 14;
 const max = 22;
 const step = 1;
 

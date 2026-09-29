@@ -1,0 +1,346 @@
+{
+  "menu": "Devices",
+  "fields": {
+    "name": "Name",
+    "label": "Label",
+    "deviceProfile": "Device profile",
+    "customer": "Customer",
+    "active": "State",
+    "activeTrue": "Active",
+    "activeFalse": "Inactive",
+    "isGateway": "Is gateway",
+    "overwriteActivityTime": "Overwrite activity time",
+    "description": "Description"
+  },
+  "actions": {
+    "create": "Create device",
+    "edit": "Edit device",
+    "makePublic": "Make public",
+    "makePublicSuccess": "Made public",
+    "assign": "Assign to customer",
+    "unassign": "Unassign from customer",
+    "unassignSuccess": "Unassigned",
+    "makePrivate": "Make private",
+    "makePrivateSuccess": "Device is now private",
+    "batchAssign": "Batch assign",
+    "delete": "Delete device"
+  },
+  "messages": {
+    "listDescription": "Manage devices, credentials and customer assignments"
+  },
+  "validation": {
+    "nameRequired": "Device name is required",
+    "profileRequired": "Device profile is required",
+    "credentialsRequired": "Device credentials are required",
+    "nameMaxLength": "Device name must not exceed 255 characters",
+    "labelMaxLength": "Label must not exceed 255 characters",
+    "accessTokenMaxLength": "Access token must not exceed 32 characters",
+    "mqttIdentityRequired": "Provide at least a client ID or username",
+    "credentialsJson": "Enter a valid JSON object",
+    "mqttUserNameRequired": "A username is required when a password is set"
+  },
+  "features": {
+    "import": {
+      "title": "Import devices",
+      "description": "Upload a file and map its columns to create or update devices in bulk.",
+      "steps": {
+        "file": "Select file",
+        "config": "Configure",
+        "columns": "Map columns",
+        "result": "Results"
+      },
+      "uploadTitle": "Drop a file here, or choose a file",
+      "uploadHint": "CSV, XLSX and XLS files up to 10 MB.",
+      "chooseFile": "Choose file",
+      "removeFile": "Remove file",
+      "templateHint": "First import? Start with the example template.",
+      "downloadTemplate": "Download CSV template",
+      "excelSheet": "The first worksheet \"{name}\" will be imported, preserving displayed cell values.",
+      "delimiter": "CSV delimiter",
+      "delimiters": {
+        "comma": "Comma (,)",
+        "semicolon": "Semicolon (;)",
+        "pipe": "Pipe (|)",
+        "tab": "Tab"
+      },
+      "header": "First row contains column names",
+      "headerHint": "Standard names such as NAME and TYPE are matched automatically. Other columns default to server attributes.",
+      "update": "Update existing device attributes and telemetry",
+      "updateHint": "Basic details of devices with matching names are updated. Enable this to also write their attributes and telemetry.",
+      "preview": "{rows} data rows, {columns} columns",
+      "mappingHint": "Device name and device profile columns are required.",
+      "sample": "Column / Sample value",
+      "columnType": "Column type",
+      "attributeKey": "Attribute / Telemetry key",
+      "columnNumber": "Column {index}",
+      "columnTypeLabel": "Column {index} type",
+      "keyLabel": "Column {index} attribute or telemetry key",
+      "previous": "Back",
+      "next": "Next",
+      "submit": "Import {count} devices",
+      "done": "Done",
+      "types": {
+        "serverAttribute": "Server attribute",
+        "sharedAttribute": "Shared attribute",
+        "timeseries": "Telemetry",
+        "accessToken": "Access token",
+        "x509": "X.509 certificate",
+        "mqttClientId": "MQTT client ID",
+        "mqttUserName": "MQTT username",
+        "mqttPassword": "MQTT password"
+      },
+      "result": {
+        "withErrors": "Import finished with errors",
+        "complete": "Import complete",
+        "created": "Created",
+        "updated": "Updated",
+        "errors": "Failed",
+        "details": "Error details"
+      },
+      "validation": {
+        "empty": "The file has no data to import. Check that it contains more than a header.",
+        "invalidFile": "Choose a CSV, XLSX or XLS file.",
+        "tooLarge": "The file must be no larger than 10 MB.",
+        "rowWidth": "Row {row} has a different number of columns. Check the file and delimiter.",
+        "format": "Unable to read or parse the file. Check its format, quotes and delimiter.",
+        "oneFile": "Choose one file at a time.",
+        "requiredColumns": "Map exactly one device name column and one device profile column.",
+        "requiredKey": "Enter a key for every attribute and telemetry column.",
+        "duplicateColumn": "Duplicate column types or attribute / telemetry keys within the same scope. Check the mapping.",
+        "mixedCredentials": "Access token, X.509 and MQTT credentials cannot be mixed. Choose one credential type.",
+        "requiredValue": "The device name or device profile is empty on row {row}.",
+        "requestFailed": "Import request failed. Review the error before retrying."
+      }
+    },
+    "form": {
+      "namePlaceholder": "Enter a device name",
+      "labelPlaceholder": "Enter a recognizable label",
+      "customerPlaceholder": "Select a customer (optional)",
+      "descriptionPlaceholder": "Describe the device purpose, location or other details",
+      "gatewayDescription": "Allow this device to connect and manage downstream devices as a gateway.",
+      "overwriteActivityTimeDescription": "Update downstream device activity using the gateway activity time.",
+      "credentialsDescription": "Configure the credentials this device will use to connect. You can go back to review the device details before creating it.",
+      "accessTokenPlaceholder": "Enter or generate an access token",
+      "accessTokenDescription": "A random token is generated automatically. You can set your own token with up to 32 characters.",
+      "certificatePlaceholder": "Paste an X.509 certificate in PEM format",
+      "certificateDescription": "Include the complete BEGIN CERTIFICATE and END CERTIFICATE markers.",
+      "clientIdPlaceholder": "Enter or generate a client ID",
+      "mqttDescription": "Provide a client ID or username. A username is required when a password is set.",
+      "userNamePlaceholder": "Enter an MQTT username",
+      "passwordPlaceholder": "Enter or generate an MQTT password"
+    },
+    "makePublic": {
+      "title": "Make public",
+      "content": "Make device '{name}' public? Anyone will be able to view its data on public dashboards."
+    },
+    "unassign": {
+      "title": "Unassign from customer",
+      "content": "Unassign device '{name}' from customer '{customer}'?"
+    },
+    "makePrivate": {
+      "title": "Make private",
+      "content": "Make device '{name}' private? It will be unassigned from the public customer."
+    },
+    "detail": {
+      "title": "Device details",
+      "building": "Device details page is under construction",
+      "notFound": "Device not found or no permission to view",
+      "copy": {
+        "deviceId": "Copy device ID",
+        "deviceIdCopied": "Device ID copied to clipboard",
+        "accessToken": "Copy access token",
+        "accessTokenCopied": "Access token copied to clipboard",
+        "credentials": "Copy credentials",
+        "credentialsCopied": "Credentials copied to clipboard",
+        "credentialsEmpty": "No access credentials are available for this device",
+        "credentialsFailed": "Unable to copy credentials. Please try again."
+      },
+      "tabs": {
+        "details": "Details",
+        "attributes": "Attributes",
+        "telemetry": "Telemetry",
+        "connectionApi": "Connection API",
+        "rpc": "RPC",
+        "calculatedFields": "Calculated fields",
+        "alarmRules": "Alarm rules",
+        "alarms": "Alarms",
+        "events": "Events",
+        "relations": "Relations",
+        "auditLogs": "Audit logs"
+      },
+      "sections": {
+        "basic": "Basic information",
+        "activity": "Connection status",
+        "gateway": "Gateway configuration"
+      },
+      "fields": {
+        "deviceId": "Device ID",
+        "visibility": "Visibility",
+        "lastActivityTime": "Last activity",
+        "lastConnectTime": "Last connected",
+        "lastDisconnectTime": "Last disconnected"
+      },
+      "actions": {
+        "back": "Back to devices"
+      },
+      "messages": {
+        "loading": "Loading device information…",
+        "loadFailed": "Unable to load device details",
+        "refreshFailed": "Refresh failed. Previously loaded information is displayed.",
+        "activityFailed": "Connection history could not be loaded. Refresh from the actions menu to retry.",
+        "unassigned": "Unassigned",
+        "unknown": "Unknown",
+        "public": "Public",
+        "private": "Private",
+        "notReported": "No record",
+        "noDescription": "No description",
+        "comingSoon": "Coming soon",
+        "directDevice": "This device connects independently and does not manage other devices as a gateway."
+      }
+    },
+    "connectionApi": {
+      "protocol": {
+        "mqttDevice": "MQTT device",
+        "mqttGateway": "MQTT gateway",
+        "http": "HTTP",
+        "coap": "CoAP"
+      },
+      "fields": {
+        "function": "Function",
+        "topic": "Topic",
+        "url": "URL",
+        "operate": "Operation",
+        "description": "Description"
+      },
+      "operate": {
+        "publish": "Publish",
+        "subscribe": "Subscribe",
+        "observe": "Observe"
+      },
+      "groups": {
+        "telemetry": "Telemetry",
+        "attributes": "Attributes",
+        "rpc": "RPC",
+        "claim": "Device claiming",
+        "provision": "Device provisioning",
+        "ota": "OTA updates",
+        "subDeviceState": "Sub-device state",
+        "subDeviceTelemetry": "Sub-device telemetry",
+        "subDeviceAttributes": "Sub-device attributes",
+        "subDeviceRpc": "Sub-device RPC",
+        "subDeviceClaim": "Sub-device claiming"
+      },
+      "desc": {
+        "telemetryPublish": "Upload telemetry data to the server",
+        "attributesPublish": "Upload client-side attributes to the server",
+        "attributesSubscribe": "Subscribe to shared attribute updates from the server",
+        "attributesRequest": "Request client-side and shared attributes from the server",
+        "attributesResponse": "Receive the response of an attribute request",
+        "attributesGet": "Query client-side and shared attributes (clientKeys / sharedKeys)",
+        "attributesUpdates": "Long-poll for shared attribute updates (timeout in ms)",
+        "serverRpcSubscribe": "Subscribe to server-side RPC requests",
+        "serverRpcReply": "Reply to a server-side RPC request",
+        "clientRpcRequest": "Send a client-side RPC request to the server",
+        "clientRpcResponse": "Receive the response of a client-side RPC request",
+        "claim": "Claim the device on behalf of a customer",
+        "provisionRequest": "Send a device provisioning request",
+        "provisionResponse": "Receive the provisioning result (including the access token)",
+        "fwSubscribe": "Subscribe to firmware chunks pushed by the server",
+        "fwRequest": "Request firmware content chunk by chunk",
+        "swSubscribe": "Subscribe to software chunks pushed by the server",
+        "swRequest": "Request software content chunk by chunk",
+        "fwDownload": "Download the firmware package (title / version come from shared attributes)",
+        "swDownload": "Download the software package (title / version come from shared attributes)",
+        "gatewayConnect": "Report that a sub-device is connected",
+        "gatewayDisconnect": "Report that a sub-device is disconnected",
+        "gatewayTelemetry": "Upload telemetry data of sub-devices",
+        "gatewayAttributesPublish": "Upload client-side attributes of sub-devices",
+        "gatewayAttributesSubscribe": "Subscribe to shared attribute updates of sub-devices",
+        "gatewayAttributesRequest": "Request client-side or shared attributes of a sub-device",
+        "gatewayAttributesResponse": "Receive the response of a sub-device attribute request",
+        "gatewayRpcSubscribe": "Subscribe to server-side RPC requests addressed to sub-devices",
+        "gatewayRpcReply": "Reply to a server-side RPC request addressed to a sub-device",
+        "gatewayClaim": "Claim a sub-device"
+      },
+      "example": {
+        "action": "Example",
+        "title": "Example payload",
+        "empty": "This API has no request/response payload"
+      },
+      "copyTopic": "Copy topic",
+      "copyUrl": "Copy URL",
+      "copied": "Copied to clipboard",
+      "tokenTip": "The access token in the addresses comes from the current device credentials; it is shown as $ACCESS_TOKEN when the credentials type is not \"Access token\".",
+      "commands": {
+        "action": "Connection commands",
+        "title": "Device connection commands",
+        "loading": "Loading connection commands…",
+        "empty": "The transport type of this device profile provides no ready-to-run command, please check the documentation.",
+        "useInstructions": "Follow the steps below to publish once and verify connectivity:",
+        "installTools": "Install client tools",
+        "executeCommand": "Execute the following command",
+        "installCurlWindows": "curl is bundled with Windows 10 1803 and above; on older versions download it from the curl website.",
+        "installCurlMacos": "curl is bundled with macOS; run brew install curl to upgrade it.",
+        "installMqttWindows": "See the documentation on how to install the mosquitto client on Windows.",
+        "installCoapLinux": "See the documentation on how to install the coap-client tool.",
+        "checkDocumentation": "Please check the documentation for this connectivity scenario.",
+        "documentation": "Documentation",
+        "downloadCompose": "Download gateway docker-compose.yml",
+        "downloadComposeSuccess": "docker-compose.yml download started"
+      }
+    },
+    "assign": {
+      "title": "Assign to customer",
+      "batchTitle": "Batch assign to customer",
+      "batchCount": "{count} devices selected",
+      "customer": "Select the customer to assign the device to",
+      "confirm": "Assign",
+      "success": "Assigned to customer",
+      "partialFailure": "Failed to assign {count} devices. Please retry. Only failed devices will be retried."
+    },
+    "wizard": {
+      "deviceDetails": "Device details",
+      "back": "Back",
+      "nextCredentials": "Next: Credentials",
+      "add": "Add"
+    },
+    "connectivity": {
+      "checkConnectivity": "Check connectivity",
+      "createdCheckConnectivity": "Device created. Let's check connectivity!",
+      "protocol": "Transport protocol",
+      "security": "Connection security",
+      "copyCommand": "Copy command",
+      "loadFailed": "Unable to load connection commands. Please retry.",
+      "deviceState": "Device state",
+      "waiting": "Waiting for status",
+      "telemetryFailed": "The live connection was interrupted. Retry to continue checking device status.",
+      "latestTelemetry": "Latest telemetry",
+      "time": "Time",
+      "key": "Key",
+      "value": "Value",
+      "noTelemetry": "Waiting for new telemetry from the device…"
+    },
+    "credentials": {
+      "action": "Device credentials",
+      "manage": "Manage device credentials",
+      "lwm2mJson": "LwM2M credentials (JSON)",
+      "view": "View device credentials",
+      "title": "Device credentials",
+      "typeLabel": "Credentials type",
+      "accessToken": "Access token",
+      "x509": "X.509 certificate (PEM)",
+      "clientId": "Client ID",
+      "userName": "User name",
+      "password": "Password",
+      "copy": "Copy",
+      "copied": "Copied to clipboard",
+      "generate": "Regenerate",
+      "type": {
+        "ACCESS_TOKEN": "Access token",
+        "X509_CERTIFICATE": "X.509 certificate",
+        "MQTT_BASIC": "MQTT basic",
+        "LWM2M_CREDENTIALS": "LwM2M credentials"
+      }
+    }
+  }
+}

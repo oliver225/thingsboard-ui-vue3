@@ -1,0 +1,18 @@
+/* Ant Design Upload：拖拽上传区使用主题边框和键盘焦点。 */
+@layer components {
+  .ant-upload-wrapper .ant-upload-drag {
+    color: hsl(var(--foreground));
+    background: hsl(var(--background));
+    border-color: hsl(var(--input));
+    border-radius: calc(var(--radius) - 2px);
+  }
+
+  .ant-upload-wrapper .ant-upload-drag:not(.ant-upload-disabled):hover {
+    border-color: hsl(var(--primary));
+  }
+
+  .ant-upload-wrapper .ant-upload-drag:has(:focus-visible) {
+    outline: 2px solid hsl(var(--ring));
+    outline-offset: 2px;
+  }
+}

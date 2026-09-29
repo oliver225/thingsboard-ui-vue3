@@ -1,0 +1,58 @@
+{
+  "menu": "Asset Profiles",
+  "fields": {
+    "name": "Name",
+    "description": "Description",
+    "default": "Default",
+    "defaultRuleChain": "Default rule chain",
+    "defaultDashboard": "Mobile dashboard",
+    "defaultQueue": "Default queue",
+    "defaultEdgeRuleChain": "Default Edge rule chain",
+    "image": "Asset image"
+  },
+  "actions": {
+    "create": "Create asset profile",
+    "edit": "Edit asset profile",
+    "setDefault": "Set as default",
+    "export": "Export asset profile",
+    "import": "Import asset profile",
+    "delete": "Delete asset profile"
+  },
+  "validation": {
+    "nameRequired": "Profile name is required",
+    "nameMaxLength": "Profile name cannot exceed 255 characters"
+  },
+  "features": {
+    "import": {
+      "success": "Imported successfully",
+      "invalidFile": "Invalid asset profile file",
+      "parseError": "Failed to parse file, please choose a valid JSON file"
+    },
+    "setDefault": {
+      "content": "This profile will be used by default when creating new assets.",
+      "title": "Set '{name}' as the default asset profile?",
+      "success": "Set as default asset profile"
+    },
+    "form": {
+      "namePlaceholder": "e.g. Campus buildings",
+      "descriptionPlaceholder": "Describe the purpose or applicable assets (optional)",
+      "ruleChainPlaceholder": "Use root rule chain",
+      "ruleChainHint": "Processes messages from assets using this profile. Leave empty to use the root rule chain.",
+      "dashboardPlaceholder": "Select a mobile dashboard (optional)",
+      "dashboardHint": "The dashboard displayed when opening an asset in the mobile app.",
+      "queuePlaceholder": "Use default queue",
+      "edgeRuleChainPlaceholder": "Select an Edge rule chain (optional)",
+      "edgeRuleChainHint": "This rule chain is automatically assigned to the Edge when an asset is assigned to it."
+    },
+    "detail": {
+      "title": "Asset profile details",
+      "basic": "Basic information",
+      "default": "Default",
+      "copyId": "Copy asset profile ID",
+      "idCopied": "Asset profile ID copied",
+      "nameUnavailable": "Entity name unavailable",
+      "noDescription": "No description",
+      "notFound": "This asset profile does not exist, has been deleted, or is not accessible to your account."
+    }
+  }
+}

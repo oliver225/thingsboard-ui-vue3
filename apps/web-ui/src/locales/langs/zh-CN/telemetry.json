@@ -1,0 +1,19 @@
+{
+  "menu": "遥测数据",
+  "actions": { "add": "新增遥测数据", "delete": "删除遥测数据" },
+  "messages": {
+    "searchPlaceholder": "搜索遥测键或值",
+    "connectionFailed": "遥测连接失败，请重试。"
+  },
+  "delete": {
+    "strategy": "删除方式",
+    "all": "删除全部数据",
+    "exceptLatest": "删除历史数据，保留最新值",
+    "latest": "仅删除最新值",
+    "period": "删除指定时间段的数据",
+    "startTime": "开始时间",
+    "endTime": "结束时间",
+    "rewriteLatest": "删除后使用剩余历史数据更新最新值",
+    "invalidPeriod": "结束时间必须晚于开始时间"
+  }
+}

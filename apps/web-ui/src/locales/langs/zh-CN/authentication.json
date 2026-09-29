@@ -1,0 +1,48 @@
+{
+  "menu": "ThingsBoard 物联网平台",
+  "actions": {
+    "createPassword": "创建密码",
+    "goToLogin": "前往登录",
+    "resetPassword": "重置密码"
+  },
+  "messages": {
+    "pageDesc": "连接设备，管理数据与租户",
+    "loginSubtitle": "请输入您的 ThingsBoard 账号信息",
+    "usernameTip": "请输入邮箱",
+    "resetEmailSent": "邮件已发送",
+    "resetEmailSentDesc": "如果该邮箱已注册，重置密码的链接已发送至您的邮箱，请前往查收并按提示重置密码。",
+    "registerSubTitle": "ThingsBoard 账号由管理员创建",
+    "registerNotSupported": "暂不支持自助注册",
+    "registerNotSupportedDesc": "ThingsBoard 社区版未开放公开注册。请联系系统或租户管理员为您创建账号，创建后您将收到激活邮件以设置密码。",
+    "createPasswordSubtitle": "请为您的账号设置登录密码，设置成功后将自动登录。",
+    "createPasswordSuccess": "登录成功",
+    "createPasswordSuccessDesc": "账号已激活，欢迎您",
+    "passwordMinTip": "密码至少 6 位",
+    "alreadyHaveAccount": "已有账号？",
+    "resetPasswordSubtitle": "请输入新密码，设置成功后请使用新密码登录。",
+    "resetPasswordSuccess": "密码已重置",
+    "resetPasswordSuccessDesc": "请使用新密码登录",
+    "forgetPasswordSubtitle": "输入您的邮箱，我们将向您发送重置密码的链接。",
+    "passwordPolicyLoadFailed": "密码要求加载失败，请重试。",
+    "passwordPolicyLoading": "正在加载密码要求…"
+  },
+  "validation": {
+    "linkInvalid": "链接无效",
+    "activateLinkInvalid": "激活链接无效或已失效，请重新获取激活邮件。",
+    "resetLinkInvalid": "重置链接无效或已失效，请重新申请找回密码。"
+  },
+  "features": {
+    "activation": {
+      "emailSent": "激活邮件已发送",
+      "method": "激活方式",
+      "showLink": "显示激活链接",
+      "sendMail": "发送激活邮件",
+      "linkTitle": "用户激活链接",
+      "linkWord": "激活链接",
+      "duration": "{hours} 小时 {minutes} 分钟 {seconds} 秒",
+      "description": "要激活用户，请使用以下",
+      "expiresIn": "（{duration} 后过期）：",
+      "expired": "（已过期）："
+    }
+  }
+}

@@ -483,12 +483,12 @@ $namespace: vben;
     --menu-item-background-color: var(--menu-background-color);
     --menu-item-hover-color: var(--menu-item-color);
     --menu-item-hover-background-color: hsl(var(--accent));
-    --menu-item-active-color: hsl(var(--primary));
+    --menu-item-active-color: hsl(var(--primary-text, var(--primary)));
     --menu-item-active-background-color: hsl(var(--primary) / 15%);
     --menu-submenu-background-color: var(--menu-background-color);
-    --menu-submenu-hover-color: hsl(var(--primary));
+    --menu-submenu-hover-color: hsl(var(--primary-text, var(--primary)));
     --menu-submenu-hover-background-color: hsl(var(--accent));
-    --menu-submenu-active-color: hsl(var(--primary));
+    --menu-submenu-active-color: hsl(var(--primary-text, var(--primary)));
     --menu-submenu-active-background-color: transparent;
   }
 
@@ -538,12 +538,12 @@ $namespace: vben;
       --menu-item-background-color: var(--menu-background-color);
       --menu-item-hover-color: var(--menu-item-color);
       --menu-item-hover-background-color: hsl(var(--accent));
-      --menu-item-active-color: hsl(var(--primary));
+      --menu-item-active-color: hsl(var(--primary-text, var(--primary)));
       --menu-item-active-background-color: hsl(var(--primary) / 15%);
       --menu-submenu-background-color: var(--menu-background-color);
-      --menu-submenu-hover-color: hsl(var(--primary));
+      --menu-submenu-hover-color: hsl(var(--primary-text, var(--primary)));
       --menu-submenu-hover-background-color: hsl(var(--accent));
-      --menu-submenu-active-color: hsl(var(--primary));
+      --menu-submenu-active-color: hsl(var(--primary-text, var(--primary)));
       --menu-submenu-active-background-color: hsl(var(--primary) / 15%);
     }
   }

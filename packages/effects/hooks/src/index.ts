@@ -1,4 +1,5 @@
 export * from './use-app-config';
+export * from './use-breadcrumb';
 export * from './use-content-maximize';
 export * from './use-design-tokens';
 export * from './use-hover-toggle';

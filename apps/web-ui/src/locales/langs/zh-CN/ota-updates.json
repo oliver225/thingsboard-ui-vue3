@@ -1,0 +1,89 @@
+{
+  "menu": "OTA 更新",
+  "sections": {
+    "repository": "OTA包仓库"
+  },
+  "fields": {
+    "title": "标题",
+    "version": "版本",
+    "tag": "版本标签",
+    "type": "包类型",
+    "url": "直链地址",
+    "fileName": "文件名称",
+    "dataSize": "文件大小",
+    "checksum": "校验和",
+    "algorithm": "校验算法",
+    "deviceProfile": "设备配置",
+    "description": "描述",
+    "file": "更新包文件",
+    "dataSizeBytes": "文件大小（字节）",
+    "contentType": "内容类型",
+    "useUrl": "使用直链地址"
+  },
+  "actions": {
+    "add": "添加更新包",
+    "edit": "编辑更新包",
+    "download": "下载更新包",
+    "chooseFile": "选择文件",
+    "generateChecksum": "自动生成校验和"
+  },
+  "messages": {
+    "autoChecksum": "留空自动生成",
+    "immutable": "已上传更新包的内容不可修改，可编辑描述。",
+    "cleanupFailed": "文件上传失败，且未能清理更新包记录，请刷新列表后处理该记录。",
+    "uploadFailed": "无法上传更新包文件，请重试。"
+  },
+  "validation": {
+    "required": "请填写此字段",
+    "fileRequired": "请选择更新包文件",
+    "titleRequired": "请输入更新包标题",
+    "versionRequired": "请输入版本",
+    "deviceProfileRequired": "请选择兼容的设备配置",
+    "typeRequired": "请选择包类型",
+    "urlRequired": "请输入直链地址",
+    "maxLength": "不能超过 {max} 个字符"
+  },
+  "features": {
+    "form": {
+      "titlePlaceholder": "例如：智能网关固件",
+      "versionPlaceholder": "例如：1.0.0",
+      "tagPlaceholder": "根据标题和版本自动生成，可自定义",
+      "urlDescription": "通过外部地址提供更新包，无需上传文件",
+      "filePlaceholder": "点击或拖拽文件到此处，每次选择一个更新包",
+      "descriptionPlaceholder": "输入更新说明或版本变更内容（选填）"
+    },
+    "package": {
+      "fields": {
+        "title": "标题",
+        "version": "版本",
+        "type": "类型",
+        "deviceProfile": "设备配置",
+        "fileName": "文件名",
+        "dataSize": "大小",
+        "url": "直链 URL",
+        "checksum": "校验和",
+        "description": "描述"
+      },
+      "type": {
+        "FIRMWARE": "固件",
+        "SOFTWARE": "软件"
+      },
+      "source": {
+        "label": "数据来源",
+        "url": "外部 URL",
+        "file": "上传文件"
+      },
+      "actions": {
+        "create": "新建 OTA 包",
+        "download": "下载"
+      },
+      "validation": {
+        "titleRequired": "请输入标题",
+        "versionRequired": "请输入版本",
+        "deviceProfileRequired": "请选择设备配置",
+        "urlRequired": "请输入直链 URL"
+      },
+      "fileUploadHint": "二进制文件上传暂未实现,当前仅支持通过外部 URL 创建。"
+    }
+  }
+}

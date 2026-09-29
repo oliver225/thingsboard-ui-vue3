@@ -1,0 +1,45 @@
+{
+  "menu": "客户管理",
+  "fields": {
+    "title": "客户名称",
+    "email": "电子邮箱",
+    "phone": "手机电话",
+    "country": "国家",
+    "state": "省/州",
+    "city": "城市",
+    "region": "行政区域",
+    "address": "详细地址",
+    "address2": "备用地址",
+    "zip": "邮政编码",
+    "description": "客户描述"
+  },
+  "actions": {
+    "create": "新建客户",
+    "edit": "编辑客户",
+    "delete": "删除客户"
+  },
+  "validation": {
+    "titleRequired": "请输入客户名称",
+    "titleMaxLength": "客户名称不能超过 255 个字符",
+    "emailInvalid": "邮箱格式不正确",
+    "phoneFormatTip": "电话号码格式不正确"
+  },
+  "features": {
+    "form": {
+      "titlePlaceholder": "例如：华东智慧园区",
+      "descriptionPlaceholder": "简要介绍客户的业务或用途（选填）",
+      "regionPlaceholder": "选择省 / 市 / 区",
+      "zipPlaceholder": "输入邮政编码",
+      "addressPlaceholder": "街道、门牌号等",
+      "address2Placeholder": "楼栋、楼层等补充信息（选填）"
+    }
+  },
+  "detail": {
+    "title": "客户详情",
+    "basic": "基本信息",
+    "copyId": "复制客户 ID",
+    "notFound": "客户不存在或暂时无法加载",
+    "noDescription": "暂无描述",
+    "contact": "联系信息"
+  }
+}

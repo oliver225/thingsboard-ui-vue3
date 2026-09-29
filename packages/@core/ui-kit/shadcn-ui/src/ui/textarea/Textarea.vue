@@ -33,3 +33,19 @@ const modelValue = useVModel(props, 'modelValue', emits, {
     "
   ></textarea>
 </template>
+
+<style lang="scss" scoped>
+textarea {
+  --ring: var(--primary);
+
+  &:not(:disabled):hover {
+    border-color: hsl(var(--ring));
+  }
+
+  &[aria-invalid='true'] {
+    --ring: var(--destructive);
+
+    border-color: hsl(var(--destructive));
+  }
+}
+</style>

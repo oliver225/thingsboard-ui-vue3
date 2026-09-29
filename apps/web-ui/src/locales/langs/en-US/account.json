@@ -1,0 +1,66 @@
+{
+  "menu": "Account",
+  "sections": {
+    "userInfo": "Profile",
+    "security": "Security Info",
+    "notification": "Notification settings",
+    "passwordRequirements": "Password requirements"
+  },
+  "fields": {
+    "lastLogin": "Last login",
+    "email": "Email",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "phone": "Phone",
+    "language": "Language",
+    "unitSystem": "Unit system",
+    "homeDashboard": "Home dashboard",
+    "hideHomeDashboardToolbar": "Hide home dashboard toolbar",
+    "jwtToken": "JWT Token",
+    "jwtTokenExpiration": "Token expires at",
+    "currentPassword": "Current password",
+    "newPassword": "New password",
+    "confirmNewPassword": "Confirm password"
+  },
+  "actions": {
+    "changeAvatar": "Change avatar",
+    "copyJwtToken": "Copy JWT Token",
+    "changePassword": "Change Password",
+    "discardChanges": "Discard changes",
+    "documentation": "Documentation",
+    "technicalSupport": "Technical support"
+  },
+  "messages": {
+    "avatarHint": "Move or resize the crop area to save a square avatar. JPG, PNG and WebP images up to 2MB are supported.",
+    "avatarReadFailed": "Unable to read this image. Please choose a valid image.",
+    "copied": "Copied",
+    "copyFailed": "Copy failed",
+    "currentPasswordTip": "Please enter current password",
+    "changePasswordSuccess": "Password changed successfully",
+    "loadFailed": "Unable to load settings. Please retry."
+  },
+  "validation": {
+    "avatarFormat": "Please choose a JPG, PNG or WebP image",
+    "avatarSize": "Avatar images must not exceed 2MB",
+    "avatarDataSize": "The avatar and user metadata exceed the size limit. Please crop a smaller area or choose another image.",
+    "phoneFormatTip": "Invalid phone number format",
+    "atLeast": "At least",
+    "atMost": "At most",
+    "pwdMinLength": "{n} characters",
+    "pwdMaxLength": "{n} characters",
+    "pwdMinUpper": "{n} uppercase letter(s)",
+    "pwdMinLower": "{n} lowercase letter(s)",
+    "pwdMinDigits": "{n} digit(s)",
+    "pwdMinSpecial": "{n} special character(s)",
+    "pwdNoWhitespace": "No whitespace allowed",
+    "passwordPolicyNotMet": "Password does not meet the requirements",
+    "newPasswordSameAsCurrent": "New password must differ from the current password"
+  },
+  "options": {
+    "langAuto": "Auto",
+    "unitAuto": "Auto",
+    "unitMetric": "Metric",
+    "unitImperial": "Imperial",
+    "unitHybrid": "Hybrid"
+  }
+}

@@ -1,0 +1,20 @@
+{
+  "menu": "审计日志",
+  "fields": {
+    "createdTime": "操作时间",
+    "userName": "操作用户",
+    "entityType": "实体类型",
+    "entityName": "实体名称",
+    "actionType": "操作类型",
+    "actionStatus": "状态",
+    "failureDetails": "失败详情"
+  },
+  "features": {
+    "filter": {
+      "actionTypes": "操作类型"
+    },
+    "detail": {
+      "title": "审计日志详情"
+    }
+  }
+}

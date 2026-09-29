@@ -1,0 +1,93 @@
+{
+  "menu": "Entity Views",
+  "sections": {
+    "groups": {
+      "attributes": "Attribute propagation",
+      "timeseries": "Time series data"
+    }
+  },
+  "fields": {
+    "name": "Name",
+    "type": "Type",
+    "entityType": "Entity type",
+    "entity": "Target entity",
+    "customer": "Customer",
+    "description": "Description",
+    "clientAttributes": "Client attributes",
+    "sharedAttributes": "Shared attributes",
+    "serverAttributes": "Server attributes",
+    "timeseries": "Time series",
+    "startTime": "Start time",
+    "endTime": "End time"
+  },
+  "actions": {
+    "create": "Create entity view",
+    "edit": "Edit entity view",
+    "delete": "Delete entity view",
+    "assign": "Assign to customer",
+    "unassign": "Unassign from customer",
+    "unassignSuccess": "Unassigned",
+    "makePublic": "Make public",
+    "makePublicSuccess": "Made public",
+    "makePrivate": "Make private",
+    "makePrivateSuccess": "Entity view is now private",
+    "batchAssign": "Batch assign"
+  },
+  "validation": {
+    "nameRequired": "Entity view name is required",
+    "typeRequired": "Type is required",
+    "entityRequired": "Target entity is required",
+    "nameMaxLength": "Entity view name cannot exceed 255 characters",
+    "typeMaxLength": "Entity view type must not exceed 255 characters",
+    "timeRange": "End time cannot be earlier than start time"
+  },
+  "features": {
+    "assign": {
+      "title": "Assign to customer",
+      "batchTitle": "Batch assign to customer",
+      "batchCount": "{count} entity views selected",
+      "customer": "Select the customer to assign the entity view to",
+      "confirm": "Assign",
+      "success": "Assigned to customer",
+      "partialFailure": "Failed to assign {count} entity views. Please retry. Only failed entity views will be retried."
+    },
+    "makePublic": {
+      "title": "Make public",
+      "content": "Make entity view '{name}' public? Anyone will be able to view its data on public dashboards."
+    },
+    "makePrivate": {
+      "title": "Make private",
+      "content": "Make entity view '{name}' private? It will be unassigned from the public customer."
+    },
+    "unassign": {
+      "title": "Unassign from customer",
+      "content": "Unassign entity view '{name}' from customer '{customer}'?"
+    },
+    "form": {
+      "namePlaceholder": "Enter entity view name",
+      "descriptionPlaceholder": "Enter an entity view description (optional)",
+      "typePlaceholder": "Select or enter an entity view type",
+      "keysPlaceholder": "Select keys or type a new key and press Enter",
+      "attributesHint": "Each time this entity view is saved or updated, it automatically copies the specified attributes from the target entity. For performance reasons, subsequent attribute changes are not automatically propagated to the entity view. To enable automatic propagation, configure a “copy to view” rule node in your rule chain and connect “Post attributes” and “Attributes Updated” messages to that node.",
+      "timeseriesHint": "Select the read-only time series keys available to this entity view. Leave empty to allow all time series keys.",
+      "noTimeLimit": "No limit",
+      "timeHint": "Limit the accessible time series range. Leave empty for no limit."
+    },
+    "detail": {
+      "title": "Entity view details",
+      "basic": "Basic information",
+      "visibility": "Visibility",
+      "public": "Public",
+      "private": "Private",
+      "unassigned": "Unassigned",
+      "copyId": "Copy entity view ID",
+      "idCopied": "Entity view ID copied",
+      "noDescription": "No description",
+      "notFound": "This entity view does not exist, has been deleted, or is not accessible to your account.",
+      "dataSettings": "Data configuration",
+      "allTelemetry": "All telemetry keys",
+      "noAttributes": "No attributes configured for propagation",
+      "targetNameUnavailable": "Target entity name unavailable"
+    }
+  }
+}

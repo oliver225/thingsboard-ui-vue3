@@ -1,0 +1,29 @@
+{
+  "actions": "操作",
+  "more": "更多操作",
+  "settingDens": "密度",
+  "settingDensDefault": "默认",
+  "settingDensMiddle": "中等",
+  "settingDensSmall": "紧凑",
+  "settingColumn": "列设置",
+  "settingColumnShow": "列展示",
+  "settingColumnCustom": "有个性化修改时显示红色图标，点击 “重置” 按钮，恢复显示。",
+  "settingIndexColumnShow": "序号列",
+  "settingSelectColumnShow": "复选框",
+  "settingFixedLeft": "固定到左侧",
+  "settingFixedRight": "固定到右侧",
+  "settingFullScreen": "全屏",
+  "index": "序号",
+  "total": "共 {total} 条数据",
+  "selectionBarTips": "已选择 {count} 条记录",
+  "selectionBarClear": "清空",
+  "selectionBarEmpty": "未选中任何记录",
+  "inputPlaceholder": "请输入",
+  "selectPlaceholder": "请选择",
+  "batchDelete": {
+    "title": "批量删除",
+    "confirm": "确定要删除选中的 {count} 个{entity}吗？此操作不可恢复。",
+    "success": "已删除 {count} 个{entity}",
+    "partialFailure": "已删除 {deleted} 个{entity}，{failed} 个删除失败。再次确认将仅重试失败的{entity}。"
+  }
+}

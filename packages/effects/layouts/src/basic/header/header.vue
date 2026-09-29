@@ -18,7 +18,6 @@ import { useMagicKeys, whenever } from '@vueuse/core';
 
 import {
   GlobalSearch,
-  LanguageToggle,
   LockScreenModal,
   Notification,
   PreferencesButton,
@@ -162,12 +161,6 @@ const rightSlots = computed(() => {
         preferences.widget.themeToggle &&
         preferences.widget.themeToggleButtonPosition === 'header',
       slotName: 'theme-toggle',
-    },
-    languageToggle: {
-      visible:
-        preferences.widget.languageToggle &&
-        preferences.widget.languageToggleButtonPosition === 'header',
-      slotName: 'language-toggle',
     },
     timezone: {
       visible:
@@ -335,14 +328,6 @@ function clearPreferencesAndLogout() {
               <ThemeToggle class="mt-0.5 mr-1" />
             </template>
             {{ $t('preferences.theme.title') }}
-          </VbenTooltip>
-        </template>
-        <template v-else-if="slot.name === 'language-toggle'">
-          <VbenTooltip side="bottom">
-            <template #trigger>
-              <LanguageToggle class="mr-1" />
-            </template>
-            {{ $t('preferences.widget.languageToggle') }}
           </VbenTooltip>
         </template>
         <template v-else-if="slot.name === 'fullscreen'">

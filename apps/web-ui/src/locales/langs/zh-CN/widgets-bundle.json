@@ -1,0 +1,43 @@
+{
+  "menu": "部件包",
+  "fields": {
+    "title": "名称",
+    "image": "预览图片",
+    "description": "描述",
+    "scada": "SCADA",
+    "order": "排序",
+    "scope": "作用域"
+  },
+  "actions": {
+    "create": "新建部件包",
+    "edit": "编辑部件包",
+    "export": "导出部件包",
+    "import": "导入部件包",
+    "delete": "删除部件包"
+  },
+  "validation": {
+    "titleRequired": "请输入名称",
+    "titleMaxLength": "名称不能超过 255 个字符",
+    "descriptionMaxLength": "描述不能超过 1024 个字符",
+    "orderInteger": "排序必须为整数"
+  },
+  "options": {
+    "scope": {
+      "system": "系统",
+      "tenant": "租户"
+    }
+  },
+  "features": {
+    "form": {
+      "titlePlaceholder": "请输入部件包名称",
+      "descriptionPlaceholder": "描述此部件包包含的部件",
+      "scadaDescription": "此部件包包含 SCADA 符号部件。",
+      "orderPlaceholder": "选填，请输入整数"
+    },
+    "import": {
+      "success": "导入成功",
+      "invalidFile": "无效的部件包文件",
+      "parseError": "文件解析失败,请选择合法的 JSON 文件"
+    }
+  }
+}

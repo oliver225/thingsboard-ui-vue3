@@ -181,7 +181,8 @@ export function useVbenModal<
       inheritAttrs: false,
     },
   );
-  injectData.extendApi?.(extendedApi);
+  // Only the connected modal consumes the parent API; nested local modals own theirs.
+  if (!isConsumed) injectData.extendApi?.(extendedApi);
 
   return [Modal, extendedApi] as const;
 }

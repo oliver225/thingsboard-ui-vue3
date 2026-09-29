@@ -1,0 +1,106 @@
+{
+  "menu": "OAuth 2.0",
+  "sections": {
+    "clients": "客户端",
+    "domains": "域名",
+    "groups": {
+      "advancedSettings": "高级设置",
+      "general": "常规",
+      "mapper": "映射器"
+    }
+  },
+  "fields": {
+    "title": "名称",
+    "provider": "服务商",
+    "clientId": "客户端 ID",
+    "clientSecret": "客户端密钥",
+    "platforms": "适用平台",
+    "scope": "授权范围",
+    "loginButtonLabel": "供应商标签",
+    "loginButtonIcon": "登录按钮图标",
+    "authorizationUri": "授权地址",
+    "accessTokenUri": "令牌地址",
+    "userInfoUri": "用户信息地址",
+    "jwkSetUri": "JWK 密钥集地址",
+    "clientAuthenticationMethod": "客户端认证方式",
+    "userNameAttributeName": "用户名属性",
+    "allowUserCreation": "允许创建用户",
+    "activateUser": "自动激活用户",
+    "mapperType": "映射类型",
+    "emailAttributeKey": "邮箱属性",
+    "firstNameAttributeKey": "名字属性",
+    "lastNameAttributeKey": "姓氏属性",
+    "tenantNameStrategy": "租户名称策略",
+    "tenantNamePattern": "租户名称模板",
+    "customerNamePattern": "客户名称模板",
+    "defaultDashboardName": "默认仪表盘名称",
+    "alwaysFullScreen": "始终全屏显示",
+    "mapperUrl": "自定义映射地址",
+    "username": "用户名",
+    "password": "密码",
+    "sendToken": "向映射服务发送令牌",
+    "domainName": "域名",
+    "redirectUrl": "重定向地址模板",
+    "enabled": "启用 OAuth 2.0",
+    "propagateToEdge": "同步到边缘",
+    "clients": "客户端"
+  },
+  "actions": {
+    "addClient": "新增客户端",
+    "editClient": "编辑客户端",
+    "deleteClient": "删除客户端",
+    "addDomain": "新增域名",
+    "editDomain": "编辑域名",
+    "deleteDomain": "删除域名",
+    "copy": "复制"
+  },
+  "messages": {
+    "delete": {
+      "clientConfirm": "确定删除客户端“{name}”？关联的登录入口将无法使用该客户端。",
+      "domainConfirm": "确定删除域名“{name}”？该域名的 OAuth 2.0 登录将被移除。"
+    }
+  },
+  "validation": {
+    "required": "请输入{field}",
+    "invalidUrl": "请输入有效的 HTTP 或 HTTPS 地址",
+    "invalidDomain": "请输入域名及可选端口，不包含协议或路径",
+    "maxLength": "不能超过 {max} 个字符",
+    "scopeRequired": "请至少添加一个授权范围",
+    "domainRequired": "请输入域名",
+    "authenticationMethodRequired": "请选择客户端认证方式",
+    "mapperTypeRequired": "请选择用户映射类型",
+    "tenantNameStrategyRequired": "请选择租户名称策略"
+  },
+  "options": {
+    "platform": {
+      "WEB": "Web",
+      "ANDROID": "Android",
+      "IOS": "iOS"
+    },
+    "customProvider": "自定义",
+    "authenticationNone": "无认证（NONE）",
+    "mapperBasic": "基础映射（BASIC）",
+    "mapperCustom": "自定义映射（CUSTOM）",
+    "tenantDomain": "域名（DOMAIN）",
+    "tenantEmail": "邮箱（EMAIL）",
+    "tenantCustom": "自定义（CUSTOM）"
+  },
+  "features": {
+    "form": {
+      "platformHint": "留空表示所有可用平台；租户管理员仅可选择移动平台。",
+      "allPlatforms": "所有平台",
+      "scopeHint": "输入范围后按回车添加",
+      "domainHint": "Web 登录需要将客户端关联到已启用 OAuth 2.0 的域名；移动端登录请在移动应用配置中关联客户端。",
+      "domainNameHint": "填写主机名，可包含端口，例如 example.com:8080；不包含协议或路径。",
+      "redirectHint": "按部署使用的协议添加 http:// 或 https://，在服务商处登记该回调地址。",
+      "selectClients": "选择关联的客户端",
+      "associationFailed": "域名已保存，但客户端关联更新失败。请点击保存重试。",
+      "copied": "已复制",
+      "copyFailed": "复制失败，请手动选择并复制地址",
+      "titlePlaceholder": "请输入客户端名称",
+      "clientIdPlaceholder": "请输入服务商提供的客户端 ID",
+      "clientSecretPlaceholder": "请输入服务商提供的客户端密钥",
+      "loginButtonLabelPlaceholder": "例如：使用 Google 登录"
+    }
+  }
+}

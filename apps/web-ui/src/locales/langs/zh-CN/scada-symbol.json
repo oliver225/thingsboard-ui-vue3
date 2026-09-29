@@ -1,0 +1,62 @@
+{
+  "menu": "SCADA 库",
+  "fields": {
+    "name": "名称",
+    "resolution": "分辨率",
+    "size": "大小",
+    "scope": "作用域",
+    "public": "公开"
+  },
+  "actions": {
+    "upload": "上传符号",
+    "edit": "编辑SCADA 符号",
+    "download": "下载符号",
+    "embed": "嵌入符号",
+    "export": "导出符号",
+    "import": "导入符号",
+    "replace": "替换符号",
+    "delete": "删除SCADA 符号"
+  },
+  "messages": {
+    "forceDelete": {
+      "title": "符号被其他实体使用",
+      "content": "符号 “{title}” 未被删除，因为它被以下实体使用：",
+      "footer": "如果仍要删除该符号，请点击 仍然删除 按钮。",
+      "button": "仍然删除"
+    },
+    "uploadSuccess": "上传成功",
+    "updateSuccess": "更新成功"
+  },
+  "validation": {
+    "fileRequired": "请选择 SVG 符号文件",
+    "titleRequired": "请输入标题",
+    "svgOnly": "仅支持 SVG 格式的符号文件"
+  },
+  "options": {
+    "scope": {
+      "system": "系统",
+      "tenant": "租户"
+    }
+  },
+  "features": {
+    "filter": {
+      "includeSystemSymbols": "包含系统符号"
+    },
+    "upload": {
+      "file": "符号文件",
+      "title": "标题",
+      "dragTip": "点击或拖拽 SVG 文件到此处上传",
+      "replaceTip": "点击或拖拽新 SVG 文件以替换当前符号",
+      "submit": "上传",
+      "preview": "符号预览"
+    },
+    "import": {
+      "success": "导入成功",
+      "invalidFile": "无效的符号文件",
+      "parseError": "文件解析失败,请选择合法的 JSON 文件"
+    },
+    "form": {
+      "titlePlaceholder": "请输入符号标题"
+    }
+  }
+}

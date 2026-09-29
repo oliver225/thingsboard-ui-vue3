@@ -1,0 +1,83 @@
+{
+  "menu": "API usage",
+  "sections": {
+    "history": "Usage history",
+    "queueStats": "Queue statistics",
+    "exceptions": "Rule engine exceptions",
+    "timeouts": "Processing failures and timeouts"
+  },
+  "fields": {
+    "monthlyUsage": "Monthly usage / monthly limit",
+    "metric": "Usage metric",
+    "period": "Period",
+    "total": "Total",
+    "queue": "Select queue service instance",
+    "ruleChain": "Rule chain",
+    "ruleNode": "Rule node",
+    "exceptionMessage": "Exception",
+    "lastHour": "Last hour",
+    "lastMonth": "Last 30 days"
+  },
+  "actions": {
+    "refresh": "Refresh",
+    "defaultView": "Go to default view",
+    "fullscreen": "Full screen",
+    "closeFullscreen": "Exit full screen",
+    "retry": "Retry",
+    "queueStats": "Rule engine statistics"
+  },
+  "messages": {
+    "description": "View monthly API usage, limits and historical activity",
+    "updatedAt": "Updated at {time}",
+    "loadError": "Unable to load data. Refresh to retry.",
+    "noUsage": "No API usage data",
+    "truncated": "The response reached its data limit. The trend may be incomplete; select a shorter period.",
+    "queueHint": "Processing activity for the selected queue service instance in the last hour",
+    "exceptionsHint": "Up to 1,000 latest exceptions for the selected instance in the last 30 days, newest first.",
+    "noQueues": "No queue service instances",
+    "queueTruncated": "Some results reached the data limit. Charts or exceptions may be incomplete.",
+    "noQueueHistory": "No data in the last hour"
+  },
+  "options": {
+    "unlimited": "Unlimited",
+    "metrics": {
+      "transportMsg": "Transport messages",
+      "transportDataPoints": "Transport data points",
+      "ruleEngineExecution": "Rule engine executions",
+      "jsExecution": "JavaScript executions",
+      "tbelExecution": "TBEL executions",
+      "storageDataPoints": "Data point storage days",
+      "createdAlarms": "Alarms created",
+      "email": "Emails",
+      "sms": "SMS messages"
+    },
+    "status": {
+      "ENABLED": "Enabled",
+      "WARNING": "Warning",
+      "DISABLED": "Disabled",
+      "UNKNOWN": "Unknown"
+    },
+    "periods": {
+      "hour": "Last 24 hours · hourly",
+      "day": "Last 30 days · daily",
+      "month": "Last 12 months · monthly"
+    },
+    "queueMetrics": {
+      "successfulMsgs": "Successful messages",
+      "failedMsgs": "Failed messages",
+      "tmpFailed": "Temporary failures",
+      "timeoutMsgs": "Timed out messages",
+      "tmpTimeout": "Temporary timeouts"
+    }
+  },
+  "chart": {
+    "hour": "{metric} hourly activity",
+    "day": "{metric} daily activity",
+    "month": "{metric} monthly activity",
+    "range": {
+      "hour": "Realtime - last day",
+      "day": "History - last 30 days",
+      "month": "History - last year"
+    }
+  }
+}

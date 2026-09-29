@@ -1,6 +1,6 @@
 import type { Preferences } from './types';
 
-import { generatorColorVariables } from '@vben-core/shared/color';
+import { generatorColorVariables, TinyColor } from '@vben-core/shared/color';
 import { updateCSSVariables as executeUpdateCSSVariables } from '@vben-core/shared/utils';
 
 import { BUILT_IN_THEME_PRESETS } from './constants';
@@ -98,6 +98,31 @@ function updateMainColorVariables(preference: Preferences) {
     { alias: 'success', color: colorSuccess, name: 'green' },
     { alias: 'destructive', color: colorDestructive, name: 'red' },
   ]);
+
+  // Keep the selected primary color exact; palette generation rounds HSL and
+  // would otherwise change the selected color into a different base color.
+  const primary = new TinyColor(colorPrimary);
+  const { h, s, l } = primary.toHsl();
+  colorVariables['--primary-500'] = `${h} ${s * 100}% ${l * 100}%`;
+
+  // Logo 绿用于填充；浅色背景上的文字使用深绿，实色按钮使用更深的文字。
+  const isLogoGreen = primary.toHexString() === '#00c07f';
+  const rootStyle = document.documentElement.style;
+  rootStyle.setProperty(
+    '--primary-text',
+    isLogoGreen && !isDarkTheme(preference.theme.mode)
+      ? '159.3893 100% 25.6863%'
+      : colorVariables['--primary-500'],
+  );
+  if (isLogoGreen) {
+    rootStyle.setProperty(
+      '--primary-foreground',
+      '160 84.375% 12.549019607843137%',
+    );
+  } else {
+    // 切换其他配色时交还给对应主题，避免残留深绿色文字。
+    rootStyle.removeProperty('--primary-foreground');
+  }
 
   // 要设置的 CSS 变量映射
   const colorMappings = {

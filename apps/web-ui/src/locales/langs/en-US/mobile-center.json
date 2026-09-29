@@ -1,0 +1,136 @@
+{
+  "menu": "Mobile center",
+  "sections": {
+    "applications": "Mobile applications",
+    "bundles": "App bundles"
+  },
+  "options": {
+    "status": {
+      "DRAFT": "Draft",
+      "PUBLISHED": "Published",
+      "DEPRECATED": "Deprecated",
+      "SUSPENDED": "Suspended"
+    }
+  },
+  "features": {
+    "application": {
+      "actions": {
+        "create": "Add mobile application",
+        "edit": "Edit mobile application",
+        "generateSecret": "Generate secret",
+        "delete": "Delete mobile application",
+        "suspend": "Suspend mobile application"
+      },
+      "fields": {
+        "pkgName": "Package name",
+        "secret": "Application secret",
+        "platform": "Platform",
+        "status": "Status",
+        "minVersion": "Minimum version",
+        "latestVersion": "Latest version",
+        "minReleaseNotes": "Minimum version release notes",
+        "latestReleaseNotes": "Latest version release notes",
+        "storeLink": "Application store link",
+        "fingerprints": "SHA-256 certificate fingerprints",
+        "appId": "iOS application ID",
+        "title": "Name"
+      },
+      "form": {
+        "titlePlaceholder": "Enter an application name",
+        "secretPlaceholder": "Enter the Base64-encoded application secret",
+        "releaseNotesPlaceholder": "Enter release notes"
+      },
+      "groups": {
+        "versionInfo": "Version information",
+        "storeInfo": "Store information"
+      },
+      "validation": {
+        "packageRequired": "Enter a package name",
+        "packageInvalid": "Enter a valid package name, e.g. org.example.app",
+        "secretInvalid": "The secret must be Base64 encoded and decode to at least 64 bytes",
+        "versionInvalid": "Enter a valid version, e.g. 1.0.0",
+        "storeRequired": "A store link is required to publish an application",
+        "storeInvalid": "Enter a valid store link for the selected platform",
+        "fingerprintsRequired": "A certificate fingerprint is required to publish an Android application",
+        "fingerprintsInvalid": "Enter a colon-separated 32-byte SHA-256 fingerprint",
+        "appIdRequired": "An application ID is required to publish an iOS application",
+        "appIdInvalid": "Enter the team ID and package name, e.g. ABCDEFGHIJ.org.example.app",
+        "secretRequired": "Enter an application secret",
+        "maxLength": "Must not exceed {max} characters",
+        "platformRequired": "Select an application platform",
+        "statusRequired": "Select an application status"
+      },
+      "search": {
+        "allPlatforms": "All platforms"
+      },
+      "delete": {
+        "publishedTitle": "“{title}” is published. Deleting it will affect existing users. Permanently delete it?"
+      },
+      "suspend": {
+        "title": "Suspend mobile application “{title}”?"
+      }
+    },
+    "bundle": {
+      "actions": {
+        "create": "Add app bundle",
+        "edit": "Edit app bundle",
+        "configure": "Application configuration",
+        "delete": "Delete app bundle",
+        "next": "Next",
+        "previous": "Previous",
+        "createClient": "Add OAuth 2.0 client"
+      },
+      "fields": {
+        "title": "Title",
+        "clients": "OAuth clients",
+        "android": "Android application",
+        "ios": "iOS application",
+        "oauth2Enabled": "Enable OAuth 2.0",
+        "description": "Description"
+      },
+      "delete": {
+        "disabled": "Unlink Android and iOS applications before deleting this bundle"
+      },
+      "steps": {
+        "basic": "Basic information",
+        "layout": "Layout"
+      },
+      "form": {
+        "titlePlaceholder": "Enter an app bundle title",
+        "androidPlaceholder": "Select an Android application",
+        "iosPlaceholder": "Select an iOS application",
+        "descriptionPlaceholder": "Enter an app bundle description",
+        "clientsPlaceholder": "Select OAuth clients",
+        "clientsSaveFailed": "The bundle was saved, but OAuth clients could not be updated. Retry saving."
+      },
+      "validation": {
+        "titleRequired": "Enter an app bundle title",
+        "titleMaxLength": "The title must not exceed 255 characters"
+      },
+      "configuration": {
+        "description": "Follow these steps to configure and run the ThingsBoard mobile application.",
+        "prepareTitle": "1. Prepare the development environment",
+        "prepareDescription": "Install the Flutter SDK and follow the official guide to configure your development environment.",
+        "documentation": "Installation guide",
+        "sourceTitle": "2. Get the app source code",
+        "sourceDescription": "Run this command in your terminal to clone the Flutter ThingsBoard app repository.",
+        "copySource": "Copy clone command",
+        "settingsTitle": "3. Download the app configuration",
+        "settingsDescription": "Enter a server address accessible to the mobile app, then place configs.json in the root of the cloned project.",
+        "endpoint": "ThingsBoard server URL",
+        "endpointHint": "Include http:// or https:// and an optional port. Do not include a path, query, or fragment.",
+        "endpointRequired": "Enter the ThingsBoard server URL",
+        "endpointInvalid": "Enter a valid HTTP or HTTPS server URL, e.g. https://thingsboard.example.com",
+        "noApplications": "No mobile apps are linked. Only server settings will be exported.",
+        "download": "Download configs.json",
+        "runTitle": "4. Run the app",
+        "runDescription": "Connect a device or start an emulator, then run this command from the project root. You can also run the app from your IDE.",
+        "copyRun": "Copy run command",
+        "copied": "Command copied",
+        "copyFailed": "Copy failed. Copy the command manually.",
+        "moreInformation": "Want to learn more about Flutter development?",
+        "gettingStarted": "Getting started"
+      }
+    }
+  }
+}

@@ -1,0 +1,104 @@
+.tb-code-editor {
+  --tb-editor-active-border: hsl(var(--primary));
+  --tb-editor-accent-text: color-mix(
+    in srgb,
+    hsl(var(--primary)) 80%,
+    hsl(var(--foreground))
+  );
+
+  border-color: hsl(var(--input));
+  transition: border-color 150ms ease;
+}
+
+/* Add the second border pixel inside the editor without shifting its layout. */
+.tb-code-editor::after {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  pointer-events: none;
+  content: '';
+  border: 1px solid transparent;
+  border-radius: inherit;
+  transition: border-color 150ms ease;
+}
+
+.tb-code-editor:not([data-disabled='true']):focus-within,
+.tb-code-editor:not([data-disabled='true']):focus-within::after {
+  border-color: var(--tb-editor-active-border);
+}
+
+.tb-code-editor__toolbar {
+  border-color: hsl(var(--border));
+}
+
+.tb-code-editor__language {
+  color: var(--tb-editor-accent-text);
+  background: hsl(var(--primary) / 8%);
+  border-color: hsl(var(--primary) / 20%);
+}
+
+/* Monaco owns gutter dimensions; only decorate it, preserving hit targets. */
+/* stylelint-disable selector-pseudo-class-no-unknown -- Processed as Vue scoped CSS. */
+:global(.dark .tb-code-editor) {
+  --tb-editor-accent-text: color-mix(in srgb, hsl(var(--primary)) 45%, white);
+}
+
+.tb-code-editor :deep(.monaco-editor .margin) {
+  background: color-mix(
+    in srgb,
+    hsl(var(--primary)) 4%,
+    hsl(var(--background))
+  );
+  box-shadow: inset -1px 0 hsl(var(--primary) / 12%);
+}
+
+.tb-code-editor :deep(.monaco-editor .line-numbers) {
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  color: color-mix(in srgb, hsl(var(--primary)) 55%, hsl(var(--foreground)));
+}
+
+.tb-code-editor :deep(.monaco-editor .line-numbers.active-line-number) {
+  font-weight: 600;
+  color: var(--tb-editor-accent-text);
+  background: hsl(var(--primary) / 12%);
+  border-radius: 3px;
+  box-shadow: -2px 0 hsl(var(--primary));
+}
+/* stylelint-enable selector-pseudo-class-no-unknown */
+
+.tb-code-editor[data-status='warning'] {
+  --tb-editor-active-border: hsl(var(--warning));
+
+  border-color: var(--tb-editor-active-border);
+}
+
+.tb-code-editor[data-status='error'],
+.tb-code-editor[aria-invalid='true'],
+/* stylelint-disable-next-line selector-pseudo-class-no-unknown -- Processed as Vue scoped CSS. */
+:global(.form-valid-error .tb-code-editor) {
+  --tb-editor-active-border: hsl(var(--destructive));
+
+  border-color: var(--tb-editor-active-border);
+}
+
+.tb-code-editor--fullscreen {
+  position: fixed;
+  inset: 0;
+  z-index: calc(var(--popup-z-index, 2000) + 10);
+  width: 100vw;
+  max-width: none;
+  height: 100dvh;
+  max-height: none;
+  padding: 0;
+  margin: 0;
+  overscroll-behavior: none;
+  border-radius: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tb-code-editor,
+  .tb-code-editor::after {
+    transition: none;
+  }
+}

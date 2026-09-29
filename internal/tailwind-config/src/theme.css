@@ -20,7 +20,6 @@
 @source '../../../packages/';
 @source '../../../apps/';
 @source '../../../docs/';
-@source '../../../playground/';
 
 /* Dark mode uses .dark class selector, not prefers-color-scheme */
 @custom-variant dark (&:is(.dark *));
@@ -105,7 +104,7 @@
   --color-primary-border: hsl(var(--primary-400));
   --color-primary-border-light: hsl(var(--primary-300));
   --color-primary-hover: hsl(var(--primary-600));
-  --color-primary-text: hsl(var(--primary-500));
+  --color-primary-text: hsl(var(--primary-text, var(--primary-500)));
   --color-primary-text-active: hsl(var(--primary-700));
   --color-primary-text-hover: hsl(var(--primary-600));
 
@@ -419,6 +418,13 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+
+/* 主题色文字与填充色分开，亮色品牌背景仍使用原始 primary。 */
+@utility text-primary {
+  :root & {
+    color: hsl(var(--primary-text, var(--primary)));
+  }
 }
 
 /* Tailwind v4 的 utilities 在 @layer 内；组件样式若留在 layer 外，会按层叠规则压过 py-4 等工具类。

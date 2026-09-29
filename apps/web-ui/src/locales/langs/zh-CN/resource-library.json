@@ -1,0 +1,56 @@
+{
+  "menu": "资源库",
+  "fields": {
+    "title": "标题",
+    "resourceKey": "资源键",
+    "resourceType": "资源类型",
+    "scope": "作用域",
+    "file": "资源文件",
+    "fileName": "文件名"
+  },
+  "actions": {
+    "add": "添加资源",
+    "download": "下载",
+    "edit": "编辑资源",
+    "delete": "删除资源"
+  },
+  "messages": {
+    "forceDelete": {
+      "title": "资源被其他实体使用",
+      "content": "资源 “{title}” 未被删除，因为它被以下实体使用：",
+      "footer": "如果仍要删除该资源，请点击 仍然删除 按钮。",
+      "button": "仍然删除"
+    }
+  },
+  "validation": {
+    "fileRequired": "请选择资源文件",
+    "fileTypeInvalid": "文件格式不正确，请选择 {accept} 文件",
+    "titleRequired": "请输入标题",
+    "resourceTypeRequired": "请选择资源类型",
+    "titleTooLong": "标题不能超过 255 个字符"
+  },
+  "options": {
+    "types": {
+      "lwm2mModel": "LWM2M 模型",
+      "pkcs12": "PKCS #12",
+      "jks": "JKS",
+      "general": "通用"
+    },
+    "scope": {
+      "system": "系统",
+      "tenant": "租户"
+    }
+  },
+  "features": {
+    "form": {
+      "titlePlaceholder": "请输入资源标题",
+      "filePlaceholder": "点击或拖拽文件到此处上传"
+    },
+    "filter": {
+      "allTypes": "全部类型"
+    },
+    "upload": {
+      "partialFailure": "已上传 {uploaded} 个文件，剩余 {remaining} 个文件可重新提交"
+    }
+  }
+}

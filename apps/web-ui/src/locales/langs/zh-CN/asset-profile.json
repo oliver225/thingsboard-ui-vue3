@@ -1,0 +1,58 @@
+{
+  "menu": "资产配置",
+  "fields": {
+    "name": "配置名称",
+    "description": "描述",
+    "default": "默认配置",
+    "defaultRuleChain": "默认规则链",
+    "defaultDashboard": "移动端仪表板",
+    "defaultQueue": "默认队列",
+    "defaultEdgeRuleChain": "默认 Edge 规则链",
+    "image": "资产图片"
+  },
+  "actions": {
+    "create": "新建资产配置",
+    "edit": "编辑资产配置",
+    "setDefault": "设为默认",
+    "export": "导出资产配置",
+    "import": "导入资产配置",
+    "delete": "删除资产配置"
+  },
+  "validation": {
+    "nameRequired": "请输入配置名称",
+    "nameMaxLength": "配置名称不能超过 255 个字符"
+  },
+  "features": {
+    "import": {
+      "success": "导入成功",
+      "invalidFile": "无效的资产配置文件",
+      "parseError": "文件解析失败,请选择合法的 JSON 文件"
+    },
+    "setDefault": {
+      "content": "新建资产时将默认使用此配置。",
+      "title": "确定将“{name}”设为默认资产配置吗？",
+      "success": "已设为默认资产配置"
+    },
+    "form": {
+      "namePlaceholder": "例如：园区楼宇",
+      "descriptionPlaceholder": "描述此配置的用途或适用资产（选填）",
+      "ruleChainPlaceholder": "使用根规则链",
+      "ruleChainHint": "处理使用此配置的资产消息；留空时使用根规则链。",
+      "dashboardPlaceholder": "选择移动端仪表板（选填）",
+      "dashboardHint": "在移动应用中打开资产时显示的仪表板。",
+      "queuePlaceholder": "使用默认队列",
+      "edgeRuleChainPlaceholder": "选择 Edge 规则链（选填）",
+      "edgeRuleChainHint": "资产分配到 Edge 时，此规则链会自动分配到对应的 Edge。"
+    },
+    "detail": {
+      "title": "资产配置详情",
+      "basic": "基本信息",
+      "default": "默认",
+      "copyId": "复制资产配置 ID",
+      "idCopied": "资产配置 ID 已复制",
+      "nameUnavailable": "无法读取实体名称",
+      "noDescription": "暂无描述",
+      "notFound": "资产配置不存在、已被删除，或当前账号无权访问。"
+    }
+  }
+}

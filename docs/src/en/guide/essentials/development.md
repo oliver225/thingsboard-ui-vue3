@@ -64,8 +64,6 @@ The execution command is: `pnpm run [script]` or `npm run [script]`.
     "build:naive": "pnpm run build --filter=@vben/web-naive",
     // Build the web-tdesign application separately
     "build:tdesign": "pnpm run build --filter=@vben/web-tdesign",
-    // Build the playground application separately
-    "build:play": "pnpm run build --filter=@vben/playground",
     // Changeset version management
     "changeset": "pnpm exec changeset",
     // Check for various issues in the project
@@ -96,8 +94,6 @@ The execution command is: `pnpm run [script]` or `npm run [script]`.
     "dev:naive": "pnpm -F @vben/web-naive run dev",
     // Start the web-tdesign application
     "dev:tdesign": "pnpm -F @vben/web-tdesign run dev",
-    // Start the playground application
-    "dev:play": "pnpm -F @vben/playground run dev",
     // Format code
     "format": "vsh lint --format",
     // Lint code
@@ -116,8 +112,6 @@ The execution command is: `pnpm run [script]` or `npm run [script]`.
     "reinstall": "pnpm clean --del-lock && pnpm install",
     // Run e2e tests
     "test:e2e": "turbo run test:e2e",
-    // Run vitest unit tests
-    "test:unit": "vitest run --dom",
     // Update project dependencies
     "update:deps": "npx taze -r -w",
     // Changeset generation and versioning

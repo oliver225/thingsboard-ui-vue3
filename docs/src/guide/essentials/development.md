@@ -64,8 +64,6 @@ npm 脚本是项目常见的配置，用于执行一些常见的任务，比如�
     "build:naive": "pnpm run build --filter=@vben/web-naive",
     // 单独构建 web-tdesign 应用
     "build:tdesign": "pnpm run build --filter=@vben/web-tdesign",
-    // 单独构建 playground 应用
-    "build:play": "pnpm run build --filter=@vben/playground",
     // changeset 版本管理
     "changeset": "pnpm exec changeset",
     // 检查项目各种问题
@@ -96,8 +94,6 @@ npm 脚本是项目常见的配置，用于执行一些常见的任务，比如�
     "dev:naive": "pnpm -F @vben/web-naive run dev",
     // 启动 web-tdesign 应用
     "dev:tdesign": "pnpm -F @vben/web-tdesign run dev",
-    // 启动演示应用
-    "dev:play": "pnpm -F @vben/playground run dev",
     // 格式化代码
     "format": "vsh lint --format",
     // lint 代码
@@ -116,8 +112,6 @@ npm 脚本是项目常见的配置，用于执行一些常见的任务，比如�
     "reinstall": "pnpm clean --del-lock && pnpm install",
     // 运行 e2e 测试
     "test:e2e": "turbo run test:e2e",
-    // 运行 vitest 单元测试
-    "test:unit": "vitest run --dom",
     // 更新项目依赖
     "update:deps": "npx taze -r -w",
     // changeset 生成提交集

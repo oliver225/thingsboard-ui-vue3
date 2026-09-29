@@ -1,0 +1,47 @@
+{
+  "detail": {
+    "title": "Tenant details",
+    "basic": "Basic information",
+    "copyId": "Copy tenant ID",
+    "notFound": "Tenant was not found or failed to load. Please retry.",
+    "noDescription": "No description",
+    "contact": "Contact information",
+    "nameUnavailable": "Name unavailable"
+  },
+  "menu": "Tenants",
+  "fields": {
+    "title": "Title",
+    "tenantProfile": "Tenant profile",
+    "email": "Email",
+    "phone": "Phone",
+    "country": "Country",
+    "state": "State",
+    "city": "City",
+    "region": "Region",
+    "address": "Address",
+    "address2": "Address 2",
+    "zip": "Zip",
+    "description": "Description"
+  },
+  "actions": {
+    "create": "Create tenant",
+    "edit": "Edit tenant",
+    "delete": "Delete tenant"
+  },
+  "validation": {
+    "titleRequired": "Title is required",
+    "tenantProfileRequired": "Please select tenant profile",
+    "emailInvalid": "Invalid email format",
+    "phoneFormatTip": "Invalid phone number format"
+  },
+  "features": {
+    "form": {
+      "titlePlaceholder": "e.g. East Coast IoT Operations",
+      "descriptionPlaceholder": "Describe the tenant’s business or purpose (optional)",
+      "regionPlaceholder": "Select province / city / district",
+      "zipPlaceholder": "Enter postal code",
+      "addressPlaceholder": "Street and building number",
+      "address2Placeholder": "Suite, floor or other details (optional)"
+    }
+  }
+}

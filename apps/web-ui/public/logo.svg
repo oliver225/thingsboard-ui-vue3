@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" role="img" aria-labelledby="title">
+  <title>Pincore favicon</title>
+  <rect x="16" y="16" width="480" height="480" rx="108" fill="#00C07F"/>
+  <rect x="128" y="88" width="84" height="344" rx="42" fill="#FFFFFF"/>
+  <path fill="#FFFFFF" fill-rule="evenodd" d="M170 88h108c75 0 122 46 122 116s-47 116-122 116H170V88Zm42 72v88h61c34 0 53-15 53-44s-19-44-53-44h-61Z"/>
+</svg>

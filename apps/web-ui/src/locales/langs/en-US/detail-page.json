@@ -1,0 +1,19 @@
+{
+  "details": "Details",
+  "loading": "Loading…",
+  "loadFailed": "Failed to load",
+  "retry": "Retry",
+  "retryHint": "Please try loading the details again.",
+  "tabs": {
+    "details": "Details",
+    "attributes": "Attributes",
+    "telemetry": "Telemetry",
+    "calculatedFields": "Calculated fields",
+    "alarmRules": "Alarm rules",
+    "alarms": "Alarms",
+    "events": "Events",
+    "relations": "Relations",
+    "auditLogs": "Audit logs",
+    "apiKeys": "API Keys"
+  }
+}

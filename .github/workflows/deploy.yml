@@ -6,37 +6,6 @@ on:
       - main
 
 jobs:
-  deploy-playground-ftp:
-    name: Deploy Push Playground Ftp
-    if: github.actor != 'dependabot[bot]' && !contains(github.event.head_commit.message, '[skip ci]') && github.repository == 'vbenjs/vue-vben-admin'
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout code
-        uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
-
-      - name: Sed Config Base
-        shell: bash
-        run: |
-          sed -i  "s#VITE_COMPRESS\s*=.*#VITE_COMPRESS = gzip#g" ./playground/.env.production
-          sed -i  "s#VITE_PWA\s*=.*#VITE_PWA = true#g" ./playground/.env.production
-          cat ./playground/.env.production
-
-      - name: Setup Node
-        uses: ./.github/actions/setup-node
-
-      - name: Build
-        run: pnpm build:play
-
-      - name: Sync Playground files
-        uses: SamKirkland/FTP-Deploy-Action@v4.4.0
-        with:
-          server: ${{ secrets.PRO_FTP_HOST }}
-          username: ${{ secrets.WEB_PLAYGROUND_FTP_ACCOUNT }}
-          password: ${{ secrets.WEB_PLAYGROUND_FTP_PWSSWORD }}
-          local-dir: ./playground/dist/
-
   deploy-docs-ftp:
     name: Deploy Push Docs Ftp
     if: github.actor != 'dependabot[bot]' && !contains(github.event.head_commit.message, '[skip ci]') && github.repository == 'vbenjs/vue-vben-admin'
@@ -157,7 +126,6 @@ jobs:
   rerun-on-failure:
     name: Rerun on failure
     needs:
-      - deploy-playground-ftp
       - deploy-docs-ftp
       - deploy-antd-ftp
       - deploy-ele-ftp

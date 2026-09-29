@@ -23,7 +23,6 @@ const DEFAULT_CONFIG = {
     '@vben/tailwind-config',
     '@vben/vite-config',
     '@vben/oxlint-config',
-    'playwright',
     'rimraf',
     'tailwindcss',
   ],

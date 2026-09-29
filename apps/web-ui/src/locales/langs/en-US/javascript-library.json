@@ -1,0 +1,55 @@
+{
+  "menu": "JavaScript Library",
+  "fields": {
+    "title": "Title",
+    "subType": "JavaScript type",
+    "scope": "Scope",
+    "file": "JavaScript file",
+    "content": "Module script"
+  },
+  "actions": {
+    "add": "Add JavaScript",
+    "edit": "Edit JavaScript resource",
+    "download": "Download",
+    "delete": "Delete JavaScript resource",
+    "view": "View JavaScript resource"
+  },
+  "messages": {
+    "forceDelete": {
+      "title": "JavaScript resource is used by other entities",
+      "content": "JavaScript resource “{title}” was not deleted because it is used by the following entities:",
+      "footer": "If you still want to delete the resource, click the Delete anyway button.",
+      "button": "Delete anyway"
+    }
+  },
+  "validation": {
+    "titleRequired": "Title is required",
+    "fileRequired": "Please select a JavaScript file",
+    "fileTypeInvalid": "Please select a .js file",
+    "contentRequired": "Module script is required",
+    "readFileError": "Failed to read file",
+    "subTypeRequired": "Select a JavaScript type",
+    "titleTooLong": "Title must not exceed 255 characters"
+  },
+  "options": {
+    "subTypes": {
+      "extension": "Extension",
+      "module": "Module"
+    },
+    "scope": {
+      "system": "System",
+      "tenant": "Tenant"
+    }
+  },
+  "features": {
+    "form": {
+      "titlePlaceholder": "Enter JavaScript title",
+      "filePlaceholder": "Click or drag a .js file here to upload",
+      "contentPlaceholder": "Write your JavaScript module code here",
+      "importFromFile": "Import from file"
+    },
+    "filter": {
+      "allSubTypes": "All types"
+    }
+  }
+}

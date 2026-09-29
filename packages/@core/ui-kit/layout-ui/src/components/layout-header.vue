@@ -53,6 +53,8 @@ const style = computed((): CSSProperties => {
   const right = !show || !fullWidth ? undefined : 0;
 
   return {
+    // The primary fill is inherited; keep its matching foreground across header themes.
+    '--primary-foreground': 'inherit',
     height: `${height}px`,
     marginTop: show ? 0 : `-${height}px`,
     right,

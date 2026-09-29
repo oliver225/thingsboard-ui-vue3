@@ -1,0 +1,89 @@
+{
+  "menu": "OTA updates",
+  "sections": {
+    "repository": "OTA package repository"
+  },
+  "fields": {
+    "title": "Title",
+    "version": "Version",
+    "tag": "Version tag",
+    "type": "Package type",
+    "url": "Direct URL",
+    "fileName": "File name",
+    "dataSize": "File size",
+    "checksum": "Checksum",
+    "algorithm": "Checksum algorithm",
+    "deviceProfile": "Device profile",
+    "description": "Description",
+    "file": "Package file",
+    "dataSizeBytes": "File size (bytes)",
+    "contentType": "Content type",
+    "useUrl": "Use a direct URL"
+  },
+  "actions": {
+    "add": "Add package",
+    "edit": "Edit package",
+    "download": "Download package",
+    "chooseFile": "Choose file",
+    "generateChecksum": "Generate checksum automatically"
+  },
+  "messages": {
+    "autoChecksum": "Leave blank to generate automatically",
+    "immutable": "Uploaded package contents cannot be changed. You can edit the description.",
+    "cleanupFailed": "Upload failed and the package record could not be removed. Refresh the list to resolve the remaining record.",
+    "uploadFailed": "Unable to upload the package file. Please try again."
+  },
+  "validation": {
+    "required": "This field is required",
+    "fileRequired": "Select a package file",
+    "titleRequired": "Enter a package title",
+    "versionRequired": "Enter a version",
+    "deviceProfileRequired": "Select a compatible device profile",
+    "typeRequired": "Select a package type",
+    "urlRequired": "Enter a direct URL",
+    "maxLength": "Must not exceed {max} characters"
+  },
+  "features": {
+    "form": {
+      "titlePlaceholder": "e.g. Smart gateway firmware",
+      "versionPlaceholder": "e.g. 1.0.0",
+      "tagPlaceholder": "Generated from title and version; you can customize it",
+      "urlDescription": "Provide the package through an external URL without uploading a file",
+      "filePlaceholder": "Click or drag a file here. Select one package at a time.",
+      "descriptionPlaceholder": "Enter release notes or version changes (optional)"
+    },
+    "package": {
+      "fields": {
+        "title": "Title",
+        "version": "Version",
+        "type": "Type",
+        "deviceProfile": "Device profile",
+        "fileName": "File name",
+        "dataSize": "Size",
+        "url": "Direct URL",
+        "checksum": "Checksum",
+        "description": "Description"
+      },
+      "type": {
+        "FIRMWARE": "Firmware",
+        "SOFTWARE": "Software"
+      },
+      "source": {
+        "label": "Data source",
+        "url": "External URL",
+        "file": "Upload file"
+      },
+      "actions": {
+        "create": "Create OTA package",
+        "download": "Download"
+      },
+      "validation": {
+        "titleRequired": "Title is required",
+        "versionRequired": "Version is required",
+        "deviceProfileRequired": "Device profile is required",
+        "urlRequired": "Direct URL is required"
+      },
+      "fileUploadHint": "Binary file upload is not implemented yet; currently only creating via external URL is supported."
+    }
+  }
+}

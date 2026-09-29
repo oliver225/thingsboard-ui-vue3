@@ -2,17 +2,22 @@
   "$schema": "https://unpkg.com/@changesets/config@3.0.0/schema.json",
   "changelog": [
     "@changesets/changelog-github",
-    { "repo": "vbenjs/vue-vben-admin" }
+    {
+      "repo": "oliver225/thingsboard-ui-vue3"
+    }
   ],
   "commit": false,
   "fixed": [["@vben-core/*", "@vben/*"]],
   "snapshot": {
     "prereleaseTemplate": "{tag}-{datetime}"
   },
-  "privatePackages": { "version": true, "tag": true },
+  "privatePackages": {
+    "version": true,
+    "tag": true
+  },
   "linked": [],
   "access": "public",
-  "baseBranch": "main",
+  "baseBranch": "master",
   "updateInternalDependencies": "patch",
   "ignore": []
 }

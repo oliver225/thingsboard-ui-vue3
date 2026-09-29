@@ -1,0 +1,63 @@
+/* InputNumber：仅覆盖与 VbenInput 不同的外观，保留尺寸和加减按钮模式。 */
+@layer components {
+  .ant-input-number-outlined {
+    --input-number-border: hsl(var(--input));
+    --input-number-ring: hsl(var(--primary));
+
+    width: 100%;
+    color: hsl(var(--foreground));
+    background: hsl(var(--background));
+    border-color: var(--input-number-border);
+    border-radius: calc(var(--radius) - 2px);
+
+    &:not(.ant-input-number-sm, .ant-input-number-lg) {
+      --ant-input-number-input-padding-block: calc(
+        (2.5rem - 1.25rem - 2px) / 2
+      );
+      --ant-input-number-input-padding-inline: 0.75rem;
+
+      height: 2.5rem;
+      font-size: 0.875rem;
+      line-height: 1.25rem;
+
+      /* 两侧加减按钮模式沿用默认留白，避免重复内边距。 */
+      &:not(.ant-input-number-mode-spinner) {
+        padding-inline: 0.75rem;
+      }
+    }
+
+    input::placeholder {
+      color: hsl(var(--muted-foreground) / 50%);
+    }
+
+    &:focus-within:not(.ant-input-number-disabled) {
+      box-shadow: inset 0 0 0 1px var(--input-number-ring);
+    }
+
+    &.ant-input-number-disabled {
+      opacity: 0.5;
+
+      /* 避免内部文字与整体透明度重复变淡。 */
+      input {
+        color: hsl(var(--foreground));
+        -webkit-text-fill-color: currentcolor;
+      }
+    }
+
+    &.ant-input-number-status-error,
+    .form-valid-error & {
+      --input-number-border: hsl(var(--destructive));
+      --input-number-ring: hsl(var(--destructive));
+    }
+
+    &.ant-input-number-status-warning {
+      --input-number-border: hsl(var(--warning));
+      --input-number-ring: hsl(var(--warning));
+    }
+  }
+}
+
+/* 在层外覆盖公共校验阴影。 */
+.form-valid-error .ant-input-number-outlined.ant-input-number-focused {
+  box-shadow: inset 0 0 0 1px hsl(var(--destructive));
+}

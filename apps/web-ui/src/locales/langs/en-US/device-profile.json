@@ -1,0 +1,143 @@
+{
+  "menu": "Device Profiles",
+  "fields": {
+    "name": "Name",
+    "transportType": "Transport type",
+    "image": "Device image",
+    "defaultRuleChain": "Default rule chain",
+    "defaultDashboard": "Mobile dashboard",
+    "defaultQueue": "Default queue",
+    "defaultEdgeRuleChain": "Default edge rule chain",
+    "description": "Description",
+    "default": "Default"
+  },
+  "actions": {
+    "create": "Create device profile",
+    "edit": "Edit device profile",
+    "setDefault": "Set as default",
+    "export": "Export device profile",
+    "import": "Import device profile",
+    "delete": "Delete device profile"
+  },
+  "messages": {
+    "transportInfo": {
+      "default": "Default transport requires no additional configuration.",
+      "unsupported": "Advanced configuration for this transport type is not editable here; the existing configuration is preserved on save."
+    }
+  },
+  "validation": {
+    "nameRequired": "Profile name is required",
+    "topicRequired": "Topic filter is required",
+    "required": "This field is required",
+    "nameMaxLength": "Profile name cannot exceed 255 characters",
+    "topicInvalid": "The + wildcard must occupy a full level; # must occupy the final level",
+    "topicDuplicate": "Attribute and telemetry publishing topics must be different",
+    "nonnegativeInteger": "Enter an integer greater than or equal to 0"
+  },
+  "options": {
+    "type": {
+      "DEFAULT": "Default",
+      "SNMP": "SNMP"
+    },
+    "transport": {
+      "DEFAULT": "Default",
+      "MQTT": "MQTT",
+      "COAP": "CoAP",
+      "LWM2M": "LwM2M",
+      "SNMP": "SNMP",
+      "mqttTopicFilters": "MQTT device topic filters",
+      "telemetryTopic": "Telemetry topic filter",
+      "attributesTopic": "Attributes topic filter",
+      "attributesSubscribeTopic": "Attributes subscribe topic filter",
+      "payloadType": "Payload type",
+      "telemetryProtoSchema": "Telemetry proto schema",
+      "attributesProtoSchema": "Attributes proto schema",
+      "rpcRequestProtoSchema": "RPC request proto schema",
+      "rpcResponseProtoSchema": "RPC response proto schema",
+      "enableJsonCompat": "Enable compatibility with JSON payload format",
+      "useJsonForDownlink": "Use JSON format for default downlink topics",
+      "sparkplug": "MQTT Sparkplug B Edge of Network (EoN) node",
+      "sparkplugHint": "Allow connections from EoN nodes with Sparkplug B payload and topic format.",
+      "sparkplugMetricNames": "SparkPlug metrics to store as attributes",
+      "sparkplugMetricNamesHint": "Names of SparkPlug metrics that will be stored as device attributes. All other metrics will be stored as device telemetry.",
+      "sendAckOnValidationException": "Send PUBACK on validation exception",
+      "coapDeviceType": "CoAP device type",
+      "powerSavingMode": "Power saving mode",
+      "powerMode": "Power saving mode type",
+      "psmActivityTimer": "PSM activity timer (ms)",
+      "edrxCycle": "eDRX cycle (ms)",
+      "pagingTransmissionWindow": "Paging transmission window (ms)"
+    },
+    "payload": {
+      "JSON": "JSON",
+      "PROTOBUF": "Protobuf"
+    },
+    "coapDeviceType": {
+      "DEFAULT": "Default",
+      "EFENTO": "Efento NB-IoT"
+    },
+    "powerMode": {
+      "DRX": "DRX",
+      "PSM": "PSM",
+      "E_DRX": "eDRX"
+    },
+    "provision": {
+      "DISABLED": "Disabled",
+      "ALLOW_CREATE_NEW_DEVICES": "Allow creating new devices",
+      "CHECK_PRE_PROVISIONED_DEVICES": "Check pre-provisioned devices",
+      "X509_CERTIFICATE_CHAIN": "X.509 certificate chain",
+      "strategy": "Provision strategy",
+      "deviceKey": "Provision device key",
+      "deviceSecret": "Provision device secret",
+      "allowCreateNewDevices": "Allow creating new devices",
+      "certificateValue": "X.509 certificate / chain (PEM)",
+      "cnRegex": "RegEx to extract device name from certificate CN",
+      "copy": "Copy credential",
+      "generate": "Regenerate",
+      "copyFailed": "Copy failed. Please copy the value manually."
+    }
+  },
+  "features": {
+    "wizard": {
+      "details": "Device profile details",
+      "transport": "Transport configuration",
+      "provision": "Device provisioning",
+      "prev": "Back",
+      "next": "Next",
+      "nextWithLabel": "Next: {label}",
+      "steps": "Device profile steps"
+    },
+    "import": {
+      "success": "Imported successfully",
+      "invalidFile": "Invalid device profile file",
+      "parseError": "Failed to parse file, please choose a valid JSON file"
+    },
+    "setDefault": {
+      "content": "This profile will be used by default when creating new devices.",
+      "title": "Set \"{name}\" as the default device profile?",
+      "success": "Set as default device profile"
+    },
+    "form": {
+      "namePlaceholder": "e.g. Campus buildings",
+      "descriptionPlaceholder": "Describe the purpose or applicable devices (optional)",
+      "ruleChainPlaceholder": "Use root rule chain",
+      "ruleChainHint": "Processes messages from devices using this profile. Leave empty to use the root rule chain.",
+      "dashboardPlaceholder": "Select a mobile dashboard (optional)",
+      "dashboardHint": "The dashboard displayed when opening an device in the mobile app.",
+      "queuePlaceholder": "Use default queue",
+      "edgeRuleChainPlaceholder": "Select an Edge rule chain (optional)",
+      "edgeRuleChainHint": "This rule chain is automatically assigned to the Edge when an device is assigned to it."
+    },
+    "detail": {
+      "title": "Device profile details",
+      "basic": "Basic information",
+      "default": "Default",
+      "copyId": "Copy device profile ID",
+      "idCopied": "Device profile ID copied",
+      "nameUnavailable": "Entity name unavailable",
+      "noDescription": "No description",
+      "notFound": "This device profile does not exist, has been deleted, or is not accessible to your account.",
+      "advancedTransport": "Advanced transport configuration"
+    }
+  }
+}

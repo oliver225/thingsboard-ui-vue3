@@ -1,0 +1,33 @@
+/* 表单布局：通过 form-message-flow / queue-strategy-options 显式启用。 */
+
+@layer components {
+  /* 租户配置与队列配置共用的纵向策略选项，长标签自然换行。 */
+  .ant-radio-group.queue-strategy-options {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .queue-strategy-options .ant-radio-wrapper {
+    align-items: center;
+    min-height: 2rem;
+    margin-inline: 0;
+    font-size: 0.875rem;
+    font-weight: 400;
+    line-height: 1.25rem;
+    color: hsl(var(--foreground));
+  }
+
+  .queue-strategy-options .ant-radio-label {
+    padding-inline: 0.5rem 0;
+    white-space: normal;
+  }
+}
+
+/* 层外覆盖 FormMessage 的 absolute 工具类，让长错误信息撑开表单项。 */
+.form-message-flow [data-slot='form-message'] {
+  position: static;
+  margin-top: 0.25rem;
+  overflow-wrap: anywhere;
+  white-space: normal;
+}

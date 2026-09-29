@@ -1,0 +1,719 @@
+<script lang="ts" setup name="EditableCell">
+import type { Component, CSSProperties, PropType, Ref } from 'vue';
+
+import type { TableInstance } from '../../hooks/useTableContext';
+import type { ChangeEvent, Fn, Recordable } from '../../types/shared';
+import type { BasicColumn } from '../../types/table';
+import type { EditRecordRow } from './index';
+
+import {
+  computed,
+  h,
+  nextTick,
+  ref,
+  shallowRef,
+  unref,
+  watchEffect,
+} from 'vue';
+
+import { isBoolean, isFunction, isNumber, isObject, set } from '@vben/utils';
+
+import { CheckOutlined, CloseOutlined, FormOutlined } from '@antdv-next/icons';
+import { Popover, Spin } from 'antdv-next';
+import dateUtil from 'dayjs';
+import { omit, pick } from 'es-toolkit/compat';
+
+import { componentMap } from '../../componentMap';
+import { DictLabel } from '../../dictionary';
+import { isArray, isDef } from '../../helpers';
+import { formatCell } from '../../hooks/useColumns';
+import vClickOutside from './active-cell';
+import { createPlaceholderMessage, updateEditRecordState } from './helper';
+
+const props = defineProps({
+  value: {
+    type: [String, Number, Boolean, Object] as PropType<
+      boolean | number | Recordable | string
+    >,
+    default: '',
+  },
+  labelValue: {
+    default: undefined,
+    type: [Array, Object, String, Number] as PropType<
+      Array<any> | number | object | string
+    >,
+  },
+  tableInstance: {
+    type: Object as PropType<TableInstance>,
+    default: () => ({}),
+  },
+  record: {
+    default: undefined,
+    type: Object as PropType<EditRecordRow | Recordable>,
+  },
+  column: {
+    type: Object as PropType<BasicColumn>,
+    default: () => ({}),
+  },
+  index: { type: Number, required: true },
+});
+
+const table = props.tableInstance;
+const isEdit = ref(false);
+const elRef = shallowRef();
+const ruleOpen = ref(false);
+const ruleMessage = ref('');
+const currentValueRef = ref<any>(props.value);
+const defaultValueRef = ref<any>(props.value);
+const currentLabelValueRef = ref<any>(props.labelValue);
+const defaultLabelValueRef = ref<any>(props.labelValue);
+
+const spinning = ref<boolean>(false);
+
+const getComponent = computed(() => props.column?.editComponent || 'Input');
+
+const getIsCheckComp = computed(() => {
+  const component = unref(getComponent);
+  return ['Checkbox', 'Switch'].includes(component);
+});
+
+const getIsDateComp = computed(() => {
+  const component = unref(getComponent);
+  return [
+    'DatePicker',
+    'MonthPicker',
+    'RangePicker',
+    'TimePicker',
+    'WeekPicker',
+  ].includes(component);
+});
+
+const getEditComponentProps = computed(() => {
+  const { value: text, record, column, index } = props;
+  let compProps = props.column?.editComponentProps ?? {};
+  if (isFunction(compProps)) {
+    compProps = compProps({ text, record, column, index }) ?? {};
+  }
+  return compProps;
+});
+
+const getComponentProps = computed(() => {
+  const compProps = unref(getEditComponentProps);
+
+  let value = unref(currentValueRef);
+  const labelVal = unref(currentLabelValueRef);
+
+  const isCheckValue = unref(getIsCheckComp);
+  const valueField = isCheckValue ? 'checked' : 'value';
+
+  if (isCheckValue) {
+    value = isNumber(value) && isBoolean(value) ? value : !!value;
+  } else if (value && unref(getIsDateComp)) {
+    if (Array.isArray(value)) {
+      const arr: any[] = [];
+      for (const val of value) {
+        arr.push(val ? dateUtil(val) : null);
+      }
+      value = arr;
+    } else {
+      value = dateUtil(value);
+    }
+  }
+
+  return {
+    // size: 'small',
+    getPopupContainer: () => unref(table?.wrapRef.value) ?? document.body,
+    placeholder: createPlaceholderMessage(unref(getComponent)),
+    popupMatchSelectWidth: false,
+    ...omit(compProps, ['onChange']),
+    [valueField]: value,
+    labelValue: labelVal,
+    labelInValue: !!props.column?.dataLabel,
+  };
+});
+
+const getValues = computed(() => {
+  // const { editComponentProps, editValueMap, dataLabel } = props.column;
+  const value = unref(currentValueRef);
+  const labelValue = unref(currentLabelValueRef);
+  if (props.column?.dataLabel && labelValue) {
+    return labelValue;
+  }
+  if (props.column?.format && isDef(value)) {
+    return formatCell(
+      value,
+      props.column.format,
+      props.record as Recordable,
+      props.index,
+      props.column,
+    );
+  }
+  if (!value || typeof value === 'object') {
+    return '\u00A0';
+  }
+  return value;
+});
+
+const getWrapperStyle = computed((): CSSProperties => {
+  if (unref(getIsCheckComp) || unref(getRowEditable)) {
+    return {};
+  }
+  return {
+    width: 'calc(100% - 48px)',
+    minWidth: 'calc(100% - 48px)',
+  };
+});
+
+const getWrapperClass = computed(() => {
+  const { align = 'center' } = props.column;
+  return `edit-cell-align-${align}`;
+});
+
+const getRowEditable = computed(() => {
+  const { editable } = props.record || {};
+  return !!editable;
+});
+
+const getForceEditable = computed(() => {
+  const { editComponent } = props.column || {};
+  return editComponent === 'Upload';
+});
+
+watchEffect(() => {
+  defaultValueRef.value = props.value;
+  currentValueRef.value = props.value;
+  defaultLabelValueRef.value = props.labelValue;
+  currentLabelValueRef.value = props.labelValue;
+});
+
+watchEffect(() => {
+  const { editable } = props.column;
+  if (isBoolean(editable) || isBoolean(unref(getRowEditable))) {
+    isEdit.value = !!editable || unref(getRowEditable);
+  }
+});
+
+function handleEdit() {
+  if (unref(getRowEditable) || unref(props.column?.editRow)) return;
+  ruleMessage.value = '';
+  ruleOpen.value = false;
+  isEdit.value = true;
+  nextTick(() => {
+    const el = unref(elRef);
+    el?.focus?.();
+  });
+}
+
+async function handleChange(...args: any[]) {
+  const [e, labelValue] = args;
+  const component = unref(getComponent);
+  let value;
+  if (!e) {
+    value = e;
+  } else if (component === 'Checkbox') {
+    value = (e as ChangeEvent).target.checked;
+  } else if (e?.target && Reflect.has(e.target, 'value')) {
+    value = (e as ChangeEvent).target.value;
+  } else {
+    // } else if (isString(e) || isBoolean(e) || isNumber(e)) {
+    value = e;
+  }
+
+  const editComponentProps = unref(getEditComponentProps);
+  const format = editComponentProps?.format;
+  if (format) {
+    if (isObject(value) && value.format) {
+      value = value?.format(format) ?? value;
+    } else if (isArray(value) && value[0]?.format && value[1]?.format) {
+      value = value.map((item) => item?.format(format));
+    }
+  }
+
+  currentValueRef.value = value;
+  currentLabelValueRef.value = labelValue;
+
+  const onChange = editComponentProps?.onChange;
+  if (onChange && isFunction(onChange)) onChange(...args);
+
+  table.emit('edit-change', {
+    column: props.column,
+    value: unref(currentValueRef),
+    labelValue: unref(currentLabelValueRef),
+    record: props.record,
+  });
+
+  handleValid();
+}
+
+async function handleValid() {
+  const { column, record } = props;
+  const { editRule } = column;
+  const currentValue = unref(currentValueRef);
+
+  if (editRule) {
+    if (isBoolean(editRule) && !currentValue && !isNumber(currentValue)) {
+      ruleOpen.value = true;
+      const component = unref(getComponent);
+      ruleMessage.value = createPlaceholderMessage(component);
+      return false;
+    }
+    if (isFunction(editRule)) {
+      return await editRule(currentValue, record as Recordable)
+        .then(() => {
+          ruleMessage.value = '';
+          return true;
+        })
+        .catch((error) => {
+          ruleMessage.value = error;
+          ruleOpen.value = true;
+          return false;
+        });
+    }
+  }
+  ruleMessage.value = '';
+  return true;
+}
+
+async function handleSubmit(needEmit = true, valid = true, edit = false) {
+  if (valid) {
+    const isPass = await handleValid();
+    if (!isPass) return false;
+  }
+
+  const { column, index, record } = props;
+  if (!record) return false;
+  const { key, dataIndex, dataLabel } = column;
+  const value = unref(currentValueRef);
+  const labelValue = unref(currentLabelValueRef);
+  if (!key || !dataIndex) return;
+
+  const dataKey = (dataIndex || key) as string;
+
+  if (!record.editable) {
+    const { getProps, getBindValues } = table;
+
+    const { beforeEditSubmit } = unref(getProps);
+    const { columns } = unref(getBindValues);
+
+    if (beforeEditSubmit && isFunction(beforeEditSubmit)) {
+      spinning.value = true;
+      const keys: string[] = columns
+        .map((_column: Recordable) => _column.dataIndex)
+        .filter((field: string) => !!field) as string[];
+      let result: any;
+      try {
+        result = await beforeEditSubmit({
+          record: pick(record, keys),
+          index,
+          key,
+          value,
+        });
+      } catch {
+        result = false;
+      } finally {
+        spinning.value = false;
+      }
+      if (result === false) {
+        return;
+      }
+    }
+  }
+
+  const val = value || column.editDefaultValue;
+  set(record, dataKey, val || typeof val === 'number' ? val : '');
+  if (dataLabel) {
+    const labelVal = labelValue || column.editDefaultLabel;
+    set(
+      record,
+      dataLabel,
+      labelVal || typeof labelVal === 'number' ? labelVal : '',
+    );
+  }
+
+  // const record = await table.updateTableData(index, dataKey, value);
+  needEmit && table.emit('edit-end', { record, index, key, value, labelValue });
+  nextTick(() => {
+    isEdit.value = edit;
+  });
+}
+
+async function handleEnter() {
+  if (props.column?.editRow) {
+    return;
+  }
+  handleSubmit();
+}
+
+function handleSubmitClick() {
+  handleSubmit();
+}
+
+function handleCancel() {
+  isEdit.value = false;
+  currentValueRef.value = defaultValueRef.value;
+  currentLabelValueRef.value = defaultLabelValueRef.value;
+  const { column, index, record } = props;
+  const { key, dataIndex } = column;
+  table.emit('edit-cancel', {
+    record,
+    index,
+    key: dataIndex || key,
+    value: unref(currentValueRef),
+    labelValue: unref(currentLabelValueRef),
+  });
+}
+
+function onClickOutside() {
+  if (props.column?.editable || unref(getRowEditable)) {
+    return;
+  }
+  // const component = unref(getComponent);
+  // if (component.includes('Input')) {
+  //   handleCancel();
+  // }
+  // 自动取消上一个组件编辑状态
+  if (props.column?.editAutoCancel) {
+    handleCancel();
+  }
+}
+
+watchEffect(() => {
+  const updateEdit = (
+    key: string,
+    callbacksOrRef: Fn | Ref,
+    labelRef?: Ref,
+  ) => {
+    if (props.record && props.column.dataIndex) {
+      let dataIndex = props.column.dataIndex as any;
+      if (isArray(dataIndex)) {
+        dataIndex = dataIndex.join('.');
+      }
+      updateEditRecordState(
+        props.record,
+        key,
+        dataIndex,
+        isEdit.value,
+        callbacksOrRef,
+        props.column.dataLabel ? labelRef : undefined,
+      );
+    }
+  };
+  updateEdit('editValidCbs', handleValid);
+  updateEdit('editSubmitCbs', handleSubmit);
+  updateEdit('editCancelCbs', handleCancel);
+  updateEdit('editValueRefs', currentValueRef, currentLabelValueRef);
+});
+
+const getPopoverProps = computed(() => {
+  const className = props.column.className
+    ? [props.column.className, 'popover'].join('-')
+    : '';
+  return {
+    classes: {
+      root: ['edit-cell-rule-popover', className].filter(Boolean).join(' '),
+    },
+    open: !!(unref(ruleMessage) && unref(ruleOpen)),
+    'onUpdate:open': (val: boolean) => {
+      ruleOpen.value = val;
+    },
+    placement: 'right',
+    autoAdjustOverflow: false,
+    getPopupContainer: () => unref(table?.wrapRef.value) ?? document.body,
+  } as any;
+});
+
+const CellComponent = (_: unknown, { attrs }: { attrs: Recordable }) => {
+  const Comp = componentMap.get(unref(getComponent)) as Component;
+  const CellComp = h(Comp, attrs);
+  if (!props.column?.editRule) {
+    return CellComp;
+  }
+  return h(Popover, unref(getPopoverProps), {
+    default: () => CellComp,
+    content: () => unref(ruleMessage),
+  });
+};
+
+const EditRender = (_: unknown, { attrs }: { attrs: Recordable }) => {
+  if (!props.column.editRender) {
+    return;
+  }
+  const DefaultComp = props.column.editRender({
+    text: props.value,
+    record: props.record as Recordable,
+    column: props.column,
+    index: props.index,
+    attrs,
+  });
+  if (!props.column?.editRule) {
+    return DefaultComp;
+  }
+  return h(Popover, unref(getPopoverProps), {
+    default: () => DefaultComp,
+    content: () => unref(ruleMessage),
+  });
+};
+</script>
+<template>
+  <div class="tb-editable-cell">
+    <div
+      v-show="!isEdit && !getForceEditable"
+      class="tb-editable-cell__normal"
+      :class="{
+        'ellipsis-cell': column.ellipsis,
+      }"
+      @click="handleEdit"
+    >
+      <DictLabel
+        v-if="column.dictType"
+        :dict-type="column.dictType"
+        :dict-value="currentValueRef"
+        :default-value="column.defaultValue"
+      />
+      <div
+        v-else
+        class="cell-content"
+        :title="column.ellipsis ? getValues : ''"
+      >
+        <EditRender
+          v-if="column.editRender"
+          v-bind="getComponentProps"
+          :edit="false"
+        />
+        <template v-else>{{ getValues }}</template>
+      </div>
+      <FormOutlined
+        v-if="!column.editRow"
+        class="tb-editable-cell__normal-icon"
+      />
+    </div>
+    <Spin v-if="isEdit || getForceEditable" :spinning="spinning">
+      <div class="tb-editable-cell__wrapper" v-click-outside="onClickOutside">
+        <EditRender
+          v-if="column.editRender"
+          v-bind="getComponentProps"
+          :style="getWrapperStyle"
+          :class="getWrapperClass"
+          ref="elRef"
+          @change="handleChange"
+          @press-enter="handleEnter"
+          :edit="true"
+        />
+        <CellComponent
+          v-else
+          v-bind="getComponentProps"
+          :style="getWrapperStyle"
+          :class="getWrapperClass"
+          ref="elRef"
+          @change="handleChange"
+          @press-enter="handleEnter"
+        />
+        <div
+          v-if="!getRowEditable && !getForceEditable"
+          class="tb-editable-cell__action"
+        >
+          <CheckOutlined
+            class="tb-editable-cell__icon mx-2"
+            @click="handleSubmitClick"
+          />
+          <CloseOutlined class="tb-editable-cell__icon" @click="handleCancel" />
+        </div>
+      </div>
+    </Spin>
+  </div>
+</template>
+<style lang="less">
+.edit-cell-align-left {
+  text-align: left;
+
+  input:not(.ant-calendar-picker-input):not(.ant-time-picker-input) {
+    text-align: left;
+  }
+}
+
+.edit-cell-align-center {
+  text-align: center;
+
+  input:not(.ant-calendar-picker-input):not(.ant-time-picker-input) {
+    text-align: center;
+  }
+}
+
+.edit-cell-align-right {
+  text-align: right;
+
+  input:not(.ant-calendar-picker-input):not(.ant-time-picker-input) {
+    text-align: right;
+  }
+}
+
+.edit-cell-rule-popover {
+  .ant-popover-container {
+    padding: 5px 8px !important;
+  }
+
+  .ant-popover-content {
+    color: hsl(var(--destructive)) !important;
+    // border: 1px solid hsl(var(--destructive));
+  }
+}
+
+.tb-table-tree-name {
+  .tb-editable-cell {
+    display: inline-block;
+
+    .ellipsis-cell {
+      .cell-content {
+        overflow: visible;
+      }
+    }
+  }
+}
+
+.tb-editable-cell {
+  position: relative;
+  margin: -5px;
+
+  &__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    > .ant-select {
+      min-width: calc(100% - 50px);
+    }
+
+    .ant-input,
+    .ant-input-number,
+    .ant-picker,
+    .ant-select,
+    .ant-input-affix-wrapper,
+    .tb-listselect {
+      background: transparent !important;
+      border: 0 !important;
+      border-bottom: 1px dotted #999 !important;
+      border-radius: 0;
+      box-shadow: none !important;
+      padding: 0 5px !important;
+      min-height: 30px;
+
+      > input.ant-input,
+      > textarea.ant-input {
+        border-bottom: 0 !important;
+      }
+
+      //&:focus {
+      //  border-bottom: 1px dotted #999 !important;
+      //}
+
+      .ant-select-selection-search {
+        left: 4px !important;
+      }
+
+      .ant-select-selection-placeholder {
+        left: 4px !important;
+      }
+    }
+
+    .tb-listselect .ant-input-affix-wrapper {
+      border-bottom: 0 !important;
+    }
+
+    textarea.ant-input {
+      padding-top: 5px !important;
+    }
+
+    .ant-input-number input {
+      padding-left: 0 !important;
+    }
+
+    .ant-select {
+      padding-top: 2px !important;
+      border-radius: 0;
+    }
+
+    .ant-select-single.ant-select-open {
+      .ant-select-selection-item {
+        color: hsl(var(--foreground)) !important;
+      }
+    }
+
+    .ant-select-multiple {
+      .ant-select-selection-search {
+        left: -10px !important;
+      }
+    }
+
+    .ant-input-number-focused,
+    .ant-picker-focused,
+    .ant-select-focused {
+      border-bottom: 1px dotted #999 !important;
+      border-radius: 0;
+    }
+
+    .ant-input-search {
+      > .ant-input-affix-wrapper {
+        > .ant-input-suffix {
+          display: none;
+        }
+      }
+
+      > .ant-btn {
+        background-color: transparent;
+        border: 0;
+
+        &:hover,
+        &:focus {
+          background-color: transparent;
+          border: 0;
+        }
+      }
+    }
+
+    .tb-basic-upload {
+      padding-left: 3px;
+      width: 100% !important;
+    }
+  }
+
+  &__icon {
+    &:hover {
+      transform: scale(1.2);
+
+      svg {
+        color: hsl(var(--primary));
+      }
+    }
+  }
+
+  .ellipsis-cell {
+    .cell-content {
+      overflow-wrap: break-word;
+      word-break: break-word;
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+
+  &__normal {
+    margin: 5px;
+    // display: inline-block; // 去掉，否则编辑表格的 ellipsis 省略号失效
+
+    &-icon {
+      position: absolute;
+      top: 4px;
+      right: 0;
+      display: none;
+      width: 20px;
+      cursor: pointer;
+    }
+  }
+
+  &:hover {
+    .tb-editable-cell__normal-icon {
+      display: inline-block;
+    }
+  }
+}
+</style>

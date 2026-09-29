@@ -1,0 +1,39 @@
+{
+  "menu": "API 密钥",
+  "sections": {
+    "tokenTitle": "API 密钥已创建"
+  },
+  "fields": {
+    "description": "秘钥描述",
+    "expiration": "过期时间",
+    "customExpiration": "自定义过期时间",
+    "enabled": "启用",
+    "enableLabel": "启用 API 密钥"
+  },
+  "actions": {
+    "create": "创建密钥",
+    "edit": "编辑密钥",
+    "enable": "启用 API 密钥",
+    "disable": "禁用 API 密钥",
+    "copyToken": "复制密钥"
+  },
+  "messages": {
+    "inheritTip": "注意：API 密钥继承创建它的用户的权限。",
+    "descriptionTip": "请输入描述",
+    "expirationRequired": "请选择过期日期和时间",
+    "expirationFuture": "过期时间必须晚于当前时间",
+    "enableSuccess": "启用成功",
+    "disableSuccess": "禁用成功",
+    "enableConfirm": "确认启用此 API 密钥？",
+    "disableConfirm": "确认禁用此 API 密钥？禁用后，使用该密钥的请求将无法通过认证。",
+    "tokenOnce": "请立即复制并妥善保存，此密钥仅显示一次，关闭后无法再次查看。",
+    "delete": {
+      "content": "删除后使用该密钥的请求将立即失效，且无法恢复。"
+    }
+  },
+  "options": {
+    "never": "永不过期",
+    "custom": "自定义",
+    "days": "天"
+  }
+}

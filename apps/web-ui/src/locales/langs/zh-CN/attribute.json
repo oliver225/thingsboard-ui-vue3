@@ -1,0 +1,51 @@
+{
+  "menu": "属性",
+  "fields": {
+    "lastUpdateTs": "最后更新时间",
+    "key": "键",
+    "value": "值",
+    "valueType": "值类型",
+    "scope": "属性范围"
+  },
+  "actions": {
+    "add": "新增属性",
+    "edit": "编辑属性",
+    "copyKey": "复制键",
+    "copyValue": "复制值",
+    "viewValue": "查看 {key} 的完整值"
+  },
+  "validation": {
+    "invalidJson": "JSON 格式不正确",
+    "keyRequired": "请输入属性键",
+    "keyMaxLength": "属性键不能超过 255 个字符",
+    "keyExists": "该属性键已存在，请编辑已有属性",
+    "invalidInteger": "请输入安全范围内的整数",
+    "invalidNumber": "请输入有效数字"
+  },
+  "options": {
+    "scope": {
+      "SERVER_SCOPE": "服务端属性",
+      "CLIENT_SCOPE": "客户端属性",
+      "SHARED_SCOPE": "共享属性"
+    },
+    "valueType": {
+      "STRING": "字符串",
+      "INTEGER": "整数",
+      "DOUBLE": "双精度",
+      "BOOLEAN": "布尔值",
+      "JSON": "JSON"
+    }
+  },
+  "features": {
+    "copy": {
+      "copied": "已经复制到剪贴板",
+      "keyCopied": "键已复制到剪贴板",
+      "valueCopied": "值已复制到剪贴板"
+    }
+  },
+  "messages": {
+    "searchPlaceholder": "搜索属性键或值",
+    "clientReadonly": "客户端属性由设备上报，仅支持查看。",
+    "readonly": "当前属性不可编辑"
+  }
+}

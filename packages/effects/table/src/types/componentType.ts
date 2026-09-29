@@ -1,0 +1,16 @@
+export type ComponentType =
+  | 'AutoComplete'
+  | 'Checkbox'
+  | 'CheckboxGroup'
+  | 'DatePicker'
+  | 'Input'
+  | 'InputNumber'
+  | 'InputTextArea'
+  | 'ListSelect'
+  | 'RadioButtonGroup'
+  | 'RadioGroup'
+  | 'Select'
+  | 'Switch'
+  | 'TimePicker'
+  | 'TreeSelect'
+  | 'Upload';

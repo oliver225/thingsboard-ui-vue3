@@ -1,0 +1,135 @@
+{
+  "menu": "Assets",
+  "fields": {
+    "name": "Name",
+    "label": "Label",
+    "assetProfile": "Asset profile",
+    "customer": "Customer",
+    "description": "Description"
+  },
+  "actions": {
+    "create": "Create asset",
+    "edit": "Edit asset",
+    "delete": "Delete asset",
+    "assign": "Assign to customer",
+    "unassign": "Unassign from customer",
+    "unassignSuccess": "Unassigned",
+    "makePublic": "Make public",
+    "makePublicSuccess": "Made public",
+    "makePrivate": "Make private",
+    "makePrivateSuccess": "Asset is now private",
+    "batchAssign": "Batch assign"
+  },
+  "validation": {
+    "nameRequired": "Asset name is required",
+    "profileRequired": "Asset profile is required",
+    "nameMaxLength": "Asset name cannot exceed 255 characters",
+    "labelMaxLength": "Label cannot exceed 255 characters"
+  },
+  "features": {
+    "assign": {
+      "title": "Assign to customer",
+      "batchTitle": "Batch assign to customer",
+      "batchCount": "{count} assets selected",
+      "customer": "Select the customer to assign the asset to",
+      "confirm": "Assign",
+      "success": "Assigned to customer",
+      "partialFailure": "Failed to assign {count} assets. Please retry. Only failed assets will be retried."
+    },
+    "makePublic": {
+      "title": "Make public",
+      "content": "Make asset '{name}' public? Anyone will be able to view its data on public dashboards."
+    },
+    "makePrivate": {
+      "title": "Make private",
+      "content": "Make asset '{name}' private? It will be unassigned from the public customer."
+    },
+    "unassign": {
+      "title": "Unassign from customer",
+      "content": "Unassign asset '{name}' from customer '{customer}'?"
+    },
+    "import": {
+      "title": "Import assets",
+      "description": "Upload a file and map its columns to create or update assets in bulk.",
+      "steps": {
+        "file": "Select file",
+        "config": "Configure",
+        "columns": "Map columns",
+        "result": "Results"
+      },
+      "uploadTitle": "Drop a file here, or choose a file",
+      "uploadHint": "CSV, XLSX and XLS files up to 10 MB.",
+      "chooseFile": "Choose file",
+      "removeFile": "Remove file",
+      "templateHint": "First import? Start with the example template.",
+      "downloadTemplate": "Download CSV template",
+      "excelSheet": "The first worksheet \"{name}\" will be imported, preserving displayed cell values.",
+      "delimiter": "CSV delimiter",
+      "delimiters": {
+        "comma": "Comma (,)",
+        "semicolon": "Semicolon (;)",
+        "pipe": "Pipe (|)",
+        "tab": "Tab"
+      },
+      "header": "First row contains column names",
+      "headerHint": "Standard names such as NAME and TYPE are matched automatically. Other columns default to server attributes.",
+      "update": "Update existing asset attributes and telemetry",
+      "updateHint": "Basic details of assets with matching names are updated. Enable this to also write their attributes and telemetry.",
+      "preview": "{rows} data rows, {columns} columns",
+      "mappingHint": "Asset name and asset profile columns are required.",
+      "sample": "Column / Sample value",
+      "columnType": "Column type",
+      "attributeKey": "Attribute / Telemetry key",
+      "columnNumber": "Column {index}",
+      "columnTypeLabel": "Column {index} type",
+      "keyLabel": "Column {index} attribute or telemetry key",
+      "previous": "Back",
+      "next": "Next",
+      "submit": "Import {count} assets",
+      "done": "Done",
+      "types": {
+        "serverAttribute": "Server attribute",
+        "timeseries": "Telemetry"
+      },
+      "result": {
+        "withErrors": "Import finished with errors",
+        "complete": "Import complete",
+        "created": "Created",
+        "updated": "Updated",
+        "errors": "Failed",
+        "details": "Error details"
+      },
+      "validation": {
+        "empty": "The file has no data to import. Check that it contains more than a header.",
+        "invalidFile": "Choose a CSV, XLSX or XLS file.",
+        "tooLarge": "The file must be no larger than 10 MB.",
+        "rowWidth": "Row {row} has a different number of columns. Check the file and delimiter.",
+        "format": "Unable to read or parse the file. Check its format, quotes and delimiter.",
+        "oneFile": "Choose one file at a time.",
+        "requiredColumns": "Map exactly one asset name column and one asset profile column.",
+        "requiredKey": "Enter a key for every attribute and telemetry column.",
+        "duplicateColumn": "Duplicate column types or attribute / telemetry keys within the same scope. Check the mapping.",
+        "requiredValue": "The asset name or asset profile is empty on row {row}.",
+        "requestFailed": "Import request failed. Review the error before retrying."
+      }
+    },
+    "form": {
+      "namePlaceholder": "Enter asset name",
+      "labelPlaceholder": "Enter a label (optional)",
+      "customerPlaceholder": "Select a customer (optional)",
+      "descriptionPlaceholder": "Enter an asset description (optional)"
+    },
+    "detail": {
+      "title": "Asset details",
+      "basic": "Basic information",
+      "visibility": "Visibility",
+      "public": "Public",
+      "private": "Private",
+      "unassigned": "Unassigned",
+      "copyId": "Copy asset ID",
+      "idCopied": "Asset ID copied",
+      "noDescription": "No description",
+      "notFound": "This asset does not exist, has been deleted, or is not accessible to your account."
+    }
+  }
+}

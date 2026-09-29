@@ -1,0 +1,83 @@
+{
+  "menu": "Remote procedure calls",
+  "fields": {
+    "method": "RPC method",
+    "params": "RPC params",
+    "timeout": "Timeout",
+    "persistent": "Persistent RPC",
+    "retries": "Retries",
+    "additionalInfo": "Additional info",
+    "createdTime": "Created time",
+    "expirationTime": "Expiration time",
+    "status": "Status",
+    "type": "Type",
+    "request": "Request",
+    "response": "Response"
+  },
+  "actions": {
+    "send": "Send",
+    "clear": "Clear result",
+    "refresh": "Refresh"
+  },
+  "messages": {
+    "modeHint": {
+      "oneway": "Send a one-way remote procedure call (RPC) request to the device without waiting for a response.",
+      "twoway": "Send a two-way remote procedure call (RPC) request to the device and wait for its response."
+    },
+    "help": {
+      "method": "Name of the method used to distinguish RPC calls, e.g. setGpio.",
+      "params": "Parameters used to process the request, as a JSON object; use {'{}'} when no parameters are needed.",
+      "timeout": "Processing timeout in milliseconds. Default is 10000, minimum is 5000.",
+      "persistent": "A persistent RPC is stored first and delivered once the device comes online; its status is listed below.",
+      "retries": "How many times a persistent RPC is re-sent on network or device-side failures.",
+      "additionalInfo": "Metadata of the persistent RPC written to RPC events, as a JSON object."
+    },
+    "delete": {
+      "content": "Are you sure you want to delete this persistent RPC call? This action cannot be undone."
+    },
+    "sendSuccess": "RPC request sent"
+  },
+  "validation": {
+    "methodRequired": "Please enter the RPC method",
+    "methodPattern": "The RPC method may only contain letters, digits and \"_\"",
+    "timeoutRequired": "Please enter the timeout",
+    "paramsRequired": "Please enter the RPC params",
+    "invalidParams": "RPC params is not valid JSON",
+    "invalidAdditionalInfo": "Additional info is not valid JSON"
+  },
+  "options": {
+    "type": {
+      "oneway": "One-way",
+      "twoway": "Two-way"
+    },
+    "status": {
+      "QUEUED": "Queued",
+      "SENT": "Sent",
+      "DELIVERED": "Delivered",
+      "SUCCESSFUL": "Successful",
+      "TIMEOUT": "Timeout",
+      "EXPIRED": "Expired",
+      "FAILED": "Failed",
+      "DELETED": "Deleted"
+    }
+  },
+  "features": {
+    "mode": {
+      "oneway": "One-way RPC",
+      "twoway": "Two-way RPC"
+    },
+    "result": {
+      "title": "Response",
+      "empty": "No RPC request has been sent yet",
+      "accepted": "Request delivered, the device returned no content",
+      "failed": "Request failed"
+    },
+    "persistent": {
+      "title": "Persistent RPC calls",
+      "statusAll": "All statuses"
+    },
+    "detail": {
+      "title": "RPC call details"
+    }
+  }
+}

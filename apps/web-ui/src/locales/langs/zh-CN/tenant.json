@@ -1,0 +1,47 @@
+{
+  "detail": {
+    "title": "租户详情",
+    "basic": "基本信息",
+    "copyId": "复制租户 ID",
+    "notFound": "租户不存在或加载失败，请重试。",
+    "noDescription": "暂无描述",
+    "contact": "联系信息",
+    "nameUnavailable": "名称暂不可用"
+  },
+  "menu": "租户管理",
+  "fields": {
+    "title": "租户名称",
+    "tenantProfile": "租户配置",
+    "email": "电子邮箱",
+    "phone": "手机电话",
+    "country": "国家",
+    "state": "省/州",
+    "city": "城市",
+    "region": "行政区域",
+    "address": "详细地址",
+    "address2": "备用地址",
+    "zip": "邮政编码",
+    "description": "租户描述"
+  },
+  "actions": {
+    "create": "新建租户",
+    "edit": "编辑租户",
+    "delete": "删除租户"
+  },
+  "validation": {
+    "titleRequired": "请输入租户名称",
+    "tenantProfileRequired": "请选择租户配置",
+    "emailInvalid": "邮箱格式不正确",
+    "phoneFormatTip": "电话号码格式不正确"
+  },
+  "features": {
+    "form": {
+      "titlePlaceholder": "例如：华东物联网运营中心",
+      "descriptionPlaceholder": "简要介绍租户的业务或用途（选填）",
+      "regionPlaceholder": "选择省 / 市 / 区",
+      "zipPlaceholder": "输入邮政编码",
+      "addressPlaceholder": "街道、门牌号等",
+      "address2Placeholder": "楼栋、楼层等补充信息（选填）"
+    }
+  }
+}

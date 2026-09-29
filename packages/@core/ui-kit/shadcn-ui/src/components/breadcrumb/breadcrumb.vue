@@ -44,7 +44,9 @@ function handleClick(path?: string) {
           <BreadcrumbItem>
             <div v-if="item.items?.length ?? 0 > 0">
               <DropdownMenu>
-                <DropdownMenuTrigger class="flex items-center gap-1">
+                <DropdownMenuTrigger
+                  class="text-muted-foreground hover:bg-accent hover:text-primary focus-visible:ring-ring flex cursor-pointer items-center gap-1 rounded-sm px-2 py-1 transition-colors focus-visible:outline-none focus-visible:ring-2"
+                >
                   <VbenIcon v-if="showIcon" :icon="item.icon" class="size-5" />
                   {{ item.title }}
                   <ChevronDown class="size-4" />

@@ -289,22 +289,6 @@ const [Form, formApi] = useVbenForm({
 
 <DemoPreview dir="demos/vben-form/value-format" />
 
-## 性能基准
-
-表单性能基准覆盖组件初始化、单字段与批量更新、重置、Zod 校验、动态 schema、字段联动、codec 编码与快照，以及数组字段编辑、增删和子 schema 更新。完整运行：
-
-```bash
-pnpm test:benchmark
-```
-
-只检查表单相关基准时，可以直接指定文件：
-
-```bash
-pnpm exec vitest bench --run packages/@core/ui-kit/form-ui/__tests__/form-component-performance.benchmark.ts packages/@core/ui-kit/form-ui/__tests__/form-performance.benchmark.ts
-```
-
-基准结果用于比较同一环境、同一场景在修改前后的相对变化，不应把单次运行的绝对耗时作为跨机器阈值。运行前应停止开发服务器等高 CPU 任务，并保持 Node.js 版本一致。benchmark 文件不会进入普通 `test:unit` 流程。
-
 ## 表单校验
 
 表单校验是一个非常重要的功能，可以通过 `rules` 属性进行校验。

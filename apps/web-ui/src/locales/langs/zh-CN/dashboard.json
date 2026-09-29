@@ -1,0 +1,50 @@
+{
+  "menu": "仪表板",
+  "fields": {
+    "title": "仪表板标题",
+    "description": "描述",
+    "image": "仪表板图片",
+    "assignedCustomers": "已分配客户",
+    "mobileHide": "在移动应用中隐藏",
+    "mobileOrder": "移动端排序",
+    "public": "公开"
+  },
+  "actions": {
+    "create": "新建仪表板",
+    "edit": "编辑仪表板",
+    "details": "仪表板详情",
+    "delete": "删除仪表板",
+    "export": "导出仪表板",
+    "makePublic": "设为公开",
+    "makePrivate": "设为私有"
+  },
+  "validation": {
+    "titleRequired": "请输入仪表板标题",
+    "titleMaxLength": "仪表板标题不能超过 255 个字符",
+    "mobileOrderInteger": "移动端排序必须是整数",
+    "customersRequired": "请至少选择一个客户"
+  },
+  "features": {
+    "form": {
+      "titlePlaceholder": "例如：园区能耗总览",
+      "descriptionPlaceholder": "描述仪表板的用途或展示内容（选填）",
+      "customersPlaceholder": "请选择客户",
+      "mobileSettings": "移动应用设置",
+      "mobileOrderPlaceholder": "使用默认顺序",
+      "mobileOrderHint": "数值越小越靠前，可填写负整数；留空使用默认顺序。",
+      "assignmentFailed": "仪表板已保存，但客户分配失败。点击确认重试分配，不会重复创建仪表板。"
+    },
+    "customers": {
+      "manage": "管理已分配客户",
+      "assign": "分配客户",
+      "unassign": "取消客户分配",
+      "success": "客户分配已更新",
+      "partialFailure": "已更新 {updated} 个仪表板，{failed} 个失败。再次确认将仅重试失败的仪表板。"
+    },
+    "public": {
+      "makePublicConfirm": "确定将仪表板“{title}”设为公开吗？公开后，无需登录即可通过公开链接访问。",
+      "makePrivateConfirm": "确定将仪表板“{title}”设为私有吗？原有公开链接将无法继续匿名访问。",
+      "success": "仪表板公开状态已更新"
+    }
+  }
+}
