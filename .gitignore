@@ -1,72 +1,74 @@
+# Dependencies and package manager files (keep pnpm-lock.yaml tracked)
 node_modules
-.DS_Store
+.pnpm-store
+package-lock.json
+yarn.lock
+
+# Build output and deployment archives
 dist
 dist-ssr
+dev-dist
+.nitro
+.output
 dist.zip
 dist.tar
 dist.war
-.nitro
-.output
 *-dist.zip
 *-dist.tar
 *-dist.war
-coverage
-*.local
-**/.vitepress/cache
-.cache
-.turbo
-.temp
-dev-dist
-.stylelintcache
-yarn.lock
-package-lock.json
-.VSCodeCounter
-**/backend-mock/data
-.omx
-.pnpm-store
-# local env files
-.env.local
-.env.*.local
-.eslintcache
 
+# Caches, temporary files, and coverage
+.cache
+.temp
+.turbo
+.eslintcache
+.stylelintcache
+**/.vitepress/cache
+coverage
+vite.config.js.*
+vite.config.ts.*
+vite.config.mjs.*
+vite.config.mts.*
+
+# Local configuration and mock data (includes .env.*.local and .local/)
+*.local
+**/backend-mock/data
+
+# Logs
 logs
 *.log
 npm-debug.log*
+pnpm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-pnpm-debug.log*
 lerna-debug.log*
-vite.config.mts.*
-vite.config.mjs.*
-vite.config.js.*
-vite.config.ts.*
 
-# Editor directories and files
+# Operating system and editor files
+.DS_Store
 .idea
-/.vscode/
+.history
+.VSCodeCounter
 *.suo
 *.ntvs*
 *.njsproj
 *.sln
 *.sw?
-.history
-.cursor
 
-# AI
+# AI and local tool data
 .agent
 .agents
+.atomcode
 .claude/
 .codex/
-.local/
-/.docs/
-CLAUDE.local.md
-skills-lock.json
-.atomcode
-datalog
+.cursor
+.omx
 .playwright-mcp
+CLAUDE.local.md
+datalog
+skills-lock.json
 
-# Local changeset metadata
+# Repository-local editor settings, changesets, and documentation
+/.vscode/
 /.changeset/
-
-# Local documentation
+/.docs/
 /docs/
