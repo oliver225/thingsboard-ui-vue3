@@ -43,7 +43,7 @@ vite.config.ts.*
 
 # Editor directories and files
 .idea
-# .vscode
+/.vscode/
 *.suo
 *.ntvs*
 *.njsproj
@@ -64,3 +64,6 @@ skills-lock.json
 .atomcode
 datalog
 .playwright-mcp
+
+# Local changeset metadata
+/.changeset/
