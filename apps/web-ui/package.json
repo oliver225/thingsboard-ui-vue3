@@ -1,7 +1,6 @@
 {
   "name": "thingsboard-ui",
   "version": "4.3.1",
-  "private": true,
   "description": "Vue 3 frontend for ThingsBoard, built with Vben Admin, Vite, TypeScript and antdv-next.",
   "keywords": [
     "thingsboard",

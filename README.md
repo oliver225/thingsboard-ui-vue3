@@ -1,157 +1,228 @@
 <div align="center">
-  <a href="https://github.com/anncwb/vue-vben-admin">
-    <img alt="VbenAdmin Logo" width="215" src="https://unpkg.com/@vbenjs/static-source@0.1.7/source/logo-v1.webp">
-  </a>
-  <br>
-  <br>
-
-[![license](https://img.shields.io/github/license/anncwb/vue-vben-admin.svg)](LICENSE)
-
-  <h1>Vue Vben Admin</h1>
+  <img src="./apps/web-ui/public/logo.svg" alt="ThingsBoard UI Vue3" width="88" />
+  <h1>ThingsBoard UI Vue3</h1>
+  <p>A Vue 3 management frontend for ThingsBoard, rebuilt on Vben Admin v5.</p>
 </div>
 
-[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=vbenjs_vue-vben-admin&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=vbenjs_vue-vben-admin) [![codeql](https://github.com/vbenjs/vue-vben-admin/actions/workflows/codeql.yml/badge.svg)](https://github.com/vbenjs/vue-vben-admin/actions/workflows/codeql.yml) [![build](https://github.com/vbenjs/vue-vben-admin/actions/workflows/build.yml/badge.svg)](https://github.com/vbenjs/vue-vben-admin/actions/workflows/build.yml) [![ci](https://github.com/vbenjs/vue-vben-admin/actions/workflows/ci.yml/badge.svg)](https://github.com/vbenjs/vue-vben-admin/actions/workflows/ci.yml) [![deploy](https://github.com/vbenjs/vue-vben-admin/actions/workflows/deploy.yml/badge.svg)](https://github.com/vbenjs/vue-vben-admin/actions/workflows/deploy.yml)
+**English** | [简体中文](./README.zh-CN.md)
 
-**English** | [中文](./README.zh-CN.md) | [日本語](./README.ja-JP.md)
+[![Frontend](https://img.shields.io/badge/frontend-4.3.1-green)](./package.json)
+[![ThingsBoard](https://img.shields.io/badge/ThingsBoard-4.3.1.5-blue)](https://thingsboard.io/)
+[![Vben Admin](https://img.shields.io/badge/Vben_Admin-v5-blue)](https://github.com/vbenjs/vue-vben-admin)
 
-## Introduction
+## Overview
 
-Vue Vben Admin is a free and open source middle and back-end template. Using the latest `vue3`, `vite`, `TypeScript` and other mainstream technology development, the out-of-the-box middle and back-end front-end solutions can also be used for learning reference.
+ThingsBoard UI Vue3 connects a Vue-based administration interface to an existing [ThingsBoard](https://thingsboard.io/) backend. This edition continues with Vben Admin v5, a pnpm workspace, shared components, and antdv-next.
 
-## Upgrade Notice
+This repository contains the frontend. Run ThingsBoard separately and sign in with an account from your backend. Menus and operations depend on the user's ThingsBoard role and the APIs enabled by that backend.
 
-This is the latest version, 5.0, and it is not compatible with previous versions. If you are starting a new project, it is recommended to use the latest version. If you wish to view the old version, please use the [v2 branch](https://github.com/vbenjs/vue-vben-admin/tree/v2).
+## Demo site
+
+Address: [https://thingsboard.pincore.cn](https://thingsboard.pincore.cn)
+
+The demo accounts use the ThingsBoard defaults:
+
+| Role | Username | Password |
+| --- | --- | --- |
+| Tenant administrator | `tenant@thingsboard.org` | `tenant` |
+| Customer user | `customer@thingsboard.org` | `customer` |
+| System administrator | `sysadmin@thingsboard.org` | `sysadmin` |
+
+These are the [ThingsBoard default credentials](https://thingsboard.io/docs/installation/ubuntu/#step-7-start-thingsboard). For your own installation, tenant/customer demo accounts require demo data; otherwise use the accounts created on your backend.
+
+## Versions and migration
+
+| Component | Version / scope |
+| --- | --- |
+| ThingsBoard backend | `4.3.1.5` |
+| Administration framework | Vben Admin v5 |
+| Application directory | `apps/web-ui` |
+| Framework migration branch | `vben` |
+
+The frontend package uses the three-part version `4.3.1`; the backend target is `4.3.1.5`. This README describes the Vben v5 edition. Other backend versions need their own compatibility checks.
+
+When migrating from the previous frontend, use this workspace's environment files and commands. The application has moved from the repository root to `apps/web-ui`. Third-party dependency versions are managed through pnpm Catalog. The old `VITE_PROXY` configuration is replaced by `VITE_TB_TARGET` for local development.
 
 ## Features
 
-- **Latest Technology Stack**: Developed with cutting-edge front-end technologies like Vue 3 and Vite
-- **TypeScript**: A language for application-scale JavaScript
-- **Themes**: Multiple theme colors available with customizable options
-- **Internationalization**: Comprehensive built-in internationalization support
-- **Permissions**: Built-in solution for dynamic route-based permission generation
+- **Role-based home pages:** system administrator, tenant administrator, and customer user navigation, summaries, device maps, and API usage views.
+- **Entities and profiles:** devices, assets, entity views, device/asset profiles, customer assignments, bulk operations, and device import.
+- **Entity details:** attributes, telemetry, events, credentials, calculated fields, and alarm-rule configuration.
+- **Tenants and customers:** tenants, tenant profiles, administrators, customers, and customer users.
+- **Rule chains:** an AntV X6 graph editor, node configuration forms, and script testing tools.
+- **Alarms and notifications:** alarm actions, audit logs, notification recipients, templates, rules, delivery records, and WebSocket updates.
+- **Resources:** dashboard records and customer assignments, widget bundles/types, images, SCADA symbols, JavaScript resources, and OTA packages.
+- **Administration:** queues, OAuth 2.0 clients/domains, security and mail settings, mobile-center configuration, and edge-management pages.
+- **Accounts and UI:** account activation, password reset, profile and API-key management, Chinese/English localization, and configurable light/dark themes.
 
-## Preview
+Dashboard support here covers management of dashboard records and assignments. A full visual dashboard designer/player and video-surveillance workflows are not listed as completed features of this edition.
 
-- [Vben Admin](https://vben.pro/) - Full version Chinese site
+## Screenshots
 
-Test Account: vben/123456
+### System administrator home
 
-<div align="center">
-  <img alt="VbenAdmin Logo" width="100%" src="https://anncwb.github.io/anncwb/images/preview1.png">
-  <img alt="VbenAdmin Logo" width="100%" src="https://anncwb.github.io/anncwb/images/preview2.png">
-  <img alt="VbenAdmin Logo" width="100%" src="https://anncwb.github.io/anncwb/images/preview3.png">
-</div>
+![System administrator home with entity summaries and resource monitoring](./images/system-admin-home.png)
 
-### Use Gitpod
+### Device details
 
-Open the project in Gitpod (free online dev environment for GitHub) and start coding immediately.
+![Device details with connection status and entity management tabs](./images/device-details.png)
 
-[![Open in Gitpod](https://gitpod.io/button/open-in-gitpod.svg)](https://gitpod.io/#https://github.com/vbenjs/vue-vben-admin)
+### Rule chain editor
 
-## Documentation
+![Visual rule chain editor with node palette and message routing](./images/rule-chain-editor.png)
 
-[Document](https://doc.vben.pro/)
+## Technology
 
-## Install and Use
+| Area | Libraries |
+| --- | --- |
+| Framework and language | Vue 3.5, TypeScript 6, Vben Admin v5 |
+| Tooling | Vite 8, pnpm 11, Turborepo |
+| UI and styling | antdv-next, Tailwind CSS 4 |
+| State and navigation | Pinia 4, Vue Router 5 |
+| Graphs and charts | AntV X6 3, ECharts 6 |
+| Editors and data | Monaco Editor, Protobuf, SheetJS |
+| Networking and localization | Axios, WebSocket, Vue I18n 11 |
 
-1. Get the project code
+See [pnpm-workspace.yaml](./pnpm-workspace.yaml) for dependency declarations and [pnpm-lock.yaml](./pnpm-lock.yaml) for resolved versions. Third-party packages use `catalog:` references; local packages use `workspace:*`.
+
+## Getting started
+
+### 1. Prepare the environment
+
+- Node.js `^22.18.0 || ^24.12.0`, as defined in [package.json](./package.json). [.node-version](./.node-version) selects `24.16.0`.
+- pnpm `11.16.0`, matching the repository's `packageManager` field.
+- A reachable ThingsBoard `4.3.1.5` backend and a valid user account.
+
+### 2. Clone and install
 
 ```bash
-git clone https://github.com/vbenjs/vue-vben-admin.git
+git clone --branch vben https://github.com/oliver225/thingsboard-ui-vue3.git
+cd thingsboard-ui-vue3
+npm install --global pnpm@11.16.0
+pnpm install --frozen-lockfile
 ```
 
-2. Install dependencies
+Use the branch containing this Vben v5 workspace. Run all commands below from the repository root.
 
-```bash
-cd vue-vben-admin
-npm i -g corepack
-pnpm install
+### 3. Configure the backend
+
+Create `apps/web-ui/.env.development.local`:
+
+```dotenv
+VITE_TB_TARGET=http://localhost:8080
 ```
 
-3. Run
+Use the backend origin without an `/api` suffix. The [Vite proxy](./apps/web-ui/vite.config.ts) forwards `/api` requests, including WebSocket connections, while preserving the path. `http://localhost:8080` is also the default when the variable is omitted. Local override files are ignored by Git.
+
+### 4. Start the frontend
 
 ```bash
 pnpm dev
 ```
 
-4. Build
+Open [http://localhost:3001](http://localhost:3001) and use your ThingsBoard credentials. The development configuration disables the mock backend.
+
+## Build and deploy
 
 ```bash
+pnpm check:thingsboard
 pnpm build
 ```
 
-## Change Log
+The static output is `apps/web-ui/dist`. Production defaults to the `/` base path, `/api` backend requests, and hash routing. `VITE_TB_TARGET` configures the development proxy; production needs its own reverse proxy.
 
-[CHANGELOG](https://github.com/vbenjs/vue-vben-admin/releases)
+Copy the **contents** of `apps/web-ui/dist` to your web server's document root. This example serves the frontend on a dedicated host at `/`. Replace the document root, host name, and backend address for your environment. Place both blocks inside Nginx's `http` context:
 
-## How to Contribute
+```nginx
+map $http_upgrade $connection_upgrade {
+    default upgrade;
+    ''      close;
+}
 
-You are very welcome to join! [Raise an issue](https://github.com/anncwb/vue-vben-admin/issues/new/choose) or submit a Pull Request.
+server {
+    listen 80;
+    server_name thingsboard-ui.example.com;
+    root /var/www/thingsboard-ui;
+    index index.html;
 
-**Pull Request Process:**
+    location /api/ {
+        proxy_pass http://127.0.0.1:8080;
+        proxy_http_version 1.1;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection $connection_upgrade;
+        proxy_read_timeout 3600s;
+    }
 
-1. Fork the code
-2. Create your branch: `git checkout -b feat/xxxx`
-3. Submit your changes: `git commit -am 'feat(function): add xxxxx'`
-4. Push your branch: `git push origin feat/xxxx`
-5. Submit `pull request`
+    location / {
+        try_files $uri $uri/ /index.html;
+    }
+}
+```
 
-## Git Contribution Submission Specification
+The proxy preserves `/api` and forwards the headers needed for [WebSocket connections](https://nginx.org/en/docs/http/websocket.html). Configure HTTPS with your deployment's certificates. For a subpath such as `/vue/`, also adjust `VITE_BASE`, the static-file mapping, and root-relative branding assets before rebuilding.
 
-Reference [vue](https://github.com/vuejs/vue/blob/dev/.github/COMMIT_CONVENTION.md) specification ([Angular](https://github.com/conventional-changelog/conventional-changelog/tree/master/packages/conventional-changelog-angular))
+`pnpm preview` serves the build for local inspection. The [Dockerfile](./scripts/deploy/Dockerfile) builds the same application, but the bundled [Nginx configuration](./scripts/deploy/nginx.conf) only serves static files; add the backend proxy when deploying it.
 
-- `feat` Add new features
-- `fix` Fix the problem/BUG
-- `style` The code style is related and does not affect the running result
-- `perf` Optimization/performance improvement
-- `refactor` Refactor
-- `revert` Undo edit
-- `test` Test related
-- `docs` Documentation/notes
-- `chore` Dependency update/scaffolding configuration modification etc.
-- `ci` Continuous integration
-- `types` Type definition file changes
+## Commands
 
-## Browser Support
+| Command | Purpose |
+| --- | --- |
+| `pnpm dev` | Start the ThingsBoard development frontend |
+| `pnpm build` | Build the ThingsBoard frontend |
+| `pnpm preview` | Preview the production build locally |
+| `pnpm build:analyze` | Build with bundle analysis |
+| `pnpm check:thingsboard` | Check application types |
+| `pnpm check:type` | Run workspace type checks |
+| `pnpm lint` | Run the repository lint workflow |
+| `pnpm format` | Format the code |
+| `pnpm dev:docs` / `pnpm build:docs` | Serve / build the inherited framework documentation |
 
-Tailwind CSS v4.0 is designed for Safari 16.4+, Chrome 111+, and Firefox 128+
+## Repository layout
 
-Support modern browsers, not IE
+```text
+apps/
+  web-ui/                 ThingsBoard web application
+    src/
+      adapter/            Form, table, and UI adapters
+      api/                Authentication and ThingsBoard API clients
+      components/         Shared business components
+      locales/            Application translations
+      router/             Routes and access guards
+      store/              Application state
+      views/_core/        Login, profile, and role home pages
+      views/tb/           ThingsBoard management pages
+  agent/                  Reserved application scaffold
+  uni-app/                Reserved application scaffold
+packages/                 Shared Vben and application UI packages
+internal/                 Build, lint, TypeScript, and theme configuration
+scripts/                  Workspace tooling and deployment files
+docs/                     Inherited framework documentation
+pnpm-workspace.yaml       Workspace packages and dependency catalog
+```
 
-| [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/edge/edge_48x48.png" alt="Edge" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Edge | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/firefox/firefox_48x48.png" alt="Firefox" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Firefox | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/chrome/chrome_48x48.png" alt="Chrome" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Chrome | [<img src="https://raw.githubusercontent.com/alrra/browser-logos/master/src/safari/safari_48x48.png" alt="Safari" width="24px" height="24px" />](http://godban.github.io/browsers-support-badges/)</br>Safari |
-| :-: | :-: | :-: | :-: |
-| last 2 versions | last 2 versions | last 2 versions | last 2 versions |
+## Branding and preferences
 
-## Maintainer
+Set the application title in `apps/web-ui/.env`. Configure branding, copyright/ICP details, and default preferences in [apps/web-ui/src/preferences.ts](./apps/web-ui/src/preferences.ts). The logo and login contact images are in `apps/web-ui/public`.
 
-[@Vben](https://github.com/anncwb)
+Preferences persist in the browser and take precedence over defaults. When changing defaults for existing users, use a targeted preference migration or reset preferences; editing defaults alone does not necessarily replace cached values.
 
-## Star History
+## Contact and contributions
 
-[![Star History Chart](https://star-history.dera.page/svg?repos=vbenjs/vue-vben-admin&type=Date)](https://star-history.dera.page/#vbenjs/vue-vben-admin&Date)
+- Maintainer: [oliver225](https://github.com/oliver225)
+- Issues: [thingsboard-ui-vue3/issues](https://github.com/oliver225/thingsboard-ui-vue3/issues)
+- Email: [1069035666@qq.com](mailto:1069035666@qq.com)
+- WeChat: `17621315188`
 
-## Donate
+<img src="./apps/web-ui/public/login/weixin.png" alt="WeChat contact QR code" width="180" />
 
-If you think this project is helpful to you, you can help the author buy a cup of coffee to show your support!
+For bug reports, include reproduction steps, the frontend commit, backend version, and user role. For pull requests, run the relevant type checks and lint workflow, and use a conventional commit message such as `fix(thingsboard-ui): ...`.
 
-![donate](https://unpkg.com/@vbenjs/static-source@0.1.7/source/sponsor.png)
+## Acknowledgements and licensing
 
-<a style="display: block;width: 100px;height: 50px;line-height: 50px; color: #fff;text-align: center; background: #408aee;border-radius: 4px;" href="https://www.paypal.com/paypalme/cvvben">Paypal Me</a>
+Built on [Vue Vben Admin](https://github.com/vbenjs/vue-vben-admin) and integrated with [ThingsBoard](https://thingsboard.io/). Framework usage is documented in the [Vben documentation](https://doc.vben.pro/).
 
-## Contributors
-
-<a href="https://openomy.app/github/vbenjs/vue-vben-admin" target="_blank" style="display: block; width: 100%;" align="center">
-  <img src="https://openomy.app/svg?repo=vbenjs/vue-vben-admin&chart=bubble&latestMonth=3" target="_blank" alt="Contribution Leaderboard" style="display: block; width: 100%;" />
- </a>
-
-<a href="https://github.com/vbenjs/vue-vben-admin/graphs/contributors">
-  <img alt="Contributors" src="https://contrib.rocks/image?repo=vbenjs/vue-vben-admin" />
-</a>
-
-## Discord
-
-- [Github Discussions](https://github.com/anncwb/vue-vben-admin/discussions)
-
-## License
-
-[MIT © Vben-2020](./LICENSE)
+The root [LICENSE](./LICENSE) contains the MIT license and Vben copyright notice. Third-party code and dependencies retain their own applicable license terms; the root license does not replace those terms. Consult this edition's license files separately from the previous repository's Apache-2.0 declaration.
