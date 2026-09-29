@@ -67,3 +67,6 @@ datalog
 
 # Local changeset metadata
 /.changeset/
+
+# Local documentation
+/docs/
