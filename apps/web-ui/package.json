@@ -21,7 +21,7 @@
     "url": "git+https://github.com/oliver225/thingsboard-ui-vue3.git",
     "directory": "apps/web-ui"
   },
-  "license": "MIT",
+  "license": "GPL-3.0-only",
   "author": {
     "name": "oliver225",
     "url": "https://github.com/oliver225"

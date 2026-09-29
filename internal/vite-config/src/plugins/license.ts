@@ -14,6 +14,8 @@ async function viteLicensePlugin(
   const {
     description = '',
     homepage = '',
+    license = '',
+    name = '',
     version = '',
   } = await readPackageJSON(root);
 
@@ -24,15 +26,13 @@ async function viteLicensePlugin(
       handler(_options, bundle) {
         const date = dateUtil().format('YYYY-MM-DD ');
         const copyrightText = `/*!
-  * Vben Admin
+  * ${name}
   * Version: ${version}
-  * Author: vben
-  * Copyright (C) 2024 Vben
-  * License: MIT License
+  * Project License: ${license}
+  * Includes Vben Admin code, Copyright (C) 2024-present Vben, under the MIT License.
   * Description: ${description}
   * Date Created: ${date}
   * Homepage: ${homepage}
-  * Contact: ann.vben@gmail.com
 */
               `.trim();
 

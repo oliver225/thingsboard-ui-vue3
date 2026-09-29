@@ -225,4 +225,8 @@ For bug reports, include reproduction steps, the frontend commit, backend versio
 
 Built on [Vue Vben Admin](https://github.com/vbenjs/vue-vben-admin) and integrated with [ThingsBoard](https://thingsboard.io/). Framework usage is documented in the [Vben documentation](https://doc.vben.pro/).
 
-The root [LICENSE](./LICENSE) contains the MIT license and Vben copyright notice. Third-party code and dependencies retain their own applicable license terms; the root license does not replace those terms. Consult this edition's license files separately from the previous repository's Apache-2.0 declaration.
+Copyright (c) 2026 oliver225 for original project contributions.
+
+This project is licensed under [GPL-3.0-only](./LICENSE). Commercial use, modification, and redistribution are permitted under its terms.
+
+Third-party code retains its original copyrights and licenses. See [Vben MIT](./LICENSES/Vben-MIT.txt) and [Apache-2.0](./LICENSES/Apache-2.0.txt).

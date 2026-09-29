@@ -225,4 +225,8 @@ pnpm-workspace.yaml       工作区范围与依赖版本目录
 
 本项目基于 [Vue Vben Admin](https://github.com/vbenjs/vue-vben-admin)，对接 [ThingsBoard](https://thingsboard.io/)。框架使用方式可参考 [Vben 官方文档](https://doc.vben.pro/)。
 
-根目录 [LICENSE](./LICENSE) 包含 MIT 许可及 Vben 版权声明。第三方代码和依赖仍遵循各自适用的许可，根目录许可证不替代这些条款。本版本的许可文件与旧仓库的 Apache-2.0 声明应分别核对。
+Copyright (c) 2026 oliver225（本项目原创贡献）。
+
+本项目采用 [GPL-3.0-only](./LICENSE) 许可证，允许商业使用、修改和再分发，须遵守许可证条款。
+
+第三方代码保留原有版权和许可，详见 [Vben MIT](./LICENSES/Vben-MIT.txt) 和 [Apache-2.0](./LICENSES/Apache-2.0.txt)。
