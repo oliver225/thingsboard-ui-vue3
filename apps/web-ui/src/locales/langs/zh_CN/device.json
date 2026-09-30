@@ -271,6 +271,9 @@
       "copyUrl": "复制 URL",
       "copied": "已复制到剪贴板",
       "tokenTip": "地址中的访问令牌取自当前设备凭证;凭证类型不是「访问令牌」时显示为 $ACCESS_TOKEN。",
+      "serviceUrl": "服务地址",
+      "serviceUrlHint": "默认使用当前域名，请按实际接入服务的地址和端口调整。",
+      "credentialsError": "设备凭证加载失败，暂用 $ACCESS_TOKEN 占位。请重新打开 API 页签重试。",
       "commands": {
         "action": "连接命令",
         "title": "设备连接命令",

@@ -8,6 +8,7 @@
     "details": "Details",
     "attributes": "Attributes",
     "telemetry": "Telemetry",
+    "api": "API",
     "calculatedFields": "Calculated fields",
     "alarmRules": "Alarm rules",
     "alarms": "Alarms",

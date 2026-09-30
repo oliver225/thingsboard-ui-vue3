@@ -40,6 +40,7 @@ export interface DetailPrimaryAction {
 export type DetailTabKey =
   | 'alarmRules'
   | 'alarms'
+  | 'api'
   | 'apiKeys'
   | 'attributes'
   | 'auditLogs'

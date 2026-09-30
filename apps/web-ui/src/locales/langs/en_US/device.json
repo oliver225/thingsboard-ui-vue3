@@ -271,6 +271,9 @@
       "copyUrl": "Copy URL",
       "copied": "Copied to clipboard",
       "tokenTip": "The access token in the addresses comes from the current device credentials; it is shown as $ACCESS_TOKEN when the credentials type is not \"Access token\".",
+      "serviceUrl": "Service URL",
+      "serviceUrlHint": "Defaults to the current hostname. Adjust the address and port for your transport service.",
+      "credentialsError": "Could not load device credentials. Using $ACCESS_TOKEN as a placeholder. Reopen the API tab to retry.",
       "commands": {
         "action": "Connection commands",
         "title": "Device connection commands",

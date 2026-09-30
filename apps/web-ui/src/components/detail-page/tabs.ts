@@ -21,6 +21,10 @@ export const tabPresets: Record<
       () => import('#/views/tb/telemetry/telemetry.vue'),
     ),
   },
+  api: {
+    icon: 'lucide:code-xml',
+    component: defineAsyncComponent(() => import('#/views/tb/device/api.vue')),
+  },
   calculatedFields: {
     icon: 'lucide:square-function',
     component: defineAsyncComponent(

@@ -8,6 +8,7 @@
     "details": "详情",
     "attributes": "属性",
     "telemetry": "遥测数据",
+    "api": "API",
     "calculatedFields": "计算字段",
     "alarmRules": "告警规则",
     "alarms": "告警",

@@ -115,6 +115,7 @@ const tabs: DetailTab[] = [
     auth: [Authority.TENANT_ADMIN, Authority.CUSTOMER_USER],
   },
   { key: 'telemetry', auth: [Authority.TENANT_ADMIN, Authority.CUSTOMER_USER] },
+  { key: 'api', auth: [Authority.TENANT_ADMIN, Authority.CUSTOMER_USER] },
   { key: 'calculatedFields', auth: [Authority.TENANT_ADMIN] },
   { key: 'alarmRules', auth: [Authority.TENANT_ADMIN] },
   { key: 'alarms', auth: [Authority.TENANT_ADMIN, Authority.CUSTOMER_USER] },
