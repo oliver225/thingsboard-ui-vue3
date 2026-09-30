@@ -229,4 +229,4 @@ Copyright (c) 2026 oliver225 for original project contributions.
 
 This project is licensed under [GPL-3.0-only](./LICENSE). Commercial use, modification, and redistribution are permitted under its terms.
 
-Third-party code retains its original copyrights and licenses. See [Vben MIT](./LICENSES/Vben-MIT.txt) and [Apache-2.0](./LICENSES/Apache-2.0.txt).
+Third-party code retains its original copyrights and licenses. See [Vben MIT](./Vben-MIT.txt) .

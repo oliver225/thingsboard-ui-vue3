@@ -1,12 +1,13 @@
 {
   "name": "@vben/table",
   "version": "5.8.0",
-  "license": "Apache-2.0",
+  "license": "GPL-3.0-only",
   "type": "module",
   "scripts": {
     "typecheck": "vue-tsc --noEmit --skipLibCheck"
   },
   "sideEffects": [
+    "./src/index.ts",
     "**/*.css"
   ],
   "exports": {

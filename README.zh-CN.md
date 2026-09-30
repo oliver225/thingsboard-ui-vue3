@@ -229,4 +229,4 @@ Copyright (c) 2026 oliver225（本项目原创贡献）。
 
 本项目采用 [GPL-3.0-only](./LICENSE) 许可证，允许商业使用、修改和再分发，须遵守许可证条款。
 
-第三方代码保留原有版权和许可，详见 [Vben MIT](./LICENSES/Vben-MIT.txt) 和 [Apache-2.0](./LICENSES/Apache-2.0.txt)。
+第三方代码保留原有版权和许可，详见 [Vben MIT](./Vben-MIT.txt)。
