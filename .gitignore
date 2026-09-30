@@ -67,8 +67,7 @@ CLAUDE.local.md
 datalog
 skills-lock.json
 
-# Repository-local editor settings, changesets, and documentation
-/.vscode/
+# Repository-local changesets and documentation
 /.changeset/
 /.docs/
 /docs/
