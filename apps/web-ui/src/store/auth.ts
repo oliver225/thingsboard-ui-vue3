@@ -30,9 +30,9 @@ export const useAuthStore = defineStore('auth', () => {
     const userInfo = await getUserInfoApi();
     const lang = userInfo.tbUser.additionalInfo?.lang;
     const browserLocale = navigator.language.toLowerCase().startsWith('zh')
-      ? 'zh-CN'
-      : 'en-US';
-    const locale = lang === 'zh-CN' || lang === 'en-US' ? lang : browserLocale;
+      ? 'zh_CN'
+      : 'en_US';
+    const locale = lang === 'zh_CN' || lang === 'en_US' ? lang : browserLocale;
     await loadLocaleMessages(locale);
     updatePreferences({ app: { locale } });
     await useSystemStore().loadSystemParams();

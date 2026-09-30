@@ -11,7 +11,7 @@ export type LoadMessageFn = (
 export interface LocaleSetupOptions {
   /**
    * Default language
-   * @default zh-CN
+   * @default zh_CN
    */
   defaultLocale?: SupportedLanguagesType;
   /**

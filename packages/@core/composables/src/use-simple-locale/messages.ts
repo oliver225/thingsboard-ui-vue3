@@ -3,7 +3,7 @@ import type { SupportedLanguagesType } from '@vben-core/typings';
 export type Locale = SupportedLanguagesType;
 
 export const messages: Partial<Record<Locale, Record<string, string>>> = {
-  'en-US': {
+  en_US: {
     cancel: 'Cancel',
     collapse: 'Collapse',
     confirm: 'Confirm',
@@ -14,7 +14,7 @@ export const messages: Partial<Record<Locale, Record<string, string>>> = {
     toggleSidebar: 'Toggle sidebar',
     confirmTitle: 'Please Confirm',
   },
-  'zh-CN': {
+  zh_CN: {
     cancel: '取消',
     collapse: '收起',
     confirm: '确认',
@@ -28,4 +28,4 @@ export const messages: Partial<Record<Locale, Record<string, string>>> = {
 };
 
 export const getMessages = (locale: Locale) =>
-  messages[locale] ?? messages['en-US'] ?? {};
+  messages[locale] ?? messages.en_US ?? {};

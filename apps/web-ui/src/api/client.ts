@@ -84,7 +84,9 @@ export function createThingsBoardClients(options: ClientOptions) {
       if (accessToken)
         config.headers['X-Authorization'] = `Bearer ${accessToken}`;
       else delete config.headers['X-Authorization'];
-      config.headers['Accept-Language'] = options.getLocale();
+      config.headers['Accept-Language'] = options
+        .getLocale()
+        .replaceAll('_', '-');
       if (
         config.params &&
         Object.getPrototypeOf(config.params) === Object.prototype

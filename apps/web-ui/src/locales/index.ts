@@ -53,11 +53,11 @@ async function loadThirdPartyMessage(lang: SupportedLanguagesType) {
 async function loadDayjsLocale(lang: SupportedLanguagesType) {
   let locale;
   switch (lang) {
-    case 'en-US': {
+    case 'en_US': {
       locale = await import('dayjs/locale/en');
       break;
     }
-    case 'zh-CN': {
+    case 'zh_CN': {
       locale = await import('dayjs/locale/zh-cn');
       break;
     }
@@ -67,7 +67,7 @@ async function loadDayjsLocale(lang: SupportedLanguagesType) {
     }
   }
   if (locale) {
-    dayjs.locale(locale);
+    dayjs.locale(locale.default);
   } else {
     console.error(`Failed to load dayjs locale for ${lang}`);
   }
@@ -79,11 +79,11 @@ async function loadDayjsLocale(lang: SupportedLanguagesType) {
  */
 async function loadAntdLocale(lang: SupportedLanguagesType) {
   switch (lang) {
-    case 'en-US': {
+    case 'en_US': {
       antdLocale.value = antdEnLocale;
       break;
     }
-    case 'zh-CN': {
+    case 'zh_CN': {
       antdLocale.value = antdDefaultLocale;
       break;
     }

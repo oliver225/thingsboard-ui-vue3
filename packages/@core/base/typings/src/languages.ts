@@ -8,7 +8,7 @@
  * ```ts
  * declare module '@vben-core/typings' {
  *   interface SupportedLanguages {
- *     'zh-TW': '繁體中文';
+ *     'zh_TW': '繁體中文';
  *   }
  * }
  * ```
@@ -18,8 +18,8 @@
  * 运行时语言列表则通过 `setSupportLanguages` 注册。
  */
 export interface SupportedLanguages {
-  'en-US': 'English';
-  'zh-CN': '简体中文';
+  en_US: 'English';
+  zh_CN: '简体中文';
 }
 
 /**

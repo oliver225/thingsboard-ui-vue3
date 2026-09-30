@@ -84,7 +84,7 @@ export const overridesPreferences = defineOverridesPreferences({
     defaultAvatar: '/logo.svg',
     defaultHomePath: '/home',
     enableRefreshToken: true,
-    locale: 'zh-CN',
+    locale: 'zh_CN',
     loginExpiredMode: 'page',
     name: import.meta.env.VITE_APP_TITLE,
   },

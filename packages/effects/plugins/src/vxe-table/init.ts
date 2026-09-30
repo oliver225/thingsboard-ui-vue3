@@ -122,8 +122,8 @@ export function setupVbenVxeTable(setupOptions: SetupVxeTable) {
   const { isDark, locale } = usePreferences();
 
   const localMap: Partial<Record<SupportedLanguagesType, any>> = {
-    'zh-CN': normalizeVxeLocale(zhCN),
-    'en-US': normalizeVxeLocale(enUS),
+    zh_CN: normalizeVxeLocale(zhCN),
+    en_US: normalizeVxeLocale(enUS),
   };
 
   watch(
@@ -132,10 +132,10 @@ export function setupVbenVxeTable(setupOptions: SetupVxeTable) {
       VxeUI.setTheme(isDarkValue ? 'dark' : 'light');
       // vxe-table 仅为其内置语言提供类型定义，应用通过模块增强扩展的
       // 语言可能超出 VxeGlobalI18nLocale 联合范围，因此边界处需要断言，
-      // 未打包的自定义语言回退到 en-US
+      // 未打包的自定义语言回退到 en_US
       VxeUI.setI18n(
         localeValue as any,
-        localMap[localeValue] ?? localMap['en-US'],
+        localMap[localeValue] ?? localMap.en_US,
       );
       VxeUI.setLanguage(localeValue as any);
     },

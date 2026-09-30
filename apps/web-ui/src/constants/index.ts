@@ -21,8 +21,8 @@ export const PHONE_PATTERN = /^\+[1-9]\d{1,14}$/;
 export function getLanguageOptions(): LanguageOption[] {
   return [
     { label: $t('account.options.langAuto'), value: '' },
-    { label: '简体中文', value: 'zh-CN' },
-    { label: 'English', value: 'en-US' },
+    { label: '简体中文', value: 'zh_CN' },
+    { label: 'English', value: 'en_US' },
   ];
 }
 

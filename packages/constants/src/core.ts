@@ -21,11 +21,11 @@ export interface LanguageOption<TValue extends string = string> {
 export const SUPPORT_LANGUAGES: LanguageOption<SupportedLanguagesType>[] = [
   {
     label: '简体中文',
-    value: 'zh-CN',
+    value: 'zh_CN',
   },
   {
     label: 'English',
-    value: 'en-US',
+    value: 'en_US',
   },
 ];
 
