@@ -1,7 +1,7 @@
 import { initPreferences } from '@vben/preferences';
 import { unmountGlobalLoading } from '@vben/utils';
 
-import { migrateAppearanceDefaults, overridesPreferences } from './preferences';
+import { overridesPreferences } from './preferences';
 
 /**
  * 应用初始化完成之后再进行页面加载渲染
@@ -14,7 +14,6 @@ async function initApplication() {
   const namespace = `${import.meta.env.VITE_APP_NAMESPACE}-${appVersion}-${env}`;
 
   // app偏好设置初始化
-  await migrateAppearanceDefaults(namespace);
   await initPreferences({
     namespace,
     overrides: overridesPreferences,
