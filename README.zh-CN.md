@@ -37,7 +37,7 @@ ThingsBoard UI Vue3 为现有 [ThingsBoard](https://thingsboard.io/) 后端提�
 | ThingsBoard 后端版本 | `4.3.1.5` |
 | 管理框架 | Vben Admin v5 |
 | 主应用目录 | `apps/web-ui` |
-| 框架迁移分支 | `vben` |
+| 主分支 | `master` |
 
 前端包采用三段版本号 `4.3.1`，目标后端版本为 `4.3.1.5`。本文档对应 Vben v5 版本，其他后端版本需要单独验证兼容性。
 
@@ -96,13 +96,13 @@ ThingsBoard UI Vue3 为现有 [ThingsBoard](https://thingsboard.io/) 后端提�
 ### 2. 获取代码并安装依赖
 
 ```bash
-git clone --branch vben https://github.com/oliver225/thingsboard-ui-vue3.git
+git clone --branch master https://github.com/oliver225/thingsboard-ui-vue3.git
 cd thingsboard-ui-vue3
 npm install --global pnpm@11.16.0
-pnpm install --frozen-lockfile
+pnpm install
 ```
 
-请使用包含本 Vben v5 工作区的分支。以下命令均在仓库根目录执行。
+以下命令均在仓库根目录执行。
 
 ### 3. 配置后端
 

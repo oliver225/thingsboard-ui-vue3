@@ -8,7 +8,7 @@ This directory contains the Vben Admin v5 frontend for ThingsBoard.
 Run the workspace commands from the repository root:
 
 ```bash
-pnpm install --frozen-lockfile
+pnpm install
 pnpm dev
 pnpm check:thingsboard
 pnpm build

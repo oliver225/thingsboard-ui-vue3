@@ -37,7 +37,7 @@ These are the [ThingsBoard default credentials](https://thingsboard.io/docs/inst
 | ThingsBoard backend | `4.3.1.5` |
 | Administration framework | Vben Admin v5 |
 | Application directory | `apps/web-ui` |
-| Framework migration branch | `vben` |
+| Main branch | `master` |
 
 The frontend package uses the three-part version `4.3.1`; the backend target is `4.3.1.5`. This README describes the Vben v5 edition. Other backend versions need their own compatibility checks.
 
@@ -96,13 +96,13 @@ See [pnpm-workspace.yaml](./pnpm-workspace.yaml) for dependency declarations and
 ### 2. Clone and install
 
 ```bash
-git clone --branch vben https://github.com/oliver225/thingsboard-ui-vue3.git
+git clone --branch master https://github.com/oliver225/thingsboard-ui-vue3.git
 cd thingsboard-ui-vue3
 npm install --global pnpm@11.16.0
-pnpm install --frozen-lockfile
+pnpm install
 ```
 
-Use the branch containing this Vben v5 workspace. Run all commands below from the repository root.
+Run all commands below from the repository root.
 
 ### 3. Configure the backend
 
