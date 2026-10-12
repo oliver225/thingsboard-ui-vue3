@@ -6,8 +6,8 @@
 
 **English** | [简体中文](./README.zh-CN.md)
 
-[![Frontend](https://img.shields.io/badge/frontend-4.3.1-green)](./package.json)
-[![ThingsBoard](https://img.shields.io/badge/ThingsBoard-4.3.1.5-blue)](https://thingsboard.io/)
+[![Frontend](https://img.shields.io/badge/frontend-4.4.0-green)](./package.json)
+[![ThingsBoard](https://img.shields.io/badge/ThingsBoard-4.4.0-blue)](https://thingsboard.io/)
 [![Vben Admin](https://img.shields.io/badge/Vben_Admin-v5-blue)](https://github.com/vbenjs/vue-vben-admin)
 
 ## Overview
@@ -34,12 +34,12 @@ These are the [ThingsBoard default credentials](https://thingsboard.io/docs/inst
 
 | Component | Version / scope |
 | --- | --- |
-| ThingsBoard backend | `4.3.1.5` |
+| ThingsBoard backend | `4.4.0` |
 | Administration framework | Vben Admin v5 |
 | Application directory | `apps/web-ui` |
 | Main branch | `master` |
 
-The frontend package uses the three-part version `4.3.1`; the backend target is `4.3.1.5`. This README describes the Vben v5 edition. Other backend versions need their own compatibility checks.
+The frontend package uses the three-part version `4.4.0`; the backend target is `4.4.0`. This README describes the Vben v5 edition. Other backend versions need their own compatibility checks.
 
 When migrating from the previous frontend, use this workspace's environment files and commands. The application has moved from the repository root to `apps/web-ui`. Third-party dependency versions are managed through pnpm Catalog. The old `VITE_PROXY` configuration is replaced by `VITE_TB_TARGET` for local development.
 
@@ -91,7 +91,7 @@ See [pnpm-workspace.yaml](./pnpm-workspace.yaml) for dependency declarations and
 
 - Node.js `^22.18.0 || ^24.12.0`, as defined in [package.json](./package.json). [.node-version](./.node-version) selects `24.16.0`.
 - pnpm `11.16.0`, matching the repository's `packageManager` field.
-- A reachable ThingsBoard `4.3.1.5` backend and a valid user account.
+- A reachable ThingsBoard `4.4.0` backend and a valid user account.
 
 ### 2. Clone and install
 

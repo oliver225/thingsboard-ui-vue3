@@ -6,8 +6,8 @@
 
 [English](./README.md) | **简体中文**
 
-[![前端版本](https://img.shields.io/badge/frontend-4.3.1-green)](./package.json)
-[![ThingsBoard](https://img.shields.io/badge/ThingsBoard-4.3.1.5-blue)](https://thingsboard.io/)
+[![前端版本](https://img.shields.io/badge/frontend-4.4.0-green)](./package.json)
+[![ThingsBoard](https://img.shields.io/badge/ThingsBoard-4.4.0-blue)](https://thingsboard.io/)
 [![Vben Admin](https://img.shields.io/badge/Vben_Admin-v5-blue)](https://github.com/vbenjs/vue-vben-admin)
 
 ## 项目介绍
@@ -34,12 +34,12 @@ ThingsBoard UI Vue3 为现有 [ThingsBoard](https://thingsboard.io/) 后端提�
 
 | 项目 | 版本 / 范围 |
 | --- | --- |
-| ThingsBoard 后端版本 | `4.3.1.5` |
+| ThingsBoard 后端版本 | `4.4.0` |
 | 管理框架 | Vben Admin v5 |
 | 主应用目录 | `apps/web-ui` |
 | 主分支 | `master` |
 
-前端包采用三段版本号 `4.3.1`，目标后端版本为 `4.3.1.5`。本文档对应 Vben v5 版本，其他后端版本需要单独验证兼容性。
+前端包采用三段版本号 `4.4.0`，目标后端版本为 `4.4.0`。本文档对应 Vben v5 版本，其他后端版本需要单独验证兼容性。
 
 从旧前端迁移时，请使用本工作区的环境文件和命令。主应用已从仓库根目录迁入 `apps/web-ui`，第三方依赖版本通过 pnpm Catalog 集中管理。本地开发使用 `VITE_TB_TARGET` 配置代理目标，不再沿用旧版 `VITE_PROXY` 写法。
 
@@ -91,7 +91,7 @@ ThingsBoard UI Vue3 为现有 [ThingsBoard](https://thingsboard.io/) 后端提�
 
 - Node.js `^22.18.0 || ^24.12.0`，以 [package.json](./package.json) 为准。[.node-version](./.node-version) 指定 `24.16.0`。
 - pnpm `11.16.0`，与仓库 `packageManager` 字段一致。
-- 可访问的 ThingsBoard `4.3.1.5` 后端及有效用户账号。
+- 可访问的 ThingsBoard `4.4.0` 后端及有效用户账号。
 
 ### 2. 获取代码并安装依赖
 
