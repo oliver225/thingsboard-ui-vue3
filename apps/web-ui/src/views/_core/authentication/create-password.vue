@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import type { VbenFormSchema } from '#/adapter/form';
-import type { UserPasswordPolicy } from '#/api/tb/auth';
+import type { UserPasswordPolicy } from '#/api/tb/noauth';
 
 import { computed, reactive, ref, watch } from 'vue';
 import { useRoute, useRouter } from 'vue-router';
 
 import { VbenButton } from '@vben/common-ui';
 import { LOGIN_PATH } from '@vben/constants';
-import { preferences } from '@vben/preferences';
 
 import { notification } from 'antdv-next';
 
@@ -16,7 +15,7 @@ import {
   activateUser,
   getUserPasswordPolicy,
   resetPassword,
-} from '#/api/tb/auth';
+} from '#/api/tb/noauth';
 import { $t } from '#/locales';
 import { useAuthStore } from '#/store';
 
@@ -215,19 +214,18 @@ async function handleSubmit() {
   try {
     const { valid } = await formApi.validate();
     if (!valid) return;
+    const version = authStore.sessionVersion;
+    const requestToken = token.value;
     const { password } = await formApi.getValues();
     if (props.mode === 'activate') {
       const pair = await activateUser({ activateToken: token.value, password });
-      const userInfo = await authStore.loginWithToken(pair);
-      notification.success({
-        title: $t('authentication.messages.createPasswordSuccess'),
-        description: `${$t('authentication.messages.createPasswordSuccessDesc')}: ${userInfo.realName}`,
-      });
-      await router.replace(
-        userInfo.homePath || preferences.app.defaultHomePath,
-      );
+      if (version !== authStore.sessionVersion || requestToken !== token.value)
+        return;
+      await authStore.completeLogin(pair);
     } else {
       await resetPassword({ resetToken: token.value, password });
+      if (version !== authStore.sessionVersion || requestToken !== token.value)
+        return;
       notification.success({
         title: $t('authentication.messages.resetPasswordSuccess'),
         description: $t('authentication.messages.resetPasswordSuccessDesc'),

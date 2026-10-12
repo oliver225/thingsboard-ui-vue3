@@ -205,14 +205,14 @@ async function handleToggleDomainSetting(
           variant="navigation"
           :tabs="[
             {
-              icon: $router.resolve({ name: 'OAuth2ClientList' }).meta.icon,
-              label: $t('oauth2.sections.clients'),
-              value: 'OAuth2ClientList',
-            },
-            {
               icon: $router.resolve({ name: 'OAuth2DomainList' }).meta.icon,
               label: $t('oauth2.sections.domains'),
               value: 'OAuth2DomainList',
+            },
+            {
+              icon: $router.resolve({ name: 'OAuth2ClientList' }).meta.icon,
+              label: $t('oauth2.sections.clients'),
+              value: 'OAuth2ClientList',
             },
           ]"
           model-value="OAuth2DomainList"

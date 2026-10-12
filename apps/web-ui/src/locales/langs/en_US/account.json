@@ -1,5 +1,27 @@
 {
   "menu": "Account",
+  "twoFactor": {
+    "description": "Protect your account with a verification code at sign-in.",
+    "enableHint": "Enable to set up this method.",
+    "authenticatorEnabled": "Linked. Use a code from the app to sign in.",
+    "backupRequiresProvider": "Set up an authenticator, email, or phone first.",
+    "backupDescription": "Use when other methods are unavailable. Each code works once.",
+    "codesLeft": "{count} backup codes remaining.",
+    "defaultProvider": "Default authentication method",
+    "setDefault": "Set as default",
+    "configureTitle": "Set up {name}",
+    "verifySave": "Verify and save",
+    "disableTitle": "Disable {name}?",
+    "disableDescription": "This method will no longer work at sign-in.",
+    "disableLast": "Backup codes will also stop working. If authentication is required, set it up again at your next sign-in.",
+    "regenerate": "Get new backup codes",
+    "replaceWarning": "Your {count} remaining codes will stop working.",
+    "backupTitle": "Save backup codes",
+    "backupOnce": "Codes cannot be viewed again. Download or copy them before closing and keep them safe.",
+    "download": "Download TXT",
+    "copy": "Copy backup codes",
+    "done": "Done"
+  },
   "sections": {
     "userInfo": "Profile",
     "security": "Security Info",

@@ -8,6 +8,7 @@ import { $t } from '@vben/locales';
 
 import { useAuthStore } from '#/store';
 
+import OAuth2Login from './oauth2-login.vue';
 import TechSupport from './tech-support.vue';
 
 defineOptions({ name: 'Login' });
@@ -52,6 +53,7 @@ const formSchema = computed((): VbenFormSchema[] => {
     @submit="authStore.authLogin"
   >
     <template #third-party-login>
+      <OAuth2Login />
       <TechSupport />
     </template>
   </AuthenticationLogin>

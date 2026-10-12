@@ -1,5 +1,27 @@
 {
   "menu": "个人中心",
+  "twoFactor": {
+    "description": "登录时增加验证码验证，保护账号安全。",
+    "enableHint": "开启后按提示绑定。",
+    "authenticatorEnabled": "已绑定，登录时使用应用生成的验证码。",
+    "backupRequiresProvider": "请先绑定身份验证器、邮箱或手机。",
+    "backupDescription": "其他方式不可用时用于登录，每条仅限一次。",
+    "codesLeft": "剩余 {count} 条备用码。",
+    "defaultProvider": "默认认证方式",
+    "setDefault": "设为默认",
+    "configureTitle": "绑定{name}",
+    "verifySave": "验证并保存",
+    "disableTitle": "停用{name}？",
+    "disableDescription": "停用后无法用此方式登录。",
+    "disableLast": "备用码也将失效；若管理员强制认证，下次登录需重新绑定。",
+    "regenerate": "获取新备用码",
+    "replaceWarning": "生成后，剩余 {count} 条旧码将失效。",
+    "backupTitle": "保存备用码",
+    "backupOnce": "关闭后无法再查看，请先下载或复制并妥善保存。",
+    "download": "下载 TXT",
+    "copy": "复制备用码",
+    "done": "完成"
+  },
   "sections": {
     "userInfo": "个人资料",
     "security": "安全配置",

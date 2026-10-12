@@ -10,7 +10,7 @@ import { LOGIN_PATH } from '@vben/constants';
 import { notification } from 'antdv-next';
 
 import { useVbenForm, z } from '#/adapter/form';
-import { resetPasswordByEmail } from '#/api/tb/auth';
+import { resetPasswordByEmail } from '#/api/tb/noauth';
 import { $t } from '#/locales';
 
 defineOptions({ name: 'ForgetPassword' });

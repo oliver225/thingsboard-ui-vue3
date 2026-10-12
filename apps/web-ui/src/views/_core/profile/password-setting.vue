@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import type { VbenFormSchema } from '#/adapter/form';
-import type { UserPasswordPolicy } from '#/api/tb/auth';
+import type { UserPasswordPolicy } from '#/api/tb/noauth';
 
 import { computed, onMounted, reactive, ref } from 'vue';
 
@@ -12,7 +12,8 @@ import { useAccessStore } from '@vben/stores';
 import { message } from 'antdv-next';
 
 import { useVbenForm, z } from '#/adapter/form';
-import { changePassword, getUserPasswordPolicy } from '#/api/tb/auth';
+import { changePassword } from '#/api/tb/auth';
+import { getUserPasswordPolicy } from '#/api/tb/noauth';
 import { FormSection } from '#/components/form-section';
 
 defineOptions({ name: 'AccountChangePassword' });

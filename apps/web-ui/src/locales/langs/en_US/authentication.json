@@ -1,4 +1,45 @@
 {
+  "session": {
+    "invalid": "Invalid or expired credentials. Please sign in again."
+  },
+  "setup": {
+    "ready": "Setup is complete. Redirecting to sign in.",
+    "title": "Initial setup",
+    "description": "Create a system administrator account to complete the initial setup.",
+    "loadDemo": "Load demo data",
+    "loadDemoDescription": "The quickest way to see the platform in action. Dashboards, devices, and rule chains are already set up, with tenant and customer users ready to sign in. You can also open it from Tenants as the system administrator.",
+    "submit": "Create account and get started",
+    "failed": "Setup failed. Check your input and try again.",
+    "unavailable": "Unable to load setup status. Check the server connection and retry.",
+    "unsupported": "Unsupported setup status: {status}. Contact your administrator to check the backend version."
+  },
+  "twoFactor": {
+    "title": "Two-factor authentication",
+    "description": "Password verified. Select an authentication method and enter its code.",
+    "configureDescription": "Your administrator requires two-factor authentication. Complete setup to continue.",
+    "totp": "Authenticator",
+    "email": "Email",
+    "sms": "Phone number",
+    "backup": "Backup code",
+    "code": "Verification code",
+    "codeRequired": "Enter a verification or backup code",
+    "contactRequired": "Enter a valid email address or phone number.",
+    "scan": "Scan this QR code with an authenticator app, then enter the generated code.",
+    "send": "Send code",
+    "resendIn": "Resend in {seconds}s",
+    "verify": "Verify and sign in",
+    "expired": "This authentication attempt has expired. Return to sign in.",
+    "rateLimited": "Too many requests. Please try again later.",
+    "failed": "Authentication request failed. Please try again.",
+    "noProviders": "No authentication methods are available. Contact your administrator."
+  },
+  "oauth2": {
+    "otherLogin": "Other sign-in options",
+    "loginWith": "Sign in with {name}",
+    "unavailable": "Unable to load external sign-in methods.",
+    "failed": "External sign-in failed or returned invalid credentials. Please sign in again.",
+    "invalidUrl": "Invalid external sign-in URL. Contact your administrator."
+  },
   "menu": "ThingsBoard IoT Platform",
   "actions": {
     "createPassword": "Create Password",
@@ -27,6 +68,7 @@
     "passwordPolicyLoading": "Loading password requirements…"
   },
   "validation": {
+    "emailInvalid": "Enter a valid email address",
     "linkInvalid": "Invalid link",
     "activateLinkInvalid": "The activation link is invalid or expired. Please request a new activation email.",
     "resetLinkInvalid": "The reset link is invalid or expired. Please request password recovery again."

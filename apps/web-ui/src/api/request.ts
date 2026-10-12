@@ -5,6 +5,7 @@ import { useAccessStore } from '@vben/stores';
 import { message, Modal } from 'antdv-next';
 
 import { useAuthStore } from '#/store';
+import { useSetupStore } from '#/store/setup';
 
 import { createThingsBoardClients } from './client';
 
@@ -21,7 +22,15 @@ export const { baseRequestClient, requestClient, getAccessToken } =
       else await useAuthStore().logout(true, false);
     },
     getLocale: () => preferences.app.locale,
-    getSession: () => useAccessStore(),
+    async setupRequired() {
+      useSetupStore().$reset();
+      await useAuthStore().logout(false, false);
+    },
+    getSession: () => ({
+      accessToken: useAccessStore().accessToken,
+      refreshToken: useAccessStore().refreshToken,
+      sessionVersion: useAuthStore().sessionVersion,
+    }),
     refreshEnabled: () => preferences.app.enableRefreshToken,
     reportError(content, status) {
       if (status && status >= 500) Modal.error({ title: '系统提示', content });

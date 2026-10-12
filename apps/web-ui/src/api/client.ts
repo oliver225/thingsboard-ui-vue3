@@ -2,9 +2,19 @@ import type { JwtPair } from '../types/tb';
 
 import { RequestClient } from '@vben/request';
 
+import { getTokenClaims } from '../utils/auth';
+
+declare module '@vben/request' {
+  interface AxiosRequestConfig {
+    /** 由页面展示错误，跳过全局提示。 */
+    skipErrorHandler?: boolean;
+  }
+}
+
 interface Session {
   accessToken: null | string;
   refreshToken: null | string;
+  sessionVersion: number;
 }
 interface ClientOptions {
   baseURL: string;
@@ -13,6 +23,7 @@ interface ClientOptions {
   getSession: () => Session;
   refreshEnabled: () => boolean;
   reportError: (message: string, status?: number) => void;
+  setupRequired?: () => Promise<void>;
   setTokens: (tokens: JwtPair) => void;
 }
 
@@ -20,7 +31,10 @@ interface ClientOptions {
 export function createThingsBoardClients(options: ClientOptions) {
   const requestClient = new RequestClient({ baseURL: options.baseURL });
   const baseRequestClient = new RequestClient({ baseURL: options.baseURL });
-  let refreshing: undefined | { token: string; promise: Promise<string> };
+  let refreshing:
+    | undefined
+    | { token: string; promise: Promise<string>; version: number };
+  let setupPending: null | Promise<void> = null;
   let expiring: null | Promise<void> = null;
   function expire() {
     expiring ??= options.expireSession().finally(() => {
@@ -29,46 +43,49 @@ export function createThingsBoardClients(options: ClientOptions) {
     return expiring;
   }
   function refreshSession() {
-    const { refreshToken } = options.getSession();
+    const { refreshToken, sessionVersion } = options.getSession();
     if (!refreshToken || !options.refreshEnabled()) {
       return expire().then(() => {
         throw new Error('No active session');
       });
     }
-    if (refreshing?.token === refreshToken) return refreshing.promise;
+    if (
+      refreshing?.token === refreshToken &&
+      refreshing.version === sessionVersion
+    )
+      return refreshing.promise;
     const promise = baseRequestClient.instance
       .post<JwtPair>('/auth/token', { refreshToken })
       .then(({ data }) => {
         if (!data.token || !data.refreshToken)
           throw new Error('Invalid token response');
-        if (options.getSession().refreshToken !== refreshToken)
+        if (
+          options.getSession().refreshToken !== refreshToken ||
+          options.getSession().sessionVersion !== sessionVersion
+        )
           throw new Error('Session changed');
         options.setTokens(data);
         return data.token;
       })
       .catch(async (error) => {
-        if (options.getSession().refreshToken === refreshToken) await expire();
+        if (
+          options.getSession().refreshToken === refreshToken &&
+          options.getSession().sessionVersion === sessionVersion
+        )
+          await expire();
         throw error;
       })
       .finally(() => {
         if (refreshing?.promise === promise) refreshing = undefined;
       });
-    refreshing = { token: refreshToken, promise };
+    refreshing = { token: refreshToken, promise, version: sessionVersion };
     return promise;
   }
   /** WS 建连前复用 HTTP 的刷新流程，正常刷新不重置会话。 */
   async function getAccessToken() {
     const { accessToken, refreshToken } = options.getSession();
     if (!accessToken) throw new Error('No active session');
-    let expiresAt = 0;
-    try {
-      const payload = accessToken.split('.')[1] ?? '';
-      expiresAt =
-        JSON.parse(atob(payload.replaceAll('-', '+').replaceAll('_', '/')))
-          .exp * 1000;
-    } catch {
-      /* 格式错误由服务端鉴权拒绝。 */
-    }
+    const expiresAt = getTokenClaims(accessToken).exp * 1000;
     if (
       refreshing?.token === refreshToken ||
       (expiresAt &&
@@ -80,7 +97,8 @@ export function createThingsBoardClients(options: ClientOptions) {
   }
   requestClient.addRequestInterceptor({
     fulfilled(config) {
-      const { accessToken } = options.getSession();
+      const { accessToken, sessionVersion } = options.getSession();
+      Object.assign(config, { __tbSessionVersion: sessionVersion });
       if (accessToken)
         config.headers['X-Authorization'] = `Bearer ${accessToken}`;
       else delete config.headers['X-Authorization'];
@@ -106,7 +124,18 @@ export function createThingsBoardClients(options: ClientOptions) {
       const { config, response } = error;
       if (response?.status !== 401 || !config) throw error;
       const session = { ...options.getSession() };
+      // 上一账号的迟到响应不得退出新账号，也不能携带新账号凭据重放旧请求。
+      if (config.__tbSessionVersion !== session.sessionVersion) throw error;
       if (!session.accessToken && !session.refreshToken) throw error;
+      // 改密或刷新后，旧凭据的拒绝响应不能注销当前有效凭据。
+      if (
+        config.headers['X-Authorization'] !== `Bearer ${session.accessToken}`
+      ) {
+        if (response.data?.errorCode !== 11 || config.__isRetryRequest)
+          throw error;
+        config.__isRetryRequest = true;
+        return requestClient.instance(config);
+      }
       if (
         response.data?.errorCode !== 11 ||
         !options.refreshEnabled() ||
@@ -117,24 +146,46 @@ export function createThingsBoardClients(options: ClientOptions) {
         throw error;
       }
       config.__isRetryRequest = true;
-      // A late response for the old token can reuse the already refreshed token.
-      if (config.headers['X-Authorization'] !== `Bearer ${session.accessToken}`)
-        return requestClient.instance(config);
       const token = await refreshSession();
-      if (options.getSession().accessToken !== token)
+      if (
+        options.getSession().accessToken !== token ||
+        options.getSession().sessionVersion !== session.sessionVersion
+      )
         throw new Error('Session changed');
       return requestClient.instance(config);
     },
   });
   // Raw Axios is reserved for refresh/replay. Public methods unwrap and report once.
   for (const client of [requestClient, baseRequestClient]) {
+    client.addResponseInterceptor({
+      rejected: async (error) => {
+        if (
+          error.response?.status === 423 &&
+          error.response.data?.errorCode === 47 &&
+          error.config?.url !== '/noauth/setup/state' &&
+          options.setupRequired
+        ) {
+          const version = error.config?.__tbSessionVersion;
+          if (
+            version === undefined ||
+            version === options.getSession().sessionVersion
+          ) {
+            setupPending ??= options.setupRequired().finally(() => {
+              setupPending = null;
+            });
+            await setupPending;
+          }
+        }
+        throw error;
+      },
+    });
     client.request = async (url, config) => {
       try {
         const response = await client.instance({ ...config, url });
         return config.responseReturn === 'raw' ? response : response.data;
       } catch (error: any) {
         const data = error?.response?.data;
-        if (!('skipErrorHandler' in config && config.skipErrorHandler)) {
+        if (!config.skipErrorHandler) {
           options.reportError(
             data?.message || error?.message || '请求失败，请稍后重试',
             error?.response?.status,

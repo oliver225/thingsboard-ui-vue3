@@ -51,10 +51,24 @@ const coreRoutes: RouteRecordRaw[] = [
       {
         name: 'Login',
         path: 'login',
+        alias: '/login',
         component: () => import('#/views/_core/authentication/login.vue'),
         meta: {
           title: $t('page.auth.login'),
         },
+      },
+      {
+        name: 'SystemSetup',
+        path: 'setup',
+        alias: '/setup',
+        component: () => import('#/views/_core/authentication/setup.vue'),
+        meta: { title: $t('authentication.setup.title') },
+      },
+      {
+        name: 'TwoFactorAuthentication',
+        path: 'two-factor',
+        component: () => import('#/views/_core/authentication/two-factor.vue'),
+        meta: { title: $t('authentication.twoFactor.title') },
       },
       {
         name: 'ForgetPassword',

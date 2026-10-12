@@ -3,6 +3,7 @@ import { $t } from '@vben/locales';
 
 import JwtToken from './jwt-token.vue';
 import PasswordSetting from './password-setting.vue';
+import TwoFactorSetting from './two-factor-setting.vue';
 </script>
 <template>
   <section class="flex h-full min-h-0 flex-col overflow-hidden">
@@ -21,6 +22,7 @@ import PasswordSetting from './password-setting.vue';
       >
         <JwtToken class="shrink-0" />
         <PasswordSetting />
+        <TwoFactorSetting />
       </div>
     </div>
   </section>

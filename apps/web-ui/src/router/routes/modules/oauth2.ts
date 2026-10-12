@@ -7,7 +7,7 @@ const routes: RouteRecordRaw[] = [
   {
     name: 'OAuth2',
     path: '/oauth2',
-    redirect: '/oauth2/clients',
+    redirect: '/oauth2/domains',
     meta: {
       authority: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN],
       icon: 'lucide:shield-check',
@@ -15,19 +15,6 @@ const routes: RouteRecordRaw[] = [
       title: 'OAuth 2.0',
     },
     children: [
-      {
-        name: 'OAuth2ClientList',
-        path: 'clients',
-        component: () => import('#/views/tb/oauth2/clients.vue'),
-        meta: {
-          activePath: '/oauth2',
-          authority: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN],
-          hideInMenu: true,
-          icon: 'lucide:key-round',
-          pageKey: 'oauth2',
-          title: $t('oauth2.sections.clients'),
-        },
-      },
       {
         name: 'OAuth2DomainList',
         path: 'domains',
@@ -39,6 +26,19 @@ const routes: RouteRecordRaw[] = [
           icon: 'lucide:globe',
           pageKey: 'oauth2',
           title: $t('oauth2.sections.domains'),
+        },
+      },
+      {
+        name: 'OAuth2ClientList',
+        path: 'clients',
+        component: () => import('#/views/tb/oauth2/clients.vue'),
+        meta: {
+          activePath: '/oauth2',
+          authority: [Authority.SYS_ADMIN, Authority.TENANT_ADMIN],
+          hideInMenu: true,
+          icon: 'lucide:key-round',
+          pageKey: 'oauth2',
+          title: $t('oauth2.sections.clients'),
         },
       },
     ],

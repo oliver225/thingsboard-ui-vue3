@@ -1,5 +1,44 @@
 {
   "menu": "ThingsBoard 物联网平台",
+  "session": { "invalid": "登录凭据无效或已过期，请重新登录。" },
+  "setup": {
+    "ready": "初始化已完成，正在前往登录。",
+    "title": "首次初始化",
+    "description": "创建系统管理员账号，完成平台初始化。",
+    "loadDemo": "加载演示数据",
+    "loadDemoDescription": "快速体验平台的最佳方式。仪表盘、设备和规则链均已配置完毕，租户和客户用户也已就绪，可直接登录体验。您也可以使用系统管理员账号，从「租户」页面进入演示环境。",
+    "submit": "创建账号并开始使用",
+    "failed": "初始化失败，请检查输入后重试。",
+    "unavailable": "无法获取初始化状态，请检查服务连接后重试。",
+    "unsupported": "当前初始化状态为 {status}，请联系管理员核对后端版本。"
+  },
+  "twoFactor": {
+    "title": "双因素认证",
+    "description": "密码已验证，请选择认证方式并输入验证码。",
+    "configureDescription": "管理员要求启用双因素认证，请先完成配置。",
+    "totp": "身份验证器",
+    "email": "邮箱",
+    "sms": "手机号码",
+    "backup": "备用码",
+    "code": "验证码",
+    "codeRequired": "请输入验证码或备用码",
+    "contactRequired": "请填写有效的邮箱或手机号码。",
+    "scan": "使用身份验证器扫描二维码，然后输入生成的验证码。",
+    "send": "发送验证码",
+    "resendIn": "{seconds} 秒后重发",
+    "verify": "验证并登录",
+    "expired": "本次认证已过期，请返回登录重试。",
+    "rateLimited": "请求过于频繁，请稍后重试。",
+    "failed": "认证请求失败，请重试。",
+    "noProviders": "没有可用的认证方式，请联系管理员。"
+  },
+  "oauth2": {
+    "otherLogin": "其他登录方式",
+    "loginWith": "使用 {name} 登录",
+    "unavailable": "外部登录方式加载失败。",
+    "failed": "外部登录失败或回跳凭据无效，请重新登录。",
+    "invalidUrl": "外部登录地址无效，请联系管理员。"
+  },
   "actions": {
     "createPassword": "创建密码",
     "goToLogin": "前往登录",
@@ -27,6 +66,7 @@
     "passwordPolicyLoading": "正在加载密码要求…"
   },
   "validation": {
+    "emailInvalid": "请输入有效的邮箱地址",
     "linkInvalid": "链接无效",
     "activateLinkInvalid": "激活链接无效或已失效，请重新获取激活邮件。",
     "resetLinkInvalid": "重置链接无效或已失效，请重新申请找回密码。"

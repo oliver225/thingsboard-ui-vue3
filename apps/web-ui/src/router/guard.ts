@@ -2,11 +2,13 @@ import type { Router } from 'vue-router';
 
 import { LOGIN_PATH } from '@vben/constants';
 import { preferences } from '@vben/preferences';
-import { useAccessStore, useUserStore } from '@vben/stores';
+import { resetAllStores, useAccessStore, useUserStore } from '@vben/stores';
 import { startProgress, stopProgress } from '@vben/utils';
 
 import { accessRoutes, coreRouteNames } from '#/router/routes';
 import { useAuthStore } from '#/store';
+import { useSetupStore } from '#/store/setup';
+import { getLoginRedirect, takeLoginCallback } from '#/utils/auth';
 
 import { generateAccess } from './access';
 
@@ -49,14 +51,68 @@ function setupAccessGuard(router: Router) {
     const accessStore = useAccessStore();
     const userStore = useUserStore();
     const authStore = useAuthStore();
+    const setupStore = useSetupStore();
+
+    const setupStatus = await setupStore.load();
+    if (setupStatus !== 'READY') {
+      if (accessStore.accessToken || authStore.challenge) {
+        resetAllStores();
+        setupStore.status = setupStatus;
+      }
+      takeLoginCallback();
+      return to.name === 'SystemSetup'
+        ? true
+        : { name: 'SystemSetup', replace: true };
+    }
+    if (to.name === 'SystemSetup') return { path: LOGIN_PATH, replace: true };
+
+    const callback = takeLoginCallback();
+    if (callback) {
+      try {
+        const user = await authStore.loginWithToken(callback);
+        return user
+          ? {
+              path: getLoginRedirect(
+                callback.redirect || to.fullPath,
+                user.homePath || preferences.app.defaultHomePath,
+              ),
+              replace: true,
+            }
+          : {
+              name: 'TwoFactorAuthentication',
+              query: { redirect: callback.redirect },
+              replace: true,
+            };
+      } catch {
+        return {
+          path: LOGIN_PATH,
+          query: { loginError: 'invalid_callback' },
+          replace: true,
+        };
+      }
+    }
+
+    if (to.name === 'TwoFactorAuthentication') {
+      return authStore.challenge
+        ? true
+        : { path: LOGIN_PATH, query: to.query, replace: true };
+    }
+    if (authStore.challenge) {
+      if (to.name === 'Login') authStore.$reset();
+      else
+        return {
+          name: 'TwoFactorAuthentication',
+          query: to.query,
+          replace: true,
+        };
+    }
 
     // 基本路由，这些路由不需要进入权限拦截
     if (coreRouteNames.includes(to.name as string)) {
-      if (to.path === LOGIN_PATH && accessStore.accessToken) {
-        return decodeURIComponent(
-          (to.query?.redirect as string) ||
-            userStore.userInfo?.homePath ||
-            preferences.app.defaultHomePath,
+      if (to.name === 'Login' && accessStore.accessToken) {
+        return getLoginRedirect(
+          to.query.redirect,
+          userStore.userInfo?.homePath || preferences.app.defaultHomePath,
         );
       }
       return true;
@@ -69,20 +125,14 @@ function setupAccessGuard(router: Router) {
         return true;
       }
 
-      // 没有访问权限，跳转登录页面
-      if (to.fullPath !== LOGIN_PATH) {
-        return {
-          path: LOGIN_PATH,
-          // 如不需要，直接删除 query
-          query:
-            to.fullPath === preferences.app.defaultHomePath
-              ? {}
-              : { redirect: encodeURIComponent(to.fullPath) },
-          // 携带当前跳转的页面，登录后重新跳转该页面
-          replace: true,
-        };
-      }
-      return to;
+      return {
+        path: LOGIN_PATH,
+        query:
+          to.fullPath === preferences.app.defaultHomePath
+            ? {}
+            : { redirect: encodeURIComponent(to.fullPath) },
+        replace: true,
+      };
     }
 
     // 是否已经生成过动态路由
@@ -92,16 +142,28 @@ function setupAccessGuard(router: Router) {
 
     // 生成路由表
     // 当前登录用户拥有的角色标识列表
-    const userInfo = userStore.userInfo || (await authStore.fetchUserInfo());
-    const userRoles = userInfo.roles ?? [];
-
+    const version = authStore.sessionVersion;
+    let userInfo;
+    try {
+      userInfo = userStore.userInfo || (await authStore.fetchUserInfo());
+    } catch {
+      if (version !== authStore.sessionVersion) return false;
+      accessStore.setAccessToken(null);
+      accessStore.setRefreshToken(null);
+      return {
+        path: LOGIN_PATH,
+        query: { redirect: encodeURIComponent(to.fullPath) },
+        replace: true,
+      };
+    }
     // 生成菜单和路由
     const { accessibleMenus, accessibleRoutes } = await generateAccess({
-      roles: userRoles,
+      roles: userInfo.roles ?? [],
       router,
       // 则会在菜单中显示，但是访问会被重定向到403
       routes: accessRoutes,
     });
+    if (version !== authStore.sessionVersion) return false;
 
     // 保存菜单信息和路由信息
     accessStore.setAccessMenus(accessibleMenus);
@@ -113,7 +175,12 @@ function setupAccessGuard(router: Router) {
         : to.fullPath)) as string;
 
     return {
-      ...router.resolve(decodeURIComponent(redirectPath)),
+      ...router.resolve(
+        getLoginRedirect(
+          redirectPath,
+          userInfo.homePath || preferences.app.defaultHomePath,
+        ),
+      ),
       replace: true,
     };
   });

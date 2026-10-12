@@ -25,6 +25,8 @@ interface PinInputProps {
    * 最大重试时间
    */
   maxTime?: number;
+  /** 是否显示发送验证码按钮（身份验证器等场景无需发送）。 */
+  showSendButton?: boolean;
 }
 
 export type { PinInputProps };

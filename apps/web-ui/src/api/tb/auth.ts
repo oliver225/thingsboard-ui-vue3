@@ -1,37 +1,43 @@
-/**
- * 认证接口(/api/auth/** 与 /api/noauth/**)
- * 契约参考:后端 AuthController.java
- */
+/**  认证接口（/api/auth）。 */
 import type { JwtPair, TbUser } from '#/types/tb';
 
+import { useAccessStore } from '@vben/stores';
+
 import { baseRequestClient, requestClient } from '#/api/request';
+
+/** MFA 阶段只有受限 access token，没有 refresh token。 */
+export type LoginResponse = Omit<JwtPair, 'refreshToken'> & {
+  refreshToken?: string;
+};
+
+export namespace AuthApi {
+  /** 登录参数(TB 用户名为邮箱) */
+  export interface LoginParams {
+    password: string;
+    username: string;
+  }
+}
+
+/** 登录 */
+export async function loginApi(data: AuthApi.LoginParams) {
+  return baseRequestClient.post<LoginResponse>('/auth/login', data);
+}
+
+/** 刷新 accessToken(用 baseRequestClient,避免 401 拦截递归) */
+export async function refreshTokenApi(refreshToken: string) {
+  return baseRequestClient.post<JwtPair>('/auth/token', { refreshToken });
+}
+
+/** 退出登录 */
+export async function logoutApi() {
+  return baseRequestClient.post('/auth/logout', undefined, {
+    headers: { 'X-Authorization': `Bearer ${useAccessStore().accessToken}` },
+  });
+}
 
 /** 获取当前登录用户原始实体(GET /api/auth/user) */
 export function getCurrentUser() {
   return requestClient.get<TbUser>('/auth/user');
-}
-
-/** 请求密码重置邮件；后端对已注册和未注册邮箱均返回成功。 */
-export function resetPasswordByEmail(email: string): Promise<void> {
-  return baseRequestClient.post('/noauth/resetPasswordByEmail', { email });
-}
-
-/** 激活用户并设置密码，成功返回登录凭证。 */
-export function activateUser(data: {
-  activateToken: string;
-  password: string;
-}) {
-  return baseRequestClient.post<JwtPair>('/noauth/activate', data, {
-    params: { sendActivationMail: false },
-  });
-}
-
-/** 使用邮件中的令牌重置密码，成功后需要重新登录。 */
-export function resetPassword(data: {
-  password: string;
-  resetToken: string;
-}): Promise<void> {
-  return baseRequestClient.post('/noauth/resetPassword', data);
 }
 
 /** 修改密码请求(ChangePasswordRequest) */
@@ -43,25 +49,4 @@ export interface ChangePasswordParams {
 /** 修改密码(POST /api/auth/changePassword)→ 新的 JwtPair */
 export function changePassword(data: ChangePasswordParams) {
   return requestClient.post<JwtPair>('/auth/changePassword', data);
-}
-
-/** 密码策略(UserPasswordPolicy) */
-export interface UserPasswordPolicy {
-  allowWhitespaces?: boolean;
-  forceUserToResetPasswordIfNotValid?: boolean;
-  maximumLength?: number;
-  minimumDigits?: number;
-  minimumLength?: number;
-  minimumLowercaseLetters?: number;
-  minimumSpecialCharacters?: number;
-  minimumUppercaseLetters?: number;
-  passwordExpirationPeriodDays?: number;
-  passwordReuseFrequencyDays?: number;
-}
-
-/** 获取密码策略(GET /api/noauth/userPasswordPolicy,免登录) */
-export function getUserPasswordPolicy() {
-  return baseRequestClient.get<UserPasswordPolicy>(
-    '/noauth/userPasswordPolicy',
-  );
 }
