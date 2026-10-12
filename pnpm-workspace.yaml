@@ -140,7 +140,7 @@ catalog:
   h3: ^1.15.11
   html-minifier-terser: ^7.2.0
   is-ci: ^4.1.0
-  js-beautify: 1.15.4
+  js-beautify: 2.0.3
   json-bigint: ^1.0.0
   jsonwebtoken: ^9.0.3
   knip: ^6.29.0
